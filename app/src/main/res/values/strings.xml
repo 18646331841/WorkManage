@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">WorkManage</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
+    <string name="crash_notice">很抱歉，我有事儿，先走一步啦！</string>
+
+</resources>
