@@ -1,5 +1,8 @@
 package com.barisetech.www.workmanage.base;
 
+import java.lang.ref.Reference;
+import java.lang.ref.WeakReference;
+
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
@@ -11,7 +14,7 @@ import rx.subscriptions.CompositeSubscription;
  * Created by LJH on 2018/7/9.
  */
 public abstract class BasePresenter<V> implements Presenter<V> {
-    public V mvpView;
+    public Reference<V> mvpView;
     private CompositeSubscription mCompositeSubscription;
 
     public BasePresenter(V mvpView) {
@@ -20,7 +23,7 @@ public abstract class BasePresenter<V> implements Presenter<V> {
 
     @Override
     public void attachView(V view) {
-        this.mvpView = view;
+        this.mvpView = new WeakReference<>(view);
     }
 
     @Override
