@@ -6,7 +6,7 @@ import java.lang.ref.WeakReference;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
+//import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
@@ -40,13 +40,13 @@ public abstract class BasePresenter<V> implements Presenter<V> {
     }
 
     public void addSubscription(Observable observable, Subscriber subscriber) {
-        if (null == mCompositeSubscription) {
-            mCompositeSubscription = new CompositeSubscription();
-        }
-        mCompositeSubscription.add(observable
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(subscriber));
+//        if (null == mCompositeSubscription) {
+//            mCompositeSubscription = new CompositeSubscription();
+//        }
+//        mCompositeSubscription.add(observable
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(subscriber));
     }
 
     public void addSubscription(Subscription subscription) {
