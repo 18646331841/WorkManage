@@ -9,6 +9,10 @@ android {
         versionCode rootProject.ext.version_code
         versionName rootProject.ext.version_name
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        packagingOptions {
+            pickFirst 'META-INF/*'
+        }
     }
     buildTypes {
         release {

@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">WorkManage</string>
-    <string name="title_home">主页</string>
-    <string name="title_navigation">导航</string>
+    <string name="title_message">消息</string>
+    <string name="title_map">地图</string>
     <string name="title_manage">管理</string>
-    <string name="title_myself">个人</string>
+    <string name="title_myself">我</string>
 
     <string name="crash_notice">很抱歉，我有事儿，先走一步啦！</string>
 

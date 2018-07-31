@@ -18,7 +18,6 @@ import rx.subscriptions.CompositeSubscription;
  */
 public abstract class BaseActivity extends AppCompatActivity {
     protected Context mContext;
-    private CompositeSubscription mCompositeSubscription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +29,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        onUnsubscribe();
     }
     /**
      * 初始化界面
@@ -81,22 +79,5 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void intent2Activity(Class<? extends Activity> targetActivity) {
         Intent intent = new Intent(mContext, targetActivity);
         startActivity(intent);
-    }
-
-    //RXjava取消注册，以避免内存泄露
-    public void onUnsubscribe() {
-        if (mCompositeSubscription != null && mCompositeSubscription.hasSubscriptions()) {
-            mCompositeSubscription.unsubscribe();
-        }
-    }
-
-    public void addSubscription(Observable observable, Subscriber subscriber) {
-        if (mCompositeSubscription == null) {
-            mCompositeSubscription = new CompositeSubscription();
-        }
-//        mCompositeSubscription.add(observable
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(subscriber);
     }
 }
