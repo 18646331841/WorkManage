@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.barisetech.www.workmanage.R;
+import com.barisetech.www.workmanage.base.BottomNavigationViewHelper;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -50,6 +51,7 @@ public class NavigationFragment extends Fragment {
 
     private void initView(View view) {
         BottomNavigationView navigation = (BottomNavigationView) view.findViewById(R.id.navigation);
+        BottomNavigationViewHelper.disableShiftMode(navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
