@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="wrap_content">
+
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="20dp"
+        android:layout_margin="20dp"
+        android:layout_gravity="center">
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/message_item"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+               android:src="@mipmap/ic_launcher"
+                android:id="@+id/message_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/message_item"
+
+                app:layout_constraintLeft_toLeftOf="@id/message_item"/>
+            <TextView
+                android:text="fffffff"
+                android:id="@+id/message_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toRightOf="@id/message_type"/>
+
+            <TextView
+                android:text="1111111111111111111111111111111111111"
+                android:id="@+id/message_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/message_type" />
+
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.v7.widget.CardView>
+
+
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="right|center_vertical"
+        android:background="@drawable/shape_cricle_button"/>
+</FrameLayout>
