@@ -61,9 +61,9 @@ public class NavigationFragment extends Fragment {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_home:
+                case R.id.navigation_message:
                     return true;
-                case R.id.navigation_navigation:
+                case R.id.navigation_map:
                     return true;
                 case R.id.navigation_manage:
                     return true;
