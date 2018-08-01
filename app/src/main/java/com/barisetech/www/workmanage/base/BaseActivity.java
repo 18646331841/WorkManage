@@ -1,14 +1,19 @@
 package com.barisetech.www.workmanage.base;
 
 import android.app.Activity;
+import android.app.Application;
+import android.content.ComponentCallbacks;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.view.View;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.schedulers.Schedulers;
 import rx.Subscriber;
 import rx.subscriptions.CompositeSubscription;
@@ -75,5 +80,48 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void intent2Activity(Class<? extends Activity> targetActivity) {
         Intent intent = new Intent(mContext, targetActivity);
         startActivity(intent);
+    }
+
+    private static float sNoncompatDensity;
+    private static float sNoncompatScaledDensity;
+
+    /**
+     * 屏幕设配方法
+     * @param activity
+     * @param application
+     */
+    private static void setCustomDensity(@NonNull Activity activity, @NonNull final Application application) {
+        final DisplayMetrics appDisplayMetrics = application.getResources().getDisplayMetrics();
+
+        if (sNoncompatDensity == 0) {
+            sNoncompatDensity = appDisplayMetrics.density;
+            sNoncompatScaledDensity = appDisplayMetrics.scaledDensity;
+            application.registerComponentCallbacks(new ComponentCallbacks() {
+                @Override
+                public void onConfigurationChanged(Configuration configuration) {
+                    if (configuration == null && configuration.fontScale > 0) {
+                        sNoncompatScaledDensity = application.getResources().getDisplayMetrics().scaledDensity;
+                    }
+                }
+
+                @Override
+                public void onLowMemory() {
+
+                }
+            });
+        }
+
+        final float targetDensity = appDisplayMetrics.widthPixels / 360;//根据实际设计修改
+        final float targetScaledDensity = targetDensity * (sNoncompatScaledDensity / sNoncompatDensity);
+        final int targetDensityDpi = (int) (160 * targetDensity);
+
+        appDisplayMetrics.density = targetDensity;
+        appDisplayMetrics.scaledDensity = targetScaledDensity;
+        appDisplayMetrics.densityDpi = targetDensityDpi;
+
+        final DisplayMetrics activityDisplayMetrics = activity.getResources().getDisplayMetrics();
+        activityDisplayMetrics.density = targetDensity;
+        activityDisplayMetrics.densityDpi = targetDensityDpi;
+        activityDisplayMetrics.scaledDensity = targetScaledDensity;
     }
 }

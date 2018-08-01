@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,6 +47,9 @@ public class NavigationFragment extends Fragment {
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_navigation, container, false);
         initView(root);
+
+        showContentFragment(Messagefragment.TAG);
+
         return root;
     }
 
@@ -62,6 +66,7 @@ public class NavigationFragment extends Fragment {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_message:
+                    showContentFragment(Messagefragment.TAG);
                     return true;
                 case R.id.navigation_map:
                     return true;
@@ -111,5 +116,15 @@ public class NavigationFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    private void showContentFragment(String tag) {
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        switch (tag) {
+            case Messagefragment.TAG:
+                fragmentTransaction.replace(R.id.navigation_content, Messagefragment.newInstance(),
+                        Messagefragment.TAG).commit();
+                break;
+        }
     }
 }

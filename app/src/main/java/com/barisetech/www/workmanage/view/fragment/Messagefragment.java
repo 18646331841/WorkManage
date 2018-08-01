@@ -17,9 +17,17 @@ import com.barisetech.www.workmanage.R;
 
 public class Messagefragment extends Fragment {
 
-    public static String TAG = "Messagefragment";
+    public static final String TAG = "Messagefragment";
 
     private FragmentMessageBinding mBinding;
+
+    public Messagefragment() {
+    }
+
+    public static Messagefragment newInstance() {
+        Messagefragment fragment = new Messagefragment();
+        return fragment;
+    }
 
     @Nullable
     @Override
