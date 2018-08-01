@@ -1,15 +1,12 @@
-package com.barisetech.www.workmanage.ui;
+package com.barisetech.www.workmanage.view;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.base.BaseActivity;
+import com.barisetech.www.workmanage.view.fragment.ContentFragment;
+import com.barisetech.www.workmanage.view.fragment.NavigationFragment;
 
 public class MainActivity extends BaseActivity {
 
