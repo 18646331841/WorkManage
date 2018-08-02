@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -27,6 +28,7 @@ public class NavigationFragment extends Fragment {
     public static final String TAG = "NavigationFragment";
 
     private OnFragmentInteractionListener mListener;
+    private FragmentManager fm;
 
     public NavigationFragment() {
         // Required empty public constructor
@@ -40,6 +42,7 @@ public class NavigationFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        fm = getFragmentManager();
     }
 
     @Override
@@ -48,7 +51,7 @@ public class NavigationFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_navigation, container, false);
         initView(root);
 
-        showContentFragment(Messagefragment.TAG);
+        showNavContentFragment(Messagefragment.TAG);
 
         return root;
     }
@@ -66,9 +69,10 @@ public class NavigationFragment extends Fragment {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_message:
-                    showContentFragment(Messagefragment.TAG);
+                    showNavContentFragment(Messagefragment.TAG);
                     return true;
                 case R.id.navigation_map:
+                    showNavContentFragment(MapFragment.TAG);
                     return true;
                 case R.id.navigation_manage:
                     return true;
@@ -118,13 +122,29 @@ public class NavigationFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    private void showContentFragment(String tag) {
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+    /**
+     * 显示内容中的fragment
+     * @param tag fragment's TAG
+     */
+    private void showNavContentFragment(String tag) {
+        Fragment fragment = fm.findFragmentByTag(tag);
         switch (tag) {
             case Messagefragment.TAG:
-                fragmentTransaction.replace(R.id.navigation_content, Messagefragment.newInstance(),
-                        Messagefragment.TAG).commit();
+                if (null == fragment) {
+                    fragment = Messagefragment.newInstance();
+                }
                 break;
+
+            case MapFragment.TAG:
+                if (null == fragment) {
+                    fragment = MapFragment.newInstance();
+                }
+                break;
+        }
+        if (null != fragment) {
+            fm.beginTransaction()
+                    .replace(R.id.navigation_content, fragment, tag)
+                    .commit();
         }
     }
 }

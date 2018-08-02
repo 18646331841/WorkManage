@@ -10,12 +10,21 @@ import com.barisetech.www.workmanage.view.fragment.NavigationFragment;
 
 public class MainActivity extends BaseActivity {
 
+    /**
+     * 是否为大屏左右显示，true表示是
+     */
+    private boolean isTwoPanel = false;
+
     @Override
     protected void loadViewLayout() {
         setContentView(R.layout.activity_main);
 
+        if (null != get(R.id.fragment_content)) {
+            isTwoPanel = true;
+        }
+
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        if (get(R.id.fragment_content) == null) {
+        if (!isTwoPanel) {
             //小屏设备界面，单个fragment
             transaction.add(R.id.fragment_navigation, NavigationFragment.newInstance(), NavigationFragment.TAG).commit();
         } else {
@@ -35,7 +44,6 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
-
     }
 
     @Override
@@ -48,7 +56,7 @@ public class MainActivity extends BaseActivity {
      */
     private void showFragment(String tag) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        if (get(R.id.fragment_content) == null) {
+        if (!isTwoPanel) {
             //TODO 小屏幕，跳转到activity
         } else {
             //TODO 大屏幕，显示fragment

@@ -10,7 +10,8 @@
     <FrameLayout
         android:id="@+id/navigation_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="@id/navigation"/>
 
 
 <android.support.design.widget.BottomNavigationView
