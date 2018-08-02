@@ -5,6 +5,10 @@
     <string name="title_manage">管理</string>
     <string name="title_myself">我</string>
     <string name="new_message">新信息</string>
+    <string name="title_warn">警报</string>
+    <string name="title_event">事件</string>
+    <string name="title_news">新闻</string>
+    <string name="warn_analysis">警报分析</string>
 
     <string name="crash_notice">很抱歉，我有事儿，先走一步啦！</string>
 

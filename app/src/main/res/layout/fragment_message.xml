@@ -12,34 +12,118 @@
         android:layout_height="match_parent">
 
 
-        <LinearLayout
+        <android.support.constraint.ConstraintLayout
             android:id="@+id/message_menu"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_height="169dp"
+            app:layout_constraintBottom_toTopOf="@+id/message_title"
             app:layout_constraintTop_toTopOf="parent">
 
-        </LinearLayout>
+            <ImageView
+                android:id="@+id/img_warn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@mipmap/ic_launcher_round"
+                app:layout_constraintBottom_toBottomOf="@id/message_menu"
+                app:layout_constraintLeft_toLeftOf="@id/message_menu"
+                app:layout_constraintRight_toLeftOf="@+id/img_event"
+                app:layout_constraintTop_toTopOf="@id/message_menu" />
+
+            <ImageView
+                android:id="@+id/img_event"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@mipmap/ic_launcher_round"
+                app:layout_constraintBottom_toBottomOf="@id/message_menu"
+                app:layout_constraintLeft_toRightOf="@+id/img_warn"
+                app:layout_constraintRight_toLeftOf="@+id/img_news"
+                app:layout_constraintTop_toTopOf="@id/message_menu" />
+
+            <ImageView
+                android:id="@+id/img_news"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@mipmap/ic_launcher_round"
+                app:layout_constraintBottom_toBottomOf="@id/message_menu"
+                app:layout_constraintLeft_toRightOf="@+id/img_analysis_warn"
+                app:layout_constraintRight_toLeftOf="@+id/img_event"
+                app:layout_constraintTop_toTopOf="@id/message_menu" />
+
+            <ImageView
+                android:id="@+id/img_analysis_warn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@mipmap/ic_launcher_round"
+                app:layout_constraintBottom_toBottomOf="@id/message_menu"
+                app:layout_constraintLeft_toRightOf="@+id/img_news"
+                app:layout_constraintRight_toRightOf="@id/message_menu"
+                app:layout_constraintTop_toTopOf="@id/message_menu" />
+
+            <TextView
+                android:id="@+id/tv_warn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="@string/title_warn"
+                app:layout_constraintLeft_toLeftOf="@id/img_warn"
+                app:layout_constraintRight_toRightOf="@id/img_warn"
+                app:layout_constraintTop_toBottomOf="@id/img_warn" />
+            <TextView
+                android:id="@+id/tv_event"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="@string/title_event"
+                app:layout_constraintLeft_toLeftOf="@id/img_event"
+                app:layout_constraintRight_toRightOf="@id/img_event"
+                app:layout_constraintTop_toBottomOf="@id/img_event" />
+            <TextView
+                android:id="@+id/tv_news"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="@string/title_news"
+                app:layout_constraintLeft_toLeftOf="@id/img_news"
+                app:layout_constraintRight_toRightOf="@id/img_news"
+                app:layout_constraintTop_toBottomOf="@id/img_news" />
+            <TextView
+                android:id="@+id/tv_analysis"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="@string/warn_analysis"
+                app:layout_constraintLeft_toLeftOf="@id/img_analysis_warn"
+                app:layout_constraintRight_toRightOf="@id/img_analysis_warn"
+                app:layout_constraintTop_toBottomOf="@id/img_analysis_warn" />
+
+
+        </android.support.constraint.ConstraintLayout>
 
         <RelativeLayout
             android:id="@+id/message_title"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/message_menu">
-
-
+            android:layout_height="41dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="19dp"
+            android:background="@color/colorPrimaryDark"
+            app:layout_constraintBottom_toTopOf="@+id/message_recyclerView"
+            app:layout_constraintTop_toBottomOf="@+id/message_menu">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/new_message"/>
+                android:text="@string/new_message" />
         </RelativeLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/message_recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/message_title">
-        </android.support.v7.widget.RecyclerView>
+            android:layout_height="0dp"
+            android:background="@color/colorPrimary"
+            app:layout_constraintVertical_weight="8"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="19dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/message_title"></android.support.v7.widget.RecyclerView>
 
     </android.support.constraint.ConstraintLayout>
 </layout>
