@@ -21,7 +21,10 @@ import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.bean.LineStation;
 import com.barisetech.www.workmanage.bean.MapPosition;
 import com.barisetech.www.workmanage.bean.MarkerStation;
+import com.barisetech.www.workmanage.bean.MessageEvent;
 import com.barisetech.www.workmanage.utils.LogUtil;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,6 +113,7 @@ public class MapFragment extends Fragment {
 
     AMap.OnMarkerClickListener markerClickListener = marker -> {
         LogUtil.d("marker", marker.getTitle());
+        EventBus.getDefault().post(new MessageEvent(AlarmListFragment.TAG));
         return false;
     };
 

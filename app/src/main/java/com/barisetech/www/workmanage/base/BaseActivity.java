@@ -11,6 +11,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.View;
 
+import com.barisetech.www.workmanage.bean.MessageEvent;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -28,7 +34,16 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
+        EventBus.getDefault().register(this);
+
         initView(savedInstanceState);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        EventBus.getDefault().unregister(this);
     }
 
     /**
@@ -71,6 +86,18 @@ public abstract class BaseActivity extends AppCompatActivity {
      * 设置监听
      */
     protected abstract void setListener();
+
+    /**
+     * 小屏幕跳转到指定activity，大屏幕显示指定的fragment
+     *
+     * @param messageEvent
+     */
+    protected abstract void showActivityOrFragment(MessageEvent messageEvent);
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void event(MessageEvent messageEvent) {
+        showActivityOrFragment(messageEvent);
+    }
 
     /**
      * 页面跳转
