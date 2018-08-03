@@ -4,6 +4,8 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.internal.BottomNavigationItemView;
+import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.base.BottomNavigationViewHelper;
@@ -58,6 +61,13 @@ public class NavigationFragment extends Fragment {
 
     private void initView(View view) {
         BottomNavigationView navigation = (BottomNavigationView) view.findViewById(R.id.navigation);
+        BottomNavigationMenuView menuView = (BottomNavigationMenuView) navigation.getChildAt(0);
+        View tab = menuView.getChildAt(2);
+        BottomNavigationItemView itemView = (BottomNavigationItemView) tab;
+        View badge = LayoutInflater.from(getActivity()).inflate(R.layout.menu_badge, menuView, false);
+        itemView.addView(badge);
+        TextView count = (TextView) badge.findViewById(R.id.tv_msg_count);
+        count.setText(String.valueOf(1));
         BottomNavigationViewHelper.disableShiftMode(navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
