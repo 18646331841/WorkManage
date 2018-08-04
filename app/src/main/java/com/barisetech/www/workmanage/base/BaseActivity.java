@@ -16,13 +16,7 @@ import com.barisetech.www.workmanage.bean.MessageEvent;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
-import io.reactivex.schedulers.Schedulers;
-import rx.Subscriber;
-import rx.subscriptions.CompositeSubscription;
 
 /**
  * Created by LJH on 2018/7/9.

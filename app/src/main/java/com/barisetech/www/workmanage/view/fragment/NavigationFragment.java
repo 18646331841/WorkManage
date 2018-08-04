@@ -73,25 +73,21 @@ public class NavigationFragment extends Fragment {
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_message:
-                    showNavContentFragment(Messagefragment.TAG);
-                    return true;
-                case R.id.navigation_map:
-                    showNavContentFragment(MapFragment.TAG);
-                    return true;
-                case R.id.navigation_manage:
-                    return true;
-                case R.id.navigation_myself:
-                    return true;
-            }
-            return false;
-        }
-    };
+            = item -> {
+                switch (item.getItemId()) {
+                    case R.id.navigation_message:
+                        showNavContentFragment(Messagefragment.TAG);
+                        return true;
+                    case R.id.navigation_map:
+                        showNavContentFragment(MapFragment.TAG);
+                        return true;
+                    case R.id.navigation_manage:
+                        return true;
+                    case R.id.navigation_myself:
+                        return true;
+                }
+                return false;
+            };
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
