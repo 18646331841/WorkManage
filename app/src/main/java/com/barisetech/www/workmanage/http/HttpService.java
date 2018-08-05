@@ -64,7 +64,7 @@ public class HttpService {
     }
 
     /**
-     * 获取RetrofitServiceManager
+     * 获取HttpService
      * @return
      */
     public static HttpService getInstance(){
