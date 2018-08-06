@@ -1,6 +1,7 @@
 package com.barisetech.www.workmanage.view;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 
 import com.barisetech.www.workmanage.R;
@@ -9,9 +10,8 @@ import com.barisetech.www.workmanage.base.BaseApplication;
 import com.barisetech.www.workmanage.bean.MessageEvent;
 import com.barisetech.www.workmanage.view.fragment.AlarmListFragment;
 import com.barisetech.www.workmanage.view.fragment.ContentFragment;
+import com.barisetech.www.workmanage.view.fragment.FingerprintManagerFragment;
 import com.barisetech.www.workmanage.view.fragment.NavigationFragment;
-
-import org.greenrobot.eventbus.EventBus;
 
 public class MainActivity extends BaseActivity {
 
@@ -57,26 +57,30 @@ public class MainActivity extends BaseActivity {
 
     protected void showActivityOrFragment(MessageEvent messageEvent) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        String tag = messageEvent.message;
         if (!isTwoPanel) {
             //TODO 小屏幕，跳转到activity
-            switch (messageEvent.message) {
-                case AlarmListFragment.TAG:
-                    intent2Activity(AlarmListActivity.class);
-                    break;
-            }
+            Bundle bundle = new Bundle();
+            bundle.putString("tag", tag);
+            intent2Activity(bundle, SecondActivity.class);
         } else {
             //TODO 大屏幕，显示fragment
-            switch (messageEvent.message) {
+            switch (tag) {
                 case ContentFragment.TAG:
                     transaction
-//                            .addToBackStack(ContentFragment.TAG)
-                            .replace(R.id.fragment_content, ContentFragment.newInstance(), ContentFragment.TAG).commit();
+                            .addToBackStack(tag)
+                            .replace(R.id.fragment_content, ContentFragment.newInstance(), tag).commit();
                     break;
                 case AlarmListFragment.TAG:
                     transaction
-                            .addToBackStack(AlarmListFragment.TAG)
-                            .replace(R.id.fragment_content, AlarmListFragment.newInstance(), AlarmListFragment.TAG)
+                            .addToBackStack(tag)
+                            .replace(R.id.fragment_content, AlarmListFragment.newInstance(), tag)
                             .commit();
+                    break;
+                case FingerprintManagerFragment.TAG:
+                    transaction
+                            .addToBackStack(tag)
+                            .replace(R.id.second_framelayout, FingerprintManagerFragment.newInstance(), tag).commit();
                     break;
             }
         }

@@ -113,7 +113,7 @@ public class MapFragment extends Fragment {
 
     AMap.OnMarkerClickListener markerClickListener = marker -> {
         LogUtil.d("marker", marker.getTitle());
-        EventBus.getDefault().post(new MessageEvent(AlarmListFragment.TAG));
+        EventBus.getDefault().post(new MessageEvent(FingerprintManagerFragment.TAG));
         return false;
     };
 

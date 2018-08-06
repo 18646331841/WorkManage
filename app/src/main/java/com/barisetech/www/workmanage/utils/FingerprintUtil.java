@@ -1,5 +1,7 @@
 package com.barisetech.www.workmanage.utils;
 
+import android.annotation.TargetApi;
+import android.app.Application;
 import android.app.KeyguardManager;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
@@ -15,7 +17,7 @@ public class FingerprintUtil {
     public static final String TAG = "FingerprintUtil";
     private volatile static FingerprintUtil ourInstance;
 
-    public CancellationSignal cancellationSignal;
+    private CancellationSignal cancellationSignal;
 
     public synchronized static FingerprintUtil getInstance() {
         if (null == ourInstance) {
@@ -27,13 +29,14 @@ public class FingerprintUtil {
     private FingerprintUtil() {
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public void callFingerprint(OnCallBackListenr listener) {
         if (null == listener) {
             return;
         }
 
-        FingerprintManagerCompat managerCompat = FingerprintManagerCompat.from(BaseApplication.getInstance());
+        FingerprintManagerCompat managerCompat = FingerprintManagerCompat.from(BaseApplication.getInstance()
+                .getApplicationContext());
         if (!managerCompat.isHardwareDetected()){
             LogUtil.d(TAG, "设备不支持指纹");
             listener.onSupportFailed("设备不支持指纹");
@@ -81,7 +84,7 @@ public class FingerprintUtil {
         }, null);
     }
 
-    interface  OnCallBackListenr{
+    public interface OnCallBackListenr{
         void onSupportFailed(String msg);
         void onAuthenticationStart();
         void onAuthenticationError(int errMsgId, CharSequence errString);

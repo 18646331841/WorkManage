@@ -103,6 +103,17 @@ public abstract class BaseActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * 页面跳转
+     * @param bundle
+     * @param targetActivity
+     */
+    protected void intent2Activity(Bundle bundle, Class<? extends Activity> targetActivity) {
+        Intent intent = new Intent(mContext, targetActivity);
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
+
     private static float sNoncompatDensity;
     private static float sNoncompatScaledDensity;
 
