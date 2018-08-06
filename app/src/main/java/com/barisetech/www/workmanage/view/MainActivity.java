@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.base.BaseActivity;
+import com.barisetech.www.workmanage.base.BaseApplication;
 import com.barisetech.www.workmanage.bean.MessageEvent;
 import com.barisetech.www.workmanage.view.fragment.AlarmListFragment;
 import com.barisetech.www.workmanage.view.fragment.ContentFragment;
@@ -22,7 +23,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void loadViewLayout() {
         setContentView(R.layout.activity_main);
-
+        BaseApplication.getInstance().requestPermissions(this);
         if (null != get(R.id.fragment_content)) {
             isTwoPanel = true;
         }
