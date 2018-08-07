@@ -7,11 +7,10 @@ import android.content.Context;
 import android.util.Log;
 
 import com.barisetech.www.workmanage.utils.LogUtil;
-import com.tbruyelle.rxpermissions.Permission;
-import com.tbruyelle.rxpermissions.RxPermissions;
+import com.tbruyelle.rxpermissions2.Permission;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import io.reactivex.functions.Consumer;
-import rx.functions.Action1;
 
 /**
  * Created by LJH on 2018/7/9.
@@ -29,30 +28,31 @@ public class BaseApplication extends Application {
 
     }
 
-    public static void requestPermissions(Activity activity) {
-        RxPermissions rxPermission = new RxPermissions(activity);
-        rxPermission
-                .requestEach(Manifest.permission.ACCESS_FINE_LOCATION)
-                .subscribe(new Action1<Permission>() {
+    public void requestPermissions(Activity activity){
+        RxPermissions rxPermissions = new RxPermissions(activity);
+        rxPermissions.requestEach(Manifest.permission.BROADCAST_SMS,
+                Manifest.permission.READ_SMS,
+                Manifest.permission.RECEIVE_SMS,
+                Manifest.permission.SEND_SMS)
+                .subscribe(new Consumer<Permission>() {
                     @Override
-                    public void call(Permission permission) {
-
-                        if (permission.granted) {
-                            // 用户已经同意该权限
-                            LogUtil.e("",permission.name + " is granted.");
-                        } else if (permission.shouldShowRequestPermissionRationale) {
+                    public void accept(Permission permission) throws Exception {
+                        if (permission.granted){
+//                          用户已经同意该权限
+                            Log.e("",permission.name+"is granted");
+                        }else if (permission.shouldShowRequestPermissionRationale){
                             // 用户拒绝了该权限，没有选中『不再询问』（Never ask again）,那么下次再次启动时，还会提示请求权限的对话框
                             Log.d("", permission.name + " is denied. More info should be provided.");
-                        } else {
+                        }else {
                             // 用户拒绝了该权限，并且选中『不再询问』
                             Log.d("", permission.name + " is denied.");
                         }
-
                     }
                 });
 
 
     }
+
 
     public static BaseApplication getInstance() {
         return Instance;

@@ -10,6 +10,7 @@
     <string name="title_news">新闻</string>
     <string name="warn_analysis">警报分析</string>
     <string name="login_fingerprint">指纹登录</string>
+    <string name="gesture_toast">请绘制图案</string>
 
     <string name="crash_notice">很抱歉，我有事儿，先走一步啦！</string>
 
