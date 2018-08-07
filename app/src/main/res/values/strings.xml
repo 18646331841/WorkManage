@@ -16,6 +16,8 @@
     <string name="dialog_verify_fingerprint">请验证指纹</string>
 
     <string name="crash_notice">很抱歉，我有事儿，先走一步啦！</string>
+    <string name="gesture_toast"></string>
+    <string name="tv_ip">IP</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
