@@ -36,5 +36,6 @@
         android:id="@+id/fp_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="@string/login_fingerprint_summary"
         app:layout_constraintTop_toBottomOf="@+id/fp_line"/>
 </android.support.constraint.ConstraintLayout>
