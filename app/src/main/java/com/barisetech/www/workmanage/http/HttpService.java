@@ -2,6 +2,8 @@ package com.barisetech.www.workmanage.http;
 
 import com.barisetech.www.workmanage.BuildConfig;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Interceptor;
@@ -21,11 +23,45 @@ public class HttpService {
     private Retrofit mRetrofit;
 
     private HttpService(){
+
+    }
+
+    private static class SingletonHolder{
+        private static final HttpService INSTANCE = new HttpService();
+    }
+
+    /**
+     * 获取HttpService
+     * @return
+     */
+    public static HttpService getInstance(){
+        return SingletonHolder.INSTANCE;
+    }
+
+    /**
+     * 默认json数据post方式请求
+     */
+    public HttpService buildRetrofit() {
+        Map<String, String> headerMap = new HashMap<>();
+        headerMap.put("Accept-Encoding", "gzip");
+        headerMap.put("Accept", "application/json");
+        headerMap.put("Content-Type", "application/json; charset=utf-8");
+        //requestBuilder.addHeader("Authorization", "Bearer " + BaseConstant.TOKEN);//添加请求头信息，服务器进行token有效性验证
+        return buildRetrofit(headerMap);
+    }
+
+    /**
+     * 构建Retrofit,并设置请求头信息
+     * @param headerMap 请求头Map
+     * @return
+     */
+    public HttpService buildRetrofit(Map<String, String> headerMap) {
         // 创建 OKHttpClient
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
+
         builder.connectTimeout(DEFAULT_TIME_OUT, TimeUnit.SECONDS);//连接超时时间
-        builder.writeTimeout(DEFAULT_READ_TIME_OUT,TimeUnit.SECONDS);//写操作 超时时间
-        builder.readTimeout(DEFAULT_READ_TIME_OUT,TimeUnit.SECONDS);//读操作超时时间
+        builder.writeTimeout(DEFAULT_READ_TIME_OUT, TimeUnit.SECONDS);//写操作 超时时间
+        builder.readTimeout(DEFAULT_READ_TIME_OUT, TimeUnit.SECONDS);//读操作超时时间
 
         if (BuildConfig.DEBUG) {
             // Log信息拦截器
@@ -38,12 +74,11 @@ public class HttpService {
         //项目中设置头信息
         Interceptor headerInterceptor = chain -> {
             Request originalRequest = chain.request();
-            Request.Builder requestBuilder = originalRequest.newBuilder()
-                    .addHeader("Accept-Encoding", "gzip")
-                    .addHeader("Accept", "application/json")
-                    .addHeader("Content-Type", "application/json; charset=utf-8")
-                    .method(originalRequest.method(), originalRequest.body());
-//                requestBuilder.addHeader("Authorization", "Bearer " + BaseConstant.TOKEN);//添加请求头信息，服务器进行token有效性验证
+            Request.Builder requestBuilder = originalRequest.newBuilder();
+            for (Map.Entry<String, String> entry : headerMap.entrySet()) {
+                requestBuilder.addHeader(entry.getKey(), entry.getValue());
+            }
+            requestBuilder.method(originalRequest.method(), originalRequest.body());
             Request request = requestBuilder.build();
             return chain.proceed(request);
         };
@@ -57,17 +92,7 @@ public class HttpService {
                 .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(Config.BASE_URL)
                 .build();
-    }
 
-    private static class SingletonHolder{
-        private static final HttpService INSTANCE = new HttpService();
-    }
-
-    /**
-     * 获取HttpService
-     * @return
-     */
-    public static HttpService getInstance(){
         return SingletonHolder.INSTANCE;
     }
 
