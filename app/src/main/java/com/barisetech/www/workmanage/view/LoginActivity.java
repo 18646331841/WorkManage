@@ -1,15 +1,44 @@
 package com.barisetech.www.workmanage.view;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.barisetech.www.workmanage.R;
+import com.barisetech.www.workmanage.base.BaseActivity;
+import com.barisetech.www.workmanage.bean.MessageEvent;
+import com.barisetech.www.workmanage.utils.FragmentUtil;
+import com.barisetech.www.workmanage.view.fragment.LoginFragment;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+    protected void loadViewLayout() {
+        setContentView(R.layout.fragment_login);
     }
+    @Override
+    protected void bindViews() {
+        FragmentUtil.replaceSupportFragment(this, R.id.container, LoginFragment.class, LoginFragment.TAG, false, false);
+    }
+
+    @Override
+    protected void processLogic(Bundle savedInstanceState) {
+
+    }
+
+    @Override
+    protected void setListener() {
+
+    }
+
+    @Override
+    protected void showActivityOrFragment(MessageEvent messageEvent) {
+
+
+    }
+
 }
