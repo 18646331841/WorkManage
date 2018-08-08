@@ -3,6 +3,7 @@ package com.barisetech.www.workmanage.base;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
 
 import com.barisetech.www.workmanage.bean.TokenInfo;
 import com.barisetech.www.workmanage.db.AppDatabase;
@@ -64,6 +65,16 @@ public class BaseApplication extends Application {
                         LogUtil.d(tag, permission.name + " is denied.");
                     }
                 });
+    }
+
+
+    public int getheight(Context context){
+        int result = 0;
+        int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = context.getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
     }
 
     public static BaseApplication getInstance() {

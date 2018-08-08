@@ -82,6 +82,7 @@ public class NavigationFragment extends Fragment {
                         showNavContentFragment(MapFragment.TAG);
                         return true;
                     case R.id.navigation_manage:
+                        showNavContentFragment(ManageFragment.TAG);
                         return true;
                     case R.id.navigation_myself:
                         return true;
@@ -144,6 +145,11 @@ public class NavigationFragment extends Fragment {
             case MapFragment.TAG:
                 if (null == fragment) {
                     fragment = MapFragment.newInstance();
+                }
+                break;
+            case ManageFragment.TAG:
+                if (null == fragment) {
+                    fragment = ManageFragment.newInstance();
                 }
                 break;
         }

@@ -4,14 +4,20 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.barisetech.www.workmanage.adapter.MessageAdapter;
 import com.barisetech.www.workmanage.adapter.MessageCallBack;
+import com.barisetech.www.workmanage.base.BaseApplication;
+import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.bean.MessageEvent;
 import com.barisetech.www.workmanage.bean.MessageInfo;
 import com.barisetech.www.workmanage.databinding.FragmentMessageBinding;
@@ -19,7 +25,7 @@ import com.barisetech.www.workmanage.R;
 
 import org.greenrobot.eventbus.EventBus;
 
-public class Messagefragment extends Fragment implements View.OnClickListener {
+public class Messagefragment extends BaseFragment implements View.OnClickListener {
 
     public static final String TAG = "Messagefragment";
 
@@ -37,8 +43,8 @@ public class Messagefragment extends Fragment implements View.OnClickListener {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
             savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_message, container, false);
-
         MessageAdapter messageAdapter = new MessageAdapter(messageCallBack);
+        setToolBarHeight(mBinding.toolbar);
         mBinding.messageRecyclerView.setAdapter(messageAdapter);
         mBinding.imgWarn.setOnClickListener(this);
         mBinding.imgAnalysisWarn.setOnClickListener(this);
