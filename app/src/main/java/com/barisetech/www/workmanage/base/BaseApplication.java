@@ -35,6 +35,8 @@ public class BaseApplication extends Application {
     public static String dataDir;
     public static String appDir = "/WorkManage";
 
+    public TokenInfo tokenInfo;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -88,8 +90,6 @@ public class BaseApplication extends Application {
         headerMap.put("Postman-Token", "d05c6ec5-6f1e-4d55-b0d7-2ccb69c40541");
 
         Observable<TokenInfo> cache = Observable.create(e -> {
-            LogUtil.e(TAG, "create当前线程:" + Thread.currentThread().getName());
-
             TokenInfo tokenInfo = getDatabase().tokenInfoDao().loadTokenInfoById(0);
 
             // 如果缓存数据不为空，则直接读取缓存数据，而不读取网络数据
@@ -114,15 +114,21 @@ public class BaseApplication extends Application {
         TokenService tokenService = HttpService.getInstance().buildRetrofit(headerMap).create(TokenService.class);
         Observable<TokenInfo> network = tokenService.getTokenInfo("password", "admin", "123456");
 
+//        Observable<TokenInfo> tokenInfoNetwork = Observable.create(e -> {
+//            Observable<TokenInfo> tokenInfo = tokenService.getTokenInfo("password", "admin", "123456");
+//            tokenInfo
+//        })
+
         Disposable disposable = Observable.concat(cache, network)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribe(tokenInfo -> {
-                    LogUtil.e(TAG, "subscribe 成功:" + Thread.currentThread().getName());
                     if (tokenInfo.getTimestamp() <= 0) {
                         tokenInfo.setTimestamp(System.currentTimeMillis());
                     }
                     getDatabase().tokenInfoDao().insertTokenInfo(tokenInfo);
+                    this.tokenInfo = tokenInfo;
+
                     LogUtil.e(TAG, tokenInfo.toString());
                 }, throwable -> {
                     LogUtil.e(TAG, "获取token失败");
