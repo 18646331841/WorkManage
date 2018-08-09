@@ -1,7 +1,12 @@
 package com.barisetech.www.workmanage.model;
 
+import android.arch.lifecycle.LiveData;
+
+import com.barisetech.www.workmanage.base.BaseApplication;
 import com.barisetech.www.workmanage.bean.AccessTokenInfo;
 import com.barisetech.www.workmanage.bean.TokenInfo;
+import com.barisetech.www.workmanage.db.AppDatabase;
+import com.barisetech.www.workmanage.db.dao.TokenInfoDao;
 import com.barisetech.www.workmanage.http.HttpService;
 import com.barisetech.www.workmanage.http.api.TokenService;
 import com.barisetech.www.workmanage.utils.LogUtil;
@@ -12,7 +17,6 @@ import java.util.Map;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
@@ -22,11 +26,13 @@ import io.reactivex.schedulers.Schedulers;
 public class LoginModel {
     private static final String TAG = "LoginModel";
 
-    public void login(String name, String password) {
+    private AppDatabase appDatabase;
 
+    public LoginModel(AppDatabase appDatabase) {
+        this.appDatabase = appDatabase;
     }
 
-    private void getAccessToken(String name, String password) {
+    public void getToken(String name, String password) {
         Map<String, String> headerMap = new HashMap<>();
         headerMap.put("Content-Type", "application/x-www-form-urlencoded");
         headerMap.put("Cache-Control", "no-cache");
@@ -56,45 +62,41 @@ public class LoginModel {
 
         TokenService tokenService = HttpService.getInstance().buildRetrofit(headerMap).create(TokenService.class);
         Observable<AccessTokenInfo> network = tokenService.getAccessTokenInfo("password", name, password);
-        Disposable disposable = network.subscribeOn(Schedulers.io())
+        Disposable disposable = network
+                .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .doOnNext(new Consumer<AccessTokenInfo>() {
-                              @Override
-                              public void accept(AccessTokenInfo accessTokenInfo) throws Exception {
-                                  LogUtil.e(TAG, "网络获取token---" + accessTokenInfo.toString());
-                                  //如果需要保存tokenInfo到数据库，再打开使用
+                .doOnNext(accessTokenInfo -> {
+                    LogUtil.d(TAG, "网络获取accesstoken---" + accessTokenInfo.toString());
+                    //如果需要保存tokenInfo到数据库，再打开使用
 //                        AppDatabase appDatabase = BaseApplication.getInstance().getDatabase();
 //                        AccessTokenInfo tokenInfo1 = appDatabase.tokenInfoDao().loadTokenInfoById(0);
 //                        if (null != tokenInfo1) {
 //                            appDatabase.tokenInfoDao().delete(tokenInfo1);
 //                            appDatabase.tokenInfoDao().insertTokenInfo(accessTokenInfo);
-                              }
-                          }
+                }
                 )
-                .flatMap(new Function<AccessTokenInfo, ObservableSource<TokenInfo>>() {
-                    @Override
-                    public ObservableSource<TokenInfo> apply(AccessTokenInfo accessTokenInfo) throws Exception {
-                        if (accessTokenInfo != null && accessTokenInfo.getAccessToken() != null) {
-                            headerMap.put("Authorization", "Bearer " + accessTokenInfo.getAccessToken());
-                            Observable<TokenInfo> tokenInfo = HttpService.getInstance().buildRetrofit(headerMap).create
-                                    (TokenService.class).getTokenInfo(accessTokenInfo.getRefreshToken());
-                        }
-                        return null;
+                .flatMap((Function<AccessTokenInfo, ObservableSource<TokenInfo>>) accessTokenInfo -> {
+                    if (accessTokenInfo != null && accessTokenInfo.getAccessToken() != null) {
+                        LogUtil.d(TAG, "网络获取token");
+                        headerMap.put("Authorization", "Bearer " + accessTokenInfo.getAccessToken());
+                        Observable<TokenInfo> tokenInfo = HttpService.getInstance().buildRetrofit(headerMap).create
+                                (TokenService.class).getTokenInfo(accessTokenInfo.getRefreshToken());
                     }
+                    return null;
                 })
-                .subscribe(new Consumer<TokenInfo>() {
-                    @Override
-                    public void accept(TokenInfo tokenInfo) throws Exception {
-
+                .subscribe(tokenInfo -> {
+                    if (null != tokenInfo) {
+                        TokenInfoDao tokenInfoDao = appDatabase.tokenInfoDao();
+//                        TokenInfo tokenInfo1 = tokenInfoDao.loadTokenInfoSync(0);
+//                        if (null != tokenInfo1) {
+//                            tokenInfo.setId(0);
+//                        }
+                        LogUtil.d(TAG, "网络获取token---" + tokenInfo.toString());
+                        tokenInfoDao.update(tokenInfo);
                     }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-
-                    }
+                }, throwable -> {
+                    LogUtil.e(TAG, "网络获取token失败---" + throwable.getMessage());
                 });
-
-
 //        Disposable disposable = Observable.concat(cache, network)
 //                .subscribeOn(Schedulers.io())
 //                .observeOn(Schedulers.io())
@@ -109,5 +111,9 @@ public class LoginModel {
 //                }, throwable -> {
 //                    LogUtil.e(TAG, "获取token失败");
 //                });
+    }
+
+    public LiveData<TokenInfo> getTokenInfo() {
+        return appDatabase.tokenInfoDao().loadTokenInfo(0);
     }
 }

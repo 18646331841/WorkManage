@@ -1,5 +1,6 @@
 package com.barisetech.www.workmanage.view.fragment;
 
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -24,34 +25,37 @@ public class LoginFragment extends Fragment {
     private EditText et_password;
     private ImageView revealPassword;
 
+//    private FragmentLoginBinding mBinding;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_login,container,false);
-        initView(view);
-        return view;
+//        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_message, container, false);
+
+//        initView(view);
+//        return mBinding.getRoot();
+        return inflater.inflate(R.layout.fragment_message, container, false);
     }
 
     private void initView(View view) {
-        et_ip = view.findViewById(R.id.et_ip);
-        et_port = view.findViewById(R.id.et_port);
-        et_count = view.findViewById(R.id.et_count);
-        et_password = view.findViewById(R.id.et_password);
-        revealPassword = view.findViewById(R.id.revealPassword);
-        revealPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                revealPassword();
-            }
-        });
+
+//        mBinding.revealPassword.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                revealPassword();
+//            }
+//        });
 
     }
 
+    public void loginCallBack() {
+
+    }
 
     private void revealPassword() {
         revealPassword.setActivated(!revealPassword.isActivated());
-        et_password.setTransformationMethod(revealPassword.isActivated() ? HideReturnsTransformationMethod.getInstance() : PasswordTransformationMethod.getInstance());
+        et_password.setTransformationMethod(revealPassword.isActivated() ? HideReturnsTransformationMethod
+                .getInstance() : PasswordTransformationMethod.getInstance());
         et_password.setSelection(et_password.getText().toString().trim().length());
     }
 }

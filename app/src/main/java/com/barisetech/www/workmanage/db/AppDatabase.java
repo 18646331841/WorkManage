@@ -7,6 +7,7 @@ import android.content.Context;
 
 import com.barisetech.www.workmanage.bean.AccessTokenInfo;
 import com.barisetech.www.workmanage.db.dao.AccessTokenInfoDao;
+import com.barisetech.www.workmanage.db.dao.TokenInfoDao;
 
 /**
  * Created by LJH on 2018/8/8.
@@ -17,7 +18,8 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public static final String DATABASE_NAME = "work-db";
 
-    public abstract AccessTokenInfoDao tokenInfoDao();
+    public abstract AccessTokenInfoDao accessTokenInfoDao();
+    public abstract TokenInfoDao tokenInfoDao();
 
     public static AppDatabase getsInstance(final Context context) {
         if (null == sInstance) {
