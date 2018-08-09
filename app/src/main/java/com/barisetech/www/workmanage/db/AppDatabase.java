@@ -5,19 +5,19 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
-import com.barisetech.www.workmanage.bean.TokenInfo;
-import com.barisetech.www.workmanage.db.dao.TokenInfoDao;
+import com.barisetech.www.workmanage.bean.AccessTokenInfo;
+import com.barisetech.www.workmanage.db.dao.AccessTokenInfoDao;
 
 /**
  * Created by LJH on 2018/8/8.
  */
-@Database(entities = {TokenInfo.class}, version = 1)
+@Database(entities = {AccessTokenInfo.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase sInstance;
 
     public static final String DATABASE_NAME = "work-db";
 
-    public abstract TokenInfoDao tokenInfoDao();
+    public abstract AccessTokenInfoDao tokenInfoDao();
 
     public static AppDatabase getsInstance(final Context context) {
         if (null == sInstance) {

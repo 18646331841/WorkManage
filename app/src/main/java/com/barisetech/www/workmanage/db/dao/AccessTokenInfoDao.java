@@ -6,20 +6,20 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 
-import com.barisetech.www.workmanage.bean.TokenInfo;
+import com.barisetech.www.workmanage.bean.AccessTokenInfo;
 
 /**
  * Created by LJH on 2018/8/8.
  */
 @Dao
-public interface TokenInfoDao {
+public interface AccessTokenInfoDao {
 
-    @Query("select * from token_info where id = :id LIMIT 1")
-    TokenInfo loadTokenInfoById(int id);
+    @Query("select * from accesstoken_info where id = :id LIMIT 1")
+    AccessTokenInfo loadTokenInfoById(int id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertTokenInfo(TokenInfo tokenInfo);
+    void insertTokenInfo(AccessTokenInfo accessTokenInfo);
 
     @Delete
-    void delete(TokenInfo tokenInfo);
+    void delete(AccessTokenInfo accessTokenInfo);
 }
