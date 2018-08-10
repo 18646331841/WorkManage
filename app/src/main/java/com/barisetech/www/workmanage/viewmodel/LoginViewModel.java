@@ -25,7 +25,7 @@ public class LoginViewModel extends AndroidViewModel {
 
         appDatabase = BaseApplication.getInstance().getDatabase();
         loginModel = new LoginModel(appDatabase);
-        mObservableTokenInfo = appDatabase.tokenInfoDao().loadTokenInfo(0);
+        mObservableTokenInfo = loginModel.getTokenInfo();
     }
 
     public void login(String name, String password) {

@@ -18,11 +18,11 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void loadViewLayout() {
-        setContentView(R.layout.fragment_login);
+        setContentView(R.layout.activity_login);
     }
     @Override
     protected void bindViews() {
-        FragmentUtil.replaceSupportFragment(this, R.id.container, LoginFragment.class, LoginFragment.TAG, false, false);
+        FragmentUtil.replaceSupportFragment(this, R.id.login_container, LoginFragment.class, LoginFragment.TAG, false, false);
     }
 
     @Override
@@ -37,8 +37,7 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void showActivityOrFragment(MessageEvent messageEvent) {
-
-
+        intent2Activity(MainActivity.class);
     }
 
 }

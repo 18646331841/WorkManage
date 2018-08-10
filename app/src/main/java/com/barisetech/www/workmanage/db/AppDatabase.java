@@ -6,13 +6,14 @@ import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
 import com.barisetech.www.workmanage.bean.AccessTokenInfo;
+import com.barisetech.www.workmanage.bean.TokenInfo;
 import com.barisetech.www.workmanage.db.dao.AccessTokenInfoDao;
 import com.barisetech.www.workmanage.db.dao.TokenInfoDao;
 
 /**
  * Created by LJH on 2018/8/8.
  */
-@Database(entities = {AccessTokenInfo.class}, version = 1)
+@Database(entities = {AccessTokenInfo.class, TokenInfo.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase sInstance;
 

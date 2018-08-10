@@ -81,21 +81,28 @@ public class LoginModel {
                         headerMap.put("Authorization", "Bearer " + accessTokenInfo.getAccessToken());
                         Observable<TokenInfo> tokenInfo = HttpService.getInstance().buildRetrofit(headerMap).create
                                 (TokenService.class).getTokenInfo(accessTokenInfo.getRefreshToken());
+                        return tokenInfo;
                     }
                     return null;
                 })
                 .subscribe(tokenInfo -> {
                     if (null != tokenInfo) {
                         TokenInfoDao tokenInfoDao = appDatabase.tokenInfoDao();
-//                        TokenInfo tokenInfo1 = tokenInfoDao.loadTokenInfoSync(0);
-//                        if (null != tokenInfo1) {
-//                            tokenInfo.setId(0);
-//                        }
-                        LogUtil.d(TAG, "网络获取token---" + tokenInfo.toString());
-                        tokenInfoDao.update(tokenInfo);
+                        if (tokenInfo.isLoginResult()) {
+                            LogUtil.d(TAG, "网络获取token结果---" + tokenInfo.toString());
+                            TokenInfo tokenInfo1 = tokenInfoDao.loadTokenInfoSync(0);
+                            if (null != tokenInfo1) {
+                                tokenInfoDao.update(tokenInfo);
+                            } else {
+                                tokenInfoDao.insert(tokenInfo);
+                            }
+                            tokenInfoDao.update(tokenInfo);
+                        } else {
+                            LogUtil.d(TAG, "网络获取token失败---" + tokenInfo.toString());
+                        }
                     }
                 }, throwable -> {
-                    LogUtil.e(TAG, "网络获取token失败---" + throwable.getMessage());
+                    LogUtil.e(TAG, "网络获取token失败---throwable" + throwable.getMessage());
                 });
 //        Disposable disposable = Observable.concat(cache, network)
 //                .subscribeOn(Schedulers.io())

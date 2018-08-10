@@ -49,7 +49,7 @@
             android:layout_marginTop="58dp"
             android:text="@string/tv_port"
             android:textSize="16sp"
-            app:layout_constraintLeft_toLeftOf="@id/tv_count"
+            app:layout_constraintLeft_toLeftOf="@id/tv_account"
             app:layout_constraintRight_toRightOf="@id/tv_ip"
             app:layout_constraintTop_toBottomOf="@id/tv_ip"/>
 
@@ -61,11 +61,11 @@
             android:background="@drawable/layout_corners"
             app:layout_constraintBottom_toBottomOf="@id/tv_port"
             app:layout_constraintLeft_toRightOf="@id/tv_port"
-            app:layout_constraintRight_toRightOf="@id/et_count"
+            app:layout_constraintRight_toRightOf="@id/et_account"
             app:layout_constraintTop_toTopOf="@id/tv_port"/>
 
         <TextView
-            android:id="@+id/tv_count"
+            android:id="@+id/tv_account"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="58dp"
@@ -75,15 +75,15 @@
             app:layout_constraintTop_toBottomOf="@id/tv_port"/>
 
         <EditText
-            android:id="@+id/et_count"
+            android:id="@+id/et_account"
             android:layout_width="233dp"
             android:layout_height="45dp"
             android:layout_marginLeft="10dp"
             android:background="@drawable/layout_corners"
-            app:layout_constraintBottom_toBottomOf="@id/tv_count"
-            app:layout_constraintLeft_toRightOf="@id/tv_count"
+            app:layout_constraintBottom_toBottomOf="@id/tv_account"
+            app:layout_constraintLeft_toRightOf="@id/tv_account"
             app:layout_constraintRight_toRightOf="@id/rl_pwd"
-            app:layout_constraintTop_toTopOf="@id/tv_count"
+            app:layout_constraintTop_toTopOf="@id/tv_account"
             />
 
 
@@ -104,7 +104,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
-                android:layout_toLeftOf="@+id/revealPassword"
+                android:layout_toLeftOf="@id/revealPassword"
                 android:background="@null"
                 android:inputType="textPassword"
                 android:maxLength="16"
@@ -129,8 +129,8 @@
             android:text="@string/tv_password"
             android:textSize="16sp"
             app:layout_constraintLeft_toLeftOf="@id/login"
-            app:layout_constraintRight_toRightOf="@id/tv_count"
-            app:layout_constraintTop_toBottomOf="@id/tv_count"/>
+            app:layout_constraintRight_toRightOf="@id/tv_account"
+            app:layout_constraintTop_toBottomOf="@id/tv_account"/>
 
 
         <Button
