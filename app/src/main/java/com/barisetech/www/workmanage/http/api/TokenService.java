@@ -15,12 +15,24 @@ import retrofit2.http.Path;
  */
 public interface TokenService {
 
+    /**
+     * 获取access_token
+     * @param grantType
+     * @param username
+     * @param password
+     * @return
+     */
     @FormUrlEncoded
     @POST("token")
     Observable<AccessTokenInfo> getAccessTokenInfo(@Field("grant_type") String grantType,
                                                    @Field("username") String username,
                                                    @Field("password") String password);
 
+    /**
+     * 获取token
+     * @param refreshToken
+     * @return
+     */
     @GET("/api/Login/{refresh_token}")
     Observable<TokenInfo> getTokenInfo(@Path("refresh_token") String refreshToken);
 }

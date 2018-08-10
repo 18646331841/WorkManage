@@ -9,5 +9,6 @@ public class BaseConstant {
      */
     //指纹登录
     public static final String SP_LOGIN_FP = "login_FP";
-
+    //登录用户account
+    public static final String SP_ACCOUNT = "account";
 }

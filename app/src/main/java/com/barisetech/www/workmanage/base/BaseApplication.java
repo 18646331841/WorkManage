@@ -6,6 +6,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.barisetech.www.workmanage.bean.AccessTokenInfo;
+import com.barisetech.www.workmanage.bean.TokenInfo;
 import com.barisetech.www.workmanage.db.AppDatabase;
 import com.barisetech.www.workmanage.utils.LogUtil;
 import com.tbruyelle.rxpermissions2.RxPermissions;
@@ -21,7 +22,7 @@ public class BaseApplication extends Application {
     public static String dataDir;
     public static String appDir = "/WorkManage";
 
-    public AccessTokenInfo accessTokenInfo;
+    public TokenInfo curTokenInfo;
 
     @Override
     public void onCreate() {

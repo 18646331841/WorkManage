@@ -39,14 +39,22 @@ public class HttpService {
     }
 
     /**
-     * 默认json数据post方式请求
+     * json数据方式请求
      */
-    public HttpService buildRetrofit() {
+    public HttpService buildJsonRetrofit() {
         Map<String, String> headerMap = new HashMap<>();
         headerMap.put("Accept-Encoding", "gzip");
         headerMap.put("Accept", "application/json");
         headerMap.put("Content-Type", "application/json; charset=utf-8");
-        //requestBuilder.addHeader("Authorization", "Bearer " + BaseConstant.TOKEN);//添加请求头信息，服务器进行token有效性验证
+        return buildRetrofit(headerMap);
+    }
+
+    /**
+     * urlencoded方式请求
+     */
+    public HttpService buildUrlencodedRetrofit() {
+        Map<String, String> headerMap = new HashMap<>();
+        headerMap.put("Content-Type", "application/x-www-form-urlencoded");
         return buildRetrofit(headerMap);
     }
 

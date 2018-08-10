@@ -38,6 +38,11 @@ public abstract class BaseObserverCallBack<T> extends DisposableObserver<T> {
         onThrowable(e);
     }
 
+    @Override
+    public void onComplete() {
+        mDelivery = null;
+    }
+
     protected void onThrowable(Throwable e) {
     }
 

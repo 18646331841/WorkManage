@@ -3,6 +3,7 @@ package com.barisetech.www.workmanage.model;
 import android.arch.lifecycle.LiveData;
 
 import com.barisetech.www.workmanage.base.BaseApplication;
+import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.bean.AccessTokenInfo;
 import com.barisetech.www.workmanage.bean.TokenInfo;
 import com.barisetech.www.workmanage.db.AppDatabase;
@@ -10,6 +11,7 @@ import com.barisetech.www.workmanage.db.dao.TokenInfoDao;
 import com.barisetech.www.workmanage.http.HttpService;
 import com.barisetech.www.workmanage.http.api.TokenService;
 import com.barisetech.www.workmanage.utils.LogUtil;
+import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,7 +38,7 @@ public class LoginModel {
         Map<String, String> headerMap = new HashMap<>();
         headerMap.put("Content-Type", "application/x-www-form-urlencoded");
         headerMap.put("Cache-Control", "no-cache");
-        headerMap.put("Postman-Token", "d05c6ec5-6f1e-4d55-b0d7-2ccb69c40541");
+//        headerMap.put("Postman-Token", "d05c6ec5-6f1e-4d55-b0d7-2ccb69c40541");
 
 //        Observable<AccessTokenInfo> cache = Observable.create(e -> {
 //            AccessTokenInfo accessTokenInfo = getDatabase().tokenInfoDao().loadTokenInfoById(0);
@@ -97,6 +99,8 @@ public class LoginModel {
                                 tokenInfoDao.insert(tokenInfo);
                             }
                             tokenInfoDao.update(tokenInfo);
+                            //登录成功，保存用户account到SP中
+                            SharedPreferencesUtil.getInstance().setString(BaseConstant.SP_ACCOUNT, name);
                         } else {
                             LogUtil.d(TAG, "网络获取token失败---" + tokenInfo.toString());
                         }
