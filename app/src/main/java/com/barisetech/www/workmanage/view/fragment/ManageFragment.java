@@ -16,8 +16,6 @@ public class ManageFragment extends BaseFragment {
 
     private View toolbar;
 
-
-
     public static ManageFragment newInstance() {
         ManageFragment fragment = new  ManageFragment();
         return fragment;
@@ -30,5 +28,15 @@ public class ManageFragment extends BaseFragment {
         toolbar = view.findViewById(R.id.toolbar);
         setToolBarHeight(toolbar);
         return view;
+    }
+
+    @Override
+    public void bindViewModel() {
+
+    }
+
+    @Override
+    public void subscribeToModel() {
+
     }
 }

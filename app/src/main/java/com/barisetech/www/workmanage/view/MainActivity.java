@@ -3,11 +3,14 @@ package com.barisetech.www.workmanage.view;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.base.BaseActivity;
 import com.barisetech.www.workmanage.base.BaseApplication;
+import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.bean.MessageEvent;
+import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
 import com.barisetech.www.workmanage.view.fragment.AlarmListFragment;
 import com.barisetech.www.workmanage.view.fragment.ContentFragment;
 import com.barisetech.www.workmanage.view.fragment.FingerprintManagerFragment;
@@ -22,6 +25,12 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void loadViewLayout() {
+        String account = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_ACCOUNT, "");
+        if (TextUtils.isEmpty(account)) {
+            //没有登录过,跳转到登录界面
+            MessageEvent messageEvent = new MessageEvent(LoginActivity.TAG);
+            showActivityOrFragment(messageEvent);
+        }
         setContentView(R.layout.activity_main);
         BaseApplication.getInstance().requestPermissions(this);
         if (null != get(R.id.fragment_content)) {
@@ -60,9 +69,18 @@ public class MainActivity extends BaseActivity {
         String tag = messageEvent.message;
         if (!isTwoPanel) {
             //TODO 小屏幕，跳转到activity
-            Bundle bundle = new Bundle();
-            bundle.putString("tag", tag);
-            intent2Activity(bundle, SecondActivity.class);
+            switch (tag) {
+                case LoginActivity.TAG:
+                    intent2Activity(LoginActivity.class);
+                    finish();
+                    break;
+                default:
+                    Bundle bundle = new Bundle();
+                    bundle.putString("tag", tag);
+                    intent2Activity(bundle, SecondActivity.class);
+                    break;
+            }
+
         } else {
             //TODO 大屏幕，显示fragment
             switch (tag) {

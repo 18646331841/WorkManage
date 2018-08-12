@@ -1,11 +1,7 @@
 package com.barisetech.www.workmanage.view;
 
 import android.os.Bundle;
-import android.text.method.HideReturnsTransformationMethod;
-import android.text.method.PasswordTransformationMethod;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
+import android.support.v4.app.FragmentTransaction;
 
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.base.BaseActivity;
@@ -14,7 +10,9 @@ import com.barisetech.www.workmanage.utils.FragmentUtil;
 import com.barisetech.www.workmanage.view.fragment.LoginFragment;
 
 public class LoginActivity extends BaseActivity {
+    public static final String TAG = "LoginActivity";
 
+    private boolean isUnanthorized = false;
 
     @Override
     protected void loadViewLayout() {
@@ -23,8 +21,8 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void bindViews() {
-        FragmentUtil.replaceSupportFragment(this, R.id.login_container, LoginFragment.class, LoginFragment.TAG,
-                false, false);
+        MessageEvent messageEvent = new MessageEvent(LoginFragment.TAG);
+        showActivityOrFragment(messageEvent);
     }
 
     @Override
@@ -39,8 +37,18 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void showActivityOrFragment(MessageEvent messageEvent) {
-        intent2Activity(MainActivity.class);
-        finish();
+        String tag = messageEvent.message;
+        switch (tag) {
+            case LoginFragment.TAG:
+                FragmentUtil.replaceSupportFragment(this, R.id.login_container, LoginFragment.class, LoginFragment.TAG,
+                        false, false);
+                break;
+            default:
+                intent2Activity(MainActivity.class);
+                finish();
+                break;
+        }
+
     }
 
 }

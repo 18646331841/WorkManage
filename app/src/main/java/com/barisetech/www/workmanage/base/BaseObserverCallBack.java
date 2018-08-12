@@ -43,9 +43,7 @@ public abstract class BaseObserverCallBack<T> extends DisposableObserver<T> {
         mDelivery = null;
     }
 
-    protected void onThrowable(Throwable e) {
-    }
+    protected abstract void onThrowable(Throwable e);
 
-    protected void onFailure(BaseResponse response) {
-    }
+    protected abstract void onFailure(BaseResponse response);
 }

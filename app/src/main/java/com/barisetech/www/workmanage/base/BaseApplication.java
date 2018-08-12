@@ -11,7 +11,9 @@ import com.barisetech.www.workmanage.db.AppDatabase;
 import com.barisetech.www.workmanage.utils.LogUtil;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by LJH on 2018/7/9.
@@ -30,6 +32,7 @@ public class BaseApplication extends Application {
         Instance = this;
         dataDir = getFilesDir().getAbsolutePath() + appDir;
 
+        initToken();
     }
 
     public AppDatabase getDatabase() {
@@ -55,6 +58,17 @@ public class BaseApplication extends Application {
                 });
     }
 
+    /**
+     * 每次程序启动初始化curTokenInfo
+     */
+    private void initToken() {
+        Disposable disposable = getDatabase().tokenInfoDao().loadTokenInfoObs(0)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(tokenInfo -> {
+                   curTokenInfo = tokenInfo;
+                });
+    }
 
     public int getheight(Context context){
         int result = 0;

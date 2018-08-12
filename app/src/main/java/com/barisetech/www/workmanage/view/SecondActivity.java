@@ -5,10 +5,12 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.base.BaseActivity;
+import com.barisetech.www.workmanage.base.BaseApplication;
 import com.barisetech.www.workmanage.bean.MessageEvent;
 import com.barisetech.www.workmanage.view.fragment.AlarmListFragment;
 import com.barisetech.www.workmanage.view.fragment.ContentFragment;
 import com.barisetech.www.workmanage.view.fragment.FingerprintManagerFragment;
+import com.barisetech.www.workmanage.view.fragment.LoginFragment;
 import com.barisetech.www.workmanage.view.fragment.Messagefragment;
 
 public class SecondActivity extends BaseActivity {
@@ -44,6 +46,10 @@ public class SecondActivity extends BaseActivity {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         String tag = messageEvent.message;
         switch (tag) {
+            case LoginActivity.TAG:
+                intent2Activity(LoginActivity.class);
+                finish();
+                break;
             case ContentFragment.TAG:
                 transaction
                         .replace(R.id.second_framelayout, ContentFragment.newInstance(), tag).commit();

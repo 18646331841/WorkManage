@@ -34,7 +34,7 @@ public class LoginModel {
         this.appDatabase = appDatabase;
     }
 
-    public void getToken(String name, String password) {
+    public Disposable getToken(String name, String password) {
         Map<String, String> headerMap = new HashMap<>();
         headerMap.put("Content-Type", "application/x-www-form-urlencoded");
         headerMap.put("Cache-Control", "no-cache");
@@ -92,13 +92,12 @@ public class LoginModel {
                         TokenInfoDao tokenInfoDao = appDatabase.tokenInfoDao();
                         if (tokenInfo.isLoginResult()) {
                             LogUtil.d(TAG, "网络获取token结果---" + tokenInfo.toString());
-                            TokenInfo tokenInfo1 = tokenInfoDao.loadTokenInfoSync(0);
-                            if (null != tokenInfo1) {
-                                tokenInfoDao.update(tokenInfo);
-                            } else {
+//                            TokenInfo tokenInfo1 = tokenInfoDao.loadTokenInfoSync(0);
+//                            if (null != tokenInfo1) {
+//                                tokenInfoDao.update(tokenInfo);
+//                            } else {
                                 tokenInfoDao.insert(tokenInfo);
-                            }
-                            tokenInfoDao.update(tokenInfo);
+//                            }
                             //登录成功，保存用户account到SP中
                             SharedPreferencesUtil.getInstance().setString(BaseConstant.SP_ACCOUNT, name);
                         } else {
@@ -108,6 +107,8 @@ public class LoginModel {
                 }, throwable -> {
                     LogUtil.e(TAG, "网络获取token失败---throwable" + throwable.getMessage());
                 });
+
+        return disposable;
 //        Disposable disposable = Observable.concat(cache, network)
 //                .subscribeOn(Schedulers.io())
 //                .observeOn(Schedulers.io())

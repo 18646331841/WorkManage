@@ -9,9 +9,9 @@ import com.barisetech.www.workmanage.base.BaseResponse;
 public abstract class ObserverCallBack<T> extends BaseObserverCallBack<BaseResponse<T>> {
     @Override
     public void onNext(BaseResponse<T> tBaseResponse) {
-        boolean isSuccess = tBaseResponse.code == 200;
+        boolean isSuccess = tBaseResponse.Code == 200;
         if (isSuccess) {
-            onSuccess(tBaseResponse.response);
+            onSuccess(tBaseResponse.Response);
         } else {
 //            ToastUtils.showToast(response.message);
             onFailure(tBaseResponse);

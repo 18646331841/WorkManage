@@ -10,6 +10,8 @@ import android.arch.persistence.room.Update;
 
 import com.barisetech.www.workmanage.bean.TokenInfo;
 
+import io.reactivex.Flowable;
+
 /**
  * Created by LJH on 2018/8/9.
  */
@@ -17,6 +19,9 @@ import com.barisetech.www.workmanage.bean.TokenInfo;
 public interface TokenInfoDao {
     @Query("select * from token_info where id = :id LIMIT 1")
     TokenInfo loadTokenInfoSync(int id);
+
+    @Query("select * from token_info where id = :id LIMIT 1")
+    Flowable<TokenInfo> loadTokenInfoObs(int id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(TokenInfo tokenInfo);

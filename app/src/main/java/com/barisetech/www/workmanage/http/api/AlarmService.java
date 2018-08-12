@@ -1,5 +1,6 @@
 package com.barisetech.www.workmanage.http.api;
 
+import com.barisetech.www.workmanage.base.BaseResponse;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfoNewest;
 import com.barisetech.www.workmanage.bean.alarm.ReqAllAlarm;
@@ -30,7 +31,7 @@ public interface AlarmService {
      * @return
      */
     @GET("/api/ALarms/{token}")
-    Observable<Integer> getAlarmNum(@Path("token") String token);
+    Observable<BaseResponse<Integer>> getAlarmNum(@Path("token") String token);
 
     /**
      * 获取最新警报信息

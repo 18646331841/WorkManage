@@ -10,6 +10,8 @@ import com.barisetech.www.workmanage.bean.TokenInfo;
 import com.barisetech.www.workmanage.db.AppDatabase;
 import com.barisetech.www.workmanage.model.LoginModel;
 
+import io.reactivex.disposables.CompositeDisposable;
+
 /**
  * Created by LJH on 2018/8/9.
  */
@@ -20,6 +22,8 @@ public class LoginViewModel extends AndroidViewModel {
 
     public final LiveData<TokenInfo> mObservableTokenInfo;
 
+    private final CompositeDisposable mDisposable = new CompositeDisposable();
+
     public LoginViewModel(@NonNull Application application) {
         super(application);
 
@@ -29,10 +33,17 @@ public class LoginViewModel extends AndroidViewModel {
     }
 
     public void login(String name, String password) {
-        loginModel.getToken(name, password);
+        mDisposable.add(loginModel.getToken(name, password));
     }
 
     public LiveData<TokenInfo> getObservableTokenInfo() {
         return mObservableTokenInfo;
+    }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+
+        mDisposable.clear();
     }
 }

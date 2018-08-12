@@ -1,10 +1,8 @@
 package com.barisetech.www.workmanage.base;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -13,8 +11,6 @@ import android.view.ViewGroup;
  */
 public abstract class BaseFragment extends Fragment {
 
-
-
     public void setToolBarHeight(View view){
         ViewGroup.LayoutParams linearParams = view.getLayoutParams();
         linearParams.height = linearParams.height+BaseApplication.getInstance().getheight(getActivity());
@@ -22,4 +18,14 @@ public abstract class BaseFragment extends Fragment {
         view.setPadding(view.getPaddingLeft(),BaseApplication.getInstance().getheight(getActivity()),view.getPaddingRight(),view.getPaddingBottom());
     }
 
+    public abstract void bindViewModel();
+
+    public abstract void subscribeToModel();
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        bindViewModel();
+        subscribeToModel();
+    }
 }
