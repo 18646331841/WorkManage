@@ -14,11 +14,9 @@ import android.view.ViewGroup;
 
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.base.BaseApplication;
-import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseFragment;
-import com.barisetech.www.workmanage.bean.MessageEvent;
+import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.databinding.FragmentLoginBinding;
-import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.viewmodel.LoginViewModel;
 
@@ -85,7 +83,7 @@ public class LoginFragment extends BaseFragment {
                 ToastUtil.showToast("登录成功");
                 //登录成功，设置token到Application中
                 BaseApplication.getInstance().curTokenInfo = tokenInfo;
-                EventBus.getDefault().post(new MessageEvent(NavigationFragment.TAG));
+                EventBus.getDefault().post(new EventBusMessage(NavigationFragment.TAG));
             }
         });
     }

@@ -1,8 +1,12 @@
 package com.barisetech.www.workmanage.bean.alarm;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+
 /**
  * Created by LJH on 2018/8/10.
  */
+@Entity(tableName = "alarm_info")
 public class AlarmInfo {
     /**
      * Key : 8
@@ -27,6 +31,7 @@ public class AlarmInfo {
      * Remark : null
      */
 
+    @PrimaryKey
     private int Key;
     private int DisplayId;
     private int PipeId;
@@ -39,14 +44,14 @@ public class AlarmInfo {
     private boolean Lifted;
     private String Company;
     private int LeakId;
-    private Object SiteName1;
+    private String SiteName1;
     private int Distance1;
-    private Object SiteName2;
+    private String SiteName2;
     private int Distance2;
     private String PipeName;
-    private Object LiftUser;
+    private String LiftUser;
     private String WarningMessage;
-    private Object Remark;
+    private String Remark;
 
     /**
      * 数据是否已读，默认false
@@ -149,11 +154,11 @@ public class AlarmInfo {
         this.LeakId = LeakId;
     }
 
-    public Object getSiteName1() {
+    public String getSiteName1() {
         return SiteName1;
     }
 
-    public void setSiteName1(Object SiteName1) {
+    public void setSiteName1(String SiteName1) {
         this.SiteName1 = SiteName1;
     }
 
@@ -165,11 +170,11 @@ public class AlarmInfo {
         this.Distance1 = Distance1;
     }
 
-    public Object getSiteName2() {
+    public String getSiteName2() {
         return SiteName2;
     }
 
-    public void setSiteName2(Object SiteName2) {
+    public void setSiteName2(String SiteName2) {
         this.SiteName2 = SiteName2;
     }
 
@@ -189,11 +194,11 @@ public class AlarmInfo {
         this.PipeName = PipeName;
     }
 
-    public Object getLiftUser() {
+    public String getLiftUser() {
         return LiftUser;
     }
 
-    public void setLiftUser(Object LiftUser) {
+    public void setLiftUser(String LiftUser) {
         this.LiftUser = LiftUser;
     }
 
@@ -205,11 +210,11 @@ public class AlarmInfo {
         this.WarningMessage = WarningMessage;
     }
 
-    public Object getRemark() {
+    public String getRemark() {
         return Remark;
     }
 
-    public void setRemark(Object Remark) {
+    public void setRemark(String Remark) {
         this.Remark = Remark;
     }
 

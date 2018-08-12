@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import com.barisetech.www.workmanage.adapter.MessageAdapter;
 import com.barisetech.www.workmanage.adapter.MessageCallBack;
 import com.barisetech.www.workmanage.base.BaseFragment;
-import com.barisetech.www.workmanage.bean.MessageEvent;
+import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.MessageInfo;
 import com.barisetech.www.workmanage.databinding.FragmentMessageBinding;
 import com.barisetech.www.workmanage.R;
@@ -56,16 +56,16 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.img_warn:
-                EventBus.getDefault().post(new MessageEvent(AlarmListFragment.TAG));
+                EventBus.getDefault().post(new EventBusMessage(AlarmListFragment.TAG));
                 break;
             case R.id.img_event:
-                EventBus.getDefault().post(new MessageEvent(EventFragment.TAG));
+                EventBus.getDefault().post(new EventBusMessage(EventFragment.TAG));
                 break;
             case R.id.img_analysis_warn:
-                EventBus.getDefault().post(new MessageEvent(AnalysisWarnFragment.TAG));
+                EventBus.getDefault().post(new EventBusMessage(AnalysisWarnFragment.TAG));
                 break;
             case R.id.img_news:
-                EventBus.getDefault().post(new MessageEvent(NewsFragment.TAG));
+                EventBus.getDefault().post(new EventBusMessage(NewsFragment.TAG));
                 break;
         }
 

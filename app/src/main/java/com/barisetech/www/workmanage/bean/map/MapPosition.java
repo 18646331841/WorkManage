@@ -1,4 +1,4 @@
-package com.barisetech.www.workmanage.bean;
+package com.barisetech.www.workmanage.bean.map;
 
 /**
  * Created by LJH on 2018/8/2.

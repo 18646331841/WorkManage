@@ -1,11 +1,10 @@
 package com.barisetech.www.workmanage.view;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.base.BaseActivity;
-import com.barisetech.www.workmanage.bean.MessageEvent;
+import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.utils.FragmentUtil;
 import com.barisetech.www.workmanage.view.fragment.LoginFragment;
 
@@ -21,8 +20,8 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void bindViews() {
-        MessageEvent messageEvent = new MessageEvent(LoginFragment.TAG);
-        showActivityOrFragment(messageEvent);
+        EventBusMessage eventBusMessage = new EventBusMessage(LoginFragment.TAG);
+        showActivityOrFragment(eventBusMessage);
     }
 
     @Override
@@ -36,8 +35,8 @@ public class LoginActivity extends BaseActivity {
     }
 
     @Override
-    protected void showActivityOrFragment(MessageEvent messageEvent) {
-        String tag = messageEvent.message;
+    protected void showActivityOrFragment(EventBusMessage eventBusMessage) {
+        String tag = eventBusMessage.message;
         switch (tag) {
             case LoginFragment.TAG:
                 FragmentUtil.replaceSupportFragment(this, R.id.login_container, LoginFragment.class, LoginFragment.TAG,

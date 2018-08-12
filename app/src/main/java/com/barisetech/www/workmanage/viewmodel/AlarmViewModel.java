@@ -5,13 +5,12 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.support.annotation.NonNull;
 
 import com.barisetech.www.workmanage.base.BaseApplication;
-import com.barisetech.www.workmanage.bean.MessageEvent;
+import com.barisetech.www.workmanage.bean.EventBusMessage;
+import com.barisetech.www.workmanage.bean.alarm.ReqAllAlarm;
 import com.barisetech.www.workmanage.callback.ModelCallBack;
 import com.barisetech.www.workmanage.db.AppDatabase;
 import com.barisetech.www.workmanage.model.AlarmModel;
-import com.barisetech.www.workmanage.utils.LogUtil;
 import com.barisetech.www.workmanage.view.LoginActivity;
-import com.barisetech.www.workmanage.view.fragment.LoginFragment;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -37,9 +36,13 @@ public class AlarmViewModel extends AndroidViewModel implements ModelCallBack{
         mDisposable.add(alarmModel.getAlarmNum());
     }
 
+    public void getAllAlarm() {
+        mDisposable.add(alarmModel.getAllAlarm());
+    }
+
     @Override
     public void unauthorized() {
-        EventBus.getDefault().post(new MessageEvent(LoginActivity.TAG));
+        EventBus.getDefault().post(new EventBusMessage(LoginActivity.TAG));
     }
 
     @Override

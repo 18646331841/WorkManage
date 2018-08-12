@@ -5,6 +5,8 @@ import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfoNewest;
 import com.barisetech.www.workmanage.bean.alarm.ReqAllAlarm;
 
+import java.util.List;
+
 import io.reactivex.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -23,7 +25,7 @@ public interface AlarmService {
      * @return
      */
     @POST("/api/ALarms")
-    Observable<AlarmInfo> getAllAlarm(@Body ReqAllAlarm reqAllAlarm);
+    Observable<BaseResponse<List<AlarmInfo>>> getAllAlarm(@Body ReqAllAlarm reqAllAlarm);
 
     /**
      * 获取警报数量
@@ -39,5 +41,5 @@ public interface AlarmService {
      * @return
      */
     @PUT("/api/ALarms/{token}")
-    Observable<AlarmInfoNewest> getAlarmInfoNewest(@Path("token") String token);
+    Observable<BaseResponse<AlarmInfoNewest>> getAlarmInfoNewest(@Path("token") String token);
 }

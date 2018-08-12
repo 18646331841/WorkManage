@@ -14,7 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.View;
 
-import com.barisetech.www.workmanage.bean.MessageEvent;
+import com.barisetech.www.workmanage.bean.EventBusMessage;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -96,13 +96,13 @@ public abstract class BaseActivity extends AppCompatActivity {
     /**
      * 小屏幕跳转到指定activity，大屏幕显示指定的fragment
      *
-     * @param messageEvent
+     * @param eventBusMessage
      */
-    protected abstract void showActivityOrFragment(MessageEvent messageEvent);
+    protected abstract void showActivityOrFragment(EventBusMessage eventBusMessage);
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void event(MessageEvent messageEvent) {
-        showActivityOrFragment(messageEvent);
+    public void event(EventBusMessage eventBusMessage) {
+        showActivityOrFragment(eventBusMessage);
     }
 
     /**

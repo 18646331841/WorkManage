@@ -42,16 +42,9 @@ public class AlarmListFragment extends BaseFragment {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        alarmViewModel = ViewModelProviders.of(this).get(AlarmViewModel.class);
-        alarmViewModel.getAlarmNum();
-    }
-
-    @Override
     public void bindViewModel() {
-
+        alarmViewModel = ViewModelProviders.of(this).get(AlarmViewModel.class);
+        alarmViewModel.getAllAlarm();
     }
 
     @Override

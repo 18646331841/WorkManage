@@ -1,7 +1,6 @@
 package com.barisetech.www.workmanage.view;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 
@@ -9,7 +8,7 @@ import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.base.BaseActivity;
 import com.barisetech.www.workmanage.base.BaseApplication;
 import com.barisetech.www.workmanage.base.BaseConstant;
-import com.barisetech.www.workmanage.bean.MessageEvent;
+import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
 import com.barisetech.www.workmanage.view.fragment.AlarmListFragment;
 import com.barisetech.www.workmanage.view.fragment.ContentFragment;
@@ -28,8 +27,8 @@ public class MainActivity extends BaseActivity {
         String account = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_ACCOUNT, "");
         if (TextUtils.isEmpty(account)) {
             //没有登录过,跳转到登录界面
-            MessageEvent messageEvent = new MessageEvent(LoginActivity.TAG);
-            showActivityOrFragment(messageEvent);
+            EventBusMessage eventBusMessage = new EventBusMessage(LoginActivity.TAG);
+            showActivityOrFragment(eventBusMessage);
         }
         setContentView(R.layout.activity_main);
         BaseApplication.getInstance().requestPermissions(this);
@@ -64,9 +63,9 @@ public class MainActivity extends BaseActivity {
     }
 
 
-    protected void showActivityOrFragment(MessageEvent messageEvent) {
+    protected void showActivityOrFragment(EventBusMessage eventBusMessage) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        String tag = messageEvent.message;
+        String tag = eventBusMessage.message;
         if (!isTwoPanel) {
             //TODO 小屏幕，跳转到activity
             switch (tag) {

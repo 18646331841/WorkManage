@@ -1,4 +1,4 @@
-package com.barisetech.www.workmanage.bean;
+package com.barisetech.www.workmanage.bean.map;
 
 import java.util.List;
 

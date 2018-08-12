@@ -5,13 +5,10 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.base.BaseActivity;
-import com.barisetech.www.workmanage.base.BaseApplication;
-import com.barisetech.www.workmanage.bean.MessageEvent;
+import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.view.fragment.AlarmListFragment;
 import com.barisetech.www.workmanage.view.fragment.ContentFragment;
 import com.barisetech.www.workmanage.view.fragment.FingerprintManagerFragment;
-import com.barisetech.www.workmanage.view.fragment.LoginFragment;
-import com.barisetech.www.workmanage.view.fragment.Messagefragment;
 
 public class SecondActivity extends BaseActivity {
 
@@ -25,8 +22,8 @@ public class SecondActivity extends BaseActivity {
         Bundle bundleExtra = getIntent().getExtras();
         if (null != bundleExtra) {
             String tag = bundleExtra.getString("tag", "");
-            MessageEvent messageEvent = new MessageEvent(tag);
-            showActivityOrFragment(messageEvent);
+            EventBusMessage eventBusMessage = new EventBusMessage(tag);
+            showActivityOrFragment(eventBusMessage);
         }
 
     }
@@ -42,9 +39,9 @@ public class SecondActivity extends BaseActivity {
     }
 
     @Override
-    protected void showActivityOrFragment(MessageEvent messageEvent) {
+    protected void showActivityOrFragment(EventBusMessage eventBusMessage) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        String tag = messageEvent.message;
+        String tag = eventBusMessage.message;
         switch (tag) {
             case LoginActivity.TAG:
                 intent2Activity(LoginActivity.class);

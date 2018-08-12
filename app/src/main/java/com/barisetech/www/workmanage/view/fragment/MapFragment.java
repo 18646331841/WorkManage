@@ -11,17 +11,14 @@ import android.view.ViewGroup;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.LatLng;
-import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
-import com.amap.api.maps.model.Polyline;
 import com.amap.api.maps.model.PolylineOptions;
-import com.autonavi.ae.route.model.RouteConstant;
 import com.barisetech.www.workmanage.R;
-import com.barisetech.www.workmanage.bean.LineStation;
-import com.barisetech.www.workmanage.bean.MapPosition;
-import com.barisetech.www.workmanage.bean.MarkerStation;
-import com.barisetech.www.workmanage.bean.MessageEvent;
+import com.barisetech.www.workmanage.bean.map.LineStation;
+import com.barisetech.www.workmanage.bean.map.MapPosition;
+import com.barisetech.www.workmanage.bean.map.MarkerStation;
+import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.utils.LogUtil;
 
 import org.greenrobot.eventbus.EventBus;
@@ -113,7 +110,7 @@ public class MapFragment extends Fragment {
 
     AMap.OnMarkerClickListener markerClickListener = marker -> {
         LogUtil.d("marker", marker.getTitle());
-        EventBus.getDefault().post(new MessageEvent(FingerprintManagerFragment.TAG));
+        EventBus.getDefault().post(new EventBusMessage(FingerprintManagerFragment.TAG));
         return false;
     };
 
