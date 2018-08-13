@@ -2,11 +2,12 @@ package com.barisetech.www.workmanage.viewmodel;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
+import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 
 import com.barisetech.www.workmanage.base.BaseApplication;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
-import com.barisetech.www.workmanage.bean.alarm.ReqAllAlarm;
+import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.callback.ModelCallBack;
 import com.barisetech.www.workmanage.db.AppDatabase;
 import com.barisetech.www.workmanage.model.AlarmModel;
@@ -14,22 +15,30 @@ import com.barisetech.www.workmanage.view.LoginActivity;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.List;
+
 import io.reactivex.disposables.CompositeDisposable;
 
 /**
  * Created by LJH on 2018/8/10.
  */
-public class AlarmViewModel extends AndroidViewModel implements ModelCallBack{
+public class AlarmViewModel extends AndroidViewModel implements ModelCallBack {
     private static final String TAG = "AlarmViewModel";
 
     private AppDatabase appDatabase;
     private AlarmModel alarmModel;
     private CompositeDisposable mDisposable = new CompositeDisposable();
 
+    private LiveData<List<AlarmInfo>> mObservableAllAlarmInfos;
+    private LiveData<List<AlarmInfo>> mObservableNotReadAlarmInfos;
+
     public AlarmViewModel(@NonNull Application application) {
         super(application);
         appDatabase = BaseApplication.getInstance().getDatabase();
         alarmModel = new AlarmModel(appDatabase, this);
+
+        mObservableAllAlarmInfos = appDatabase.alarmInfoDao().getAllAlarmInfo();
+        mObservableNotReadAlarmInfos = appDatabase.alarmInfoDao().getAlarmInfosByRead(false);
     }
 
     public void getAlarmNum() {
@@ -40,7 +49,12 @@ public class AlarmViewModel extends AndroidViewModel implements ModelCallBack{
         mDisposable.add(alarmModel.getAllAlarm());
     }
 
+    public LiveData<List<AlarmInfo>> getNotReadAlarmInfos() {
+        return mObservableNotReadAlarmInfos;
+    }
+
     @Override
+
     public void unauthorized() {
         EventBus.getDefault().post(new EventBusMessage(LoginActivity.TAG));
     }

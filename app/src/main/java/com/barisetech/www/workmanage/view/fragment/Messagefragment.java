@@ -1,5 +1,7 @@
 package com.barisetech.www.workmanage.view.fragment;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,14 +15,20 @@ import com.barisetech.www.workmanage.adapter.MessageCallBack;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.MessageInfo;
+import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.databinding.FragmentMessageBinding;
 import com.barisetech.www.workmanage.R;
+import com.barisetech.www.workmanage.viewmodel.AlarmViewModel;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.util.List;
 
 public class Messagefragment extends BaseFragment implements View.OnClickListener {
 
     public static final String TAG = "Messagefragment";
+
+    private AlarmViewModel alarmViewModel;
 
     private FragmentMessageBinding mBinding;
     public Messagefragment() {
@@ -49,6 +57,7 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
     private MessageCallBack messageCallBack = new MessageCallBack() {
         @Override
         public void onClick(MessageInfo messageInfo) {
+
         }
     };
 
@@ -73,11 +82,13 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
 
     @Override
     public void bindViewModel() {
-
+        alarmViewModel = ViewModelProviders.of(this).get(AlarmViewModel.class);
     }
 
     @Override
     public void subscribeToModel() {
+        alarmViewModel.getNotReadAlarmInfos().observe(this, alarmInfos -> {
 
+        });
     }
 }

@@ -33,6 +33,7 @@ public class AlarmInfo {
 
     @PrimaryKey
     private int Key;
+
     private int DisplayId;
     private int PipeId;
     private int Latitude;
