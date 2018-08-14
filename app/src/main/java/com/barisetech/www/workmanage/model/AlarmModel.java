@@ -1,7 +1,5 @@
 package com.barisetech.www.workmanage.model;
 
-import android.support.annotation.NonNull;
-
 import com.barisetech.www.workmanage.base.BaseModel;
 import com.barisetech.www.workmanage.base.BaseResponse;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
@@ -41,7 +39,7 @@ public class AlarmModel extends BaseModel{
      */
     public Disposable getAlarmNum() {
         AlarmService alarmService = HttpService.getInstance().buildUrlencodedRetrofit().create(AlarmService.class);
-        Disposable disposable = alarmService.getAlarmNum(mTokenInfo.getToken())
+        Disposable disposable = alarmService.getAlarmNum(mToken)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<Integer>(){
@@ -72,7 +70,7 @@ public class AlarmModel extends BaseModel{
      */
     public Disposable getAllAlarm() {
         ReqAllAlarm reqAllAlarm = new ReqAllAlarm();
-        reqAllAlarm.setMachineCode(mTokenInfo.getToken());
+        reqAllAlarm.setMachineCode(mToken);
         reqAllAlarm.setIsAllAlarm("false");
         reqAllAlarm.setStartIndex("1");
         reqAllAlarm.setNumberOfRecords("1");
@@ -109,7 +107,7 @@ public class AlarmModel extends BaseModel{
      */
     public Disposable getAlarmNewest() {
         AlarmService alarmService = HttpService.getInstance().buildUrlencodedRetrofit().create(AlarmService.class);
-        Disposable disposable = alarmService.getAlarmInfoNewest(mTokenInfo.getToken())
+        Disposable disposable = alarmService.getAlarmInfoNewest(mToken)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<AlarmInfoNewest>() {

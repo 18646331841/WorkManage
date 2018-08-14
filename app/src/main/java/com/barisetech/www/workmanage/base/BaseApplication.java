@@ -24,15 +24,12 @@ public class BaseApplication extends Application {
     public static String dataDir;
     public static String appDir = "/WorkManage";
 
-    public TokenInfo curTokenInfo;
-
     @Override
     public void onCreate() {
         super.onCreate();
         Instance = this;
         dataDir = getFilesDir().getAbsolutePath() + appDir;
 
-        initToken();
     }
 
     public AppDatabase getDatabase() {
@@ -55,18 +52,6 @@ public class BaseApplication extends Application {
                         // 用户拒绝了该权限，并且选中『不再询问』
                         LogUtil.d(tag, permission.name + " is denied.");
                     }
-                });
-    }
-
-    /**
-     * 每次程序启动初始化curTokenInfo
-     */
-    private void initToken() {
-        Disposable disposable = getDatabase().tokenInfoDao().loadTokenInfoObs(0)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(tokenInfo -> {
-                   curTokenInfo = tokenInfo;
                 });
     }
 

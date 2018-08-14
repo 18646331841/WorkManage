@@ -11,6 +11,6 @@ public class BaseConstant {
     public static final String SP_LOGIN_FP = "login_FP";
     //登录用户account
     public static final String SP_ACCOUNT = "account";
-    //是否已经登录过
-    public static final String SP_IS_LOGIN = "isLogin";
+    //用户token
+    public static final String SP_TOKEN = "token";
 }

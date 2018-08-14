@@ -14,11 +14,13 @@ import android.view.ViewGroup;
 
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.base.BaseApplication;
+import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.databinding.FragmentLoginBinding;
 import com.barisetech.www.workmanage.http.Config;
 import com.barisetech.www.workmanage.utils.NetworkUtil;
+import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.view.dialog.CommonDialogFragment;
 import com.barisetech.www.workmanage.view.dialog.DialogFragmentHelper;
@@ -90,8 +92,9 @@ public class LoginFragment extends BaseFragment {
             if (!isFirst && null != tokenInfo && tokenInfo.isLoginResult()) {
 
                 ToastUtil.showToast(getString(R.string.login_success));
-                //登录成功，设置token到Application中
-                BaseApplication.getInstance().curTokenInfo = tokenInfo;
+                //登录成功，设置token到sp
+//                BaseApplication.getInstance().curTokenInfo = tokenInfo;
+                SharedPreferencesUtil.getInstance().setString(BaseConstant.SP_TOKEN, tokenInfo.getToken());
                 EventBus.getDefault().post(new EventBusMessage(NavigationFragment.TAG));
             }
         });
