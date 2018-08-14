@@ -71,4 +71,8 @@ public class AlarmViewModel extends AndroidViewModel implements ModelCallBack {
         super.onCleared();
         mDisposable.clear();
     }
+
+    public LiveData<List<AlarmInfo>> getmObservableAllAlarmInfos() {
+        return mObservableAllAlarmInfos;
+    }
 }

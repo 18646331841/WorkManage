@@ -11,12 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.barisetech.www.workmanage.adapter.MessageAdapter;
-import com.barisetech.www.workmanage.adapter.MessageCallBack;
+import com.barisetech.www.workmanage.adapter.ItemCallBack;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.MessageInfo;
+import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.databinding.FragmentMessageBinding;
 import com.barisetech.www.workmanage.R;
+import com.barisetech.www.workmanage.utils.LogUtil;
 import com.barisetech.www.workmanage.view.dialog.CommonDialogFragment;
 import com.barisetech.www.workmanage.view.dialog.DialogFragmentHelper;
 import com.barisetech.www.workmanage.viewmodel.AlarmViewModel;
@@ -53,7 +55,7 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_message, container, false);
         setToolBarHeight(mBinding.toolbar);
 
-        messageAdapter = new MessageAdapter(messageCallBack);
+        messageAdapter = new MessageAdapter(itemCallBack);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         mBinding.messageRecyclerView.setLayoutManager(llm);
@@ -65,10 +67,10 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
         return mBinding.getRoot();
     }
 
-    private MessageCallBack messageCallBack = new MessageCallBack() {
-        @Override
-        public void onClick(MessageInfo messageInfo) {
-
+    private ItemCallBack itemCallBack = item -> {
+        if (item instanceof AlarmInfo) {
+            AlarmInfo alarmInfo = (AlarmInfo) item;
+            LogUtil.d(TAG, alarmInfo.toContent());
         }
     };
 
@@ -103,6 +105,7 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
     @Override
     public void subscribeToModel() {
         alarmViewModel.getNotReadAlarmInfos().observe(this, alarmInfos -> {
+            LogUtil.d(TAG, "observe alarmInfos = " + alarmInfos);
             if (null != alarmInfos) {
                 if (null != commonDialogFragment) {
                     commonDialogFragment.dismiss();

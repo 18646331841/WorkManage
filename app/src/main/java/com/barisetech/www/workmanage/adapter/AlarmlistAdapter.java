@@ -10,18 +10,19 @@ import android.view.ViewGroup;
 
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.bean.MessageInfo;
+import com.barisetech.www.workmanage.databinding.ItemAlarmlistBinding;
 import com.barisetech.www.workmanage.databinding.ItemMessageBinding;
 
 import java.util.List;
 
-public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.Myholder>{
+public class AlarmlistAdapter extends RecyclerView.Adapter<AlarmlistAdapter.Myholder>{
 
     private List<? extends MessageInfo> mList;
 
     @Nullable
     private final ItemCallBack mItemCallBack;
 
-    public MessageAdapter(@Nullable ItemCallBack itemCallBack) {
+    public AlarmlistAdapter(@Nullable ItemCallBack itemCallBack) {
         mItemCallBack = itemCallBack;
     }
 
@@ -63,8 +64,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.Myholder
     @NonNull
     @Override
     public Myholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemMessageBinding binding = DataBindingUtil
-                .inflate(LayoutInflater.from(parent.getContext()), R.layout.item_message,
+        ItemAlarmlistBinding binding = DataBindingUtil
+                .inflate(LayoutInflater.from(parent.getContext()), R.layout.item_alarmlist,
                         parent, false);
         binding.setCallback(mItemCallBack);
         return new Myholder(binding);
@@ -74,8 +75,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.Myholder
     public void onBindViewHolder(@NonNull Myholder holder, int position) {
         MessageInfo messageInfo = mList.get(position);
         holder.binding.setMessageinfo(messageInfo);
-        holder.binding.messageType.setImageResource(messageInfo.getType() == MessageInfo.TYPE_ALARM ? R.color
-                .cardview_shadow_start_color : R.color.cardview_dark_background);
         holder.binding.executePendingBindings();
     }
 
@@ -86,8 +85,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.Myholder
 
     class Myholder extends RecyclerView.ViewHolder{
 
-        final ItemMessageBinding binding;
-        public Myholder(ItemMessageBinding binding) {
+        final ItemAlarmlistBinding binding;
+        public Myholder(ItemAlarmlistBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="messageinfo"
+            type="com.barisetech.www.workmanage.bean.MessageInfo"/>
+
+        <variable
+            name="callback"
+            type="com.barisetech.www.workmanage.adapter.ItemCallBack"/>
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:onClick="@{() -> callback.onClick(messageinfo)}">
+
+        <TextView
+            android:id="@+id/message_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30.5dp"
+            android:layout_marginRight="55dp"
+            android:text="@{messageinfo.content}"
+            android:textSize="14sp"/>
+    </RelativeLayout>
+
+
+</layout>
