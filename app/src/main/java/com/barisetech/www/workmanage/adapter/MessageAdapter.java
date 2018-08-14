@@ -45,16 +45,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.Myholder
                 public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
                     MessageInfo old = mList.get(oldItemPosition);
                     MessageInfo messageInfo = messageInfos.get(newItemPosition);
-//                    return old.getId() == MessageInfo.getId();
-                    return true;
+                    return old.getId() == messageInfo.getId();
                 }
 
                 @Override
                 public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
                     MessageInfo old = mList.get(oldItemPosition);
                     MessageInfo messageInfo = messageInfos.get(newItemPosition);
-//                    return old.getId() == messageInfo.getId();
-                    return true;
+                    return old.getContent() == messageInfo.getContent();
                 }
             });
             mList = messageInfos;
@@ -74,7 +72,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.Myholder
 
     @Override
     public void onBindViewHolder(@NonNull Myholder holder, int position) {
-        holder.binding.setMessageinfo(mList.get(position));
+        MessageInfo messageInfo = mList.get(position);
+        holder.binding.messageButton.bringToFront();
+        holder.binding.setMessageinfo(messageInfo);
+        holder.binding.messageType.setImageResource(messageInfo.getType() == MessageInfo.TYPE_ALARM ? R.color
+                .cardview_shadow_start_color : R.color.cardview_dark_background);
         holder.binding.executePendingBindings();
     }
 

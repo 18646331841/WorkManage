@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">WorkManage</string>
+    <string name="app_name">管线安全助手</string>
     <string name="title_message">消息</string>
     <string name="title_map">地图</string>
     <string name="title_manage">管理</string>
@@ -33,6 +33,12 @@
     <string name="tv_pipeline_blind_area">管线盲区</string>
     <string name="tv_pipeline_work_status">管线工况</string>
     <string name="tv_contacts">联系人</string>
+
+    <string name="dialog_progress_text">加载中</string>
+    <string name="network_error">当前网络不可用，请检查网络</string>
+    <string name="account_mistake">登录失败，账号或密码错误</string>
+    <string name="account_null">账号或密码不能为空</string>
+    <string name="login_success">登录成功</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

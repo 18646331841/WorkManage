@@ -10,6 +10,7 @@ import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.callback.ModelCallBack;
 import com.barisetech.www.workmanage.db.AppDatabase;
+import com.barisetech.www.workmanage.http.Config;
 import com.barisetech.www.workmanage.model.AlarmModel;
 import com.barisetech.www.workmanage.view.LoginActivity;
 
@@ -54,14 +55,15 @@ public class AlarmViewModel extends AndroidViewModel implements ModelCallBack {
     }
 
     @Override
+    public void netResult(Object object) {
 
-    public void unauthorized() {
-        EventBus.getDefault().post(new EventBusMessage(LoginActivity.TAG));
     }
 
     @Override
-    public void netResult(Object object) {
-
+    public void fail(int errorCode) {
+        if (errorCode == Config.ERROR_UNAUTHORIZED) {
+            EventBus.getDefault().post(new EventBusMessage(LoginActivity.TAG));
+        }
     }
 
     @Override

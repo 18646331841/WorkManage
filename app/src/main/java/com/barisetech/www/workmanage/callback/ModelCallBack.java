@@ -5,13 +5,14 @@ package com.barisetech.www.workmanage.callback;
  */
 public interface ModelCallBack {
     /**
-     * token过期回调
-     */
-    void unauthorized();
-
-    /**
      * 获取网络请求结果
      * @param object
      */
     void netResult(Object object);
+
+    /**
+     * 网络请求失败
+     * @param errorCode 失败码
+     */
+    void fail(int errorCode);
 }

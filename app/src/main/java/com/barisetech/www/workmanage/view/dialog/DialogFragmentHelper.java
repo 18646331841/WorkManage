@@ -35,6 +35,7 @@ public class DialogFragmentHelper {
         CommonDialogFragment dialogFragment = CommonDialogFragment.newInstance(context -> {
             ProgressDialog progressDialog = new ProgressDialog(context, PROGRESS_THEME);
             progressDialog.setMessage(message);
+            progressDialog.setCancelable(false);
             return progressDialog;
         }, cancelable, cancelListener);
         dialogFragment.show(fragmentManager, PROGRESS_TAG);

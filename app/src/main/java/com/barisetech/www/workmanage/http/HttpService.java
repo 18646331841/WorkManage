@@ -18,7 +18,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by LJH on 2018/8/3.
  */
 public class HttpService {
-    private static final int DEFAULT_TIME_OUT = 10;//超时时间 10s
+    private static final int DEFAULT_TIME_OUT = 15;//超时时间 10s
     private static final int DEFAULT_READ_TIME_OUT = 10;
     private Retrofit mRetrofit;
 

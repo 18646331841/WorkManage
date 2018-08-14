@@ -2,12 +2,13 @@ package com.barisetech.www.workmanage.model;
 
 import android.arch.lifecycle.LiveData;
 
-import com.barisetech.www.workmanage.base.BaseApplication;
 import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.bean.AccessTokenInfo;
 import com.barisetech.www.workmanage.bean.TokenInfo;
+import com.barisetech.www.workmanage.callback.ModelCallBack;
 import com.barisetech.www.workmanage.db.AppDatabase;
 import com.barisetech.www.workmanage.db.dao.TokenInfoDao;
+import com.barisetech.www.workmanage.http.Config;
 import com.barisetech.www.workmanage.http.HttpService;
 import com.barisetech.www.workmanage.http.api.TokenService;
 import com.barisetech.www.workmanage.utils.LogUtil;
@@ -18,6 +19,7 @@ import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
@@ -29,9 +31,10 @@ public class LoginModel {
     private static final String TAG = "LoginModel";
 
     private AppDatabase appDatabase;
-
-    public LoginModel(AppDatabase appDatabase) {
+    private ModelCallBack modelCallBack;
+    public LoginModel(AppDatabase appDatabase, ModelCallBack modelCallBack) {
         this.appDatabase = appDatabase;
+        this.modelCallBack = modelCallBack;
     }
 
     public Disposable getToken(String name, String password) {
@@ -87,24 +90,34 @@ public class LoginModel {
                     }
                     return null;
                 })
+                .doOnNext(tokenInfo -> {
+                    if (null != tokenInfo) {
+                        if (tokenInfo.isLoginResult()) {
+                            TokenInfoDao tokenInfoDao = appDatabase.tokenInfoDao();
+                            tokenInfoDao.insert(tokenInfo);
+                        }
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(tokenInfo -> {
                     if (null != tokenInfo) {
-                        TokenInfoDao tokenInfoDao = appDatabase.tokenInfoDao();
                         if (tokenInfo.isLoginResult()) {
                             LogUtil.d(TAG, "网络获取token结果---" + tokenInfo.toString());
-//                            TokenInfo tokenInfo1 = tokenInfoDao.loadTokenInfoSync(0);
-//                            if (null != tokenInfo1) {
-//                                tokenInfoDao.update(tokenInfo);
-//                            } else {
-                                tokenInfoDao.insert(tokenInfo);
-//                            }
                             //登录成功，保存用户account到SP中
                             SharedPreferencesUtil.getInstance().setString(BaseConstant.SP_ACCOUNT, name);
                         } else {
+                            modelCallBack.fail(Config.ERROR_LOGIN_FAILED);
                             LogUtil.d(TAG, "网络获取token失败---" + tokenInfo.toString());
                         }
+                    } else {
+                        modelCallBack.fail(Config.ERROR_LOGIN_FAILED);
                     }
                 }, throwable -> {
+                    if (throwable.getMessage().contains("400")) {
+                        modelCallBack.fail(Config.ERROR_LOGIN_FAILED);
+                    } else {
+                        modelCallBack.fail(Config.ERROR_NETWORK);
+                    }
                     LogUtil.e(TAG, "网络获取token失败---throwable" + throwable.getMessage());
                 });
 

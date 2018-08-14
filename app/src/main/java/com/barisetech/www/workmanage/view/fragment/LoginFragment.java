@@ -17,7 +17,11 @@ import com.barisetech.www.workmanage.base.BaseApplication;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.databinding.FragmentLoginBinding;
+import com.barisetech.www.workmanage.http.Config;
+import com.barisetech.www.workmanage.utils.NetworkUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
+import com.barisetech.www.workmanage.view.dialog.CommonDialogFragment;
+import com.barisetech.www.workmanage.view.dialog.DialogFragmentHelper;
 import com.barisetech.www.workmanage.viewmodel.LoginViewModel;
 
 import org.greenrobot.eventbus.EventBus;
@@ -28,6 +32,8 @@ public class LoginFragment extends BaseFragment {
     private FragmentLoginBinding mBinding;
     private LoginViewModel loginViewModel;
     private boolean isFirst = true;
+
+    private CommonDialogFragment commonDialogFragment;
 
     public LoginFragment() {
 
@@ -55,9 +61,11 @@ public class LoginFragment extends BaseFragment {
             String account = mBinding.etAccount.getText().toString().trim();
             String password = mBinding.etPassword.getText().toString().trim();
             if (TextUtils.isEmpty(account) || TextUtils.isEmpty(password)) {
-                ToastUtil.showToast("账号或密码不能为空");
+                ToastUtil.showToast(getString(R.string.account_null));
             } else {
                 isFirst = false;
+                commonDialogFragment = DialogFragmentHelper.showProgress(getFragmentManager(), getString(R.string
+                        .dialog_progress_text), true);
                 loginViewModel.login(account, password);
             }
         });
@@ -80,10 +88,26 @@ public class LoginFragment extends BaseFragment {
     public void subscribeToModel() {
         loginViewModel.getObservableTokenInfo().observe(this, tokenInfo -> {
             if (!isFirst && null != tokenInfo && tokenInfo.isLoginResult()) {
-                ToastUtil.showToast("登录成功");
+
+                ToastUtil.showToast(getString(R.string.login_success));
                 //登录成功，设置token到Application中
                 BaseApplication.getInstance().curTokenInfo = tokenInfo;
                 EventBus.getDefault().post(new EventBusMessage(NavigationFragment.TAG));
+            }
+        });
+
+        loginViewModel.getObservableLoginFail().observe(this, errorCode -> {
+            if (null != errorCode) {
+                if (null != commonDialogFragment) {
+                    commonDialogFragment.dismiss();
+                }
+                if (errorCode == Config.ERROR_LOGIN_FAILED) {
+                    ToastUtil.showToast(getString(R.string.account_mistake));
+                } else if(errorCode == Config.ERROR_NETWORK){
+                    if (!NetworkUtil.isNetworkAvailable(BaseApplication.getInstance().getApplicationContext())) {
+                        ToastUtil.showToast(getString(R.string.network_error));
+                    }
+                }
             }
         });
     }

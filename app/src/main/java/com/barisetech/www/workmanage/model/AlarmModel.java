@@ -9,6 +9,7 @@ import com.barisetech.www.workmanage.bean.alarm.AlarmInfoNewest;
 import com.barisetech.www.workmanage.bean.alarm.ReqAllAlarm;
 import com.barisetech.www.workmanage.callback.ModelCallBack;
 import com.barisetech.www.workmanage.db.AppDatabase;
+import com.barisetech.www.workmanage.http.Config;
 import com.barisetech.www.workmanage.http.HttpService;
 import com.barisetech.www.workmanage.http.ObserverCallBack;
 import com.barisetech.www.workmanage.http.api.AlarmService;
@@ -52,7 +53,7 @@ public class AlarmModel extends BaseModel{
                     @Override
                     protected void onFailure(BaseResponse response) {
                         if (response.Code == 401) {
-                            modelCallBack.unauthorized();
+                            modelCallBack.fail(Config.ERROR_UNAUTHORIZED);
                         }
                     }
 
@@ -89,7 +90,7 @@ public class AlarmModel extends BaseModel{
                     @Override
                     protected void onFailure(BaseResponse response) {
                         if (response.Code == 401) {
-                            modelCallBack.unauthorized();
+                            modelCallBack.fail(Config.ERROR_UNAUTHORIZED);
                         }
                     }
 
@@ -120,7 +121,7 @@ public class AlarmModel extends BaseModel{
                     @Override
                     protected void onFailure(BaseResponse response) {
                         if (response.Code == 401) {
-                            modelCallBack.unauthorized();
+                            modelCallBack.fail(Config.ERROR_UNAUTHORIZED);
                         }
                     }
 

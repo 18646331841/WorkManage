@@ -16,7 +16,7 @@ import java.util.List;
 @Dao
 public interface AlarmInfoDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertAll(List<AlarmInfo> alarmInfos);
 
     @Query("select * from alarm_info order by `Key` desc")

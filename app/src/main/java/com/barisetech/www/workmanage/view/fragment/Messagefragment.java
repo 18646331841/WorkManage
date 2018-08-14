@@ -1,11 +1,11 @@
 package com.barisetech.www.workmanage.view.fragment;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,13 +15,15 @@ import com.barisetech.www.workmanage.adapter.MessageCallBack;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.MessageInfo;
-import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.databinding.FragmentMessageBinding;
 import com.barisetech.www.workmanage.R;
+import com.barisetech.www.workmanage.view.dialog.CommonDialogFragment;
+import com.barisetech.www.workmanage.view.dialog.DialogFragmentHelper;
 import com.barisetech.www.workmanage.viewmodel.AlarmViewModel;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Messagefragment extends BaseFragment implements View.OnClickListener {
@@ -29,8 +31,13 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
     public static final String TAG = "Messagefragment";
 
     private AlarmViewModel alarmViewModel;
+    private List<MessageInfo> curMessageList = new ArrayList<>();
+    private List<? extends MessageInfo> curAlarmList;
 
     private FragmentMessageBinding mBinding;
+    private MessageAdapter messageAdapter;
+    private CommonDialogFragment commonDialogFragment;
+
     public Messagefragment() {
     }
 
@@ -44,8 +51,12 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
             savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_message, container, false);
-        MessageAdapter messageAdapter = new MessageAdapter(messageCallBack);
         setToolBarHeight(mBinding.toolbar);
+
+        messageAdapter = new MessageAdapter(messageCallBack);
+        LinearLayoutManager llm = new LinearLayoutManager(getContext());
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        mBinding.messageRecyclerView.setLayoutManager(llm);
         mBinding.messageRecyclerView.setAdapter(messageAdapter);
         mBinding.imgWarn.setOnClickListener(this);
         mBinding.imgAnalysisWarn.setOnClickListener(this);
@@ -83,12 +94,25 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
     @Override
     public void bindViewModel() {
         alarmViewModel = ViewModelProviders.of(this).get(AlarmViewModel.class);
+
+        commonDialogFragment = DialogFragmentHelper.showProgress(getFragmentManager(), getString
+                (R.string.dialog_progress_text), true);
+        alarmViewModel.getAllAlarm();
     }
 
     @Override
     public void subscribeToModel() {
         alarmViewModel.getNotReadAlarmInfos().observe(this, alarmInfos -> {
+            if (null != alarmInfos) {
+                if (null != commonDialogFragment) {
+                    commonDialogFragment.dismiss();
+                }
+                curAlarmList = alarmInfos;
+                curMessageList.clear();
+                curMessageList.addAll(curAlarmList);
 
+                messageAdapter.setCommentList(curMessageList);
+            }
         });
     }
 }

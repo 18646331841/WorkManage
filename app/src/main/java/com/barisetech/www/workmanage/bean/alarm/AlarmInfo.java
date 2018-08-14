@@ -3,11 +3,13 @@ package com.barisetech.www.workmanage.bean.alarm;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
+import com.barisetech.www.workmanage.bean.MessageInfo;
+
 /**
  * Created by LJH on 2018/8/10.
  */
 @Entity(tableName = "alarm_info")
-public class AlarmInfo {
+public class AlarmInfo extends MessageInfo{
     /**
      * Key : 8
      * DisplayId : 0
@@ -44,6 +46,9 @@ public class AlarmInfo {
     private int TimeDiff;
     private boolean Lifted;
     private String Company;
+    /**
+     * 是否解除
+     */
     private int LeakId;
     private String SiteName1;
     private int Distance1;
@@ -113,6 +118,7 @@ public class AlarmInfo {
 
     public void setTimeStamp(String TimeStamp) {
         this.TimeStamp = TimeStamp;
+        time = TimeStamp;//设置父类时间
     }
 
     public int getType() {
@@ -209,6 +215,7 @@ public class AlarmInfo {
 
     public void setWarningMessage(String WarningMessage) {
         this.WarningMessage = WarningMessage;
+        content = toContent();//设置父类content
     }
 
     public String getRemark() {
@@ -225,5 +232,15 @@ public class AlarmInfo {
 
     public void setRead(boolean read) {
         isRead = read;
+    }
+
+    public String toContent() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("ID ").append(DisplayId).append(", ")
+                .append("管线ID ").append(PipeId).append(", ")
+                .append("是否解除：").append(Lifted ? "已解除" : "未解除")
+                .append("\n管线名称：").append(PipeName)
+                .append("\n距离首站：").append(Distance);
+        return sb.toString();
     }
 }
