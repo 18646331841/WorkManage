@@ -1,10 +1,13 @@
 package com.barisetech.www.workmanage.model;
 
+import android.arch.lifecycle.LiveData;
+
 import com.barisetech.www.workmanage.base.BaseModel;
 import com.barisetech.www.workmanage.base.BaseResponse;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfoNewest;
 import com.barisetech.www.workmanage.bean.alarm.ReqAllAlarm;
+import com.barisetech.www.workmanage.bean.alarm.ReqLiftAlarm;
 import com.barisetech.www.workmanage.callback.ModelCallBack;
 import com.barisetech.www.workmanage.db.AppDatabase;
 import com.barisetech.www.workmanage.http.Config;
@@ -37,7 +40,7 @@ public class AlarmModel extends BaseModel{
      * 获取警报数量
      * @return
      */
-    public Disposable getAlarmNum() {
+    public Disposable reqAlarmNum() {
         AlarmService alarmService = HttpService.getInstance().buildUrlencodedRetrofit().create(AlarmService.class);
         Disposable disposable = alarmService.getAlarmNum(mToken)
                 .subscribeOn(Schedulers.io())
@@ -68,7 +71,7 @@ public class AlarmModel extends BaseModel{
      * 获取所有警报
      * @return
      */
-    public Disposable getAllAlarm() {
+    public Disposable reqAllAlarm() {
         ReqAllAlarm reqAllAlarm = new ReqAllAlarm();
         reqAllAlarm.setMachineCode(mToken);
         reqAllAlarm.setIsAllAlarm("false");
@@ -105,7 +108,7 @@ public class AlarmModel extends BaseModel{
      * 获取最新警报信息
      * @return
      */
-    public Disposable getAlarmNewest() {
+    public Disposable reqAlarmNewest() {
         AlarmService alarmService = HttpService.getInstance().buildUrlencodedRetrofit().create(AlarmService.class);
         Disposable disposable = alarmService.getAlarmInfoNewest(mToken)
                 .subscribeOn(Schedulers.io())
@@ -129,5 +132,44 @@ public class AlarmModel extends BaseModel{
                     }
                 });
         return disposable;
+    }
+
+    public Disposable reqLiftAlarm(String alarmId, String user) {
+        ReqLiftAlarm reqLiftAlarm = new ReqLiftAlarm();
+        reqLiftAlarm.setAlarmId(alarmId);
+        reqLiftAlarm.setLiftUser(user);
+
+        AlarmService alarmService = HttpService.getInstance().buildJsonRetrofit().create(AlarmService.class);
+        Disposable disposable = alarmService.reqLiftAlarm(mToken, reqLiftAlarm)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribeWith(new ObserverCallBack<Boolean>() {
+                    @Override
+                    protected void onThrowable(Throwable e) {
+
+                    }
+
+                    @Override
+                    protected void onFailure(BaseResponse response) {
+                        if (response.Code == 401) {
+                            modelCallBack.fail(Config.ERROR_UNAUTHORIZED);
+                        }
+                    }
+
+                    @Override
+                    protected void onSuccess(Boolean response) {
+                        modelCallBack.netResult(response);
+                    }
+                });
+
+        return disposable;
+    }
+
+    public LiveData<List<AlarmInfo>> getAllAlarmInfo() {
+        return appDatabase.alarmInfoDao().getAllAlarmInfo();
+    }
+
+    public LiveData<List<AlarmInfo>> getAlarmInfosByRead(boolean isRead) {
+        return appDatabase.alarmInfoDao().getAlarmInfosByRead(isRead);
     }
 }

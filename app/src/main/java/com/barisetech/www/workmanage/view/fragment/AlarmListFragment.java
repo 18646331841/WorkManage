@@ -60,7 +60,6 @@ public class AlarmListFragment extends BaseFragment {
     @Override
     public void bindViewModel() {
         alarmViewModel = ViewModelProviders.of(this).get(AlarmViewModel.class);
-//        alarmViewModel.getAllAlarm();
     }
 
     @Override

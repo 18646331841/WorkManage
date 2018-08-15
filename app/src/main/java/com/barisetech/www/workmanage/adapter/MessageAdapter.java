@@ -45,7 +45,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.Myholder
                 public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
                     MessageInfo old = mList.get(oldItemPosition);
                     MessageInfo messageInfo = messageInfos.get(newItemPosition);
-                    return old.getId() == messageInfo.getId();
+                    return old.getMessageId() == messageInfo.getMessageId();
                 }
 
                 @Override

@@ -20,8 +20,8 @@ import com.barisetech.www.workmanage.databinding.FragmentMessageBinding;
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.utils.LogUtil;
 import com.barisetech.www.workmanage.view.dialog.CommonDialogFragment;
-import com.barisetech.www.workmanage.view.dialog.DialogFragmentHelper;
 import com.barisetech.www.workmanage.viewmodel.AlarmViewModel;
+import com.barisetech.www.workmanage.viewmodel.IncidentViewModel;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -35,10 +35,12 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
     private AlarmViewModel alarmViewModel;
     private List<MessageInfo> curMessageList = new ArrayList<>();
     private List<? extends MessageInfo> curAlarmList;
+    private List<? extends MessageInfo> curIncidentList;
 
     private FragmentMessageBinding mBinding;
     private MessageAdapter messageAdapter;
-    private CommonDialogFragment commonDialogFragment;
+//    private CommonDialogFragment commonDialogFragment;
+    private IncidentViewModel incidentViewModel;
 
     public Messagefragment() {
     }
@@ -96,10 +98,12 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
     @Override
     public void bindViewModel() {
         alarmViewModel = ViewModelProviders.of(this).get(AlarmViewModel.class);
+        incidentViewModel = ViewModelProviders.of(this).get(IncidentViewModel.class);
 
-        commonDialogFragment = DialogFragmentHelper.showProgress(getFragmentManager(), getString
-                (R.string.dialog_progress_text), true);
+//        commonDialogFragment = DialogFragmentHelper.showProgress(getFragmentManager(), getString
+//                (R.string.dialog_progress_text), true);
         alarmViewModel.getAllAlarm();
+        incidentViewModel.reqAllIncident();
     }
 
     @Override
@@ -107,12 +111,25 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
         alarmViewModel.getNotReadAlarmInfos().observe(this, alarmInfos -> {
             LogUtil.d(TAG, "observe alarmInfos = " + alarmInfos);
             if (null != alarmInfos) {
-                if (null != commonDialogFragment) {
-                    commonDialogFragment.dismiss();
-                }
+//                if (null != commonDialogFragment) {
+//                    commonDialogFragment.dismiss();
+//                }
                 curAlarmList = alarmInfos;
                 curMessageList.clear();
                 curMessageList.addAll(curAlarmList);
+                curMessageList.addAll(curIncidentList);
+
+                messageAdapter.setCommentList(curMessageList);
+            }
+        });
+
+        incidentViewModel.getmObservableAllIncidentByRead().observe(this, incidentInfos -> {
+            if (null != incidentInfos) {
+                curIncidentList = incidentInfos;
+
+                curMessageList.clear();
+                curMessageList.addAll(curAlarmList);
+                curMessageList.addAll(curIncidentList);
 
                 messageAdapter.setCommentList(curMessageList);
             }

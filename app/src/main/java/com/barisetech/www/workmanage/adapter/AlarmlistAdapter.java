@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.bean.MessageInfo;
 import com.barisetech.www.workmanage.databinding.ItemAlarmlistBinding;
-import com.barisetech.www.workmanage.databinding.ItemMessageBinding;
 
 import java.util.List;
 
@@ -46,7 +45,7 @@ public class AlarmlistAdapter extends RecyclerView.Adapter<AlarmlistAdapter.Myho
                 public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
                     MessageInfo old = mList.get(oldItemPosition);
                     MessageInfo messageInfo = messageInfos.get(newItemPosition);
-                    return old.getId() == messageInfo.getId();
+                    return old.getMessageId() == messageInfo.getMessageId();
                 }
 
                 @Override

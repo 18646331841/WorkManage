@@ -38,16 +38,16 @@ public class AlarmViewModel extends AndroidViewModel implements ModelCallBack {
         appDatabase = BaseApplication.getInstance().getDatabase();
         alarmModel = new AlarmModel(appDatabase, this);
 
-        mObservableAllAlarmInfos = appDatabase.alarmInfoDao().getAllAlarmInfo();
-        mObservableNotReadAlarmInfos = appDatabase.alarmInfoDao().getAlarmInfosByRead(false);
+        mObservableAllAlarmInfos = alarmModel.getAllAlarmInfo();
+        mObservableNotReadAlarmInfos = alarmModel.getAlarmInfosByRead(false);
     }
 
     public void getAlarmNum() {
-        mDisposable.add(alarmModel.getAlarmNum());
+        mDisposable.add(alarmModel.reqAlarmNum());
     }
 
     public void getAllAlarm() {
-        mDisposable.add(alarmModel.getAllAlarm());
+        mDisposable.add(alarmModel.reqAllAlarm());
     }
 
     public LiveData<List<AlarmInfo>> getNotReadAlarmInfos() {
