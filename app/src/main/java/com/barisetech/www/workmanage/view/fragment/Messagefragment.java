@@ -117,7 +117,9 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
                 curAlarmList = alarmInfos;
                 curMessageList.clear();
                 curMessageList.addAll(curAlarmList);
-                curMessageList.addAll(curIncidentList);
+                if (null != curIncidentList) {
+                    curMessageList.addAll(curIncidentList);
+                }
 
                 messageAdapter.setCommentList(curMessageList);
             }
@@ -128,7 +130,9 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
                 curIncidentList = incidentInfos;
 
                 curMessageList.clear();
-                curMessageList.addAll(curAlarmList);
+                if (null != curAlarmList) {
+                    curMessageList.addAll(curAlarmList);
+                }
                 curMessageList.addAll(curIncidentList);
 
                 messageAdapter.setCommentList(curMessageList);

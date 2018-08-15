@@ -11,11 +11,12 @@ import android.view.ViewGroup;
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.bean.MessageInfo;
 import com.barisetech.www.workmanage.databinding.ItemMessageBinding;
+import com.barisetech.www.workmanage.utils.LogUtil;
 
 import java.util.List;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.Myholder>{
-
+    private static final String TAG = "MessageAdapter";
     private List<? extends MessageInfo> mList;
 
     @Nullable
@@ -28,6 +29,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.Myholder
     public void setCommentList(final List<? extends MessageInfo> messageInfos) {
         if (mList == null) {
             mList = messageInfos;
+            LogUtil.d(TAG, "mListsize = " + mList.size());
             notifyItemRangeInserted(0, messageInfos.size());
         } else {
             DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffUtil.Callback() {
@@ -74,8 +76,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.Myholder
     public void onBindViewHolder(@NonNull Myholder holder, int position) {
         MessageInfo messageInfo = mList.get(position);
         holder.binding.setMessageinfo(messageInfo);
-        holder.binding.messageType.setImageResource(messageInfo.getType() == MessageInfo.TYPE_ALARM ? R.color
-                .cardview_shadow_start_color : R.color.cardview_dark_background);
+        holder.binding.messageType.setImageResource(messageInfo.getType() == MessageInfo.TYPE_ALARM ?
+                R.color.colorAccent : R.color.cardview_dark_background);
         holder.binding.executePendingBindings();
     }
 
