@@ -53,7 +53,7 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
             savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_message, container, false);
-        setToolBarHeight(mBinding.toolbar);
+        setToolBarHeight(mBinding.toolbar.getRoot());
 
         messageAdapter = new MessageAdapter(itemCallBack);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());

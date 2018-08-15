@@ -11,10 +11,17 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.view.KeyEvent;
 import android.view.View;
 
+import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
+import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
+import com.barisetech.www.workmanage.view.LoginActivity;
+import com.barisetech.www.workmanage.view.dialog.CommonDialogFragment;
+import com.barisetech.www.workmanage.view.dialog.DialogFragmentHelper;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -26,6 +33,7 @@ import io.reactivex.annotations.NonNull;
  */
 public abstract class BaseActivity extends AppCompatActivity {
     protected Context mContext;
+    protected CommonDialogFragment commonDialogFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +59,17 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onDestroy();
 
         EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+            if (null != commonDialogFragment) {
+                commonDialogFragment.dismiss();
+                return true;
+            }
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     /**
@@ -103,7 +122,17 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void event(EventBusMessage eventBusMessage) {
-        showActivityOrFragment(eventBusMessage);
+        switch (eventBusMessage.message) {
+            case BaseConstant.PROGRESS_SHOW:
+                showProgress();
+                break;
+            case BaseConstant.PROGRESS_CLOSE:
+                closeProgress();
+                break;
+            default:
+                showActivityOrFragment(eventBusMessage);
+                break;
+        }
     }
 
     /**
@@ -125,6 +154,17 @@ public abstract class BaseActivity extends AppCompatActivity {
         Intent intent = new Intent(mContext, targetActivity);
         intent.putExtras(bundle);
         startActivity(intent);
+    }
+
+    private void showProgress() {
+        commonDialogFragment = DialogFragmentHelper.showProgress(getSupportFragmentManager(), getString(R.string
+                .dialog_progress_text), false);
+    }
+
+    private void closeProgress() {
+        if (null != commonDialogFragment) {
+            commonDialogFragment.dismiss();
+        }
     }
 
     private static float sNoncompatDensity;

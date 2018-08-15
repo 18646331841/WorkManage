@@ -1,10 +1,8 @@
 package com.barisetech.www.workmanage.view.fragment;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
@@ -18,8 +16,6 @@ import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.databinding.FragmentAlarmListBinding;
 import com.barisetech.www.workmanage.viewmodel.AlarmViewModel;
-
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -44,7 +40,7 @@ public class AlarmListFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_alarm_list, container, false);
-        setToolBarHeight(mBinding.toolbar);
+        setToolBarHeight(mBinding.toolbar.getRoot());
 
         alarmlistAdapter = new AlarmlistAdapter(itemCallBack);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());

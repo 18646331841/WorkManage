@@ -22,8 +22,6 @@ import com.barisetech.www.workmanage.http.Config;
 import com.barisetech.www.workmanage.utils.NetworkUtil;
 import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
-import com.barisetech.www.workmanage.view.dialog.CommonDialogFragment;
-import com.barisetech.www.workmanage.view.dialog.DialogFragmentHelper;
 import com.barisetech.www.workmanage.viewmodel.LoginViewModel;
 
 import org.greenrobot.eventbus.EventBus;
@@ -34,8 +32,6 @@ public class LoginFragment extends BaseFragment {
     private FragmentLoginBinding mBinding;
     private LoginViewModel loginViewModel;
     private boolean isFirst = true;
-
-    private CommonDialogFragment commonDialogFragment;
 
     public LoginFragment() {
 
@@ -66,8 +62,7 @@ public class LoginFragment extends BaseFragment {
                 ToastUtil.showToast(getString(R.string.account_null));
             } else {
                 isFirst = false;
-                commonDialogFragment = DialogFragmentHelper.showProgress(getFragmentManager(), getString(R.string
-                        .dialog_progress_text), true);
+                EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_SHOW));
                 loginViewModel.login(account, password);
             }
         });
@@ -101,12 +96,11 @@ public class LoginFragment extends BaseFragment {
 
         loginViewModel.getObservableLoginFail().observe(this, errorCode -> {
             if (null != errorCode) {
-                if (null != commonDialogFragment) {
-                    commonDialogFragment.dismiss();
-                }
+                EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_CLOSE));
+
                 if (errorCode == Config.ERROR_LOGIN_FAILED) {
                     ToastUtil.showToast(getString(R.string.account_mistake));
-                } else if(errorCode == Config.ERROR_NETWORK){
+                } else if (errorCode == Config.ERROR_NETWORK) {
                     if (!NetworkUtil.isNetworkAvailable(BaseApplication.getInstance().getApplicationContext())) {
                         ToastUtil.showToast(getString(R.string.network_error));
                     }

@@ -13,4 +13,12 @@ public class BaseConstant {
     public static final String SP_ACCOUNT = "account";
     //用户token
     public static final String SP_TOKEN = "token";
+
+    /**
+     * progress
+     */
+    //显示progress
+    public static final String PROGRESS_SHOW = "show_progress";
+    //关闭progress
+    public static final String PROGRESS_CLOSE = "close_progress";
 }

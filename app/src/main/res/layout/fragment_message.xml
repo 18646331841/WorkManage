@@ -13,6 +13,7 @@
 
 
         <include layout="@layout/layout_toolbar" android:id="@+id/toolbar"/>
+
         <android.support.constraint.ConstraintLayout
             android:id="@+id/message_menu"
             android:layout_width="match_parent"
