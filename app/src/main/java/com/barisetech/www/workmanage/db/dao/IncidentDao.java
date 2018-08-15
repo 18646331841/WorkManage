@@ -1,6 +1,7 @@
 package com.barisetech.www.workmanage.db.dao;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
@@ -12,12 +13,13 @@ import java.util.List;
 /**
  * Created by LJH on 2018/8/15.
  */
+@Dao
 public interface IncidentDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertAll(List<IncidentInfo> incidentInfos);
 
-    @Query("select * from incident_info order by `Id` desc")
+    @Query("select * from incident_info order by `Key` desc")
     LiveData<List<IncidentInfo>> getAllIncidentInfo();
 
     @Query("select * from incident_info where isRead = :isRead")

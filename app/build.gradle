@@ -71,8 +71,8 @@ dependencies {
     implementation "android.arch.lifecycle:runtime:1.1.1"
     implementation "android.arch.lifecycle:extensions:1.1.1"
 
-    implementation 'com.amap.api:navi-3dmap:latest.integration'
-    implementation 'com.amap.api:location:latest.integration'
+    implementation 'com.amap.api:navi-3dmap:6.2.0_3dmap6.3.1'
+    implementation 'com.amap.api:location:4.2.0'
 
     implementation 'org.greenrobot:eventbus:3.0.0'
 

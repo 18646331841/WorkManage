@@ -45,7 +45,7 @@ public class AlarmlistAdapter extends RecyclerView.Adapter<AlarmlistAdapter.Myho
                 public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
                     MessageInfo old = mList.get(oldItemPosition);
                     MessageInfo messageInfo = messageInfos.get(newItemPosition);
-                    return old.getMessageId() == messageInfo.getMessageId();
+                    return old.getId() == messageInfo.getId();
                 }
 
                 @Override

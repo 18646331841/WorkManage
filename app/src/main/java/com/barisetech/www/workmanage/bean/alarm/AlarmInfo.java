@@ -70,7 +70,7 @@ public class AlarmInfo extends MessageInfo{
 
     public void setKey(int Key) {
         this.Key = Key;
-        messageId = Key;
+        id = Key;
     }
 
     public int getDisplayId() {

@@ -7,7 +7,7 @@ public class MessageInfo {
     public static final int TYPE_INCIDENT = 1; //事件类型
 
     @Ignore
-    protected int messageId;
+    protected int id;
 
     /**
      * 消息类型，ALARM 或 INCIDENT
@@ -27,12 +27,12 @@ public class MessageInfo {
     @Ignore
     protected String content;
 
-    public int getMessageId() {
-        return messageId;
+    public int getId() {
+        return id;
     }
 
-    public void setMessageId(int messageId) {
-        this.messageId = messageId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getType() {

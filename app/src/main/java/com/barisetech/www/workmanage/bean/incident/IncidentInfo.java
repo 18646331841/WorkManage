@@ -4,6 +4,7 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
 import com.barisetech.www.workmanage.bean.MessageInfo;
+import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by LJH on 2018/8/15.
@@ -26,7 +27,8 @@ public class IncidentInfo extends MessageInfo{
      */
 
     @PrimaryKey
-    private int Id;
+    @SerializedName("Id")
+    private int Key;
 
     private int SiteId;
     private String SiteName;
@@ -40,7 +42,8 @@ public class IncidentInfo extends MessageInfo{
     private boolean Lifted;
     private String LiftedUser;
     private String IncidentContent;
-    private boolean IsTest;
+    @SerializedName("IsTest")
+    private boolean Test;
     private String Remark;
 
     /**
@@ -48,13 +51,12 @@ public class IncidentInfo extends MessageInfo{
      */
     private boolean isRead = false;
 
-    public int getId() {
-        return Id;
+    public int getKey() {
+        return Key;
     }
 
-    public void setId(int Id) {
-        this.Id = Id;
-        messageId = Id;//设置父类id
+    public void setKey(int key) {
+        Key = key;
     }
 
     public int getSiteId() {
@@ -131,12 +133,12 @@ public class IncidentInfo extends MessageInfo{
         this.IncidentContent = IncidentContent;
     }
 
-    public boolean isIsTest() {
-        return IsTest;
+    public boolean isTest() {
+        return Test;
     }
 
-    public void setIsTest(boolean IsTest) {
-        this.IsTest = IsTest;
+    public void setTest(boolean test) {
+        Test = test;
     }
 
     public String getRemark() {
