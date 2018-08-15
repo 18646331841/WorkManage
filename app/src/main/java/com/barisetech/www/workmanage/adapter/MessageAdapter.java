@@ -76,7 +76,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.Myholder
     public void onBindViewHolder(@NonNull Myholder holder, int position) {
         MessageInfo messageInfo = mList.get(position);
         holder.binding.setMessageinfo(messageInfo);
-        holder.binding.messageType.setImageResource(messageInfo.getType() == MessageInfo.TYPE_ALARM ?
+        LogUtil.d(TAG, "messageType = " + messageInfo.getMessageType());
+        holder.binding.messageType.setImageResource(messageInfo.getMessageType() == MessageInfo.TYPE_ALARM ?
                 R.color.colorAccent : R.color.cardview_dark_background);
         holder.binding.executePendingBindings();
     }

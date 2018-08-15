@@ -57,6 +57,8 @@ public class IncidentInfo extends MessageInfo{
 
     public void setKey(int key) {
         Key = key;
+        id = key;//设置父类id
+        messageType = TYPE_INCIDENT;//设置父类类型
     }
 
     public int getSiteId() {
@@ -106,7 +108,6 @@ public class IncidentInfo extends MessageInfo{
 
     public void setType(int Type) {
         this.Type = Type;
-        type = TYPE_INCIDENT;//设置父类类型
     }
 
     public boolean isLifted() {

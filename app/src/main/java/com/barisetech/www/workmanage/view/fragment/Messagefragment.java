@@ -109,8 +109,8 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
     @Override
     public void subscribeToModel() {
         alarmViewModel.getNotReadAlarmInfos().observe(this, alarmInfos -> {
-            LogUtil.d(TAG, "observe alarmInfos = " + alarmInfos);
-            if (null != alarmInfos) {
+            if (null != alarmInfos && alarmInfos.size() != 0) {
+                LogUtil.d(TAG, "observe alarmInfos = " + alarmInfos.size());
 //                if (null != commonDialogFragment) {
 //                    commonDialogFragment.dismiss();
 //                }
@@ -121,12 +121,14 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
                     curMessageList.addAll(curIncidentList);
                 }
 
+                LogUtil.d(TAG, "alarminfos curMessageList = " + curMessageList.size());
                 messageAdapter.setCommentList(curMessageList);
             }
         });
 
         incidentViewModel.getmObservableAllIncidentByRead().observe(this, incidentInfos -> {
-            if (null != incidentInfos) {
+            if (null != incidentInfos && incidentInfos.size() != 0) {
+                LogUtil.d(TAG, "observe incidentInfos = " + incidentInfos.size());
                 curIncidentList = incidentInfos;
 
                 curMessageList.clear();
@@ -135,6 +137,7 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
                 }
                 curMessageList.addAll(curIncidentList);
 
+                LogUtil.d(TAG, "incidents curMessageList = " + curMessageList.size());
                 messageAdapter.setCommentList(curMessageList);
             }
         });

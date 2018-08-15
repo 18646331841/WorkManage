@@ -13,7 +13,7 @@ public class MessageInfo {
      * 消息类型，ALARM 或 INCIDENT
      */
     @Ignore
-    protected int type;
+    protected int messageType;
 
     /**
      * 显示时间
@@ -35,14 +35,6 @@ public class MessageInfo {
         this.id = id;
     }
 
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
-    }
-
     public String getTime() {
         return time;
     }
@@ -57,5 +49,13 @@ public class MessageInfo {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public int getMessageType() {
+        return messageType;
+    }
+
+    public void setMessageType(int messageType) {
+        this.messageType = messageType;
     }
 }
