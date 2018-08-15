@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.barisetech.www.workmanage.R;
@@ -18,6 +19,7 @@ import java.util.List;
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.Myholder>{
     private static final String TAG = "MessageAdapter";
     private List<? extends MessageInfo> mList;
+    private OnItemClickListener mOnItemClickListener;
 
     @Nullable
     private final ItemCallBack mItemCallBack;
@@ -80,7 +82,21 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.Myholder
         holder.binding.messageType.setImageResource(messageInfo.getMessageType() == MessageInfo.TYPE_ALARM ?
                 R.color.colorAccent : R.color.cardview_dark_background);
         holder.binding.executePendingBindings();
+        if (mOnItemClickListener != null){
+            holder.binding.getRoot().setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    mOnItemClickListener.onItemClick(holder.binding.getRoot(), position);
+                    return true;
+                }
+            });
+        }
     }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        mOnItemClickListener = onItemClickListener;
+    }
+
 
     @Override
     public int getItemCount() {
@@ -94,5 +110,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.Myholder
             super(binding.getRoot());
             this.binding = binding;
         }
+    }
+    public interface OnItemClickListener {
+        void onItemClick(View view, int position);
     }
 }

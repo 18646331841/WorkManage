@@ -1,8 +1,10 @@
 package com.barisetech.www.workmanage.view;
 
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.base.BaseActivity;
@@ -15,12 +17,15 @@ import com.barisetech.www.workmanage.view.fragment.ContentFragment;
 import com.barisetech.www.workmanage.view.fragment.FingerprintManagerFragment;
 import com.barisetech.www.workmanage.view.fragment.NavigationFragment;
 
+import org.greenrobot.eventbus.EventBus;
+
 public class MainActivity extends BaseActivity {
 
     /**
      * 是否为大屏左右显示，true表示是
      */
     private boolean isTwoPanel = false;
+    public Point point = new Point();
 
     @Override
     protected void loadViewLayout() {
@@ -47,6 +52,16 @@ public class MainActivity extends BaseActivity {
                     .replace(R.id.fragment_content, ContentFragment.newInstance(), ContentFragment.TAG);
             transaction.commit();
         }
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if(ev.getAction() == MotionEvent.ACTION_DOWN){
+            point.x = (int) ev.getRawX();
+            point.y = (int) ev.getRawY();
+        }
+        EventBus.getDefault().post(point);
+        return super.dispatchTouchEvent(ev);
     }
 
     @Override

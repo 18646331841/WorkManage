@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.greenrobot.eventbus.EventBus;
+
 /**
  * Created by LJH on 2018/7/10.
  */
@@ -28,4 +30,7 @@ public abstract class BaseFragment extends Fragment {
         bindViewModel();
         subscribeToModel();
     }
+
+
+
 }

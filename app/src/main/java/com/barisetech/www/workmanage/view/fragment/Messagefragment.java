@@ -2,10 +2,12 @@ package com.barisetech.www.workmanage.view.fragment;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,11 +21,13 @@ import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.databinding.FragmentMessageBinding;
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.utils.LogUtil;
-import com.barisetech.www.workmanage.view.dialog.CommonDialogFragment;
 import com.barisetech.www.workmanage.viewmodel.AlarmViewModel;
 import com.barisetech.www.workmanage.viewmodel.IncidentViewModel;
+import com.noober.menu.FloatMenu;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,8 +43,9 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
 
     private FragmentMessageBinding mBinding;
     private MessageAdapter messageAdapter;
-//    private CommonDialogFragment commonDialogFragment;
+    //    private CommonDialogFragment commonDialogFragment;
     private IncidentViewModel incidentViewModel;
+    private Point mpoint = new Point();
 
     public Messagefragment() {
     }
@@ -50,12 +55,15 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
         return fragment;
     }
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
             savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_message, container, false);
         setToolBarHeight(mBinding.toolbar.getRoot());
+
+        EventBus.getDefault().register(this);
 
         messageAdapter = new MessageAdapter(itemCallBack);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
@@ -66,6 +74,14 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
         mBinding.imgAnalysisWarn.setOnClickListener(this);
         mBinding.imgEvent.setOnClickListener(this);
         mBinding.imgNews.setOnClickListener(this);
+        messageAdapter.setOnItemClickListener(new MessageAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                FloatMenu floatMenu = new FloatMenu(getActivity());
+                floatMenu.items("菜单1", "菜单2", "菜单3");
+                floatMenu.show(mpoint);
+            }
+        });
         return mBinding.getRoot();
     }
 
@@ -78,7 +94,7 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.img_warn:
                 EventBus.getDefault().post(new EventBusMessage(AlarmListFragment.TAG));
                 break;
@@ -94,6 +110,14 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
         }
 
     }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void messageEventBus(Point point) {
+       mpoint = point;
+        Log.e("fff",mpoint+"");
+    }
+
 
     @Override
     public void bindViewModel() {
@@ -141,5 +165,11 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
                 messageAdapter.setCommentList(curMessageList);
             }
         });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }
