@@ -7,125 +7,182 @@
 
     </data>
 
-    <android.support.constraint.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
 
-        <include layout="@layout/layout_toolbar" android:id="@+id/toolbar"/>
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/layout_toolbar"/>
 
-        <android.support.constraint.ConstraintLayout
-            android:id="@+id/message_menu"
+        <com.barisetech.www.workmanage.widget.ScrollTitleView
+            android:id="@+id/scroll_title_view"
             android:layout_width="match_parent"
-            android:layout_height="169dp"
-            app:layout_constraintTop_toBottomOf="@id/toolbar">
+            android:layout_height="match_parent"
+            android:scrollbars="none">
 
-            <ImageView
-                android:id="@+id/img_warn"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@mipmap/ic_launcher_round"
-                app:layout_constraintBottom_toBottomOf="@id/message_menu"
-                app:layout_constraintLeft_toLeftOf="@id/message_menu"
-                app:layout_constraintRight_toLeftOf="@+id/img_event"
-                app:layout_constraintTop_toTopOf="@id/message_menu" />
-
-            <ImageView
-                android:id="@+id/img_event"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@mipmap/ic_launcher_round"
-                app:layout_constraintBottom_toBottomOf="@id/message_menu"
-                app:layout_constraintLeft_toRightOf="@+id/img_warn"
-                app:layout_constraintRight_toLeftOf="@+id/img_news"
-                app:layout_constraintTop_toTopOf="@id/message_menu" />
-
-            <ImageView
-                android:id="@+id/img_news"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@mipmap/ic_launcher_round"
-                app:layout_constraintBottom_toBottomOf="@id/message_menu"
-                app:layout_constraintLeft_toRightOf="@+id/img_analysis_warn"
-                app:layout_constraintRight_toLeftOf="@+id/img_event"
-                app:layout_constraintTop_toTopOf="@id/message_menu" />
-
-            <ImageView
-                android:id="@+id/img_analysis_warn"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@mipmap/ic_launcher_round"
-                app:layout_constraintBottom_toBottomOf="@id/message_menu"
-                app:layout_constraintLeft_toRightOf="@+id/img_news"
-                app:layout_constraintRight_toRightOf="@id/message_menu"
-                app:layout_constraintTop_toTopOf="@id/message_menu" />
-
-            <TextView
-                android:id="@+id/tv_warn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="@string/title_warn"
-                app:layout_constraintLeft_toLeftOf="@id/img_warn"
-                app:layout_constraintRight_toRightOf="@id/img_warn"
-                app:layout_constraintTop_toBottomOf="@id/img_warn" />
-            <TextView
-                android:id="@+id/tv_event"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="@string/title_event"
-                app:layout_constraintLeft_toLeftOf="@id/img_event"
-                app:layout_constraintRight_toRightOf="@id/img_event"
-                app:layout_constraintTop_toBottomOf="@id/img_event" />
-            <TextView
-                android:id="@+id/tv_news"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="@string/title_news"
-                app:layout_constraintLeft_toLeftOf="@id/img_news"
-                app:layout_constraintRight_toRightOf="@id/img_news"
-                app:layout_constraintTop_toBottomOf="@id/img_news" />
-            <TextView
-                android:id="@+id/tv_analysis"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="@string/warn_analysis"
-                app:layout_constraintLeft_toLeftOf="@id/img_analysis_warn"
-                app:layout_constraintRight_toRightOf="@id/img_analysis_warn"
-                app:layout_constraintTop_toBottomOf="@id/img_analysis_warn" />
-
-
-        </android.support.constraint.ConstraintLayout>
-
-        <RelativeLayout
-            android:id="@+id/message_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="23dp"
-            android:layout_marginRight="19dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="13dp"
-            app:layout_constraintBottom_toTopOf="@+id/message_recyclerView"
-            app:layout_constraintTop_toBottomOf="@+id/message_menu">
-            <TextView
+            <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/new_message"
-                android:textSize="16sp"/>
-        </RelativeLayout>
+                android:layout_height="match_parent">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/message_recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintVertical_weight="8"
-            android:layout_marginLeft="16.5dp"
-            android:layout_marginRight="19dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/message_title"/>
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/message_menu"
+                    android:layout_width="match_parent"
+                    android:layout_height="106dp">
 
-    </android.support.constraint.ConstraintLayout>
+                    <ImageView
+                        android:id="@+id/img_warn"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@mipmap/ic_launcher_round"
+                        app:layout_constraintBottom_toBottomOf="@id/message_menu"
+                        app:layout_constraintLeft_toLeftOf="@id/message_menu"
+                        app:layout_constraintRight_toLeftOf="@+id/img_event"
+                        app:layout_constraintTop_toTopOf="@id/message_menu"/>
+
+                    <ImageView
+                        android:id="@+id/img_event"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@mipmap/ic_launcher_round"
+                        app:layout_constraintBottom_toBottomOf="@id/message_menu"
+                        app:layout_constraintLeft_toRightOf="@+id/img_warn"
+                        app:layout_constraintRight_toLeftOf="@+id/img_news"
+                        app:layout_constraintTop_toTopOf="@id/message_menu"/>
+
+                    <ImageView
+                        android:id="@+id/img_news"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@mipmap/ic_launcher_round"
+                        app:layout_constraintBottom_toBottomOf="@id/message_menu"
+                        app:layout_constraintLeft_toRightOf="@+id/img_analysis_warn"
+                        app:layout_constraintRight_toLeftOf="@+id/img_event"
+                        app:layout_constraintTop_toTopOf="@id/message_menu"/>
+
+                    <ImageView
+                        android:id="@+id/img_analysis_warn"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@mipmap/ic_launcher_round"
+                        app:layout_constraintBottom_toBottomOf="@id/message_menu"
+                        app:layout_constraintLeft_toRightOf="@+id/img_news"
+                        app:layout_constraintRight_toRightOf="@id/message_menu"
+                        app:layout_constraintTop_toTopOf="@id/message_menu"/>
+
+                    <TextView
+                        android:id="@+id/tv_warn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="@string/title_warn"
+                        app:layout_constraintLeft_toLeftOf="@id/img_warn"
+                        app:layout_constraintRight_toRightOf="@id/img_warn"
+                        app:layout_constraintTop_toBottomOf="@id/img_warn"/>
+
+                    <TextView
+                        android:id="@+id/tv_event"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="@string/title_event"
+                        app:layout_constraintLeft_toLeftOf="@id/img_event"
+                        app:layout_constraintRight_toRightOf="@id/img_event"
+                        app:layout_constraintTop_toBottomOf="@id/img_event"/>
+
+                    <TextView
+                        android:id="@+id/tv_news"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="@string/title_news"
+                        app:layout_constraintLeft_toLeftOf="@id/img_news"
+                        app:layout_constraintRight_toRightOf="@id/img_news"
+                        app:layout_constraintTop_toBottomOf="@id/img_news"/>
+
+                    <TextView
+                        android:id="@+id/tv_analysis"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="@string/warn_analysis"
+                        app:layout_constraintLeft_toLeftOf="@id/img_analysis_warn"
+                        app:layout_constraintRight_toRightOf="@id/img_analysis_warn"
+                        app:layout_constraintTop_toBottomOf="@id/img_analysis_warn"/>
+
+
+                </android.support.constraint.ConstraintLayout>
+
+                <LinearLayout
+                    android:id="@+id/message_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="23dp"
+                    android:layout_marginRight="19dp"
+                    android:layout_marginTop="24dp"
+                    android:orientation="vertical"
+                    app:layout_constraintTop_toBottomOf="@+id/message_menu">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="13dp">
+
+                        <android.support.constraint.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone">
+
+                            <TextView
+                                android:id="@+id/all_select_tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/all_select"
+                                android:textColor="@color/blue_text"
+                                app:layout_constraintHorizontal_bias="0.5"
+                                app:layout_constraintStart_toStartOf="parent"/>
+
+                            <TextView
+                                android:id="@+id/mark_read_tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/mark_read"
+                                android:textColor="@color/blue_text"
+                                app:layout_constraintEnd_toStartOf="@+id/cancel_tv"
+                                app:layout_constraintHorizontal_bias="0.5"
+                                app:layout_constraintStart_toEndOf="@+id/all_select_tv"/>
+
+                            <TextView
+                                android:id="@+id/cancel_tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:text="@string/cancel_all_select"
+                                android:textColor="@color/blue_text"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.5"
+                                app:layout_constraintStart_toEndOf="@+id/mark_read_tv"/>
+
+                        </android.support.constraint.ConstraintLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/new_message"
+                            android:textSize="16sp"
+                            android:visibility="visible"/>
+                    </RelativeLayout>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/message_recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+                </LinearLayout>
+            </android.support.constraint.ConstraintLayout>
+
+        </com.barisetech.www.workmanage.widget.ScrollTitleView>
+
+    </LinearLayout>
 </layout>

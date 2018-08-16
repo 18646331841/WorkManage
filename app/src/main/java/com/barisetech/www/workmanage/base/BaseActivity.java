@@ -11,15 +11,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.View;
 
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
-import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
-import com.barisetech.www.workmanage.view.LoginActivity;
+import com.barisetech.www.workmanage.utils.LogUtil;
 import com.barisetech.www.workmanage.view.dialog.CommonDialogFragment;
 import com.barisetech.www.workmanage.view.dialog.DialogFragmentHelper;
 
@@ -37,7 +35,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//        setCustomDensity(this, getApplication());
+        setCustomDensity(this, getApplication());
         super.onCreate(savedInstanceState);
         mContext = this;
         EventBus.getDefault().register(this);
@@ -196,6 +194,8 @@ public abstract class BaseActivity extends AppCompatActivity {
             });
         }
 
+        LogUtil.d("BaseActivity", "widthPixel = " + appDisplayMetrics.widthPixels + ", heightPixel = " +
+                appDisplayMetrics.heightPixels);
         final float targetDensity = appDisplayMetrics.widthPixels / 360;//根据实际设计修改
         final float targetScaledDensity = targetDensity * (sNoncompatScaledDensity / sNoncompatDensity);
         final int targetDensityDpi = (int) (160 * targetDensity);

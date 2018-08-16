@@ -70,6 +70,8 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         mBinding.messageRecyclerView.setLayoutManager(llm);
         mBinding.messageRecyclerView.setAdapter(messageAdapter);
+
+        mBinding.scrollTitleView.setmRecyclerView(mBinding.messageRecyclerView);
         mBinding.imgWarn.setOnClickListener(this);
         mBinding.imgAnalysisWarn.setOnClickListener(this);
         mBinding.imgEvent.setOnClickListener(this);
@@ -115,7 +117,6 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void messageEventBus(Point point) {
        mpoint = point;
-        Log.e("fff",mpoint+"");
     }
 
 

@@ -164,10 +164,9 @@ public class IncidentInfo extends MessageInfo{
         sb.append("ID ").append(SiteId).append(", ")
                 .append("站点名称").append(SiteName).append(", ")
                 .append("管线ID ").append(PipeId).append(", ")
-                .append("是否解除：").append(Lifted ? "已解除" : "未解除")
-                .append("\n事件类型：").append(Type).append(", ")
+                .append("\n事件类型：").append(Type)
                 .append("\n管线名称：").append(PipeName)
-                .append("\n是否解除：").append(isLifted()).append(", ")
+                .append("\n是否解除：").append(Lifted ? "已解除" : "未解除").append(", ")
                 .append("解除人: ").append(LiftedUser);
         return sb.toString();
     }

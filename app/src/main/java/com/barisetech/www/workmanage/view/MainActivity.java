@@ -98,6 +98,10 @@ public class MainActivity extends BaseActivity {
         } else {
             //TODO 大屏幕，显示fragment
             switch (tag) {
+                case LoginActivity.TAG:
+                    intent2Activity(LoginActivity.class);
+                    finish();
+                    break;
                 case ContentFragment.TAG:
                     transaction
                             .addToBackStack(tag)
