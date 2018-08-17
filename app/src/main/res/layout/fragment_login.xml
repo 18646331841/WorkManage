@@ -5,157 +5,129 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <variable
+            name="toolbar"
+            type="com.barisetech.www.workmanage.bean.ToolbarInfo"/>
     </data>
 
-    <android.support.constraint.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/img_logo"
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/layout_toolbar"
+            app:toolbar="@{toolbar}"/>
+
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintLeft_toRightOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/tv_ip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="53dp"
-            android:layout_marginTop="52dp"
-            android:text="@string/tv_ip"
-            android:textSize="16sp"
-            app:layout_constraintRight_toRightOf="@id/tv_port"
-            app:layout_constraintTop_toBottomOf="@id/img_logo"/>
-
-        <EditText
-            android:id="@+id/et_ip"
-            android:layout_width="233dp"
-            android:layout_height="45dp"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/layout_corners"
-            app:layout_constraintBottom_toBottomOf="@id/tv_ip"
-            app:layout_constraintLeft_toRightOf="@id/tv_ip"
-            app:layout_constraintTop_toTopOf="@id/tv_ip"/>
-
-
-        <TextView
-            android:id="@+id/tv_port"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="58dp"
-            android:text="@string/tv_port"
-            android:textSize="16sp"
-            app:layout_constraintLeft_toLeftOf="@id/tv_account"
-            app:layout_constraintRight_toRightOf="@id/tv_ip"
-            app:layout_constraintTop_toBottomOf="@id/tv_ip"/>
-
-        <EditText
-            android:id="@+id/et_port"
-            android:layout_width="233dp"
-            android:layout_height="45dp"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/layout_corners"
-            app:layout_constraintBottom_toBottomOf="@id/tv_port"
-            app:layout_constraintLeft_toRightOf="@id/tv_port"
-            app:layout_constraintRight_toRightOf="@id/et_account"
-            app:layout_constraintTop_toTopOf="@id/tv_port"/>
-
-        <TextView
-            android:id="@+id/tv_account"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="58dp"
-            android:text="@string/tv_count"
-            android:textSize="16sp"
-            app:layout_constraintLeft_toLeftOf="@id/tv_password"
-            app:layout_constraintTop_toBottomOf="@id/tv_port"/>
-
-        <EditText
-            android:id="@+id/et_account"
-            android:layout_width="233dp"
-            android:layout_height="45dp"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/layout_corners"
-            app:layout_constraintBottom_toBottomOf="@id/tv_account"
-            app:layout_constraintLeft_toRightOf="@id/tv_account"
-            app:layout_constraintRight_toRightOf="@id/rl_pwd"
-            app:layout_constraintTop_toTopOf="@id/tv_account"
-            />
-
-
-        <RelativeLayout
-            android:id="@+id/rl_pwd"
-            android:layout_width="233dp"
-            android:layout_height="45dp"
-            android:background="@drawable/layout_corners"
-            android:paddingLeft="10dp"
-            app:layout_constraintBottom_toBottomOf="@id/tv_password"
-            app:layout_constraintLeft_toRightOf="@id/tv_password"
-            app:layout_constraintRight_toRightOf="@id/login"
-            app:layout_constraintTop_toTopOf="@id/tv_password">
-
-            <EditText
-                android:id="@+id/et_password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
-                android:layout_toLeftOf="@id/revealPassword"
-                android:background="@null"
-                android:inputType="textPassword"
-                android:maxLength="16"
-                android:singleLine="true"
-                android:textColorHint="#cacaca"
-                android:textSize="17sp"/>
 
             <ImageView
-                android:id="@+id/revealPassword"
-                android:layout_width="20dp"
-                android:layout_height="12dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:src="@drawable/reveal_pwd"/>
-        </RelativeLayout>
+                android:id="@+id/img_logo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@mipmap/toplogo"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
 
-        <TextView
-            android:id="@+id/tv_password"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="58dp"
-            android:text="@string/tv_password"
-            android:textSize="16sp"
-            app:layout_constraintLeft_toLeftOf="@id/login"
-            app:layout_constraintRight_toRightOf="@id/tv_account"
-            app:layout_constraintTop_toBottomOf="@id/tv_account"/>
+            <TextView
+                android:id="@+id/tv_account"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_58"
+                android:text="@string/tv_count"
+                android:textSize="16sp"
+                app:layout_constraintLeft_toLeftOf="@id/tv_password"
+                app:layout_constraintTop_toBottomOf="@id/img_logo"/>
+
+            <EditText
+                android:id="@+id/et_account"
+                android:layout_width="@dimen/dp_233"
+                android:layout_height="@dimen/dp_45"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:background="@drawable/layout_corners"
+                app:layout_constraintBottom_toBottomOf="@id/tv_account"
+                app:layout_constraintLeft_toRightOf="@id/tv_account"
+                app:layout_constraintRight_toRightOf="@id/rl_pwd"
+                app:layout_constraintTop_toTopOf="@id/tv_account"
+                />
 
 
-        <Button
-            android:id="@+id/login"
-            android:layout_width="275dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="47dp"
-            android:background="@drawable/shane_button_corners"
-            android:text="@string/tv_login"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rl_pwd"/>
+            <RelativeLayout
+                android:id="@+id/rl_pwd"
+                android:layout_width="@dimen/dp_233"
+                android:layout_height="@dimen/dp_45"
+                android:background="@drawable/layout_corners"
+                android:paddingLeft="@dimen/dp_10"
+                app:layout_constraintBottom_toBottomOf="@id/tv_password"
+                app:layout_constraintLeft_toRightOf="@id/tv_password"
+                app:layout_constraintRight_toRightOf="@id/login"
+                app:layout_constraintTop_toTopOf="@id/tv_password">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="40dp"
-            android:text="@string/copyright"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"/>
+                <EditText
+                    android:id="@+id/et_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_toLeftOf="@id/revealPassword"
+                    android:background="@null"
+                    android:inputType="textPassword"
+                    android:maxLength="16"
+                    android:singleLine="true"
+                    android:textColorHint="#cacaca"
+                    android:textSize="@dimen/sp_17"/>
 
-    </android.support.constraint.ConstraintLayout>
+                <ImageView
+                    android:id="@+id/revealPassword"
+                    android:layout_width="@dimen/dp_20"
+                    android:layout_height="@dimen/sp_12"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/reveal_pwd"/>
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_58"
+                android:text="@string/tv_password"
+                android:textSize="@dimen/sp_16"
+                app:layout_constraintLeft_toLeftOf="@id/login"
+                app:layout_constraintRight_toRightOf="@id/tv_account"
+                app:layout_constraintTop_toBottomOf="@id/tv_account"/>
+
+
+            <Button
+                android:id="@+id/login"
+                android:layout_width="@dimen/dp_275"
+                android:layout_height="@dimen/dp_50"
+                android:layout_marginTop="@dimen/dp_47"
+                android:background="@drawable/shane_button_corners"
+                android:text="@string/tv_login"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_18"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rl_pwd"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp_40"
+                android:text="@string/copyright"
+                android:textSize="@dimen/sp_12"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"/>
+
+        </android.support.constraint.ConstraintLayout>
+    </LinearLayout>
+
 
 </layout>

@@ -14,7 +14,8 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:onClick="@{() -> callback.onClick(messageinfo)}">
 
         <!--<android.support.v7.widget.CardView-->
             <!--android:layout_width="326dp"-->
@@ -47,10 +48,11 @@
                     android:id="@+id/message_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{messageinfo.time}"
+                    android:text="@{messageinfo.title != null ? messageinfo.title : messageinfo.time}"
                     android:paddingTop="20dp"
                     android:paddingLeft="29dp"
-                    android:textSize="14sp"
+                    android:textColor="@color/message_item_normal"
+                    android:textSize="@{messageinfo.title != null ? @dimen/sp_16 : @dimen/sp_14}"
                     app:layout_constraintEnd_toStartOf="@+id/message_type"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/message_type"/>
@@ -62,6 +64,7 @@
                     android:layout_marginLeft="30.5dp"
                     android:layout_marginRight="55dp"
                     android:textSize="14sp"
+                    android:textColor="@color/message_item_normal"
                     android:text="@{messageinfo.content}"
                     app:layout_constraintBottom_toTopOf="@+id/message_type"
                     app:layout_constraintTop_toBottomOf="@+id/message_type"/>
@@ -70,14 +73,14 @@
 
         <!--</android.support.v7.widget.CardView>-->
 
-        <ImageView
-            android:id="@+id/message_button"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="end|center_vertical"
-            android:background="@drawable/shape_cricle_button"
-            android:onClick="@{() -> callback.onClick(messageinfo)}"
-            android:scaleType="centerInside"/>
+        <!--<ImageView-->
+            <!--android:id="@+id/message_button"-->
+            <!--android:layout_width="50dp"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:layout_gravity="end|center_vertical"-->
+            <!--android:background="@drawable/shape_cricle_button"-->
+            <!--android:onClick="@{() -> callback.onClick(messageinfo)}"-->
+            <!--android:scaleType="centerInside"/>-->
 
     </FrameLayout>
 </layout>

@@ -18,6 +18,7 @@ import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.MessageInfo;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
+import com.barisetech.www.workmanage.bean.incident.IncidentInfo;
 import com.barisetech.www.workmanage.databinding.FragmentMessageBinding;
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.utils.LogUtil;
@@ -91,6 +92,9 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
         if (item instanceof AlarmInfo) {
             AlarmInfo alarmInfo = (AlarmInfo) item;
             LogUtil.d(TAG, alarmInfo.toContent());
+        } else if (item instanceof IncidentInfo) {
+            IncidentInfo incidentInfo = (IncidentInfo) item;
+            LogUtil.d(TAG, incidentInfo.toContent());
         }
     };
 

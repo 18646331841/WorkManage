@@ -8,4 +8,6 @@
     <color name="line_gray">#d4d6d9</color>
 
     <color name="blue_text">#3890E0</color>
+    <color name="message_item_gray">#999999</color>
+    <color name="message_item_normal">#000000</color>
 </resources>

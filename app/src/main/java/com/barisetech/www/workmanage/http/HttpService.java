@@ -1,6 +1,10 @@
 package com.barisetech.www.workmanage.http;
 
+import android.text.TextUtils;
+
 import com.barisetech.www.workmanage.BuildConfig;
+import com.barisetech.www.workmanage.base.BaseConstant;
+import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -93,12 +97,21 @@ public class HttpService {
 
         builder.addInterceptor(headerInterceptor);
 
+        String value = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_IP_PORT, "");
+        String path;
+        if (!TextUtils.isEmpty(value)) {
+            String[] split = value.split("_");
+            path = String.format("http://?:?/", split[0], split[1]);
+        } else {
+            path = Config.BASE_URL;
+        }
+
         // 创建Retrofit
         mRetrofit = new Retrofit.Builder()
                 .client(builder.build())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(Config.BASE_URL)
+                .baseUrl(path)
                 .build();
 
         return SingletonHolder.INSTANCE;

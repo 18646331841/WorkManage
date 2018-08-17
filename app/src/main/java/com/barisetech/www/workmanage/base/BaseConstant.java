@@ -13,6 +13,8 @@ public class BaseConstant {
     public static final String SP_ACCOUNT = "account";
     //用户token
     public static final String SP_TOKEN = "token";
+    //Ip port, value = ip_port
+    public static final String SP_IP_PORT = "ip_port";
 
     /**
      * progress

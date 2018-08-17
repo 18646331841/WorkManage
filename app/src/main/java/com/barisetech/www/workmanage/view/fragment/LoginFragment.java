@@ -17,6 +17,7 @@ import com.barisetech.www.workmanage.base.BaseApplication;
 import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
+import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.databinding.FragmentLoginBinding;
 import com.barisetech.www.workmanage.http.Config;
 import com.barisetech.www.workmanage.utils.NetworkUtil;
@@ -46,7 +47,15 @@ public class LoginFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
             savedInstanceState) {
+        String ipAndPort = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_IP_PORT, "");
+        if (TextUtils.isEmpty(ipAndPort)) {
+            EventBus.getDefault().post(new EventBusMessage(IpFragment.TAG));
+        }
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false);
+        setToolBarHeight(mBinding.toolbar.getRoot());
+
+        ToolbarInfo toolbarInfo = new ToolbarInfo();
+        toolbarInfo.setTwoText(getString(R.string.toolbar_setting));
 
         initView();
         return mBinding.getRoot();
@@ -54,7 +63,9 @@ public class LoginFragment extends BaseFragment {
 
     private void initView() {
         mBinding.revealPassword.setOnClickListener(v -> revealPassword());
-
+//        mBinding.settingTv.setOnClickListener(view -> {
+//            EventBus.getDefault().post(new EventBusMessage(IpFragment.TAG));
+//        });
         mBinding.login.setOnClickListener(view -> {
             String account = mBinding.etAccount.getText().toString().trim();
             String password = mBinding.etPassword.getText().toString().trim();

@@ -233,6 +233,7 @@ public class AlarmInfo extends MessageInfo{
 
     public void setRead(boolean read) {
         isRead = read;
+        read = read;//设置父类read
     }
 
     public String toContent() {

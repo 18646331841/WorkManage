@@ -77,6 +77,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.Myholder
     @Override
     public void onBindViewHolder(@NonNull Myholder holder, int position) {
         MessageInfo messageInfo = mList.get(position);
+        if (messageInfo.getMessageType() == MessageInfo.TYPE_INCIDENT && null != messageInfo.getTitle()) {
+            holder.binding.messageTime.getPaint().setFakeBoldText(true);
+        }
+
         holder.binding.setMessageinfo(messageInfo);
         LogUtil.d(TAG, "messageType = " + messageInfo.getMessageType());
         holder.binding.messageType.setImageResource(messageInfo.getMessageType() == MessageInfo.TYPE_ALARM ?

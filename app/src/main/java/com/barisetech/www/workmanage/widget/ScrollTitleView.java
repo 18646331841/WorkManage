@@ -90,7 +90,7 @@ public class ScrollTitleView extends ScrollView {
             if (view != null) {
                 int y = (int) view.getY();
                 hasScroll = (y != 0);
-                LogUtil.d(TAG, "isScroll = " + hasScroll);
+//                LogUtil.d(TAG, "isScroll = " + hasScroll);
             }
         }
         return hasScroll;
@@ -134,15 +134,19 @@ public class ScrollTitleView extends ScrollView {
             }
         }else {
             if (!subItemHasScroll) {
-                return true;
+                if (dir > 0) {
+                    result = false;
+                } else if (dir < 0){
+                    result = true;
+                }
             }
         }
         if (result && (Math.abs(distanseY) < Math.abs(distanseX))) {
             result = false;
         }
-        LogUtil.d(TAG, "mTitleHeight" + mTitleHeight + "   ScrollY" + scrollY);
-        LogUtil.d(TAG, "on Scroll dir: " + dir);
-        LogUtil.d(TAG, "on Scroll onInterceptTouchEvent: " + result);
+//        LogUtil.d(TAG, "mTitleHeight" + mTitleHeight + "   ScrollY" + scrollY);
+//        LogUtil.d(TAG, "on Scroll dir: " + dir);
+//        LogUtil.d(TAG, "on Scroll onInterceptTouchEvent: " + result);
         return result;
     }
 

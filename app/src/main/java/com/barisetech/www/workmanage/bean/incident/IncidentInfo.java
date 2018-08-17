@@ -1,6 +1,7 @@
 package com.barisetech.www.workmanage.bean.incident;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 import com.barisetech.www.workmanage.bean.MessageInfo;
@@ -11,6 +12,10 @@ import com.google.gson.annotations.SerializedName;
  */
 @Entity(tableName = "incident_info")
 public class IncidentInfo extends MessageInfo{
+
+    @Ignore
+    private String[] typeToString = new String[]{"全部", "数字化仪上线", "数字化仪下线", "数字化仪时间不同步", "传感器不在线", "隔离器不在线",
+            "一个查不到数据的标志"};
     /**
      * Id : 1
      * SiteId : 1
@@ -108,6 +113,12 @@ public class IncidentInfo extends MessageInfo{
 
     public void setType(int Type) {
         this.Type = Type;
+        int index = Type - 1;
+        if (index > 0 && index < typeToString.length) {
+            title = typeToString[Type - 1];//设置父类title
+        } else {
+            title = String.valueOf(Type);
+        }
     }
 
     public boolean isLifted() {
@@ -161,10 +172,10 @@ public class IncidentInfo extends MessageInfo{
 
     public String toContent() {
         StringBuilder sb = new StringBuilder();
-        sb.append("ID ").append(SiteId).append(", ")
+        sb.append("时间：").append(TimeStamp)
+                .append("\nID ").append(SiteId).append(", ")
                 .append("站点名称").append(SiteName).append(", ")
                 .append("管线ID ").append(PipeId).append(", ")
-                .append("\n事件类型：").append(Type)
                 .append("\n管线名称：").append(PipeName)
                 .append("\n是否解除：").append(Lifted ? "已解除" : "未解除").append(", ")
                 .append("解除人: ").append(LiftedUser);

@@ -27,6 +27,12 @@ public class MessageInfo {
     @Ignore
     protected String content;
 
+    @Ignore
+    protected String title = null;
+
+    @Ignore
+    protected boolean read = false;
+
     public int getId() {
         return id;
     }
@@ -57,5 +63,21 @@ public class MessageInfo {
 
     public void setMessageType(int messageType) {
         this.messageType = messageType;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public boolean isRead() {
+        return read;
+    }
+
+    public void setRead(boolean read) {
+        this.read = read;
     }
 }

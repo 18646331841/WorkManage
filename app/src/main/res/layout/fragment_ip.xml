@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/img_logo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/toplogo"
+            app:layout_constraintLeft_toRightOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/tv_ip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_58"
+            android:text="@string/tv_ip"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintRight_toRightOf="@id/tv_port"
+            app:layout_constraintTop_toBottomOf="@id/img_logo"/>
+
+        <EditText
+            android:id="@+id/et_ip"
+            android:layout_width="@dimen/dp_233"
+            android:layout_height="@dimen/dp_45"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:background="@drawable/layout_corners"
+            app:layout_constraintBottom_toBottomOf="@id/tv_ip"
+            app:layout_constraintLeft_toRightOf="@id/tv_ip"
+            app:layout_constraintRight_toRightOf="@id/et_port"
+            app:layout_constraintTop_toTopOf="@id/tv_ip"/>
+
+
+        <TextView
+            android:id="@+id/tv_port"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_58"
+            android:text="@string/tv_port"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintLeft_toLeftOf="@id/login"
+            app:layout_constraintRight_toRightOf="@id/tv_ip"
+            app:layout_constraintTop_toBottomOf="@id/tv_ip"/>
+
+        <EditText
+            android:id="@+id/et_port"
+            android:layout_width="@dimen/dp_233"
+            android:layout_height="@dimen/dp_45"
+            android:layout_marginLeft="@dimen/dp_40"
+            android:background="@drawable/layout_corners"
+            app:layout_constraintBottom_toBottomOf="@id/tv_port"
+            app:layout_constraintLeft_toRightOf="@id/tv_port"
+            app:layout_constraintRight_toRightOf="@id/login"
+            app:layout_constraintTop_toTopOf="@id/tv_port"/>
+
+        <Button
+            android:id="@+id/login"
+            android:layout_width="@dimen/dp_275"
+            android:layout_height="@dimen/dp_50"
+            android:layout_marginTop="@dimen/dp_47"
+            android:background="@drawable/shane_button_corners"
+            android:text="@string/tv_login"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_18"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_port"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp_40"
+            android:text="@string/copyright"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+    </android.support.constraint.ConstraintLayout>
+</layout>
