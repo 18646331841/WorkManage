@@ -4,7 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <variable
+            name="fragment"
+            type="com.barisetech.www.workmanage.base.BaseFragment"/>
     </data>
 
     <LinearLayout
@@ -15,7 +17,8 @@
 
         <include
             android:id="@+id/toolbar"
-            layout="@layout/layout_toolbar"/>
+            layout="@layout/layout_toolbar"
+            app:toolbar="@{fragment.observableToolbar}"/>
 
         <com.barisetech.www.workmanage.widget.ScrollTitleView
             android:id="@+id/scroll_title_view"
@@ -31,74 +34,82 @@
                 <android.support.constraint.ConstraintLayout
                     android:id="@+id/message_menu"
                     android:layout_width="match_parent"
-                    android:layout_height="106dp">
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/dp_25"
+                    android:background="@color/theme_color">
 
                     <ImageView
-                        android:id="@+id/img_warn"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:background="@mipmap/ic_launcher_round"
+                        android:id="@+id/img_alarm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/icon_alarm"
                         app:layout_constraintBottom_toBottomOf="@id/message_menu"
                         app:layout_constraintLeft_toLeftOf="@id/message_menu"
-                        app:layout_constraintRight_toLeftOf="@+id/img_event"
+                        app:layout_constraintRight_toLeftOf="@+id/img_incident"
                         app:layout_constraintTop_toTopOf="@id/message_menu"/>
 
                     <ImageView
-                        android:id="@+id/img_event"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:background="@mipmap/ic_launcher_round"
+                        android:id="@+id/img_incident"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/icon_incident"
                         app:layout_constraintBottom_toBottomOf="@id/message_menu"
-                        app:layout_constraintLeft_toRightOf="@+id/img_warn"
+                        app:layout_constraintLeft_toRightOf="@+id/img_alarm"
                         app:layout_constraintRight_toLeftOf="@+id/img_news"
                         app:layout_constraintTop_toTopOf="@id/message_menu"/>
 
                     <ImageView
                         android:id="@+id/img_news"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:background="@mipmap/ic_launcher_round"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/icon_news"
                         app:layout_constraintBottom_toBottomOf="@id/message_menu"
-                        app:layout_constraintLeft_toRightOf="@+id/img_analysis_warn"
-                        app:layout_constraintRight_toLeftOf="@+id/img_event"
+                        app:layout_constraintLeft_toRightOf="@+id/img_analysis_alarm"
+                        app:layout_constraintRight_toLeftOf="@+id/img_incident"
                         app:layout_constraintTop_toTopOf="@id/message_menu"/>
 
                     <ImageView
-                        android:id="@+id/img_analysis_warn"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:background="@mipmap/ic_launcher_round"
+                        android:id="@+id/img_analysis_alarm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/icon_alarm_analysis"
                         app:layout_constraintBottom_toBottomOf="@id/message_menu"
                         app:layout_constraintLeft_toRightOf="@+id/img_news"
                         app:layout_constraintRight_toRightOf="@id/message_menu"
                         app:layout_constraintTop_toTopOf="@id/message_menu"/>
 
                     <TextView
-                        android:id="@+id/tv_warn"
+                        android:id="@+id/tv_alarm"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
+                        android:layout_marginTop="@dimen/dp_5"
                         android:text="@string/title_warn"
-                        app:layout_constraintLeft_toLeftOf="@id/img_warn"
-                        app:layout_constraintRight_toRightOf="@id/img_warn"
-                        app:layout_constraintTop_toBottomOf="@id/img_warn"/>
+                        android:textSize="@dimen/sp_14"
+                        android:textColor="@color/white"
+                        app:layout_constraintLeft_toLeftOf="@id/img_alarm"
+                        app:layout_constraintRight_toRightOf="@id/img_alarm"
+                        app:layout_constraintTop_toBottomOf="@id/img_alarm"/>
 
                     <TextView
-                        android:id="@+id/tv_event"
+                        android:id="@+id/tv_incident"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
+                        android:layout_marginTop="@dimen/dp_5"
                         android:text="@string/title_event"
-                        app:layout_constraintLeft_toLeftOf="@id/img_event"
-                        app:layout_constraintRight_toRightOf="@id/img_event"
-                        app:layout_constraintTop_toBottomOf="@id/img_event"/>
+                        android:textSize="@dimen/sp_14"
+                        android:textColor="@color/white"
+                        app:layout_constraintLeft_toLeftOf="@id/img_incident"
+                        app:layout_constraintRight_toRightOf="@id/img_incident"
+                        app:layout_constraintTop_toBottomOf="@id/img_incident"/>
 
                     <TextView
                         android:id="@+id/tv_news"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
+                        android:layout_marginTop="@dimen/dp_5"
                         android:text="@string/title_news"
+                        android:textSize="@dimen/sp_14"
+                        android:textColor="@color/white"
                         app:layout_constraintLeft_toLeftOf="@id/img_news"
                         app:layout_constraintRight_toRightOf="@id/img_news"
                         app:layout_constraintTop_toBottomOf="@id/img_news"/>
@@ -107,11 +118,13 @@
                         android:id="@+id/tv_analysis"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text="@string/warn_analysis"
-                        app:layout_constraintLeft_toLeftOf="@id/img_analysis_warn"
-                        app:layout_constraintRight_toRightOf="@id/img_analysis_warn"
-                        app:layout_constraintTop_toBottomOf="@id/img_analysis_warn"/>
+                        android:layout_marginTop="@dimen/dp_5"
+                        android:text="@string/alarm_analysis"
+                        android:textSize="@dimen/sp_14"
+                        android:textColor="@color/white"
+                        app:layout_constraintLeft_toLeftOf="@id/img_analysis_alarm"
+                        app:layout_constraintRight_toRightOf="@id/img_analysis_alarm"
+                        app:layout_constraintTop_toBottomOf="@id/img_analysis_alarm"/>
 
 
                 </android.support.constraint.ConstraintLayout>

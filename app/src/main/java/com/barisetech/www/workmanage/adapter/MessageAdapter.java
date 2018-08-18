@@ -83,8 +83,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.Myholder
 
         holder.binding.setMessageinfo(messageInfo);
         LogUtil.d(TAG, "messageType = " + messageInfo.getMessageType());
-        holder.binding.messageType.setImageResource(messageInfo.getMessageType() == MessageInfo.TYPE_ALARM ?
-                R.color.colorAccent : R.color.cardview_dark_background);
+        holder.binding.messageType.setBackgroundResource(messageInfo.getMessageType() == MessageInfo.TYPE_ALARM ?
+                R.drawable.type_alarm : R.drawable.type_incident);
         holder.binding.executePendingBindings();
         if (mOnItemClickListener != null){
             holder.binding.getRoot().setOnLongClickListener(new View.OnLongClickListener() {

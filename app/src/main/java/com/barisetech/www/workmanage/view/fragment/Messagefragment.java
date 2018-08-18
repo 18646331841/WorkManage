@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +16,7 @@ import com.barisetech.www.workmanage.adapter.ItemCallBack;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.MessageInfo;
+import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.bean.incident.IncidentInfo;
 import com.barisetech.www.workmanage.databinding.FragmentMessageBinding;
@@ -63,6 +63,11 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
             savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_message, container, false);
         setToolBarHeight(mBinding.toolbar.getRoot());
+        mBinding.setFragment(this);
+        ToolbarInfo toolbarInfo = new ToolbarInfo();
+        toolbarInfo.setTitle(getString(R.string.title_message));
+        toolbarInfo.setTwoText(getString(R.string.message_mission));
+        observableToolbar.set(toolbarInfo);
 
         EventBus.getDefault().register(this);
 
@@ -73,9 +78,9 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
         mBinding.messageRecyclerView.setAdapter(messageAdapter);
 
         mBinding.scrollTitleView.setmRecyclerView(mBinding.messageRecyclerView);
-        mBinding.imgWarn.setOnClickListener(this);
-        mBinding.imgAnalysisWarn.setOnClickListener(this);
-        mBinding.imgEvent.setOnClickListener(this);
+        mBinding.imgAlarm.setOnClickListener(this);
+        mBinding.imgAnalysisAlarm.setOnClickListener(this);
+        mBinding.imgIncident.setOnClickListener(this);
         mBinding.imgNews.setOnClickListener(this);
         messageAdapter.setOnItemClickListener(new MessageAdapter.OnItemClickListener() {
             @Override
@@ -101,13 +106,13 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.img_warn:
+            case R.id.img_alarm:
                 EventBus.getDefault().post(new EventBusMessage(AlarmListFragment.TAG));
                 break;
-            case R.id.img_event:
+            case R.id.img_incident:
                 EventBus.getDefault().post(new EventBusMessage(EventFragment.TAG));
                 break;
-            case R.id.img_analysis_warn:
+            case R.id.img_analysis_alarm:
                 EventBus.getDefault().post(new EventBusMessage(AnalysisWarnFragment.TAG));
                 break;
             case R.id.img_news:
@@ -131,8 +136,6 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
 
 //        commonDialogFragment = DialogFragmentHelper.showProgress(getFragmentManager(), getString
 //                (R.string.dialog_progress_text), true);
-        alarmViewModel.getAllAlarm();
-        incidentViewModel.reqAllIncident();
     }
 
     @Override
@@ -170,6 +173,9 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
                 messageAdapter.setCommentList(curMessageList);
             }
         });
+
+        alarmViewModel.getAllAlarm();
+        incidentViewModel.reqAllIncident();
     }
 
     @Override

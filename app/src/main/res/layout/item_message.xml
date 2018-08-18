@@ -12,10 +12,10 @@
             type="com.barisetech.www.workmanage.adapter.ItemCallBack"/>
     </data>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="@{() -> callback.onClick(messageinfo)}">
+    <!--<FrameLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:onClick="@{() -> callback.onClick(messageinfo)}">-->
 
         <!--<android.support.v7.widget.CardView-->
             <!--android:layout_width="326dp"-->
@@ -31,13 +31,14 @@
                 android:layout_height="160dp"
                 android:layout_gravity="center"
                 android:layout_margin="7dp"
-                android:background="@drawable/item_shape">
+                android:elevation="@dimen/dp_5"
+                android:background="@drawable/item_shape"
+                android:onClick="@{() -> callback.onClick(messageinfo)}">
 
                 <ImageView
                     android:id="@+id/message_type"
                     android:layout_width="44dp"
                     android:layout_height="44dp"
-                    android:src="@mipmap/ic_launcher"
                     app:layout_constraintBottom_toTopOf="@+id/message_content"
                     app:layout_constraintEnd_toStartOf="@+id/message_time"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -82,5 +83,5 @@
             <!--android:onClick="@{() -> callback.onClick(messageinfo)}"-->
             <!--android:scaleType="centerInside"/>-->
 
-    </FrameLayout>
+    <!--</FrameLayout>-->
 </layout>

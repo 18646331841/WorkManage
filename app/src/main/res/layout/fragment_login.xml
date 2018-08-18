@@ -109,7 +109,7 @@
                 android:id="@+id/login"
                 android:layout_width="@dimen/dp_275"
                 android:layout_height="@dimen/dp_50"
-                android:layout_marginTop="@dimen/dp_47"
+                android:layout_marginTop="@dimen/dp_67"
                 android:background="@drawable/shane_button_corners"
                 android:text="@string/tv_login"
                 android:textColor="@color/white"
