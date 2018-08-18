@@ -101,7 +101,7 @@ public class HttpService {
         String path;
         if (!TextUtils.isEmpty(value)) {
             String[] split = value.split("_");
-            path = String.format("http://?:?/", split[0], split[1]);
+            path = String.format("http://%s:%s/", split[0], split[1]);
         } else {
             path = Config.BASE_URL;
         }

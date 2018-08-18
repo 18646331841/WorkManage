@@ -16,6 +16,7 @@
     <dimen name="dp_50">50dp</dimen>
     <dimen name="dp_47">47dp</dimen>
     <dimen name="dp_40">40dp</dimen>
+    <dimen name="dp_5">5dp</dimen>
 
     <!--sp-->
     <dimen name="sp_12">12sp</dimen>
@@ -23,4 +24,5 @@
     <dimen name="sp_16">16sp</dimen>
     <dimen name="sp_17">17sp</dimen>
     <dimen name="sp_18">18sp</dimen>
+    <dimen name="sp_20">20sp</dimen>
 </resources>

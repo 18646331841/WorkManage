@@ -6,8 +6,8 @@
 
     <data>
         <variable
-            name="toolbar"
-            type="com.barisetech.www.workmanage.bean.ToolbarInfo"/>
+            name="fragment"
+            type="com.barisetech.www.workmanage.base.BaseFragment"/>
     </data>
 
     <LinearLayout
@@ -18,7 +18,7 @@
         <include
             android:id="@+id/toolbar"
             layout="@layout/layout_toolbar"
-            app:toolbar="@{toolbar}"/>
+            app:toolbar="@{fragment.observableToolbar}"/>
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -29,7 +29,7 @@
                 android:id="@+id/img_logo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@mipmap/toplogo"
+                android:background="@drawable/toplogo"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
@@ -49,6 +49,7 @@
                 android:layout_width="@dimen/dp_233"
                 android:layout_height="@dimen/dp_45"
                 android:layout_marginLeft="@dimen/dp_10"
+                android:paddingLeft="@dimen/dp_10"
                 android:background="@drawable/layout_corners"
                 app:layout_constraintBottom_toBottomOf="@id/tv_account"
                 app:layout_constraintLeft_toRightOf="@id/tv_account"
@@ -62,7 +63,7 @@
                 android:layout_width="@dimen/dp_233"
                 android:layout_height="@dimen/dp_45"
                 android:background="@drawable/layout_corners"
-                android:paddingLeft="@dimen/dp_10"
+                android:layout_marginLeft="@dimen/dp_10"
                 app:layout_constraintBottom_toBottomOf="@id/tv_password"
                 app:layout_constraintLeft_toRightOf="@id/tv_password"
                 app:layout_constraintRight_toRightOf="@id/login"
@@ -73,7 +74,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/dp_10"
+                    android:paddingLeft="@dimen/dp_10"
                     android:layout_toLeftOf="@id/revealPassword"
                     android:background="@null"
                     android:inputType="textPassword"
@@ -84,6 +85,7 @@
 
                 <ImageView
                     android:id="@+id/revealPassword"
+                    android:paddingRight="@dimen/dp_5"
                     android:layout_width="@dimen/dp_20"
                     android:layout_height="@dimen/sp_12"
                     android:layout_alignParentRight="true"

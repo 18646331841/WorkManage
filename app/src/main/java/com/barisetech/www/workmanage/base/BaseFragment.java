@@ -1,17 +1,20 @@
 package com.barisetech.www.workmanage.base;
 
+import android.databinding.ObservableField;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.greenrobot.eventbus.EventBus;
+import com.barisetech.www.workmanage.bean.ToolbarInfo;
 
 /**
  * Created by LJH on 2018/7/10.
  */
 public abstract class BaseFragment extends Fragment {
+
+    public ObservableField<ToolbarInfo> observableToolbar = new ObservableField<>();
 
     public void setToolBarHeight(View view){
         ViewGroup.LayoutParams linearParams = view.getLayoutParams();

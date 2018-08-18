@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.base.BaseConstant;
+import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.databinding.FragmentIpBinding;
 import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
@@ -21,7 +22,7 @@ import org.greenrobot.eventbus.EventBus;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class IpFragment extends Fragment {
+public class IpFragment extends BaseFragment {
     public static final String TAG = "IpFragment";
 
     private FragmentIpBinding mBinding;
@@ -39,12 +40,17 @@ public class IpFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_ip, container, false);
+        setToolBarHeight(mBinding.toolbar.getRoot());
 
         initView();
         return mBinding.getRoot();
     }
 
     private void initView() {
+        //TODO 后期去掉
+        mBinding.etIp.setText("www.barisetech.com");
+        mBinding.etPort.setText("8081");
+
         String ipAndPort = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_IP_PORT, "");
         if (!TextUtils.isEmpty(ipAndPort)) {
             String[] ipPort = ipAndPort.split("_");
@@ -63,5 +69,15 @@ public class IpFragment extends Fragment {
                 EventBus.getDefault().post(new EventBusMessage(LoginFragment.TAG));
             }
         });
+    }
+
+    @Override
+    public void bindViewModel() {
+
+    }
+
+    @Override
+    public void subscribeToModel() {
+
     }
 }

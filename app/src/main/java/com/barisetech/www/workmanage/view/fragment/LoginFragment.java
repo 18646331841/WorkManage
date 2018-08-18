@@ -2,6 +2,7 @@ package com.barisetech.www.workmanage.view.fragment;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
+import android.databinding.ObservableField;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -34,6 +35,7 @@ public class LoginFragment extends BaseFragment {
     private LoginViewModel loginViewModel;
     private boolean isFirst = true;
 
+
     public LoginFragment() {
 
     }
@@ -47,25 +49,27 @@ public class LoginFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
             savedInstanceState) {
-        String ipAndPort = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_IP_PORT, "");
-        if (TextUtils.isEmpty(ipAndPort)) {
-            EventBus.getDefault().post(new EventBusMessage(IpFragment.TAG));
-        }
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false);
-        setToolBarHeight(mBinding.toolbar.getRoot());
 
+        setToolBarHeight(mBinding.toolbar.getRoot());
+        mBinding.setFragment(this);
         ToolbarInfo toolbarInfo = new ToolbarInfo();
         toolbarInfo.setTwoText(getString(R.string.toolbar_setting));
+        observableToolbar.set(toolbarInfo);
 
         initView();
         return mBinding.getRoot();
     }
 
     private void initView() {
+        //TODO 后期去掉
+        mBinding.etAccount.setText("admin");
+        mBinding.etPassword.setText("123456");
+
         mBinding.revealPassword.setOnClickListener(v -> revealPassword());
-//        mBinding.settingTv.setOnClickListener(view -> {
-//            EventBus.getDefault().post(new EventBusMessage(IpFragment.TAG));
-//        });
+        mBinding.toolbar.tvTwo.setOnClickListener(view -> {
+            EventBus.getDefault().post(new EventBusMessage(IpFragment.TAG));
+        });
         mBinding.login.setOnClickListener(view -> {
             String account = mBinding.etAccount.getText().toString().trim();
             String password = mBinding.etPassword.getText().toString().trim();

@@ -44,13 +44,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.SecondActivity"></activity>
+        <activity android:name=".view.SecondActivity">
+
+        </activity>
 
         <service android:name="com.amap.api.location.APSService" />
 
         <activity
             android:name=".view.LoginActivity"
-            android:launchMode="singleInstance">
+            android:launchMode="singleTask">
         </activity>
     </application>
 

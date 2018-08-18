@@ -23,6 +23,7 @@
     <string name="tv_count">账号</string>
     <string name="tv_password">密码</string>
     <string name="tv_login">登录</string>
+    <string name="login_next">下一步</string>
     <string name="copyright">版权所有 © 版权单位名称</string>
     <string name="back">返回</string>
     <string name="tv_site">站点</string>

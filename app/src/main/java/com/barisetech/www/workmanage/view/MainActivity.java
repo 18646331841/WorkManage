@@ -30,7 +30,8 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void loadViewLayout() {
         String account = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_ACCOUNT, "");
-        if (TextUtils.isEmpty(account)) {
+        String ipPort = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_IP_PORT, "");
+        if (TextUtils.isEmpty(account) || TextUtils.isEmpty(ipPort)) {
             //没有登录过,跳转到登录界面
             EventBusMessage eventBusMessage = new EventBusMessage(LoginActivity.TAG);
             showActivityOrFragment(eventBusMessage);

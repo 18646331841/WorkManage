@@ -12,6 +12,8 @@ import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
 import com.barisetech.www.workmanage.view.fragment.IpFragment;
 import com.barisetech.www.workmanage.view.fragment.LoginFragment;
 
+import org.greenrobot.eventbus.EventBus;
+
 public class LoginActivity extends BaseActivity {
     public static final String TAG = "LoginActivity";
 
@@ -24,8 +26,12 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void bindViews() {
-        EventBusMessage eventBusMessage = new EventBusMessage(LoginFragment.TAG);
-        showActivityOrFragment(eventBusMessage);
+        String ipPort = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_IP_PORT, "");
+        if (TextUtils.isEmpty(ipPort)) {
+            showActivityOrFragment(new EventBusMessage(IpFragment.TAG));
+        } else {
+            showActivityOrFragment(new EventBusMessage(LoginFragment.TAG));
+        }
     }
 
     @Override
