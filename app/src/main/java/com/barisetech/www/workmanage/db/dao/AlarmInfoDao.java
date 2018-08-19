@@ -24,4 +24,7 @@ public interface AlarmInfoDao {
 
     @Query("select * from alarm_info where isRead = :isRead")
     LiveData<List<AlarmInfo>> getAlarmInfosByRead(boolean isRead);
+
+    @Query("select * from alarm_info where 'Key' = :key Limit 1")
+    LiveData<AlarmInfo> getAlarmInfo(int key);
 }

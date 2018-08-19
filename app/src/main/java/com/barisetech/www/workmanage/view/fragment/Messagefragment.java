@@ -96,6 +96,9 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
     private ItemCallBack itemCallBack = item -> {
         if (item instanceof AlarmInfo) {
             AlarmInfo alarmInfo = (AlarmInfo) item;
+            EventBusMessage eventBusMessage = new EventBusMessage(AlarmDetailsFragment.TAG);
+            eventBusMessage.setArg1(alarmInfo.getKey());
+            EventBus.getDefault().post(eventBusMessage);
             LogUtil.d(TAG, alarmInfo.toContent());
         } else if (item instanceof IncidentInfo) {
             IncidentInfo incidentInfo = (IncidentInfo) item;

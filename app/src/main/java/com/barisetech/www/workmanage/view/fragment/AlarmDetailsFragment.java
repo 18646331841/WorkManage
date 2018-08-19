@@ -1,8 +1,11 @@
 package com.barisetech.www.workmanage.view.fragment;
 
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
+import android.databinding.ObservableField;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,23 +13,46 @@ import android.view.ViewGroup;
 
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.base.BaseFragment;
+import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
+import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.databinding.FragmentAlarmDetailsBinding;
+import com.barisetech.www.workmanage.utils.LogUtil;
+import com.barisetech.www.workmanage.viewmodel.AlarmViewModel;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AlarmDetailsFragment extends BaseFragment {
+public class AlarmDetailsFragment extends BaseFragment implements View.OnClickListener{
     public static final String TAG = "AlarmDetailsFragment";
 
     private FragmentAlarmDetailsBinding mBinding;
+
+    private static final String ALARM_ID = "alarmId";
+
+    private int alarmId;
+    private AlarmViewModel alarmViewModel;
+    public ObservableField<AlarmInfo> alarmInfo;
 
     public AlarmDetailsFragment() {
         // Required empty public constructor
     }
 
-    public static AlarmDetailsFragment newInstance() {
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            alarmId = getArguments().getInt(ALARM_ID);
+        }
+    }
+
+    public static AlarmDetailsFragment newInstance(int alarmId) {
         AlarmDetailsFragment fragment = new AlarmDetailsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(ALARM_ID, alarmId);
+        fragment.setArguments(bundle);
         return fragment;
     }
 
@@ -41,16 +67,55 @@ public class AlarmDetailsFragment extends BaseFragment {
         toolbarInfo.setTitle(getString(R.string.title_alarm_details));
         observableToolbar.set(toolbarInfo);
 
+        initView();
+
         return mBinding.getRoot();
+    }
+
+    private void initView() {
+        mBinding.toMapBt.setOnClickListener(this);
+        mBinding.liftAlarmBt.setOnClickListener(this);
+        mBinding.belongLinesBt.setOnClickListener(this);
+        mBinding.waveformBt.setOnClickListener(this);
+        mBinding.buildAlarmAnalysisBt.setOnClickListener(this);
     }
 
     @Override
     public void bindViewModel() {
-
+        AlarmViewModel.Factory factory = new AlarmViewModel.Factory(getActivity().getApplication(), alarmId);
+        alarmViewModel = ViewModelProviders.of(this, factory).get(AlarmViewModel.class);
     }
 
     @Override
     public void subscribeToModel() {
+        alarmInfo = new ObservableField<>();
 
+        alarmViewModel.getmObservableAlarmInfo().observe(this, alarmInfo -> {
+            if (null != alarmInfo) {
+                LogUtil.d(TAG, alarmInfo.getDetails());
+                this.alarmInfo.set(alarmInfo);
+            }
+        });
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.to_map_bt:
+                EventBus.getDefault().post(new EventBusMessage(MapFragment.TAG));
+                break;
+            case R.id.lift_alarm_bt:
+
+                break;
+            case R.id.belong_lines_bt:
+
+                break;
+            case R.id.waveform_bt:
+
+                break;
+            case R.id.build_alarm_analysis_bt:
+
+                break;
+        }
     }
 }

@@ -12,6 +12,7 @@ import com.barisetech.www.workmanage.base.BaseApplication;
 import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
+import com.barisetech.www.workmanage.view.fragment.AlarmDetailsFragment;
 import com.barisetech.www.workmanage.view.fragment.AlarmListFragment;
 import com.barisetech.www.workmanage.view.fragment.ContentFragment;
 import com.barisetech.www.workmanage.view.fragment.FingerprintManagerFragment;
@@ -91,7 +92,7 @@ public class MainActivity extends BaseActivity {
                     break;
                 default:
                     Bundle bundle = new Bundle();
-                    bundle.putString("tag", tag);
+                    bundle.putSerializable("tag", eventBusMessage);
                     intent2Activity(bundle, SecondActivity.class);
                     break;
             }
@@ -118,6 +119,11 @@ public class MainActivity extends BaseActivity {
                     transaction
                             .addToBackStack(tag)
                             .replace(R.id.second_framelayout, FingerprintManagerFragment.newInstance(), tag).commit();
+                    break;
+                case AlarmDetailsFragment.TAG:
+                    transaction
+                            .addToBackStack(tag)
+                            .replace(R.id.second_framelayout, AlarmDetailsFragment.newInstance((int)eventBusMessage.getArg1()), tag).commit();
                     break;
             }
         }

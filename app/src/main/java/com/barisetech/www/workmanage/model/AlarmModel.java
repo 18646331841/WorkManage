@@ -172,4 +172,8 @@ public class AlarmModel extends BaseModel{
     public LiveData<List<AlarmInfo>> getAlarmInfosByRead(boolean isRead) {
         return appDatabase.alarmInfoDao().getAlarmInfosByRead(isRead);
     }
+
+    public LiveData<AlarmInfo> getAlarmInfo(int key) {
+        return appDatabase.alarmInfoDao().getAlarmInfo(key);
+    }
 }
