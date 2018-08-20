@@ -11,12 +11,13 @@ import com.barisetech.www.workmanage.base.BaseActivity;
 import com.barisetech.www.workmanage.base.BaseApplication;
 import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
+import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
 import com.barisetech.www.workmanage.view.fragment.AlarmDetailsFragment;
 import com.barisetech.www.workmanage.view.fragment.AlarmListFragment;
-import com.barisetech.www.workmanage.view.fragment.ContentFragment;
 import com.barisetech.www.workmanage.view.fragment.FingerprintManagerFragment;
 import com.barisetech.www.workmanage.view.fragment.NavigationFragment;
+import com.barisetech.www.workmanage.view.fragment.NewsFragment;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -43,17 +44,21 @@ public class MainActivity extends BaseActivity {
             isTwoPanel = true;
         }
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        if (!isTwoPanel) {
-            //小屏设备界面，单个fragment
-            transaction.add(R.id.fragment_navigation, NavigationFragment.newInstance(), NavigationFragment.TAG).commit();
-        } else {
-            //大屏设备界面，左右两个fragment
-            transaction.add(R.id.fragment_navigation, NavigationFragment.newInstance(), NavigationFragment.TAG);
-            transaction
-                    .replace(R.id.fragment_content, ContentFragment.newInstance(), ContentFragment.TAG);
-            transaction.commit();
+        Bundle bundle = getIntent().getExtras();
+        String tag = null;
+        if (null != bundle) {
+            tag = bundle.getString("tag");
         }
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//        if (!isTwoPanel) {
+//            //小屏设备界面，单个fragment
+//            transaction.add(R.id.fragment_navigation, NavigationFragment.newInstance(), NavigationFragment.TAG).commit();
+//        } else {
+//            //大屏设备界面，左右两个fragment
+        transaction.add(R.id.fragment_navigation, NavigationFragment.newInstance(tag), NavigationFragment.TAG);
+        transaction.commit();
+//        }
     }
 
     @Override
@@ -104,11 +109,6 @@ public class MainActivity extends BaseActivity {
                     intent2Activity(LoginActivity.class);
                     finish();
                     break;
-                case ContentFragment.TAG:
-                    transaction
-                            .addToBackStack(tag)
-                            .replace(R.id.fragment_content, ContentFragment.newInstance(), tag).commit();
-                    break;
                 case AlarmListFragment.TAG:
                     transaction
                             .addToBackStack(tag)
@@ -123,7 +123,13 @@ public class MainActivity extends BaseActivity {
                 case AlarmDetailsFragment.TAG:
                     transaction
                             .addToBackStack(tag)
-                            .replace(R.id.second_framelayout, AlarmDetailsFragment.newInstance((int)eventBusMessage.getArg1()), tag).commit();
+                            .replace(R.id.second_framelayout, AlarmDetailsFragment.newInstance((AlarmInfo)
+                                    eventBusMessage.getArg1()), tag).commit();
+                    break;
+                case NewsFragment.TAG:
+                    transaction
+                            .addToBackStack(tag)
+                            .replace(R.id.second_framelayout, NewsFragment.newInstance(), tag).commit();
                     break;
             }
         }

@@ -97,7 +97,7 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
         if (item instanceof AlarmInfo) {
             AlarmInfo alarmInfo = (AlarmInfo) item;
             EventBusMessage eventBusMessage = new EventBusMessage(AlarmDetailsFragment.TAG);
-            eventBusMessage.setArg1(alarmInfo.getKey());
+            eventBusMessage.setArg1(alarmInfo);
             EventBus.getDefault().post(eventBusMessage);
             LogUtil.d(TAG, alarmInfo.toContent());
         } else if (item instanceof IncidentInfo) {

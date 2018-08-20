@@ -6,11 +6,13 @@ import android.arch.persistence.room.PrimaryKey;
 
 import com.barisetech.www.workmanage.bean.MessageInfo;
 
+import java.io.Serializable;
+
 /**
  * Created by LJH on 2018/8/10.
  */
 @Entity(tableName = "alarm_info")
-public class AlarmInfo extends MessageInfo {
+public class AlarmInfo extends MessageInfo implements Serializable{
     /**
      * Key : 8
      * DisplayId : 0
@@ -257,22 +259,22 @@ public class AlarmInfo extends MessageInfo {
     public String toDetails() {
         StringBuilder sb = new StringBuilder();
         sb
-                .append("     ID  ").append(DisplayId).append("\n")
-                .append("管 线 ID  ").append(PipeId).append("\n")
-                .append("管线名称  ").append(PipeName).append("\n")
-                .append("纬    度  ").append(Latitude).append("\n")
-                .append("经    度  ").append(Longitude).append("\n")
-                .append("距    离  ").append(Distance).append("\n")
-                .append("时    间  ").append(TimeStamp).append("\n")
-                .append("类    型  ").append(Type).append("\n")
-                .append("时 间 差  ").append(TimeDiff).append("\n")
-                .append("是否解除  ").append(Lifted ? "已解除" : "未解除").append("\n")
-                .append("公    司  ").append(Company).append("\n")
-                .append("首站站名  ").append(SiteName1).append("\n")
-                .append("首站距离  ").append(Distance1).append("\n")
-                .append("末站站名  ").append(SiteName2).append("\n")
-                .append("末站距离  ").append(Distance2).append("\n")
-                .append("解 除 人  ").append(LiftUser).append("\n");
+                .append("            ID        ").append(DisplayId).append("\n")
+                .append("管  线  ID        ").append(PipeId).append("\n")
+                .append("管线名称        ").append(PipeName).append("\n")
+                .append("纬        度        ").append(Latitude).append("\n")
+                .append("经        度        ").append(Longitude).append("\n")
+                .append("距        离        ").append(Distance).append("\n")
+                .append("时        间        ").append(TimeStamp).append("\n")
+                .append("类        型        ").append(Type).append("\n")
+                .append("时  间  差        ").append(TimeDiff).append("\n")
+                .append("是否解除        ").append(Lifted ? "已解除" : "未解除").append("\n")
+                .append("公        司        ").append(Company).append("\n")
+                .append("首站站名        ").append(SiteName1).append("\n")
+                .append("首站距离        ").append(Distance1).append("\n")
+                .append("末站站名        ").append(SiteName2).append("\n")
+                .append("末站距离        ").append(Distance2).append("\n")
+                .append("解  除  人        ").append(LiftUser).append("\n");
         return sb.toString();
     }
 

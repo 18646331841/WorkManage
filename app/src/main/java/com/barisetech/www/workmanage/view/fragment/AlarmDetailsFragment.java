@@ -32,7 +32,7 @@ public class AlarmDetailsFragment extends BaseFragment implements View.OnClickLi
 
     private static final String ALARM_ID = "alarmId";
 
-    private int alarmId;
+    private AlarmInfo curAlarmInfo;
     private AlarmViewModel alarmViewModel;
     public ObservableField<AlarmInfo> alarmInfo;
 
@@ -44,14 +44,14 @@ public class AlarmDetailsFragment extends BaseFragment implements View.OnClickLi
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            alarmId = getArguments().getInt(ALARM_ID);
+            curAlarmInfo = (AlarmInfo) getArguments().getSerializable(ALARM_ID);
         }
     }
 
-    public static AlarmDetailsFragment newInstance(int alarmId) {
+    public static AlarmDetailsFragment newInstance(AlarmInfo alarmInfo) {
         AlarmDetailsFragment fragment = new AlarmDetailsFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt(ALARM_ID, alarmId);
+        bundle.putSerializable(ALARM_ID, alarmInfo);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -73,6 +73,10 @@ public class AlarmDetailsFragment extends BaseFragment implements View.OnClickLi
     }
 
     private void initView() {
+        alarmInfo = new ObservableField<>();
+        alarmInfo.set(curAlarmInfo);
+        mBinding.setMyFragment(this);
+
         mBinding.toMapBt.setOnClickListener(this);
         mBinding.liftAlarmBt.setOnClickListener(this);
         mBinding.belongLinesBt.setOnClickListener(this);
@@ -82,14 +86,12 @@ public class AlarmDetailsFragment extends BaseFragment implements View.OnClickLi
 
     @Override
     public void bindViewModel() {
-        AlarmViewModel.Factory factory = new AlarmViewModel.Factory(getActivity().getApplication(), alarmId);
+        AlarmViewModel.Factory factory = new AlarmViewModel.Factory(getActivity().getApplication(), curAlarmInfo.getKey());
         alarmViewModel = ViewModelProviders.of(this, factory).get(AlarmViewModel.class);
     }
 
     @Override
     public void subscribeToModel() {
-        alarmInfo = new ObservableField<>();
-
         alarmViewModel.getmObservableAlarmInfo().observe(this, alarmInfo -> {
             if (null != alarmInfo) {
                 LogUtil.d(TAG, alarmInfo.getDetails());

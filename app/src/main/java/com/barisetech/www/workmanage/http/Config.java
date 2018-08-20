@@ -8,6 +8,11 @@ public class Config {
     public static final String BASE_URL = "http://www.barisetech.com:8081/";
 
     /**
+     * 新闻接口默认base_url
+     */
+    public static final String NEWS_BASE_URL = "http://www.barisetech.com:8082/";
+
+    /**
      * 网络请求异常码
      */
     public static final int ERROR_UNAUTHORIZED = 401; //认证失败

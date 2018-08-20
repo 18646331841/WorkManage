@@ -6,10 +6,12 @@ import android.support.v4.app.FragmentTransaction;
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.base.BaseActivity;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
+import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.view.fragment.AlarmDetailsFragment;
 import com.barisetech.www.workmanage.view.fragment.AlarmListFragment;
-import com.barisetech.www.workmanage.view.fragment.ContentFragment;
 import com.barisetech.www.workmanage.view.fragment.FingerprintManagerFragment;
+import com.barisetech.www.workmanage.view.fragment.MapFragment;
+import com.barisetech.www.workmanage.view.fragment.NewsFragment;
 
 public class SecondActivity extends BaseActivity {
 
@@ -49,10 +51,6 @@ public class SecondActivity extends BaseActivity {
                 intent2Activity(LoginActivity.class);
                 finish();
                 break;
-            case ContentFragment.TAG:
-                transaction
-                        .replace(R.id.second_framelayout, ContentFragment.newInstance(), tag).commit();
-                break;
             case AlarmListFragment.TAG:
                 transaction
                         .replace(R.id.second_framelayout, AlarmListFragment.newInstance(), tag)
@@ -64,8 +62,17 @@ public class SecondActivity extends BaseActivity {
                 break;
             case AlarmDetailsFragment.TAG:
                 transaction
-                        .addToBackStack(tag)
-                        .replace(R.id.second_framelayout, AlarmDetailsFragment.newInstance((int)eventBusMessage.getArg1()), tag).commit();
+                        .replace(R.id.second_framelayout, AlarmDetailsFragment.newInstance((AlarmInfo)
+                                eventBusMessage.getArg1()), tag).commit();
+                break;
+            case MapFragment.TAG:
+                Bundle bundle = new Bundle();
+                bundle.putString("tag", MapFragment.TAG);
+                intent2Activity(bundle, MainActivity.class);
+                break;
+            case NewsFragment.TAG:
+                transaction
+                        .replace(R.id.second_framelayout, NewsFragment.newInstance(), tag).commit();
                 break;
         }
     }
