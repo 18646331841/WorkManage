@@ -2,6 +2,7 @@ package com.barisetech.www.workmanage.base;
 
 import android.app.Activity;
 import android.app.Application;
+import android.arch.lifecycle.Lifecycle;
 import android.content.ComponentCallbacks;
 import android.content.Context;
 import android.content.Intent;
@@ -128,7 +129,9 @@ public abstract class BaseActivity extends AppCompatActivity {
                 closeProgress();
                 break;
             default:
-                showActivityOrFragment(eventBusMessage);
+                if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                    showActivityOrFragment(eventBusMessage);
+                }
                 break;
         }
     }
