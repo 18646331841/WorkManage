@@ -68,7 +68,7 @@ public class AlarmModel extends BaseModel{
     }
 
     /**
-     * 获取所有警报
+     * 获取所有未解除警报
      * @return
      */
     public Disposable reqAllAlarm() {
@@ -98,6 +98,76 @@ public class AlarmModel extends BaseModel{
                     @Override
                     protected void onSuccess(List<AlarmInfo> response) {
                         modelCallBack.netResult(response);
+                        appDatabase.alarmInfoDao().insertAll(response);
+                    }
+                });
+        return disposable;
+    }
+
+    /**
+     * 通过参数筛选获取警报
+     * @return
+     */
+    public Disposable reqAllAlarm(ReqAllAlarm reqAllAlarm) {
+        reqAllAlarm.setMachineCode(mToken);
+        AlarmService alarmService = HttpService.getInstance().buildJsonRetrofit().create(AlarmService.class);
+        Disposable disposable = alarmService.getAllAlarm(reqAllAlarm)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribeWith(new ObserverCallBack<List<AlarmInfo>>() {
+                    @Override
+                    protected void onThrowable(Throwable e) {
+
+                    }
+
+                    @Override
+                    protected void onFailure(BaseResponse response) {
+                        if (response.Code == 401) {
+                            modelCallBack.fail(Config.ERROR_UNAUTHORIZED);
+                        }
+                    }
+
+                    @Override
+                    protected void onSuccess(List<AlarmInfo> response) {
+                        modelCallBack.netResult(response);
+                        appDatabase.alarmInfoDao().insertAll(response);
+                    }
+                });
+        return disposable;
+    }
+
+    /**
+     * 通过参数筛选获取警报并存储在数据库中
+     * @return
+     */
+    public Disposable reqAllAlarmAndToDB(ReqAllAlarm reqAllAlarm) {
+        reqAllAlarm.setMachineCode(mToken);
+        AlarmService alarmService = HttpService.getInstance().buildJsonRetrofit().create(AlarmService.class);
+        Disposable disposable = alarmService.getAllAlarm(reqAllAlarm)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribeWith(new ObserverCallBack<List<AlarmInfo>>() {
+                    @Override
+                    protected void onThrowable(Throwable e) {
+
+                    }
+
+                    @Override
+                    protected void onFailure(BaseResponse response) {
+                        if (response.Code == 401) {
+                            modelCallBack.fail(Config.ERROR_UNAUTHORIZED);
+                        }
+                    }
+
+                    @Override
+                    protected void onSuccess(List<AlarmInfo> response) {
+                        for(int i = 0; i < response.size(); i++) {
+                            AlarmInfo alarmInfo = appDatabase.alarmInfoDao().getAlarmInfoSync(response.get(i).getKey());
+                            if (null != alarmInfo) {
+                                response.get(i).setRead(alarmInfo.isRead());
+                                LogUtil.d(TAG, "response is read = " + alarmInfo.toString());
+                            }
+                        }
                         appDatabase.alarmInfoDao().insertAll(response);
                     }
                 });

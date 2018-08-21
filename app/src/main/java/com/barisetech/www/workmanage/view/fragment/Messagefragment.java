@@ -13,15 +13,19 @@ import android.view.ViewGroup;
 
 import com.barisetech.www.workmanage.adapter.MessageAdapter;
 import com.barisetech.www.workmanage.adapter.ItemCallBack;
+import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.MessageInfo;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
+import com.barisetech.www.workmanage.bean.alarm.ReqAllAlarm;
 import com.barisetech.www.workmanage.bean.incident.IncidentInfo;
 import com.barisetech.www.workmanage.databinding.FragmentMessageBinding;
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.utils.LogUtil;
+import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
+import com.barisetech.www.workmanage.utils.TimeUtil;
 import com.barisetech.www.workmanage.viewmodel.AlarmViewModel;
 import com.barisetech.www.workmanage.viewmodel.IncidentViewModel;
 import com.noober.menu.FloatMenu;
@@ -116,7 +120,7 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
                 EventBus.getDefault().post(new EventBusMessage(EventFragment.TAG));
                 break;
             case R.id.img_analysis_alarm:
-                EventBus.getDefault().post(new EventBusMessage(AnalysisWarnFragment.TAG));
+                EventBus.getDefault().post(new EventBusMessage(AlarmAnalysisFragment.TAG));
                 break;
             case R.id.img_news:
                 EventBus.getDefault().post(new EventBusMessage(NewsFragment.TAG));
@@ -177,7 +181,17 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
             }
         });
 
-        alarmViewModel.getAllAlarm();
+        //TODO 需要确定好逻辑
+//        ReqAllAlarm reqAllAlarm = new ReqAllAlarm();
+//        String endTime = TimeUtil.ms2Date(System.currentTimeMillis());
+//        reqAllAlarm.setStartIndex("1");
+//        reqAllAlarm.setNumberOfRecords("1");
+//        reqAllAlarm.setIsAllAlarm("true");
+//        reqAllAlarm.setGetByTimeDiff("true");
+//        reqAllAlarm.setEndTime(endTime);
+//        reqAllAlarm.setStartTime(SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_LAST_TIME_NEWINFO, endTime));
+
+        alarmViewModel.getAllUnliftAlarm();
         incidentViewModel.reqAllIncident();
     }
 

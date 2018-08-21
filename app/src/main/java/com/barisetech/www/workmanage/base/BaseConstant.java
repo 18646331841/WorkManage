@@ -15,6 +15,8 @@ public class BaseConstant {
     public static final String SP_TOKEN = "token";
     //Ip port, value = ip_port
     public static final String SP_IP_PORT = "ip_port";
+    //上次请求新消息的时间
+    public static final String SP_LAST_TIME_NEWINFO = "last_time";
 
     /**
      * progress

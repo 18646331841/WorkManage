@@ -285,4 +285,32 @@ public class AlarmInfo extends MessageInfo implements Serializable{
     public void setDetails(String details) {
         this.details = details;
     }
+
+    @Override
+    public String toString() {
+        return "AlarmInfo{" +
+                "Key=" + Key +
+                ", DisplayId=" + DisplayId +
+                ", PipeId=" + PipeId +
+                ", Latitude=" + Latitude +
+                ", Longitude=" + Longitude +
+                ", Distance=" + Distance +
+                ", TimeStamp='" + TimeStamp + '\'' +
+                ", Type=" + Type +
+                ", TimeDiff=" + TimeDiff +
+                ", Lifted=" + Lifted +
+                ", Company='" + Company + '\'' +
+                ", LeakId=" + LeakId +
+                ", SiteName1='" + SiteName1 + '\'' +
+                ", Distance1=" + Distance1 +
+                ", SiteName2='" + SiteName2 + '\'' +
+                ", Distance2=" + Distance2 +
+                ", PipeName='" + PipeName + '\'' +
+                ", LiftUser='" + LiftUser + '\'' +
+                ", WarningMessage='" + WarningMessage + '\'' +
+                ", Remark='" + Remark + '\'' +
+                ", isRead=" + isRead +
+                ", details='" + details + '\'' +
+                '}';
+    }
 }

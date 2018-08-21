@@ -13,4 +13,7 @@
     <color name="alarm_details_card_title">#a3c1da</color>
     <color name="red_alarm_lift">#f36161</color>
     <color name="gray_alarm_details_text">#666666</color>
+
+    <color name="alarm_analysis_split_line">#E9EAEC</color>
+    <color name="alarm_analysis_reason">#333333</color>
 </resources>

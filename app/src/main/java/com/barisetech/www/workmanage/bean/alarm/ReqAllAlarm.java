@@ -15,6 +15,15 @@ public class ReqAllAlarm {
     private String startIndex;
     private String numberOfRecords;
     private String isAllAlarm;
+    /**
+     * getByTimeDiff : true
+     * startTime : 2000-01-01 12:12:12
+     * endTime : 2050-01-01 12:12:12
+     */
+
+    private String getByTimeDiff;
+    private String startTime;
+    private String endTime;
 
     public String getMachineCode() {
         return MachineCode;
@@ -56,5 +65,29 @@ public class ReqAllAlarm {
                 ", numberOfRecords='" + numberOfRecords + '\'' +
                 ", isAllAlarm='" + isAllAlarm + '\'' +
                 '}';
+    }
+
+    public String getGetByTimeDiff() {
+        return getByTimeDiff;
+    }
+
+    public void setGetByTimeDiff(String getByTimeDiff) {
+        this.getByTimeDiff = getByTimeDiff;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 }

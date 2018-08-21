@@ -13,6 +13,7 @@ import com.barisetech.www.workmanage.base.BaseApplication;
 import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
+import com.barisetech.www.workmanage.bean.alarm.ReqAllAlarm;
 import com.barisetech.www.workmanage.callback.ModelCallBack;
 import com.barisetech.www.workmanage.db.AppDatabase;
 import com.barisetech.www.workmanage.http.Config;
@@ -63,8 +64,31 @@ public class AlarmViewModel extends AndroidViewModel implements ModelCallBack {
         mDisposable.add(alarmModel.reqAlarmNum());
     }
 
-    public void getAllAlarm() {
+    /**
+     * 获取所有未解除警报
+     */
+    public void getAllUnliftAlarm() {
         mDisposable.add(alarmModel.reqAllAlarm());
+    }
+
+    /**
+     * 通过条件筛选获取，并保存入数据库
+     * @param reqAllAlarm
+     */
+    public void getAllAlarmByCondition(ReqAllAlarm reqAllAlarm) {
+        if (null != reqAllAlarm) {
+            mDisposable.add(alarmModel.reqAllAlarm(reqAllAlarm));
+        }
+    }
+
+    /**
+     * 通过条件筛选获取警报，并保存入数据库
+     * @param reqAllAlarm
+     */
+    public void getAllAlarmByConditionToDB(ReqAllAlarm reqAllAlarm) {
+        if (null != reqAllAlarm) {
+            mDisposable.add(alarmModel.reqAllAlarmAndToDB(reqAllAlarm));
+        }
     }
 
     public void reqLiftAlarm(int alarmId) {

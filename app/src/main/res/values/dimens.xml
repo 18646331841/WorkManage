@@ -21,12 +21,14 @@
     <dimen name="dp_47">47dp</dimen>
     <dimen name="dp_67">67dp</dimen>
     <dimen name="dp_40">40dp</dimen>
+    <dimen name="dp_1">1dp</dimen>
     <dimen name="dp_2">2dp</dimen>
     <dimen name="dp_5">5dp</dimen>
     <dimen name="dp_25">25dp</dimen>
     <dimen name="dp_13">13dp</dimen>
     <dimen name="dp_14">14dp</dimen>
     <dimen name="dp_15">15dp</dimen>
+    <dimen name="dp_16">16dp</dimen>
     <dimen name="dp_30">30dp</dimen>
 
     <!--sp-->

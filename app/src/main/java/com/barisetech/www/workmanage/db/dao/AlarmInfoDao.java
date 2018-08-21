@@ -27,4 +27,7 @@ public interface AlarmInfoDao {
 
     @Query("select * from alarm_info where 'Key' = :key Limit 1")
     LiveData<AlarmInfo> getAlarmInfo(int key);
+
+    @Query("select * from alarm_info where 'Key' = :key Limit 1")
+    AlarmInfo getAlarmInfoSync(int key);
 }
