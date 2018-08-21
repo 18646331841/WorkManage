@@ -12,6 +12,7 @@ import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
+import com.barisetech.www.workmanage.databinding.FragmentAlarmAnalysisBinding;
 import com.barisetech.www.workmanage.viewmodel.AlarmViewModel;
 
 public class AlarmAnalysisFragment extends BaseFragment {
@@ -19,9 +20,9 @@ public class AlarmAnalysisFragment extends BaseFragment {
 
     private static final String ALARM_ID = "alarmId";
 
+    private FragmentAlarmAnalysisBinding mBinding;
     private AlarmInfo curAlarmInfo;
 //    private AlarmViewModel alarmViewModel;
-    private FragmentAlarmAnalysisBinding mBinding;
     public ObservableField<AlarmInfo> alarmInfo;
 
 
