@@ -13,6 +13,7 @@ import android.util.AttributeSet;
 import android.util.Xml;
 import android.view.Gravity;
 import android.view.InflateException;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -83,82 +84,138 @@ public class FloatMenu extends PopupWindow{
 		menuItemList = new ArrayList<>();
 	}
 
-	public void inflate(int menuRes) {
-		inflate(menuRes, DEFAULT_MENU_WIDTH);
-	}
-
-	public void inflate(int menuRes, int itemWidth) {
-		XmlResourceParser parser = null;
-		try {
-			parser = context.getResources().getLayout(menuRes);
-			AttributeSet attrs = Xml.asAttributeSet(parser);
-			parseMenu(parser, attrs);
-		} catch (XmlPullParserException e) {
-			throw new InflateException("Error inflating menu XML", e);
-		} catch (IOException e) {
-			throw new InflateException("Error inflating menu XML", e);
-		} finally {
-			if (parser != null) parser.close();
-		}
-		generateLayout(itemWidth);
-	}
-
-	public void items(String... items) {
-		items(DEFAULT_MENU_WIDTH, items);
-	}
-
-	public void items(int itemWidth, String... items) {
-		menuItemList.clear();
-		for(int i=0; i < items.length; i ++){
-			MenuItem menuModel = new MenuItem();
-			menuModel.setItem(items[i]);
-			menuItemList.add(menuModel);
-		}
-		generateLayout(itemWidth);
-	}
-
-	public <T extends MenuItem> void items(List<T> itemList) {
-		menuItemList.clear();
-		menuItemList.addAll(itemList);
-		generateLayout(DEFAULT_MENU_WIDTH);
-	}
-
-	public <T extends MenuItem> void items(List<T> itemList, int itemWidth) {
-		menuItemList.clear();
-		menuItemList.addAll(itemList);
-		generateLayout(itemWidth);
-	}
-
-	private void generateLayout(int itemWidth) {
+//	public void inflate(int menuRes) {
+//		inflate(menuRes, DEFAULT_MENU_WIDTH);
+//	}
+//
+//	public void inflate(int menuRes, LinearLayout itemWidth) {
+//		XmlResourceParser parser = null;
+//		try {
+//			parser = context.getResources().getLayout(menuRes);
+//			AttributeSet attrs = Xml.asAttributeSet(parser);
+//			parseMenu(parser, attrs);
+//		} catch (XmlPullParserException e) {
+//			throw new InflateException("Error inflating menu XML", e);
+//		} catch (IOException e) {
+//			throw new InflateException("Error inflating menu XML", e);
+//		} finally {
+//			if (parser != null) parser.close();
+//		}
+//		generateLayout(itemWidth);
+//	}
+	public void inflate(int viewId){
 		menuLayout = new LinearLayout(context);
-		menuLayout.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.item_shape));
-		menuLayout.setOrientation(LinearLayout.VERTICAL);
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-			menuLayout.setElevation(20);
+		LinearLayout linearLayout = (LinearLayout) LayoutInflater.from(context).inflate(viewId, menuLayout);
+		generateLayout(linearLayout);
+	}
+
+//	public void items(String... items) {
+//		items(DEFAULT_MENU_WIDTH, items);
+//	}
+//
+//	public void items(int itemWidth, String... items) {
+//		menuItemList.clear();
+//		for(int i=0; i < items.length; i ++){
+//			MenuItem menuModel = new MenuItem();
+//			menuModel.setItem(items[i]);
+//			menuItemList.add(menuModel);
+//		}
+//		generateLayout(itemWidth);
+//	}
+//
+//	public <T extends MenuItem> void items(List<T> itemList) {
+//		menuItemList.clear();
+//		menuItemList.addAll(itemList);
+//		generateLayout(DEFAULT_MENU_WIDTH);
+//	}
+//
+//	public <T extends MenuItem> void items(List<T> itemList, int itemWidth) {
+//		menuItemList.clear();
+//		menuItemList.addAll(itemList);
+//		generateLayout(itemWidth);
+//	}
+
+//	private void generateLayout(int itemWidth) {
+//		menuLayout = new LinearLayout(context);
+//		menuLayout.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.item_shape));
+//		menuLayout.setOrientation(LinearLayout.VERTICAL);
+//		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//			menuLayout.setElevation(20);
+//		}
+//		int padding = Display.dip2px(context, 12);
+//		for(int i = 0; i < menuItemList.size(); i ++){
+//			TextView textView = new TextView(context);
+//			textView.setClickable(true);
+//			textView.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.selector_tv_bg_blue));
+//			textView.setPadding(padding, padding, padding, padding);
+//			textView.setWidth(itemWidth);
+//			textView.setTextColor(ContextCompat.getDrawable(context,R.drawable.selector_tv_white));
+//			textView.setGravity(Gravity.CENTER);
+//			textView.setTextSize(15);
+//			MenuItem menuModel = menuItemList.get(i);
+//			if(menuModel.getItemResId() != View.NO_ID){
+//				Drawable drawable = ContextCompat.getDrawable(context, menuModel.getItemResId());
+//				drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+//				textView.setCompoundDrawablePadding(Display.dip2px(context, 12));
+//				textView.setCompoundDrawables(drawable, null, null, null);
+//			}
+//			textView.setText(menuModel.getItem());
+//			if(onItemClickListener != null){
+//				textView.setOnClickListener(new ItemOnClickListener(i));
+//			}
+//			menuLayout.addView(textView);
+//		}
+//		int width = View.MeasureSpec.makeMeasureSpec(0,View.MeasureSpec.UNSPECIFIED);
+//		int height =View.MeasureSpec.makeMeasureSpec(0,View.MeasureSpec.UNSPECIFIED);
+//		menuLayout.measure(width,height);
+//		menuWidth = menuLayout.getMeasuredWidth();
+//		menuHeight = menuLayout.getMeasuredHeight();
+//		setContentView(menuLayout);
+//		setWidth(menuWidth);
+//		setHeight(menuHeight);
+//
+//	}
+
+	private void generateLayout(LinearLayout layoutView) {
+//		menuLayout = (LinearLayout) layoutView;
+		LinearLayout linearLayout = (LinearLayout) layoutView.getChildAt(0);
+		int count = linearLayout.getChildCount();
+		for (int i = 0; i < count; i++) {
+			TextView view = (TextView) linearLayout.getChildAt(i);
+			view.setWidth(DEFAULT_MENU_WIDTH);
+			int padding = Display.dip2px(context, 12);
+			view.setPadding(padding, padding, padding, padding);
+			view.setOnClickListener(new ItemOnClickListener(i));
 		}
-		int padding = Display.dip2px(context, 12);
-		for(int i = 0; i < menuItemList.size(); i ++){
-			TextView textView = new TextView(context);
-			textView.setClickable(true);
-			textView.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.selector_tv_bg_blue));
-			textView.setPadding(padding, padding, padding, padding);
-			textView.setWidth(itemWidth);
-			textView.setTextColor(R.drawable.selector_tv_white);
-			textView.setGravity(Gravity.CENTER);
-			textView.setTextSize(15);
-			MenuItem menuModel = menuItemList.get(i);
-			if(menuModel.getItemResId() != View.NO_ID){
-				Drawable drawable = ContextCompat.getDrawable(context, menuModel.getItemResId());
-				drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-				textView.setCompoundDrawablePadding(Display.dip2px(context, 12));
-				textView.setCompoundDrawables(drawable, null, null, null);
-			}
-			textView.setText(menuModel.getItem());
-			if(onItemClickListener != null){
-				textView.setOnClickListener(new ItemOnClickListener(i));
-			}
-			menuLayout.addView(textView);
-		}
+//		menuLayout = new LinearLayout(context);
+//		menuLayout.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.item_shape));
+//		menuLayout.setOrientation(LinearLayout.VERTICAL);
+//		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//			menuLayout.setElevation(20);
+//		}
+//		int padding = Display.dip2px(context, 12);
+//		for(int i = 0; i < menuItemList.size(); i ++){
+//			TextView textView = new TextView(context);
+//			textView.setClickable(true);
+//			textView.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.selector_tv_bg_blue));
+//			textView.setPadding(padding, padding, padding, padding);
+//			textView.setWidth(itemWidth);
+//			textView.setTextColor(ContextCompat.getDrawable(context,R.drawable.selector_tv_white));
+//			textView.setGravity(Gravity.CENTER);
+//			textView.setTextSize(15);
+//			MenuItem menuModel = menuItemList.get(i);
+//			if(menuModel.getItemResId() != View.NO_ID){
+//				Drawable drawable = ContextCompat.getDrawable(context, menuModel.getItemResId());
+//				drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+//				textView.setCompoundDrawablePadding(Display.dip2px(context, 12));
+//				textView.setCompoundDrawables(drawable, null, null, null);
+//			}
+//			textView.setText(menuModel.getItem());
+//			if(onItemClickListener != null){
+//				textView.setOnClickListener(new ItemOnClickListener(i));
+//			}
+//			menuLayout.addView(textView);
+//		}
 		int width = View.MeasureSpec.makeMeasureSpec(0,View.MeasureSpec.UNSPECIFIED);
 		int height =View.MeasureSpec.makeMeasureSpec(0,View.MeasureSpec.UNSPECIFIED);
 		menuLayout.measure(width,height);
@@ -167,7 +224,6 @@ public class FloatMenu extends PopupWindow{
 		setContentView(menuLayout);
 		setWidth(menuWidth);
 		setHeight(menuHeight);
-
 	}
 
 	private void parseMenu(XmlPullParser parser, AttributeSet attrs) throws XmlPullParserException, IOException {

@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.barisetech.www.workmanage.adapter.MessageAdapter;
 import com.barisetech.www.workmanage.adapter.ItemCallBack;
@@ -90,8 +91,22 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
             @Override
             public void onItemClick(View view, int position) {
                 FloatMenu floatMenu = new FloatMenu(getActivity());
-                floatMenu.items("菜单1", "菜单2", "菜单3");
+//                floatMenu.items("菜单1", "菜单2", "菜单3");
+                floatMenu.inflate(R.layout.layout_menu_warn);
                 floatMenu.show(mpoint);
+                floatMenu.setOnItemClickListener(new FloatMenu.OnItemClickListener() {
+                    @Override
+                    public void onClick(View v, int position) {
+                        switch (position){
+                            case 1:
+                                Toast.makeText(getActivity(), "1", Toast.LENGTH_SHORT).show();
+                                break;
+                            case 2:
+                                Toast.makeText(getActivity(), "2", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    }
+                });
             }
         });
         return mBinding.getRoot();
