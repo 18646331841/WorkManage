@@ -16,4 +16,8 @@
 
     <color name="alarm_analysis_split_line">#E9EAEC</color>
     <color name="alarm_analysis_reason">#333333</color>
+
+
+    <drawable name="button_text_white">#FFFFFF</drawable>
+    <drawable name="button_text_blue">#30a0ff</drawable>
 </resources>
