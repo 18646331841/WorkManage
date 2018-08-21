@@ -8,7 +8,18 @@
     <string name="new_message">新消息</string>
     <string name="title_warn">警报</string>
     <string name="title_event">事件</string>
+
     <string name="title_news">新闻</string>
+
+    <string name="title_news_add">添加新闻</string>
+    <string name="news_add_input_title">请输入新闻标题</string>
+    <string name="news_add_input_describe">请输入新闻描述（20个字以内）</string>
+    <string name="news_add_input_link">请输入新闻链接</string>
+    <string name="news_add_select_type">请选择新闻类别</string>
+    <string name="news_add_type_company">公司</string>
+    <string name="news_add_type_industry">行业</string>
+    <string name="news_add_img_upload">上传图片</string>
+    <string name="news_add_confirm_upload">确认添加</string>
 
     <string name="title_alarm_analysis">警报分析</string>
     <string name="alarm_analysis_reason">选择警报原因</string>

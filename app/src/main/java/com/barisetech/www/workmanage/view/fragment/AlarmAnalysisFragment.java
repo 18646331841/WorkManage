@@ -22,7 +22,7 @@ public class AlarmAnalysisFragment extends BaseFragment {
 
     private FragmentAlarmAnalysisBinding mBinding;
     private AlarmInfo curAlarmInfo;
-//    private AlarmViewModel alarmViewModel;
+    private AlarmViewModel alarmViewModel;
     public ObservableField<AlarmInfo> alarmInfo;
 
 
@@ -56,8 +56,8 @@ public class AlarmAnalysisFragment extends BaseFragment {
         ToolbarInfo toolbarInfo = new ToolbarInfo();
         toolbarInfo.setTitle(getString(R.string.title_alarm_analysis));
         observableToolbar.set(toolbarInfo);
-//
-//        initView();
+
+        initView();
 
         return mBinding.getRoot();
     }
