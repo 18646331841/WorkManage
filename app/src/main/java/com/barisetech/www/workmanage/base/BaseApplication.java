@@ -40,7 +40,7 @@ public class BaseApplication extends Application {
         String tag = activity.getLocalClassName();
         RxPermissions rxPermission = new RxPermissions(activity);
         Disposable disposable = rxPermission
-                .requestEach(Manifest.permission.ACCESS_FINE_LOCATION)
+                .requestEach(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .subscribe(permission -> {
                     if (permission.granted) {
                         // 用户已经同意该权限

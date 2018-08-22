@@ -11,6 +11,7 @@ import com.barisetech.www.workmanage.view.fragment.AlarmDetailsFragment;
 import com.barisetech.www.workmanage.view.fragment.AlarmListFragment;
 import com.barisetech.www.workmanage.view.fragment.FingerprintManagerFragment;
 import com.barisetech.www.workmanage.view.fragment.MapFragment;
+import com.barisetech.www.workmanage.view.fragment.NewsAddFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsFragment;
 
 public class SecondActivity extends BaseActivity {
@@ -73,6 +74,10 @@ public class SecondActivity extends BaseActivity {
             case NewsFragment.TAG:
                 transaction
                         .replace(R.id.second_framelayout, NewsFragment.newInstance(), tag).commit();
+                break;
+            case NewsAddFragment.TAG:
+                transaction
+                        .replace(R.id.second_framelayout, NewsAddFragment.newInstance(), tag).commit();
                 break;
         }
     }

@@ -23,6 +23,7 @@
 
     <string name="title_alarm_analysis">警报分析</string>
     <string name="alarm_analysis_reason">选择警报原因</string>
+    <string name="alarm_analysis_content">警报内容</string>
 
     <string name="title_alarm_details">警报详情</string>
     <string name="alarm_to_map">转到地图</string>

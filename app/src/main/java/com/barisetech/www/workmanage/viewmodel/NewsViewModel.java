@@ -2,6 +2,9 @@ package com.barisetech.www.workmanage.viewmodel;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
+import android.arch.lifecycle.MediatorLiveData;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 
 import com.barisetech.www.workmanage.bean.TypeResponse;
@@ -18,14 +21,22 @@ import io.reactivex.disposables.CompositeDisposable;
  */
 public class NewsViewModel extends AndroidViewModel implements ModelCallBack {
     private static final String TAG = "NewsViewModel";
+    private Handler mDelivery;
 
     private NewsModel newsModel;
     private CompositeDisposable mDisposable = new CompositeDisposable();
 
+    private MediatorLiveData<Integer> mObservableAddResult;
+
     public NewsViewModel(@NonNull Application application) {
         super(application);
 
+        mDelivery = new Handler(Looper.getMainLooper());
+
         newsModel = new NewsModel(this);
+
+        mObservableAddResult = new MediatorLiveData<>();
+        mObservableAddResult.setValue(null);
     }
 
     public void reqNewsNum() {
@@ -48,12 +59,32 @@ public class NewsViewModel extends AndroidViewModel implements ModelCallBack {
     public void netResult(Object object) {
         if (object instanceof TypeResponse) {
             TypeResponse typeResponse = (TypeResponse) object;
-            LogUtil.d(TAG, typeResponse.toString());
+            mDelivery.post(() -> {
+                switch (typeResponse.type) {
+                    case NewsModel.TYPE_ADD:
+                        mObservableAddResult.setValue((Integer) typeResponse.data);
+                        break;
+                }
+            });
         }
     }
 
     @Override
     public void fail(int errorCode) {
 
+    }
+
+    /**
+     * 获取增加和修改新闻请求结果
+     * @return
+     */
+    public MediatorLiveData<Integer> getmObservableAddResult() {
+        return mObservableAddResult;
+    }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        mDelivery = null;
     }
 }

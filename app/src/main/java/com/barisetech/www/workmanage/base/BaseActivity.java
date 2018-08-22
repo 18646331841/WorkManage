@@ -31,6 +31,8 @@ import io.reactivex.annotations.NonNull;
  * Created by LJH on 2018/7/9.
  */
 public abstract class BaseActivity extends AppCompatActivity {
+    private static final String TAG = "BaseActivity";
+
     protected Context mContext;
     protected CommonDialogFragment commonDialogFragment;
 
@@ -63,8 +65,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+            LogUtil.d(TAG, "back key");
             if (null != commonDialogFragment) {
-                commonDialogFragment.dismiss();
+                closeProgress();
+                LogUtil.d(TAG, "commonDialogFragment dismiss");
                 return true;
             }
         }
@@ -165,6 +169,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private void closeProgress() {
         if (null != commonDialogFragment) {
             commonDialogFragment.dismiss();
+            commonDialogFragment = null;
         }
     }
 
