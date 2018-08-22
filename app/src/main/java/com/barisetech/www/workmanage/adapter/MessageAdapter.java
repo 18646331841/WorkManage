@@ -14,12 +14,21 @@ import com.barisetech.www.workmanage.bean.MessageInfo;
 import com.barisetech.www.workmanage.databinding.ItemMessageBinding;
 import com.barisetech.www.workmanage.utils.LogUtil;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.Myholder>{
     private static final String TAG = "MessageAdapter";
     private List<? extends MessageInfo> mList;
     private OnItemClickListener mOnItemClickListener;
+
+
+    private int flag;
+
+
+    public void setFlag(int i){
+        flag = i;
+    }
 
     @Nullable
     private final ItemCallBack mItemCallBack;
@@ -88,6 +97,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.Myholder
         LogUtil.d(TAG, "messageType = " + messageInfo.getMessageType());
         holder.binding.messageType.setBackgroundResource(messageInfo.getMessageType() == MessageInfo.TYPE_ALARM ?
                 R.drawable.type_alarm : R.drawable.type_incident);
+        if (flag==1){
+            holder.binding.selectItem.setVisibility(View.VISIBLE);
+        }else if (flag==2){
+            holder.binding.selectItem.setVisibility(View.GONE);
+        }else if (flag ==3){
+            holder.binding.selectItem.setChecked(true);
+        }
+
         holder.binding.executePendingBindings();
         if (mOnItemClickListener != null){
             holder.binding.getRoot().setOnLongClickListener(new View.OnLongClickListener() {

@@ -6,10 +6,12 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.barisetech.www.workmanage.adapter.MessageAdapter;
@@ -82,6 +84,10 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
         mBinding.messageRecyclerView.setLayoutManager(llm);
         mBinding.messageRecyclerView.setAdapter(messageAdapter);
 
+
+        mBinding.allSelectTv.setOnClickListener(this);
+        mBinding.cancelTv.setOnClickListener(this);
+        mBinding.markReadTv.setOnClickListener(this);
         mBinding.scrollTitleView.setmRecyclerView(mBinding.messageRecyclerView);
         mBinding.imgAlarm.setOnClickListener(this);
         mBinding.imgAnalysisAlarm.setOnClickListener(this);
@@ -101,8 +107,11 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
                             case 1:
                                 Toast.makeText(getActivity(), "1", Toast.LENGTH_SHORT).show();
                                 break;
-                            case 2:
-                                Toast.makeText(getActivity(), "2", Toast.LENGTH_SHORT).show();
+                            case 5:
+                                mBinding.mulitpleMenu.setVisibility(View.VISIBLE);
+                                mBinding.tvNewMsg.setVisibility(View.GONE);
+                                messageAdapter.setFlag(1);
+                                messageAdapter.notifyDataSetChanged();
                                 break;
                         }
                     }
@@ -141,6 +150,17 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
 //                EventBus.getDefault().post(new EventBusMessage(NewsFragment.TAG));
                 EventBus.getDefault().post(new EventBusMessage(NewsAddFragment.TAG));
                 break;
+            case R.id.all_select_tv:
+                break;
+            case R.id.mark_read_tv:
+                break;
+            case R.id.cancel_tv:
+                mBinding.mulitpleMenu.setVisibility(View.GONE);
+                mBinding.tvNewMsg.setVisibility(View.VISIBLE);
+                messageAdapter.setFlag(2);
+                messageAdapter.notifyDataSetChanged();
+                break;
+
         }
 
     }
