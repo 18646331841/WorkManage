@@ -1,24 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="wrap_content"
-    android:layout_height="180dp"
+    android:layout_height="270dp"
     android:background="@drawable/item_shape"
     android:elevation="10dp"
-    android:orientation="vertical">
+    android:layout_margin="10dp"
+    android:orientation="vertical"
+    android:weightSum="6">
     <TextView
-        android:text="1"
+        android:id="@+id/alarm_to_map"
+        android:text="@string/alarm_to_map"
+        android:padding="@dimen/dp_5"
+        android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/selector_tv_top_blue"
+        android:textColor="@drawable/selector_tv_white"/>
     <TextView
-        android:text="1"
+        android:id="@+id/alarm_lift"
+        android:text="@string/alarm_lift"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:padding="@dimen/dp_5"
+        android:gravity="center"
+        android:background="@drawable/selector_tv_bg_blue"
+        android:textColor="@drawable/selector_tv_white"/>
+
     <TextView
-        android:text="1"
+        android:id="@+id/belong_line"
+        android:text="@string/belong_line"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:padding="@dimen/dp_5"
+        android:gravity="center"
+        android:background="@drawable/selector_tv_bg_blue"
+        android:textColor="@drawable/selector_tv_white"/>
     <TextView
-        android:text="1"
+        android:id="@+id/waveform"
+        android:text="@string/waveform"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:padding="@dimen/dp_5"
+        android:gravity="center"
+        android:background="@drawable/selector_tv_bg_blue"
+        android:textColor="@drawable/selector_tv_white"/>
+
+    <TextView
+        android:id="@+id/build_alarm_analysis"
+        android:text="@string/build_alarm_analysis"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:padding="@dimen/dp_5"
+        android:gravity="center"
+        android:background="@drawable/selector_tv_bg_blue"
+        android:textColor="@drawable/selector_tv_white"/>
+
+    <TextView
+        android:id="@+id/mulitple_selection"
+        android:text="@string/mulitple_selection"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:padding="@dimen/dp_5"
+        android:gravity="center"
+        android:background="@drawable/selector_tv_bottom_blue"
+        android:textColor="@drawable/selector_tv_white"/>
+
 </LinearLayout>

@@ -69,6 +69,8 @@
     <string name="mark_read">标记为已读</string>
     <string name="cancel_all_select">取消</string>
 
+    <string name="mulitple_selection">多选</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
