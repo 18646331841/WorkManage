@@ -104,11 +104,12 @@ public class AlarmViewModel extends AndroidViewModel implements ModelCallBack {
 
     @Override
     public void netResult(Object object) {
-
+        EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_CLOSE));
     }
 
     @Override
     public void fail(int errorCode) {
+        EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_CLOSE));
         if (errorCode == Config.ERROR_UNAUTHORIZED) {
             EventBus.getDefault().post(new EventBusMessage(LoginActivity.TAG));
         }

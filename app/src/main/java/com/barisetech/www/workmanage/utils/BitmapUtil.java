@@ -56,6 +56,24 @@ public class BitmapUtil {
         return result;
     }
 
+    /**
+     * string转成bitmap
+     *
+     * @param str
+     */
+    public static Bitmap stringToBitmap(String str) {
+        // OutputStream out;
+        Bitmap bitmap = null;
+        try {
+            // out = new FileOutputStream("/sdcard/aa.jpg");
+            byte[] bytes= Base64.decode(str, Base64.DEFAULT);
+            bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            // bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+            return bitmap;
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
     /**
      * 根据bitmap压缩图片质量

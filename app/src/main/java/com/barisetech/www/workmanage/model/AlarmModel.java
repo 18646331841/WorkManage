@@ -48,7 +48,7 @@ public class AlarmModel extends BaseModel{
                 .subscribeWith(new ObserverCallBack<Integer>(){
                     @Override
                     protected void onThrowable(Throwable e) {
-
+                        modelCallBack.fail(Config.ERROR_NETWORK);
                     }
 
                     @Override
@@ -56,6 +56,7 @@ public class AlarmModel extends BaseModel{
                         if (response.Code == 401) {
                             modelCallBack.fail(Config.ERROR_UNAUTHORIZED);
                         }
+                        modelCallBack.fail(Config.ERROR_FAIL);
                     }
 
                     @Override
@@ -85,7 +86,7 @@ public class AlarmModel extends BaseModel{
                 .subscribeWith(new ObserverCallBack<List<AlarmInfo>>() {
                     @Override
                     protected void onThrowable(Throwable e) {
-
+                        modelCallBack.fail(Config.ERROR_NETWORK);
                     }
 
                     @Override
@@ -93,6 +94,7 @@ public class AlarmModel extends BaseModel{
                         if (response.Code == 401) {
                             modelCallBack.fail(Config.ERROR_UNAUTHORIZED);
                         }
+                        modelCallBack.fail(Config.ERROR_FAIL);
                     }
 
                     @Override
@@ -117,6 +119,7 @@ public class AlarmModel extends BaseModel{
                 .subscribeWith(new ObserverCallBack<List<AlarmInfo>>() {
                     @Override
                     protected void onThrowable(Throwable e) {
+                        modelCallBack.fail(Config.ERROR_NETWORK);
 
                     }
 
@@ -125,6 +128,7 @@ public class AlarmModel extends BaseModel{
                         if (response.Code == 401) {
                             modelCallBack.fail(Config.ERROR_UNAUTHORIZED);
                         }
+                        modelCallBack.fail(Config.ERROR_FAIL);
                     }
 
                     @Override
@@ -149,7 +153,7 @@ public class AlarmModel extends BaseModel{
                 .subscribeWith(new ObserverCallBack<List<AlarmInfo>>() {
                     @Override
                     protected void onThrowable(Throwable e) {
-
+                        modelCallBack.fail(Config.ERROR_NETWORK);
                     }
 
                     @Override
@@ -157,6 +161,7 @@ public class AlarmModel extends BaseModel{
                         if (response.Code == 401) {
                             modelCallBack.fail(Config.ERROR_UNAUTHORIZED);
                         }
+                        modelCallBack.fail(Config.ERROR_FAIL);
                     }
 
                     @Override
@@ -186,7 +191,7 @@ public class AlarmModel extends BaseModel{
                 .subscribeWith(new ObserverCallBack<AlarmInfoNewest>() {
                     @Override
                     protected void onThrowable(Throwable e) {
-
+                        modelCallBack.fail(Config.ERROR_NETWORK);
                     }
 
                     @Override
@@ -194,6 +199,7 @@ public class AlarmModel extends BaseModel{
                         if (response.Code == 401) {
                             modelCallBack.fail(Config.ERROR_UNAUTHORIZED);
                         }
+                        modelCallBack.fail(Config.ERROR_FAIL);
                     }
 
                     @Override
@@ -216,7 +222,7 @@ public class AlarmModel extends BaseModel{
                 .subscribeWith(new ObserverCallBack<Boolean>() {
                     @Override
                     protected void onThrowable(Throwable e) {
-
+                        modelCallBack.fail(Config.ERROR_NETWORK);
                     }
 
                     @Override
@@ -224,6 +230,7 @@ public class AlarmModel extends BaseModel{
                         if (response.Code == 401) {
                             modelCallBack.fail(Config.ERROR_UNAUTHORIZED);
                         }
+                        modelCallBack.fail(Config.ERROR_FAIL);
                     }
 
                     @Override

@@ -111,7 +111,6 @@ public class LoginFragment extends BaseFragment {
 
         loginViewModel.getObservableLoginFail().observe(this, errorCode -> {
             if (null != errorCode) {
-                EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_CLOSE));
 
                 if (errorCode == Config.ERROR_LOGIN_FAILED) {
                     ToastUtil.showToast(getString(R.string.account_mistake));

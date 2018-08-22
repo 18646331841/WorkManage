@@ -51,7 +51,6 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
 
     private FragmentMessageBinding mBinding;
     private MessageAdapter messageAdapter;
-    //    private CommonDialogFragment commonDialogFragment;
     private IncidentViewModel incidentViewModel;
     private Point mpoint = new Point();
 
@@ -147,7 +146,7 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
                 EventBus.getDefault().post(new EventBusMessage(AlarmAnalysisFragment.TAG));
                 break;
             case R.id.img_news:
-//                EventBus.getDefault().post(new EventBusMessage(NewsFragment.TAG));
+//                EventBus.getDefault().post(new EventBusMessage(NewsListFragment.TAG));
                 EventBus.getDefault().post(new EventBusMessage(NewsAddFragment.TAG));
                 break;
             case R.id.all_select_tv:
@@ -177,8 +176,6 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
         alarmViewModel = ViewModelProviders.of(this).get(AlarmViewModel.class);
         incidentViewModel = ViewModelProviders.of(this).get(IncidentViewModel.class);
 
-//        commonDialogFragment = DialogFragmentHelper.showProgress(getFragmentManager(), getString
-//                (R.string.dialog_progress_text), true);
     }
 
     @Override

@@ -18,4 +18,5 @@ public class Config {
     public static final int ERROR_UNAUTHORIZED = 401; //认证失败
     public static final int ERROR_LOGIN_FAILED = 400; //登录失败
     public static final int ERROR_NETWORK = 500; //网络异常
+    public static final int ERROR_FAIL = 501; //请求失败
 }

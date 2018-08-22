@@ -65,10 +65,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-            LogUtil.d(TAG, "back key");
             if (null != commonDialogFragment) {
                 closeProgress();
-                LogUtil.d(TAG, "commonDialogFragment dismiss");
                 return true;
             }
         }
@@ -163,7 +161,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private void showProgress() {
         commonDialogFragment = DialogFragmentHelper.showProgress(getSupportFragmentManager(), getString(R.string
-                .dialog_progress_text), false);
+                .dialog_progress_text), true);
     }
 
     private void closeProgress() {

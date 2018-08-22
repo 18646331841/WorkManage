@@ -4,7 +4,7 @@ import com.barisetech.www.workmanage.base.BaseResponse;
 import com.barisetech.www.workmanage.bean.TypeResponse;
 import com.barisetech.www.workmanage.bean.news.NewsInfo;
 import com.barisetech.www.workmanage.bean.news.ReqAddNews;
-import com.barisetech.www.workmanage.bean.news.ReqQuery;
+import com.barisetech.www.workmanage.bean.news.ReqNewsInfos;
 import com.barisetech.www.workmanage.callback.ModelCallBack;
 import com.barisetech.www.workmanage.http.Config;
 import com.barisetech.www.workmanage.http.HttpService;
@@ -48,11 +48,16 @@ public class NewsModel {
                 .subscribeWith(new ObserverCallBack<Integer>(){
                     @Override
                     protected void onThrowable(Throwable e) {
+                        modelCallBack.fail(Config.ERROR_NETWORK);
 
                     }
 
                     @Override
                     protected void onFailure(BaseResponse response) {
+                        if (response.Code == 401) {
+                            modelCallBack.fail(Config.ERROR_UNAUTHORIZED);
+                        }
+                        modelCallBack.fail(Config.ERROR_FAIL);
 
                     }
 
@@ -77,11 +82,16 @@ public class NewsModel {
                 .subscribeWith(new ObserverCallBack<NewsInfo>() {
                     @Override
                     protected void onThrowable(Throwable e) {
+                        modelCallBack.fail(Config.ERROR_NETWORK);
 
                     }
 
                     @Override
                     protected void onFailure(BaseResponse response) {
+                        if (response.Code == 401) {
+                            modelCallBack.fail(Config.ERROR_UNAUTHORIZED);
+                        }
+                        modelCallBack.fail(Config.ERROR_FAIL);
 
                     }
 
@@ -100,18 +110,23 @@ public class NewsModel {
      * @param reqQuery
      * @return
      */
-    public Disposable queryNews(ReqQuery reqQuery) {
+    public Disposable queryNews(ReqNewsInfos reqQuery) {
         Disposable disposable = newsService.reqNews(Config.NEWS_BASE_URL + basePath, reqQuery)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<List<NewsInfo>>() {
                     @Override
                     protected void onThrowable(Throwable e) {
+                        modelCallBack.fail(Config.ERROR_NETWORK);
 
                     }
 
                     @Override
                     protected void onFailure(BaseResponse response) {
+                        if (response.Code == 401) {
+                            modelCallBack.fail(Config.ERROR_UNAUTHORIZED);
+                        }
+                        modelCallBack.fail(Config.ERROR_FAIL);
 
                     }
 
@@ -137,12 +152,16 @@ public class NewsModel {
                 .subscribeWith(new ObserverCallBack<Integer>() {
                     @Override
                     protected void onThrowable(Throwable e) {
+                        modelCallBack.fail(Config.ERROR_NETWORK);
 
                     }
 
                     @Override
                     protected void onFailure(BaseResponse response) {
-
+                        if (response.Code == 401) {
+                            modelCallBack.fail(Config.ERROR_UNAUTHORIZED);
+                        }
+                        modelCallBack.fail(Config.ERROR_FAIL);
                     }
 
                     @Override

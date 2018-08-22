@@ -36,6 +36,7 @@ public class DialogFragmentHelper {
             ProgressDialog progressDialog = new ProgressDialog(context, PROGRESS_THEME);
             progressDialog.setMessage(message);
             progressDialog.setCancelable(false);
+            progressDialog.setCanceledOnTouchOutside(false);
             return progressDialog;
         }, cancelable, cancelListener);
         dialogFragment.show(fragmentManager, PROGRESS_TAG);

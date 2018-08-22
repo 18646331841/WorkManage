@@ -7,12 +7,19 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 
+import com.barisetech.www.workmanage.base.BaseConstant;
+import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.TypeResponse;
+import com.barisetech.www.workmanage.bean.news.NewsInfo;
 import com.barisetech.www.workmanage.bean.news.ReqAddNews;
-import com.barisetech.www.workmanage.bean.news.ReqQuery;
+import com.barisetech.www.workmanage.bean.news.ReqNewsInfos;
 import com.barisetech.www.workmanage.callback.ModelCallBack;
 import com.barisetech.www.workmanage.model.NewsModel;
-import com.barisetech.www.workmanage.utils.LogUtil;
+import com.barisetech.www.workmanage.utils.ToastUtil;
+
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.List;
 
 import io.reactivex.disposables.CompositeDisposable;
 
@@ -27,6 +34,7 @@ public class NewsViewModel extends AndroidViewModel implements ModelCallBack {
     private CompositeDisposable mDisposable = new CompositeDisposable();
 
     private MediatorLiveData<Integer> mObservableAddResult;
+    private MediatorLiveData<List<NewsInfo>> mObservableNewsInfos;
 
     public NewsViewModel(@NonNull Application application) {
         super(application);
@@ -37,6 +45,9 @@ public class NewsViewModel extends AndroidViewModel implements ModelCallBack {
 
         mObservableAddResult = new MediatorLiveData<>();
         mObservableAddResult.setValue(null);
+
+        mObservableNewsInfos = new MediatorLiveData<>();
+        mObservableNewsInfos.setValue(null);
     }
 
     public void reqNewsNum() {
@@ -47,7 +58,7 @@ public class NewsViewModel extends AndroidViewModel implements ModelCallBack {
         mDisposable.add(newsModel.getNewsById(id));
     }
 
-    public void reqQueryNews(ReqQuery reqQuery) {
+    public void reqQueryNews(ReqNewsInfos reqQuery) {
         mDisposable.add(newsModel.queryNews(reqQuery));
     }
 
@@ -57,6 +68,8 @@ public class NewsViewModel extends AndroidViewModel implements ModelCallBack {
 
     @Override
     public void netResult(Object object) {
+        EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_CLOSE));
+
         if (object instanceof TypeResponse) {
             TypeResponse typeResponse = (TypeResponse) object;
             mDelivery.post(() -> {
@@ -71,7 +84,8 @@ public class NewsViewModel extends AndroidViewModel implements ModelCallBack {
 
     @Override
     public void fail(int errorCode) {
-
+        EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_CLOSE));
+        ToastUtil.showToast("请求失败");
     }
 
     /**
@@ -86,5 +100,13 @@ public class NewsViewModel extends AndroidViewModel implements ModelCallBack {
     protected void onCleared() {
         super.onCleared();
         mDelivery = null;
+    }
+
+    /**
+     * 分页请求新闻列表
+     * @return
+     */
+    public MediatorLiveData<List<NewsInfo>> getmObservableNewsInfos() {
+        return mObservableNewsInfos;
     }
 }

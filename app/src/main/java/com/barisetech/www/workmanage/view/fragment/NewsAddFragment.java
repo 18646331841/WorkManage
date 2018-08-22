@@ -8,19 +8,15 @@ import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
-import android.widget.RelativeLayout;
 
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.base.BaseApplication;
@@ -34,7 +30,6 @@ import com.barisetech.www.workmanage.databinding.FragmentNewsAddBinding;
 import com.barisetech.www.workmanage.utils.BitmapUtil;
 import com.barisetech.www.workmanage.utils.LogUtil;
 import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
-import com.barisetech.www.workmanage.utils.TimeUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.viewmodel.NewsViewModel;
 
@@ -170,9 +165,8 @@ public class NewsAddFragment extends BaseFragment {
     @Override
     public void subscribeToModel() {
         newsViewModel.getmObservableAddResult().observe(this, integer -> {
-            if (null != integer && integer > 0) {
+            if (null != integer) {
                 if (integer > 0) {
-                    EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_CLOSE));
                     ToastUtil.showToast("新闻添加成功");
                     getActivity().onBackPressed();
                 } else {
