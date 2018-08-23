@@ -38,15 +38,36 @@
                     android:paddingBottom="@dimen/dp_25"
                     android:background="@color/theme_color">
 
-                    <ImageView
-                        android:id="@+id/img_alarm"
+                    <FrameLayout
+                        android:id="@+id/message_alarm_fl"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/icon_alarm"
                         app:layout_constraintBottom_toBottomOf="@id/message_menu"
                         app:layout_constraintLeft_toLeftOf="@id/message_menu"
                         app:layout_constraintRight_toLeftOf="@+id/img_incident"
-                        app:layout_constraintTop_toTopOf="@id/message_menu"/>
+                        app:layout_constraintTop_toTopOf="@id/message_menu">
+
+
+                        <ImageView
+                            android:id="@+id/img_alarm"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/icon_alarm"/>
+
+                        <TextView
+                            android:id="@+id/message_alarm_num"
+                            android:layout_width="@dimen/dp_24"
+                            android:layout_height="@dimen/dp_24"
+                            android:layout_gravity="top|end"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="3dp"
+                            android:background="@drawable/shape_bg_red_circle"
+                            android:gravity="center"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/sp_15" />
+
+                    </FrameLayout>
+
 
                     <ImageView
                         android:id="@+id/img_incident"
@@ -54,7 +75,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/icon_incident"
                         app:layout_constraintBottom_toBottomOf="@id/message_menu"
-                        app:layout_constraintLeft_toRightOf="@+id/img_alarm"
+                        app:layout_constraintLeft_toRightOf="@+id/message_alarm_fl"
                         app:layout_constraintRight_toLeftOf="@+id/img_news"
                         app:layout_constraintTop_toTopOf="@id/message_menu"/>
 
@@ -86,9 +107,9 @@
                         android:text="@string/title_warn"
                         android:textSize="@dimen/sp_14"
                         android:textColor="@color/white"
-                        app:layout_constraintLeft_toLeftOf="@id/img_alarm"
-                        app:layout_constraintRight_toRightOf="@id/img_alarm"
-                        app:layout_constraintTop_toBottomOf="@id/img_alarm"/>
+                        app:layout_constraintLeft_toLeftOf="@id/message_alarm_fl"
+                        app:layout_constraintRight_toRightOf="@id/message_alarm_fl"
+                        app:layout_constraintTop_toBottomOf="@id/message_alarm_fl"/>
 
                     <TextView
                         android:id="@+id/tv_incident"
