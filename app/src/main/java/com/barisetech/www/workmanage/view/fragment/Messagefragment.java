@@ -183,9 +183,8 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
         alarmViewModel.getNotReadAlarmInfos().observe(this, alarmInfos -> {
             if (null != alarmInfos && alarmInfos.size() != 0) {
                 LogUtil.d(TAG, "observe alarmInfos = " + alarmInfos.size());
-//                if (null != commonDialogFragment) {
-//                    commonDialogFragment.dismiss();
-//                }
+                mBinding.messageAlarmNum.setText(String.valueOf(alarmInfos.size()));
+
                 curAlarmList = alarmInfos;
                 curMessageList.clear();
                 curMessageList.addAll(curAlarmList);

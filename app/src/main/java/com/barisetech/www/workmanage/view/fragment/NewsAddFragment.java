@@ -1,8 +1,10 @@
 package com.barisetech.www.workmanage.view.fragment;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
@@ -11,12 +13,15 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.base.BaseApplication;
@@ -32,9 +37,12 @@ import com.barisetech.www.workmanage.utils.LogUtil;
 import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.viewmodel.NewsViewModel;
+import com.barisetech.www.workmanage.widget.CustomPopupWindow;
+import com.barisetech.www.workmanage.widget.popumenu.FloatMenu;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,8 +59,12 @@ public class NewsAddFragment extends BaseFragment {
     private final int CODE_GALLERY_REQUEST = 100;
     //裁剪图片请求码
     private final int CODE_RESULT_REQUEST = 101;
+    //请求相机
+    private final int CODE_CAMERA_REQUEST = 102;
 
     private String curImgPath;//当前添加图片的地址
+    private CustomPopupWindow customPopupWindow;
+    private Uri CameraImageUri;
 
     public NewsAddFragment() {
         // Required empty public constructor
@@ -81,7 +93,40 @@ public class NewsAddFragment extends BaseFragment {
         return mBinding.getRoot();
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (null != customPopupWindow) {
+            customPopupWindow.dismiss();
+        }
+    }
+
     private void initView() {
+        customPopupWindow = new CustomPopupWindow.Builder()
+                .setContext(getContext())
+                .setContentView(R.layout.popup_photo_selecter)
+                .setwidth(LinearLayout.LayoutParams.WRAP_CONTENT)
+                .setheight(LinearLayout.LayoutParams.WRAP_CONTENT)
+                .setFouse(true)
+                .setOutSideCancel(true)
+                .setBackGroudAlpha(getActivity(), 0.7f)
+                .setAnimationStyle(R.style.popup_anim_style)
+                .builder();
+
+        customPopupWindow.getItemView(R.id.pop_pic).setOnClickListener(view -> {
+            choosePicture();
+            customPopupWindow.dismiss();
+        });
+
+        customPopupWindow.getItemView(R.id.pop_camera).setOnClickListener(view -> {
+            openCamera();
+            customPopupWindow.dismiss();
+        });
+
+        customPopupWindow.getItemView(R.id.pop_cancel).setOnClickListener(view -> {
+            customPopupWindow.dismiss();
+        });
+
         mBinding.company.setOnCheckedChangeListener((compoundButton, b) -> {
             if (b) {
                 mBinding.industry.setChecked(!b);
@@ -95,7 +140,7 @@ public class NewsAddFragment extends BaseFragment {
         }));
 
         mBinding.imgUpload.setOnClickListener(view -> {
-            choosePicture();
+            customPopupWindow.showAtLocation(R.layout.fragment_news_add, Gravity.BOTTOM, 0, 0);
         });
 
         mBinding.confirmAdd.setOnClickListener(view -> {
@@ -183,16 +228,24 @@ public class NewsAddFragment extends BaseFragment {
             switch (requestCode) {
                 case CODE_GALLERY_REQUEST:
                     LogUtil.d(TAG, "CODE_GALLERY_REQUEST uri = " + data.getData());
-                    //暂时不用
-//                    cropRawPhoto(data.getData());
-
                     //判断手机系统版本号
                     if (Build.VERSION.SDK_INT >= 19){
                         //4.4及以上系统使用这个方法处理图片
-                        handleImageOnKitKat(data);
+                        handleImageOnKitKat(data.getData());
                     }else {
                         //4.4以下系统使用这个放出处理图片
-                        handleImageBeforeKitKat(data);
+                        handleImageBeforeKitKat(data.getData());
+                    }
+                    break;
+                case CODE_CAMERA_REQUEST:
+                    LogUtil.d(TAG, "CODE_GALLERY_REQUEST uri = " + CameraImageUri);
+                    //判断手机系统版本号
+                    if (Build.VERSION.SDK_INT >= 19){
+                        //4.4及以上系统使用这个方法处理图片
+                        handleImageOnKitKat(CameraImageUri);
+                    }else {
+                        //4.4以下系统使用这个放出处理图片
+                        handleImageBeforeKitKat(CameraImageUri);
                     }
                     break;
             }
@@ -209,31 +262,42 @@ public class NewsAddFragment extends BaseFragment {
     }
 
     /**
-     * 裁剪图片方法
+     * 打开相机
      *
-     * @param uri
      */
-    public void cropRawPhoto(Uri uri) {
+    public void openCamera() {
+        File path = new File(Environment.getExternalStorageDirectory() + BaseApplication.appDir);
+        if (!path.exists()) {
+            boolean result = path.mkdirs();
+            if (!result) {
+                return;
+            }
+        }
+        File file = new File(path.getAbsoluteFile(), System
+                .currentTimeMillis() + ".jpg");
+        LogUtil.d(TAG, file.getAbsolutePath());
+        Intent openCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            //兼容android7.0 使用共享文件的形式
+            ContentValues contentValues = new ContentValues(1);
+            contentValues.put(MediaStore.Images.Media.DATA, file.getAbsolutePath());
 
-        Intent intent = new Intent("com.android.camera.action.CROP");
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        intent.setDataAndType(uri, "image/*");
-        intent.putExtra("crop", "true");
-        intent.putExtra("aspectX", 1);
-        intent.putExtra("aspectY", 1);
+            CameraImageUri = getContext().getContentResolver().insert(MediaStore.Images.Media
+                    .EXTERNAL_CONTENT_URI, contentValues);
+            openCameraIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            openCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, CameraImageUri);
+        } else {
+            CameraImageUri = Uri.fromFile(file);
+            //指定照片保存路径（SD卡）
+            openCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, CameraImageUri);
+        }
+        startActivityForResult(openCameraIntent, CODE_CAMERA_REQUEST);
 
-        intent.putExtra("outputX", 200);
-        intent.putExtra("outputY", 200);
-        intent.putExtra("return-data", true);
-
-        startActivityForResult(intent, CODE_RESULT_REQUEST);
     }
 
     @TargetApi(19)
-    private void handleImageOnKitKat(Intent data){
+    private void handleImageOnKitKat(Uri uri){
         String imagePath = null;
-        Uri uri = data.getData();
         if (DocumentsContract.isDocumentUri(getActivity(),uri)){
             //如果是document类型的Uri,则通过document id处理
             String docId = DocumentsContract.getDocumentId(uri);
@@ -255,8 +319,7 @@ public class NewsAddFragment extends BaseFragment {
         diaplayImage(imagePath);//根据图片路径显示图片
     }
 
-    private void handleImageBeforeKitKat(Intent data){
-        Uri uri = data.getData();
+    private void handleImageBeforeKitKat(Uri uri){
         String imagePath = getImagePath(uri,null);
         diaplayImage(imagePath);
     }
