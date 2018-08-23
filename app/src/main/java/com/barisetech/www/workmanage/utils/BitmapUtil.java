@@ -62,16 +62,41 @@ public class BitmapUtil {
      * @param str
      */
     public static Bitmap stringToBitmap(String str) {
-        // OutputStream out;
         Bitmap bitmap = null;
         try {
-            // out = new FileOutputStream("/sdcard/aa.jpg");
             byte[] bytes= Base64.decode(str, Base64.DEFAULT);
             bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-            // bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
             return bitmap;
         } catch (Exception e) {
             return null;
+        }
+    }
+
+    /**
+     * string转成固定宽高bitmap
+     *
+     * @param str
+     * @param reqWidth
+     * @param reqHeight
+     * @return
+     */
+    public static Bitmap stringToBitmap(String str, int reqWidth, int reqHeight) {
+        Bitmap bitmap = null;
+        try {
+            byte[] bytes= Base64.decode(str, Base64.DEFAULT);
+
+            final BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;  //只返回图片的大小信息
+            BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options);
+            // Calculate inSampleSize
+            options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+            // Decode bitmap with inSampleSize set
+            options.inJustDecodeBounds = false;
+
+            bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options);
+            return bitmap;
+        } catch (Exception e) {
+            return bitmap;
         }
     }
 
@@ -126,7 +151,7 @@ public class BitmapUtil {
     }
 
     /**
-     * 根据路径获得突破并压缩返回bitmap用于显示
+     * 根据路径获得图片并压缩返回bitmap用于显示
      *
      * @param filePath
      * @return

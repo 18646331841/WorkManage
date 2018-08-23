@@ -10,6 +10,7 @@
     <string name="title_event">事件</string>
 
     <string name="title_news">新闻</string>
+    <string name="title_news_details">新闻详情</string>
 
     <string name="title_news_add">添加新闻</string>
     <string name="news_add_input_title">请输入新闻标题</string>

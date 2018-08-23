@@ -15,6 +15,7 @@ import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.bean.news.NewsImageInfo;
 import com.barisetech.www.workmanage.bean.news.NewsInfo;
 import com.barisetech.www.workmanage.utils.BitmapUtil;
+import com.barisetech.www.workmanage.utils.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +45,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public NewsListAdapter(Context context) {
         // 初始化变量
         this.context = context;
+        datas = new ArrayList<>();
     }
 
     // 获取条目数量，之所以要加1是因为增加了一条footView
@@ -115,7 +117,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             normalHolder.time.setText(newsInfo.getReleaseTime());
             List<NewsImageInfo> images = newsInfo.getImage();
             if (null != images && images.size() > 0) {
-                Bitmap bitmap = BitmapUtil.stringToBitmap(images.get(0).getData());
+                Bitmap bitmap = BitmapUtil.stringToBitmap(images.get(0).getData(), 50, 50);
                 if (null != bitmap) {
                     normalHolder.imageView.setImageBitmap(bitmap);
                 }
@@ -124,7 +126,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             // 之所以要设置可见，是因为我在没有更多数据时会隐藏了这个footView
             ((FootHolder) holder).tips.setVisibility(View.VISIBLE);
             // 只有获取数据为空时，hasMore为false，所以当我们拉到底部时基本都会首先显示“正在加载更多...”
-            if (hasMore == true) {
+            if (hasMore) {
                 // 不隐藏footView提示
                 fadeTips = false;
                 if (datas.size() > 0) {
@@ -171,5 +173,11 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
         this.hasMore = hasMore;
         notifyDataSetChanged();
+    }
+
+    public void clearDatas() {
+        if (null != datas) {
+            datas.clear();
+        }
     }
 }

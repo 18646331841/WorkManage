@@ -35,7 +35,7 @@ public abstract class BaseObserverCallBack<T> extends DisposableObserver<T> {
                 }
             }
         });
-        onThrowable(e);
+//        onThrowable(e);
     }
 
     @Override

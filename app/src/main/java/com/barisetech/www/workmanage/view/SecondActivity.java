@@ -77,6 +77,7 @@ public class SecondActivity extends BaseActivity {
                 break;
             case NewsAddFragment.TAG:
                 transaction
+                        .addToBackStack(NewsListFragment.TAG)
                         .replace(R.id.second_framelayout, NewsAddFragment.newInstance(), tag).commit();
                 break;
         }

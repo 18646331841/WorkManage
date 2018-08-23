@@ -18,6 +18,15 @@ public class ReqNewsInfos {
     private String Type;
     private String StartIndex;
     private String NumberOfRecords;
+    /**
+     * GetByTime : true
+     * startTime : 1970-03-03 12:12:12
+     * endTime : 2020-03-03 12:12:12
+     */
+
+    private String GetByTime = "false";
+    private String startTime;
+    private String endTime;
 
     public String getType() {
         return Type;
@@ -41,5 +50,29 @@ public class ReqNewsInfos {
 
     public void setNumberOfRecords(String NumberOfRecords) {
         this.NumberOfRecords = NumberOfRecords;
+    }
+
+    public String getGetByTime() {
+        return GetByTime;
+    }
+
+    public void setGetByTime(String GetByTime) {
+        this.GetByTime = GetByTime;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 }

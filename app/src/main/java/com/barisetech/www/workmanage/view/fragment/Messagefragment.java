@@ -146,8 +146,7 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
                 EventBus.getDefault().post(new EventBusMessage(AlarmAnalysisFragment.TAG));
                 break;
             case R.id.img_news:
-//                EventBus.getDefault().post(new EventBusMessage(NewsListFragment.TAG));
-                EventBus.getDefault().post(new EventBusMessage(NewsAddFragment.TAG));
+                EventBus.getDefault().post(new EventBusMessage(NewsListFragment.TAG));
                 break;
             case R.id.all_select_tv:
                 break;

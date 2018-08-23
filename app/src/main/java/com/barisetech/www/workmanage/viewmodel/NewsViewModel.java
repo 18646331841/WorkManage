@@ -22,6 +22,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.List;
 
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Created by LJH on 2018/8/20.
@@ -58,8 +59,10 @@ public class NewsViewModel extends AndroidViewModel implements ModelCallBack {
         mDisposable.add(newsModel.getNewsById(id));
     }
 
-    public void reqQueryNews(ReqNewsInfos reqQuery) {
-        mDisposable.add(newsModel.queryNews(reqQuery));
+    public Disposable reqQueryNews(ReqNewsInfos reqQuery) {
+        Disposable disposable = newsModel.queryNews(reqQuery);
+        mDisposable.add(disposable);
+        return disposable;
     }
 
     public void reqAddOrUpdateNews(ReqAddNews reqAddNews) {
@@ -76,6 +79,9 @@ public class NewsViewModel extends AndroidViewModel implements ModelCallBack {
                 switch (typeResponse.type) {
                     case NewsModel.TYPE_ADD:
                         mObservableAddResult.setValue((Integer) typeResponse.data);
+                        break;
+                    case NewsModel.TYPE_QUERY_NEWS:
+                        mObservableNewsInfos.setValue((List<NewsInfo>) typeResponse.data);
                         break;
                 }
             });
@@ -99,7 +105,19 @@ public class NewsViewModel extends AndroidViewModel implements ModelCallBack {
     @Override
     protected void onCleared() {
         super.onCleared();
+        mDisposable.dispose();
+        mDisposable.clear();
         mDelivery = null;
+    }
+
+    /**
+     * 移除并结束Disposable
+     * @param disposable
+     */
+    public void removeDisposable(Disposable disposable) {
+        if (null != disposable) {
+            mDisposable.remove(disposable);
+        }
     }
 
     /**
