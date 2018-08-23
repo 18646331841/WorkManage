@@ -12,7 +12,7 @@ import com.barisetech.www.workmanage.view.fragment.AlarmListFragment;
 import com.barisetech.www.workmanage.view.fragment.FingerprintManagerFragment;
 import com.barisetech.www.workmanage.view.fragment.MapFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsAddFragment;
-import com.barisetech.www.workmanage.view.fragment.NewsFragment;
+import com.barisetech.www.workmanage.view.fragment.NewsListFragment;
 
 public class SecondActivity extends BaseActivity {
 
@@ -71,9 +71,9 @@ public class SecondActivity extends BaseActivity {
                 bundle.putString("tag", MapFragment.TAG);
                 intent2Activity(bundle, MainActivity.class);
                 break;
-            case NewsFragment.TAG:
+            case NewsListFragment.TAG:
                 transaction
-                        .replace(R.id.second_framelayout, NewsFragment.newInstance(), tag).commit();
+                        .replace(R.id.second_framelayout, NewsListFragment.newInstance(), tag).commit();
                 break;
             case NewsAddFragment.TAG:
                 transaction

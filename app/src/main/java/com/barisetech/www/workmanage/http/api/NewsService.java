@@ -1,23 +1,17 @@
 package com.barisetech.www.workmanage.http.api;
 
 import com.barisetech.www.workmanage.base.BaseResponse;
-import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
-import com.barisetech.www.workmanage.bean.alarm.AlarmInfoNewest;
-import com.barisetech.www.workmanage.bean.alarm.ReqAllAlarm;
-import com.barisetech.www.workmanage.bean.alarm.ReqLiftAlarm;
 import com.barisetech.www.workmanage.bean.news.NewsInfo;
 import com.barisetech.www.workmanage.bean.news.ReqAddNews;
-import com.barisetech.www.workmanage.bean.news.ReqQuery;
+import com.barisetech.www.workmanage.bean.news.ReqNewsInfos;
 
 import java.util.List;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;
-import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
-import retrofit2.http.Path;
 import retrofit2.http.Url;
 
 /**
@@ -48,7 +42,7 @@ public interface NewsService {
      * @return
      */
     @POST
-    Observable<BaseResponse<List<NewsInfo>>> reqNews(@Url String url, @Body ReqQuery reqQuery);
+    Observable<BaseResponse<List<NewsInfo>>> reqNews(@Url String url, @Body ReqNewsInfos reqQuery);
 
     /**
      * 增加或修改新闻
