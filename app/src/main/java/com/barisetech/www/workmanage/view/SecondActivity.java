@@ -14,6 +14,7 @@ import com.barisetech.www.workmanage.view.fragment.AlarmListFragment;
 import com.barisetech.www.workmanage.view.fragment.FingerprintManagerFragment;
 import com.barisetech.www.workmanage.view.fragment.MapFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsAddFragment;
+import com.barisetech.www.workmanage.view.fragment.NewsDetailsFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsListFragment;
 
 import org.greenrobot.eventbus.EventBus;
@@ -90,9 +91,15 @@ public class SecondActivity extends BaseActivity {
                 transaction
                         .replace(R.id.second_framelayout, NewsListFragment.newInstance(), tag).commit();
                 break;
+            case NewsDetailsFragment.TAG:
+                transaction
+                        .addToBackStack(NewsDetailsFragment.TAG)
+                        .replace(R.id.second_framelayout, NewsDetailsFragment.newInstance((String) eventBusMessage
+                                .getArg1()), tag).commit();
+                break;
             case NewsAddFragment.TAG:
                 transaction
-                        .addToBackStack(NewsListFragment.TAG)
+                        .addToBackStack(NewsAddFragment.TAG)
                         .replace(R.id.second_framelayout, NewsAddFragment.newInstance(), tag).commit();
                 break;
         }

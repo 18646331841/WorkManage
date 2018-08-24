@@ -38,10 +38,9 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setCustomDensity(this, getApplication());
+//        setCustomDensity(this, getApplication());
         super.onCreate(savedInstanceState);
         mContext = this;
-        EventBus.getDefault().register(this);
         if (Build.VERSION.SDK_INT >= 21) {
             View decorView = getWindow().getDecorView();
             int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
@@ -56,10 +55,15 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
+    protected void onPause() {
+        super.onPause();
         EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        EventBus.getDefault().register(this);
     }
 
     @Override

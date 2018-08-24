@@ -17,6 +17,7 @@ import com.barisetech.www.workmanage.view.fragment.AlarmDetailsFragment;
 import com.barisetech.www.workmanage.view.fragment.AlarmListFragment;
 import com.barisetech.www.workmanage.view.fragment.FingerprintManagerFragment;
 import com.barisetech.www.workmanage.view.fragment.NavigationFragment;
+import com.barisetech.www.workmanage.view.fragment.NewsDetailsFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsListFragment;
 
 import org.greenrobot.eventbus.EventBus;
@@ -118,18 +119,24 @@ public class MainActivity extends BaseActivity {
                 case FingerprintManagerFragment.TAG:
                     transaction
                             .addToBackStack(tag)
-                            .replace(R.id.second_framelayout, FingerprintManagerFragment.newInstance(), tag).commit();
+                            .replace(R.id.fragment_content, FingerprintManagerFragment.newInstance(), tag).commit();
                     break;
                 case AlarmDetailsFragment.TAG:
                     transaction
                             .addToBackStack(tag)
-                            .replace(R.id.second_framelayout, AlarmDetailsFragment.newInstance((AlarmInfo)
+                            .replace(R.id.fragment_content, AlarmDetailsFragment.newInstance((AlarmInfo)
                                     eventBusMessage.getArg1()), tag).commit();
                     break;
                 case NewsListFragment.TAG:
                     transaction
                             .addToBackStack(tag)
-                            .replace(R.id.second_framelayout, NewsListFragment.newInstance(), tag).commit();
+                            .replace(R.id.fragment_content, NewsListFragment.newInstance(), tag).commit();
+                    break;
+                case NewsDetailsFragment.TAG:
+                    transaction
+                            .addToBackStack(tag)
+                            .replace(R.id.fragment_content, NewsDetailsFragment.newInstance((String) eventBusMessage
+                                    .getArg1()), tag).commit();
                     break;
             }
         }

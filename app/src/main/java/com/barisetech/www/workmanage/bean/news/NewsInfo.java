@@ -79,4 +79,17 @@ public class NewsInfo {
     public void setImage(List<NewsImageInfo> Image) {
         this.Image = Image;
     }
+
+    @Override
+    public String toString() {
+        return "NewsInfo{" +
+                "Id=" + Id +
+                ", Type=" + Type +
+                ", Tittle='" + Tittle + '\'' +
+                ", Description='" + Description + '\'' +
+                ", ReleaseTime='" + ReleaseTime + '\'' +
+                ", WebUrl='" + WebUrl + '\'' +
+                ", Image=" + Image +
+                '}';
+    }
 }

@@ -15,6 +15,7 @@ import com.barisetech.www.workmanage.bean.MessageInfo;
 import com.barisetech.www.workmanage.databinding.ItemMessageBinding;
 import com.barisetech.www.workmanage.utils.LogUtil;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,14 +49,19 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.Myholder
             LogUtil.d(TAG, "mListsize = " + mList.size());
             notifyItemRangeInserted(0, messageInfos.size());
         } else {
+            List<MessageInfo> oldList = new ArrayList<>();
+            oldList.addAll(mList);
+
             DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffUtil.Callback() {
                 @Override
                 public int getOldListSize() {
-                    return mList.size();
+                    LogUtil.d(TAG, "OldListSize = " + oldList.size());
+                    return oldList.size();
                 }
 
                 @Override
                 public int getNewListSize() {
+                    LogUtil.d(TAG, "NewListSize = " + mList.size());
                     return messageInfos.size();
                 }
 

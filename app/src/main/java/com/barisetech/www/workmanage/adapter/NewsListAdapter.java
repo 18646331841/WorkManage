@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +35,8 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private boolean fadeTips = false; // 变量，是否隐藏了底部的提示
 
     private Handler mHandler = new Handler(Looper.getMainLooper()); //获取主线程的Handler
+
+    private ItemCallBack itemCallBack;
 
     public NewsListAdapter(List<NewsInfo> datas, Context context, boolean hasMore) {
         // 初始化变量
@@ -70,12 +73,17 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
+    public void setItemCallBack(ItemCallBack itemCallBack) {
+        this.itemCallBack = itemCallBack;
+    }
+
     // 正常item的ViewHolder，用以缓存findView操作
     class NormalHolder extends RecyclerView.ViewHolder {
         private TextView title;
         private TextView describe;
         private TextView time;
         private ImageView imageView;
+        private ConstraintLayout constraintLayout;
 
         public NormalHolder(View itemView) {
             super(itemView);
@@ -83,6 +91,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             describe = (TextView) itemView.findViewById(R.id.news_describe_tv);
             time = (TextView) itemView.findViewById(R.id.news_title_tv);
             imageView = (ImageView) itemView.findViewById(R.id.news_img);
+            constraintLayout = itemView.findViewById(R.id.news_list_item_cl);
         }
     }
 
@@ -116,12 +125,19 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             normalHolder.describe.setText(newsInfo.getDescription());
             normalHolder.time.setText(newsInfo.getReleaseTime());
             List<NewsImageInfo> images = newsInfo.getImage();
+            LogUtil.d("NewsList = ", newsInfo.toString());
             if (null != images && images.size() > 0) {
                 Bitmap bitmap = BitmapUtil.stringToBitmap(images.get(0).getData(), 50, 50);
                 if (null != bitmap) {
                     normalHolder.imageView.setImageBitmap(bitmap);
                 }
             }
+
+            normalHolder.constraintLayout.setOnClickListener(view -> {
+                if (null != itemCallBack) {
+                    itemCallBack.onClick(datas.get(position));
+                }
+            });
         } else {
             // 之所以要设置可见，是因为我在没有更多数据时会隐藏了这个footView
             ((FootHolder) holder).tips.setVisibility(View.VISIBLE);

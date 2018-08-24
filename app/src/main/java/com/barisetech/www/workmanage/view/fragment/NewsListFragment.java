@@ -8,19 +8,27 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioGroup;
 
 import com.barisetech.www.workmanage.R;
+import com.barisetech.www.workmanage.adapter.ItemCallBack;
 import com.barisetech.www.workmanage.adapter.NewsListAdapter;
+import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseFragment;
+import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
+import com.barisetech.www.workmanage.bean.news.NewsInfo;
 import com.barisetech.www.workmanage.bean.news.ReqNewsInfos;
 import com.barisetech.www.workmanage.databinding.FragmentNewsListBinding;
 import com.barisetech.www.workmanage.utils.LogUtil;
+import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.viewmodel.NewsViewModel;
+
+import org.greenrobot.eventbus.EventBus;
 
 import io.reactivex.disposables.Disposable;
 
@@ -80,10 +88,22 @@ public class NewsListFragment extends BaseFragment {
                     curNewsType = "3";
                     break;
             }
-            newsListAdapter.clearDatas();
             getDatas(1, PAGE_COUNT);
         });
         initRecyclerView();
+
+        newsListAdapter.setItemCallBack(item -> {
+            if (item instanceof NewsInfo) {
+                NewsInfo newsInfo = (NewsInfo) item;
+                if (TextUtils.isEmpty(newsInfo.getWebUrl())) {
+                    ToastUtil.showToast(getString(R.string.news_list_noLink));
+                    return;
+                }
+                EventBusMessage eventBusMessage = new EventBusMessage(NewsDetailsFragment.TAG);
+                eventBusMessage.setArg1(newsInfo.getWebUrl());
+                EventBus.getDefault().post(eventBusMessage);
+            }
+        });
     }
 
     private void initRecyclerView() {
@@ -108,15 +128,13 @@ public class NewsListFragment extends BaseFragment {
                     if (!newsListAdapter.isFadeTips() && lastVisibleItem + 1 == newsListAdapter.getItemCount
                             ()) {
                         // 然后调用updateRecyclerView方法更新RecyclerView
-                        updateRecyclerView((newsListAdapter.getRealLastPosition() / PAGE_COUNT) + 1, newsListAdapter
-                                .getRealLastPosition() + PAGE_COUNT);
+                        updateRecyclerView((newsListAdapter.getRealLastPosition() / PAGE_COUNT) + 1, PAGE_COUNT);
                     }
 
                     // 如果隐藏了提示条，我们又上拉加载时，那么最后一个条目就要比getItemCount要少2
                     if (newsListAdapter.isFadeTips() && lastVisibleItem + 2 == newsListAdapter.getItemCount()) {
                         // 然后调用updateRecyclerView方法更新RecyclerView
-                        updateRecyclerView((newsListAdapter.getRealLastPosition() / PAGE_COUNT) + 1, newsListAdapter
-                                .getRealLastPosition() + PAGE_COUNT);
+                        updateRecyclerView((newsListAdapter.getRealLastPosition() / PAGE_COUNT) + 1, PAGE_COUNT);
                     }
                 }
             }
@@ -137,7 +155,9 @@ public class NewsListFragment extends BaseFragment {
     }
 
     private void getDatas(int fromIndex, int toIndex) {
-        LogUtil.d(TAG, "fromIndex = " + fromIndex + " toIndex = " + toIndex);
+        EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_SHOW));
+        newsListAdapter.clearDatas();
+
         ReqNewsInfos reqNewsInfos = new ReqNewsInfos();
         reqNewsInfos.setStartIndex(String.valueOf(fromIndex));
         reqNewsInfos.setNumberOfRecords(String.valueOf(toIndex));

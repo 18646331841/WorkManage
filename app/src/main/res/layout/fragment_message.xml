@@ -52,6 +52,8 @@
                             android:id="@+id/img_alarm"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_5"
+                            android:layout_marginRight="@dimen/dp_5"
                             android:background="@drawable/icon_alarm"/>
 
                         <TextView

@@ -47,6 +47,7 @@
                 android:background="@drawable/radio_button_style"
                 android:button="@null"
                 android:gravity="center"
+                android:checked="true"
                 android:text="@string/news_add_type_default"
                 android:textColor="@drawable/font_white_black_selector"
                 android:textSize="@dimen/sp_16"/>
