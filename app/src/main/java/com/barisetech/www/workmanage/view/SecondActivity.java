@@ -2,10 +2,12 @@ package com.barisetech.www.workmanage.view;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.view.MotionEvent;
 
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.base.BaseActivity;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
+import com.barisetech.www.workmanage.bean.RawBean;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.view.fragment.AlarmDetailsFragment;
 import com.barisetech.www.workmanage.view.fragment.AlarmListFragment;
@@ -14,7 +16,12 @@ import com.barisetech.www.workmanage.view.fragment.MapFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsAddFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsListFragment;
 
+import org.greenrobot.eventbus.EventBus;
+
 public class SecondActivity extends BaseActivity {
+
+    private int rawX;
+    private int rawY;
 
     @Override
     protected void loadViewLayout() {
@@ -31,6 +38,14 @@ public class SecondActivity extends BaseActivity {
             }
         }
 
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        rawX= (int) ev.getRawX();
+        rawY= (int) ev.getRawY();
+        EventBus.getDefault().post(new RawBean(rawX,rawY));
+        return super.dispatchTouchEvent(ev);
     }
 
     @Override
