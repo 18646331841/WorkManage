@@ -38,7 +38,10 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class Messagefragment extends BaseFragment implements View.OnClickListener {
 
@@ -53,6 +56,8 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
     private MessageAdapter messageAdapter;
     private IncidentViewModel incidentViewModel;
     private Point mpoint = new Point();
+
+    private boolean flag = false;
 
     public Messagefragment() {
     }
@@ -149,8 +154,23 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
                 EventBus.getDefault().post(new EventBusMessage(NewsListFragment.TAG));
                 break;
             case R.id.all_select_tv:
+                if (flag){
+                    messageAdapter.neverall();
+                    mBinding.allSelectTv.setText("全选");
+                    flag = false;
+                }else {
+                    messageAdapter.All();
+                    mBinding.allSelectTv.setText("取消全选");
+                    flag = true;
+                }
                 break;
             case R.id.mark_read_tv:
+                Set<Map.Entry<Integer, Boolean>> entries = messageAdapter.map.entrySet();
+                for (Map.Entry<Integer, Boolean> entry : entries) {
+                    if (entry.getValue()){
+                        System.out.println(entry);
+                    }
+                }
                 break;
             case R.id.cancel_tv:
                 mBinding.mulitpleMenu.setVisibility(View.GONE);

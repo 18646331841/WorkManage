@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +17,15 @@ import com.barisetech.www.workmanage.utils.LogUtil;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.Myholder>{
     private static final String TAG = "MessageAdapter";
     private List<? extends MessageInfo> mList;
     private OnItemClickListener mOnItemClickListener;
+    public HashMap<Integer,Boolean> map;
+
 
 
     private int flag;
@@ -74,6 +79,55 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.Myholder
             mList = messageInfos;
             diffResult.dispatchUpdatesTo(this);
         }
+
+        map = new HashMap<>();
+        for (int i = 0; i<mList.size();i++){
+            map.put(i,false);
+        }
+    }
+
+
+    /*
+     * 全选
+     * */
+    public void All(){
+        Set<Map.Entry<Integer,Boolean>> entries = map.entrySet();
+        boolean shouldall = false;
+        for (Map.Entry<Integer,Boolean>entry:entries){
+            Boolean value = entry.getValue();
+            if (!value){
+                shouldall = true;
+                break;
+            }
+        }
+        for (Map.Entry<Integer,Boolean> entry: entries){
+            entry.setValue(shouldall);
+        }
+        notifyDataSetChanged();
+    }
+
+    /*
+     * 反选
+     * */
+
+    public void neverall() {
+        Set<Map.Entry<Integer, Boolean>> entries = map.entrySet();
+        for (Map.Entry<Integer, Boolean> entry : entries) {
+            entry.setValue(!entry.getValue());
+        }
+        notifyDataSetChanged();
+    }
+
+    /*
+     * 单选
+     * */
+    public void singlesel(int postion) {
+        Set<Map.Entry<Integer, Boolean>> entries = map.entrySet();
+        for (Map.Entry<Integer, Boolean> entry : entries) {
+            entry.setValue(false);
+        }
+        map.put(postion, true);
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -101,10 +155,20 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.Myholder
             holder.binding.selectItem.setVisibility(View.VISIBLE);
         }else if (flag==2){
             holder.binding.selectItem.setVisibility(View.GONE);
-        }else if (flag ==3){
-            holder.binding.selectItem.setChecked(true);
         }
 
+        holder.binding.selectItem.setChecked(map.get(position));
+        holder.binding.selectItem.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                map.put(position, !map.get(position));
+                Log.e("flag",""+map.get(position));
+                //刷新适配器
+                notifyDataSetChanged();
+
+            }
+        });
         holder.binding.executePendingBindings();
         if (mOnItemClickListener != null){
             holder.binding.getRoot().setOnLongClickListener(new View.OnLongClickListener() {
