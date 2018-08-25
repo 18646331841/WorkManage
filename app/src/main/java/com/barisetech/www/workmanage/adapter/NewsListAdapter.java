@@ -25,6 +25,8 @@ import java.util.List;
  * Created by LJH on 2018/8/22.
  */
 public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    public static final String TAG = "NewsListAdapter";
+
     private List<NewsInfo> datas; // 数据源
     private Context context;    // 上下文Context
 
@@ -125,11 +127,16 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             normalHolder.describe.setText(newsInfo.getDescription());
             normalHolder.time.setText(newsInfo.getReleaseTime());
             List<NewsImageInfo> images = newsInfo.getImage();
-            LogUtil.d("NewsList = ", newsInfo.toString());
             if (null != images && images.size() > 0) {
+
                 Bitmap bitmap = BitmapUtil.stringToBitmap(images.get(0).getData(), 50, 50);
+
                 if (null != bitmap) {
                     normalHolder.imageView.setImageBitmap(bitmap);
+                    normalHolder.imageView.setVisibility(View.VISIBLE);
+                }else {
+                    normalHolder.imageView.setImageBitmap(null);
+                    normalHolder.imageView.setVisibility(View.INVISIBLE);
                 }
             }
 
@@ -178,22 +185,23 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     // 暴露接口，下拉刷新时，通过暴露方法将数据源置为空
     public void resetDatas() {
-        datas = new ArrayList<>();
+        if(null != datas){
+            datas = new ArrayList<>();
+            notifyDataSetChanged();
+        }
     }
 
     // 暴露接口，更新数据源，并修改hasMore的值，如果有增加数据，hasMore为true，否则为false
     public void updateList(List<NewsInfo> newDatas, boolean hasMore) {
         // 在原有的数据之上增加新数据
+
         if (newDatas != null) {
+            datas.clear();
             datas.addAll(newDatas);
+
         }
+
         this.hasMore = hasMore;
         notifyDataSetChanged();
-    }
-
-    public void clearDatas() {
-        if (null != datas) {
-            datas.clear();
-        }
     }
 }

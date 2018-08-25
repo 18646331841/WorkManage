@@ -1,5 +1,6 @@
 package com.barisetech.www.workmanage.view.fragment;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -9,9 +10,11 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.barisetech.www.workmanage.R;
@@ -30,6 +33,9 @@ import com.barisetech.www.workmanage.viewmodel.NewsViewModel;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.reactivex.disposables.Disposable;
 
 public class NewsListFragment extends BaseFragment {
@@ -45,8 +51,17 @@ public class NewsListFragment extends BaseFragment {
     private String curNewsType = "1";//默认类型
     private Disposable curDisposable;
 
+    private List<NewsInfo> curList;
+    private Observer<List<NewsInfo>> observerList;
+
     public NewsListFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        curList = new ArrayList<>();
     }
 
     public static NewsListFragment newInstance() {
@@ -64,6 +79,7 @@ public class NewsListFragment extends BaseFragment {
         mBinding.setFragment(this);
         ToolbarInfo toolbarInfo = new ToolbarInfo();
         toolbarInfo.setTitle(getString(R.string.title_news));
+        toolbarInfo.setOneText("新增");
         observableToolbar.set(toolbarInfo);
 
         initView();
@@ -71,25 +87,61 @@ public class NewsListFragment extends BaseFragment {
         return mBinding.getRoot();
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause");
+        newsViewModel.getmObservableNewsInfos().setValue(null);
+        LogUtil.d(TAG, "list = " + curList);
+
+    }
+
     private void initView() {
-        mBinding.newsListRadioGroup.setOnCheckedChangeListener((radioGroup, i) -> {
-            newsViewModel.removeDisposable(curDisposable);
-            switch (i) {
-                case R.id.news_list_all:
-                    curNewsType = "";//全部类型
-                    break;
-                case R.id.news_list_default:
-                    curNewsType = "1";
-                    break;
-                case R.id.news_list_company:
-                    curNewsType = "2";
-                    break;
-                case R.id.news_list_industry:
-                    curNewsType = "3";
-                    break;
-            }
-            getDatas(1, PAGE_COUNT);
+        mBinding.toolbar.tvOne.setOnClickListener(view -> {
+            EventBus.getDefault().post(new EventBusMessage(NewsAddFragment.TAG));
         });
+
+        mBinding.newsListAll.setOnClickListener(view -> {
+            RadioButton radioButton = (RadioButton) view;
+            if (radioButton.isChecked()) {
+                curDisposable.dispose();
+                curList.clear();
+
+                curNewsType = "";//全部类型
+                getDatas(0, PAGE_COUNT);
+            }
+        });
+        mBinding.newsListDefault.setOnClickListener(view -> {
+            RadioButton radioButton = (RadioButton) view;
+            if (radioButton.isChecked()) {
+                curDisposable.dispose();
+                curList.clear();
+
+                curNewsType = "1";//全部类型
+                getDatas(0, PAGE_COUNT);
+            }
+        });
+        mBinding.newsListCompany.setOnClickListener(view -> {
+            RadioButton radioButton = (RadioButton) view;
+            if (radioButton.isChecked()) {
+                curDisposable.dispose();
+                curList.clear();
+
+                curNewsType = "2";//全部类型
+                getDatas(0, PAGE_COUNT);
+            }
+        });
+        mBinding.newsListIndustry.setOnClickListener(view -> {
+            RadioButton radioButton = (RadioButton) view;
+            if (radioButton.isChecked()) {
+                curDisposable.dispose();
+                curList.clear();
+
+                curNewsType = "3";//全部类型
+                getDatas(0, PAGE_COUNT);
+            }
+        });
+
         initRecyclerView();
 
         newsListAdapter.setItemCallBack(item -> {
@@ -128,13 +180,13 @@ public class NewsListFragment extends BaseFragment {
                     if (!newsListAdapter.isFadeTips() && lastVisibleItem + 1 == newsListAdapter.getItemCount
                             ()) {
                         // 然后调用updateRecyclerView方法更新RecyclerView
-                        updateRecyclerView((newsListAdapter.getRealLastPosition() / PAGE_COUNT) + 1, PAGE_COUNT);
+                        updateRecyclerView(newsListAdapter.getRealLastPosition(), PAGE_COUNT);
                     }
 
                     // 如果隐藏了提示条，我们又上拉加载时，那么最后一个条目就要比getItemCount要少2
                     if (newsListAdapter.isFadeTips() && lastVisibleItem + 2 == newsListAdapter.getItemCount()) {
                         // 然后调用updateRecyclerView方法更新RecyclerView
-                        updateRecyclerView((newsListAdapter.getRealLastPosition() / PAGE_COUNT) + 1, PAGE_COUNT);
+                        updateRecyclerView(newsListAdapter.getRealLastPosition(), PAGE_COUNT);
                     }
                 }
             }
@@ -156,7 +208,7 @@ public class NewsListFragment extends BaseFragment {
 
     private void getDatas(int fromIndex, int toIndex) {
         EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_SHOW));
-        newsListAdapter.clearDatas();
+        newsListAdapter.resetDatas();
 
         ReqNewsInfos reqNewsInfos = new ReqNewsInfos();
         reqNewsInfos.setStartIndex(String.valueOf(fromIndex));
@@ -169,24 +221,41 @@ public class NewsListFragment extends BaseFragment {
     @Override
     public void bindViewModel() {
         newsViewModel = ViewModelProviders.of(this).get(NewsViewModel.class);
-
-        getDatas(1, PAGE_COUNT);
     }
 
     @Override
     public void subscribeToModel() {
-        newsViewModel.getmObservableNewsInfos().observe(this, newsInfos -> {
+        observerList = newsInfos -> {
             if (null != newsInfos) {
                 if (newsInfos.size() > 0) {
+                    curList.addAll(newsInfos);
+
                     if (newsInfos.size() < PAGE_COUNT) {
-                        newsListAdapter.updateList(newsInfos, false);
+                        newsListAdapter.updateList(curList, false);
                     } else {
-                        newsListAdapter.updateList(newsInfos, true);
+                        newsListAdapter.updateList(curList, true);
                     }
                 } else {
                     newsListAdapter.updateList(null, false);
                 }
+            } else {
+                if (null == curList) {
+                    newsListAdapter.updateList(null, false);
+                } else {
+                    newsListAdapter.updateList(curList, false);
+                }
             }
-        });
+        };
+
+        if (!newsViewModel.getmObservableNewsInfos().hasObservers()) {
+            //防止多次订阅
+            newsViewModel.getmObservableNewsInfos().observe(this, observerList);
+        }
+
+        if (null == curList || curList.size() <= 0) {
+            getDatas(0, PAGE_COUNT);
+        } else {
+            newsListAdapter.updateList(curList, false);
+        }
     }
 }

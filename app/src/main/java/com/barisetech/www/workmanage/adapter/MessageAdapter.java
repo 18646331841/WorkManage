@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.bean.MessageInfo;
@@ -23,17 +24,19 @@ import java.util.Set;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.Myholder>{
     private static final String TAG = "MessageAdapter";
-    private List<? extends MessageInfo> mList;
+    private List<MessageInfo> mList;
     private OnItemClickListener mOnItemClickListener;
-    public HashMap<Integer,Boolean> map;
+    public HashMap<Integer, MessageInfo> map;
 
-
+    public static final int SHOW_ALL = 1;//全选
+    public static final int HIDE_ALL = 2;//取消全选
 
     private int flag;
 
 
     public void setFlag(int i){
         flag = i;
+        notifyDataSetChanged();
     }
 
     @Nullable
@@ -41,27 +44,29 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.Myholder
 
     public MessageAdapter(@Nullable ItemCallBack itemCallBack) {
         mItemCallBack = itemCallBack;
+        map = new HashMap<>();
+        mList = new ArrayList<>();
     }
 
     public void setCommentList(final List<? extends MessageInfo> messageInfos) {
-        if (mList == null) {
-            mList = messageInfos;
+        if (mList.size() <= 0) {
+            mList.addAll(messageInfos);
             LogUtil.d(TAG, "mListsize = " + mList.size());
-            notifyItemRangeInserted(0, messageInfos.size());
+            notifyItemRangeInserted(0, mList.size());
         } else {
-            List<MessageInfo> oldList = new ArrayList<>();
-            oldList.addAll(mList);
+            List<MessageInfo> old = new ArrayList<>();
+            old.addAll(mList);
 
             DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffUtil.Callback() {
                 @Override
                 public int getOldListSize() {
-                    LogUtil.d(TAG, "OldListSize = " + oldList.size());
-                    return oldList.size();
+                    LogUtil.d(TAG, "OldListSize = " + old.size());
+                    return old.size();
                 }
 
                 @Override
                 public int getNewListSize() {
-                    LogUtil.d(TAG, "NewListSize = " + mList.size());
+                    LogUtil.d(TAG, "NewListSize = " + messageInfos.size());
                     return messageInfos.size();
                 }
 
@@ -82,13 +87,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.Myholder
                     return old.getContent().equals(messageInfo.getContent());
                 }
             });
-            mList = messageInfos;
+            mList.clear();
+            mList.addAll(messageInfos);
             diffResult.dispatchUpdatesTo(this);
-        }
-
-        map = new HashMap<>();
-        for (int i = 0; i<mList.size();i++){
-            map.put(i,false);
         }
     }
 
@@ -97,17 +98,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.Myholder
      * 全选
      * */
     public void All(){
-        Set<Map.Entry<Integer,Boolean>> entries = map.entrySet();
-        boolean shouldall = false;
-        for (Map.Entry<Integer,Boolean>entry:entries){
-            Boolean value = entry.getValue();
-            if (!value){
-                shouldall = true;
-                break;
-            }
-        }
-        for (Map.Entry<Integer,Boolean> entry: entries){
-            entry.setValue(shouldall);
+        for(int i = 0; i < mList.size(); i++) {
+            map.put(i, mList.get(i));
         }
         notifyDataSetChanged();
     }
@@ -117,10 +109,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.Myholder
      * */
 
     public void neverall() {
-        Set<Map.Entry<Integer, Boolean>> entries = map.entrySet();
-        for (Map.Entry<Integer, Boolean> entry : entries) {
-            entry.setValue(!entry.getValue());
-        }
+        map.clear();
         notifyDataSetChanged();
     }
 
@@ -128,11 +117,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.Myholder
      * 单选
      * */
     public void singlesel(int postion) {
-        Set<Map.Entry<Integer, Boolean>> entries = map.entrySet();
-        for (Map.Entry<Integer, Boolean> entry : entries) {
-            entry.setValue(false);
-        }
-        map.put(postion, true);
+        map.put(postion, mList.get(postion));
         notifyDataSetChanged();
     }
 
@@ -151,28 +136,33 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.Myholder
         MessageInfo messageInfo = mList.get(position);
         if (messageInfo.getMessageType() == MessageInfo.TYPE_INCIDENT && null != messageInfo.getTitle()) {
             holder.binding.messageTime.getPaint().setFakeBoldText(true);
+        } else {
+            holder.binding.messageTime.getPaint().setFakeBoldText(false);
         }
 
         holder.binding.setMessageinfo(messageInfo);
-        LogUtil.d(TAG, "messageType = " + messageInfo.getMessageType());
         holder.binding.messageType.setBackgroundResource(messageInfo.getMessageType() == MessageInfo.TYPE_ALARM ?
                 R.drawable.type_alarm : R.drawable.type_incident);
-        if (flag==1){
+        if (flag == SHOW_ALL){
             holder.binding.selectItem.setVisibility(View.VISIBLE);
-        }else if (flag==2){
+        }else if (flag == HIDE_ALL){
             holder.binding.selectItem.setVisibility(View.GONE);
         }
 
-        holder.binding.selectItem.setChecked(map.get(position));
-        holder.binding.selectItem.setOnClickListener(new View.OnClickListener() {
+        if (null != map.get(position)) {
+            holder.binding.selectItem.setChecked(true);
+        } else {
+            holder.binding.selectItem.setChecked(false);
+        }
 
-            @Override
-            public void onClick(View v) {
-                map.put(position, !map.get(position));
-                Log.e("flag",""+map.get(position));
-                //刷新适配器
-                notifyDataSetChanged();
-
+        holder.binding.selectItem.setOnClickListener(v -> {
+            if (v instanceof CheckBox) {
+                CheckBox checkBox = (CheckBox) v;
+                if (checkBox.isChecked()) {
+                    map.put(position, mList.get(position));
+                } else {
+                    map.remove(position);
+                }
             }
         });
         holder.binding.executePendingBindings();
@@ -180,7 +170,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.Myholder
             holder.binding.getRoot().setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    mOnItemClickListener.onItemClick(holder.binding.getRoot(), position);
+                    if (flag != SHOW_ALL) {
+                        mOnItemClickListener.onItemClick(holder.binding.getRoot(), position);
+                    }
                     return true;
                 }
             });

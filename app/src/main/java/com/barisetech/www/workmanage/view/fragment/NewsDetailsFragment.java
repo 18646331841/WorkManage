@@ -10,6 +10,7 @@ import android.support.annotation.RequiresApi;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -88,24 +89,17 @@ public class NewsDetailsFragment extends BaseFragment {
 
     private void initView() {
         LogUtil.d(TAG, "url = " + curUrl);
-        mBinding.newsDetailsWv.loadUrl(curUrl);
+
         WebSettings webSettings = mBinding.newsDetailsWv.getSettings();
-
         webSettings.setJavaScriptEnabled(true);
-        mBinding.newsDetailsWv.setWebViewClient(new WebViewClient(){
-
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                view.loadUrl(request.getUrl().toString());
-                return true;
-            }
-
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-            }
-        });
+        webSettings.setAllowContentAccess(true);
+        webSettings.setAppCacheEnabled(false);
+        webSettings.setBuiltInZoomControls(false);
+        webSettings.setUseWideViewPort(true);
+        webSettings.setLoadWithOverviewMode(true);
+        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        mBinding.newsDetailsWv.loadUrl(curUrl);
+        mBinding.newsDetailsWv.setWebChromeClient(new WebChromeClient());
     }
 
     @Override

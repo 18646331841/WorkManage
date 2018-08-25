@@ -20,6 +20,7 @@ import com.barisetech.www.workmanage.utils.FingerprintUtil;
 import static com.barisetech.www.workmanage.utils.ToastUtil.showToast;
 
 public class CommonDialogFragment extends DialogFragment {
+    public static final String TAG = "CommonDialogFragment";
 
     /**
      * 监听弹出窗是否被取消

@@ -15,6 +15,7 @@ import com.barisetech.www.workmanage.bean.news.ReqAddNews;
 import com.barisetech.www.workmanage.bean.news.ReqNewsInfos;
 import com.barisetech.www.workmanage.callback.ModelCallBack;
 import com.barisetech.www.workmanage.model.NewsModel;
+import com.barisetech.www.workmanage.utils.LogUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 
 import org.greenrobot.eventbus.EventBus;

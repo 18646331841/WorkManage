@@ -36,10 +36,14 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected Context mContext;
     protected CommonDialogFragment commonDialogFragment;
 
+    private boolean isShow = true;//activity是否在前台显示
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        LogUtil.d(TAG, "Base onCreate");
 //        setCustomDensity(this, getApplication());
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         mContext = this;
         if (Build.VERSION.SDK_INT >= 21) {
             View decorView = getWindow().getDecorView();
@@ -55,15 +59,31 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        LogUtil.d(TAG, "Base onSaveInstanceState");
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
-        EventBus.getDefault().unregister(this);
+        LogUtil.d(TAG, "Base onPause");
+
+        isShow = false;
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        EventBus.getDefault().register(this);
+        LogUtil.d(TAG, "Base onResume");
+
+        isShow = true;
     }
 
     @Override
@@ -127,18 +147,21 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void event(EventBusMessage eventBusMessage) {
-        switch (eventBusMessage.message) {
-            case BaseConstant.PROGRESS_SHOW:
-                showProgress();
-                break;
-            case BaseConstant.PROGRESS_CLOSE:
-                closeProgress();
-                break;
-            default:
-                if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
-                    showActivityOrFragment(eventBusMessage);
-                }
-                break;
+        if (isShow) {
+
+            switch (eventBusMessage.message) {
+                case BaseConstant.PROGRESS_SHOW:
+                    showProgress();
+                    break;
+                case BaseConstant.PROGRESS_CLOSE:
+                    closeProgress();
+                    break;
+                default:
+                    if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                        showActivityOrFragment(eventBusMessage);
+                    }
+                    break;
+            }
         }
     }
 

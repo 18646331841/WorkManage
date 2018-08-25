@@ -104,20 +104,19 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
 //                floatMenu.items("菜单1", "菜单2", "菜单3");
                 floatMenu.inflate(R.layout.layout_menu_warn);
                 floatMenu.show(mpoint);
-                floatMenu.setOnItemClickListener(new FloatMenu.OnItemClickListener() {
-                    @Override
-                    public void onClick(View v, int position) {
-                        switch (position){
-                            case 1:
-                                Toast.makeText(getActivity(), "1", Toast.LENGTH_SHORT).show();
-                                break;
-                            case 5:
-                                mBinding.mulitpleMenu.setVisibility(View.VISIBLE);
-                                mBinding.tvNewMsg.setVisibility(View.GONE);
-                                messageAdapter.setFlag(1);
-                                messageAdapter.notifyDataSetChanged();
-                                break;
-                        }
+                floatMenu.setOnItemClickListener((v, position1) -> {
+                    switch (position1){
+                        case 1:
+                            Toast.makeText(getActivity(), "1", Toast.LENGTH_SHORT).show();
+                            break;
+                        case 5:
+                            mBinding.mulitpleMenu.setVisibility(View.VISIBLE);
+                            mBinding.tvNewMsg.setVisibility(View.GONE);
+                            messageAdapter.setFlag(MessageAdapter.SHOW_ALL);
+                            mBinding.allSelectTv.setText("全选");
+                            flag = false;
+                            messageAdapter.notifyDataSetChanged();
+                            break;
                     }
                 });
             }
@@ -165,24 +164,29 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
                 }
                 break;
             case R.id.mark_read_tv:
-                Set<Map.Entry<Integer, Boolean>> entries = messageAdapter.map.entrySet();
-                for (Map.Entry<Integer, Boolean> entry : entries) {
-                    if (entry.getValue()){
-                        System.out.println(entry);
-                    }
-                }
+                markReadWork();
                 break;
             case R.id.cancel_tv:
                 mBinding.mulitpleMenu.setVisibility(View.GONE);
                 mBinding.tvNewMsg.setVisibility(View.VISIBLE);
-                messageAdapter.setFlag(2);
-                messageAdapter.notifyDataSetChanged();
+                messageAdapter.setFlag(MessageAdapter.HIDE_ALL);
                 break;
 
         }
 
     }
 
+    private void markReadWork() {
+        LogUtil.d(TAG, "mapSize = " + messageAdapter.map.size());
+        Set<Map.Entry<Integer, MessageInfo>> entries = messageAdapter.map.entrySet();
+        for (Map.Entry<Integer, MessageInfo> entry : entries) {
+            LogUtil.d(TAG, "type = " + entry.getKey());
+        }
+        messageAdapter.neverall();
+        mBinding.mulitpleMenu.setVisibility(View.GONE);
+        mBinding.tvNewMsg.setVisibility(View.VISIBLE);
+        messageAdapter.setFlag(MessageAdapter.HIDE_ALL);
+    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void messageEventBus(Point point) {
@@ -194,7 +198,6 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
     public void bindViewModel() {
         alarmViewModel = ViewModelProviders.of(this).get(AlarmViewModel.class);
         incidentViewModel = ViewModelProviders.of(this).get(IncidentViewModel.class);
-
     }
 
     @Override

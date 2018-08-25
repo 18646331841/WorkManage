@@ -37,7 +37,8 @@
 
         <activity
             android:name=".view.MainActivity"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:configChanges="screenSize|keyboardHidden|orientation">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -52,7 +53,8 @@
 
         <activity
             android:name=".view.LoginActivity"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:configChanges="screenSize|keyboardHidden|orientation">
         </activity>
     </application>
 
