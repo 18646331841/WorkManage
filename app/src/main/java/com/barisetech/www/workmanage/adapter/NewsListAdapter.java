@@ -187,18 +187,17 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void resetDatas() {
         if(null != datas){
             datas = new ArrayList<>();
-            notifyDataSetChanged();
+//            notifyDataSetChanged();
         }
     }
 
     // 暴露接口，更新数据源，并修改hasMore的值，如果有增加数据，hasMore为true，否则为false
     public void updateList(List<NewsInfo> newDatas, boolean hasMore) {
         // 在原有的数据之上增加新数据
-
+        LogUtil.d(TAG, "newDatas" + newDatas);
         if (newDatas != null) {
             datas.clear();
             datas.addAll(newDatas);
-
         }
 
         this.hasMore = hasMore;
