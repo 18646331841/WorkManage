@@ -48,7 +48,7 @@
                         android:id="@+id/title_alarm_details"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/alarm_details_card_title"
+                        android:background="@drawable/shape_title_top"
                         android:paddingLeft="@dimen/dp_15"
                         android:paddingTop="@dimen/dp_9"
                         android:paddingBottom="@dimen/dp_8"

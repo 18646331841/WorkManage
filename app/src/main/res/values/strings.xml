@@ -80,6 +80,10 @@
     <string name="mulitple_selection">多选</string>
     <string name="input_key_word_please">请输入搜索关键字</string>
     <string name="filter">筛选</string>
+    <string name="tv_finger_toast_one">开启指纹，更快更安全</string>
+    <string name="tv_finger_toast_two">指纹登录仅对本机有效</string>
+    <string name="site_detail">站点详情</string>
+    <string name="add_pipeline">添加管线</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

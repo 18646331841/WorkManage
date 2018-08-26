@@ -15,8 +15,8 @@ import com.barisetech.www.workmanage.base.BaseFragment;
 public class SiteFragment extends BaseFragment {
 
 
-    private EditText et_search;
-    private TextView tv_filter;
+    public static final String TAG = "SiteFragment";
+
 
 
 
