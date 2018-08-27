@@ -190,17 +190,17 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"/>
 
-                    <GridView
+                    <com.barisetech.www.workmanage.widget.MyCustomHeightGridView
                         android:id="@+id/alarm_analysis_gv"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintTop_toTopOf="@id/alarm_analysis_up_img_tv"
+                        android:layout_height="match_parent"
+                        app:layout_constraintTop_toBottomOf="@id/alarm_analysis_up_img_tv"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:horizontalSpacing="@dimen/dp_5"
                         android:numColumns="3">
 
-                    </GridView>
+                    </com.barisetech.www.workmanage.widget.MyCustomHeightGridView>
 
                 </android.support.constraint.ConstraintLayout>
 
