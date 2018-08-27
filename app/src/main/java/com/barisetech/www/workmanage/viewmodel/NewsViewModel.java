@@ -8,6 +8,7 @@ import android.os.Looper;
 import android.support.annotation.NonNull;
 
 import com.barisetech.www.workmanage.base.BaseConstant;
+import com.barisetech.www.workmanage.base.BaseViewModel;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.TypeResponse;
 import com.barisetech.www.workmanage.bean.news.NewsInfo;
@@ -28,12 +29,11 @@ import io.reactivex.disposables.Disposable;
 /**
  * Created by LJH on 2018/8/20.
  */
-public class NewsViewModel extends AndroidViewModel implements ModelCallBack {
+public class NewsViewModel extends BaseViewModel implements ModelCallBack {
     private static final String TAG = "NewsViewModel";
     private Handler mDelivery;
 
     private NewsModel newsModel;
-    private CompositeDisposable mDisposable = new CompositeDisposable();
 
     private MediatorLiveData<Integer> mObservableAddResult;
     private MediatorLiveData<List<NewsInfo>> mObservableNewsInfos;
@@ -53,21 +53,21 @@ public class NewsViewModel extends AndroidViewModel implements ModelCallBack {
     }
 
     public void reqNewsNum() {
-        mDisposable.add(newsModel.newsNum());
+        addDisposable(newsModel.newsNum());
     }
 
     public void reqNewsById(int id) {
-        mDisposable.add(newsModel.getNewsById(id));
+        addDisposable(newsModel.getNewsById(id));
     }
 
     public Disposable reqQueryNews(ReqNewsInfos reqQuery) {
         Disposable disposable = newsModel.queryNews(reqQuery);
-        mDisposable.add(disposable);
+        addDisposable(disposable);
         return disposable;
     }
 
     public void reqAddOrUpdateNews(ReqAddNews reqAddNews) {
-        mDisposable.add(newsModel.addOrUpdateNews(reqAddNews));
+        addDisposable(newsModel.addOrUpdateNews(reqAddNews));
     }
 
     @Override
@@ -101,24 +101,6 @@ public class NewsViewModel extends AndroidViewModel implements ModelCallBack {
      */
     public MediatorLiveData<Integer> getmObservableAddResult() {
         return mObservableAddResult;
-    }
-
-    @Override
-    protected void onCleared() {
-        super.onCleared();
-        mDisposable.dispose();
-        mDisposable.clear();
-        mDelivery = null;
-    }
-
-    /**
-     * 移除并结束Disposable
-     * @param disposable
-     */
-    public void removeDisposable(Disposable disposable) {
-        if (null != disposable) {
-            mDisposable.remove(disposable);
-        }
     }
 
     /**

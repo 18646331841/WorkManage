@@ -27,7 +27,16 @@
 
     <string name="title_alarm_analysis">警报分析</string>
     <string name="alarm_analysis_reason">选择警报原因</string>
+    <string name="alarm_analysis_upload_screenshot">上传管线截图</string>
     <string name="alarm_analysis_content">警报内容</string>
+    <string name="alarm_analysis_misinformation">误报</string>
+    <string name="alarm_analysis_leak">泄露</string>
+    <string name="alarm_analysis_test">测试</string>
+    <string name="alarm_analysis_other">其他</string>
+    <string name="alarm_analysis_input_remark">请输入备注信息</string>
+    <string name="alarm_analysis_add_abstract">添加摘要</string>
+    <string name="alarm_analysis_input_abstract">请输入摘要内容</string>
+    <string name="alarm_analysis_upload">上传</string>
 
     <string name="title_alarm_details">警报详情</string>
     <string name="alarm_to_map">转到地图</string>
@@ -67,6 +76,9 @@
     <string name="popup_tip_cancle">取消</string>
 
     <string name="dialog_progress_text">加载中</string>
+    <string name="recycleview_loading">加载中...</string>
+    <string name="recycleview_load_complete">加载成功</string>
+    <string name="recycleview_load_end">没有更多</string>
     <string name="network_error">当前网络不可用，请检查网络</string>
     <string name="account_mistake">登录失败，账号或密码错误</string>
     <string name="account_null">账号或密码不能为空</string>

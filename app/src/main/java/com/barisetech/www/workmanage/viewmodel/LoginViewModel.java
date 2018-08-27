@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 
 import com.barisetech.www.workmanage.base.BaseApplication;
 import com.barisetech.www.workmanage.base.BaseConstant;
+import com.barisetech.www.workmanage.base.BaseViewModel;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.TokenInfo;
 import com.barisetech.www.workmanage.callback.ModelCallBack;
@@ -17,11 +18,12 @@ import com.barisetech.www.workmanage.model.LoginModel;
 import org.greenrobot.eventbus.EventBus;
 
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Created by LJH on 2018/8/9.
  */
-public class LoginViewModel extends AndroidViewModel implements ModelCallBack{
+public class LoginViewModel extends BaseViewModel implements ModelCallBack{
 
     private LoginModel loginModel;
     private AppDatabase appDatabase;
@@ -32,8 +34,6 @@ public class LoginViewModel extends AndroidViewModel implements ModelCallBack{
      * 监听登录失败结果
      */
     private final MediatorLiveData<Integer> mObservableLoginFail;
-
-    private final CompositeDisposable mDisposable = new CompositeDisposable();
 
     public LoginViewModel(@NonNull Application application) {
         super(application);
@@ -46,8 +46,10 @@ public class LoginViewModel extends AndroidViewModel implements ModelCallBack{
         mObservableTokenInfo = loginModel.getTokenInfo();
     }
 
-    public void login(String name, String password) {
-        mDisposable.add(loginModel.getToken(name, password));
+    public Disposable login(String name, String password) {
+        Disposable disposable = loginModel.getToken(name, password);
+        addDisposable(disposable);
+        return disposable;
     }
 
     public LiveData<TokenInfo> getObservableTokenInfo() {
@@ -56,13 +58,6 @@ public class LoginViewModel extends AndroidViewModel implements ModelCallBack{
 
     public LiveData<Integer> getObservableLoginFail() {
         return mObservableLoginFail;
-    }
-
-    @Override
-    protected void onCleared() {
-        super.onCleared();
-
-        mDisposable.clear();
     }
 
     @Override

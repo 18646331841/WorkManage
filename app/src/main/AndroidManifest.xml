@@ -38,6 +38,7 @@
         <activity
             android:name=".view.MainActivity"
             android:launchMode="singleTop"
+            android:windowSoftInputMode="adjustPan|stateHidden"
             android:configChanges="screenSize|keyboardHidden|orientation">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -45,7 +46,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.SecondActivity">
+        <activity android:name=".view.SecondActivity"
+                  android:windowSoftInputMode="adjustPan|stateHidden">
 
         </activity>
 
@@ -54,8 +56,13 @@
         <activity
             android:name=".view.LoginActivity"
             android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustPan|stateHidden"
             android:configChanges="screenSize|keyboardHidden|orientation">
         </activity>
+
+        <activity
+            android:configChanges="orientation|screenSize"
+            android:name="me.nereo.multi_image_selector.MultiImageSelectorActivity" />
     </application>
 
 </manifest>

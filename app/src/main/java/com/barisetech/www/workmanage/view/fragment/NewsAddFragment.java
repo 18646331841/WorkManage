@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -45,6 +46,9 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import me.nereo.multi_image_selector.MultiImageSelector;
+import me.nereo.multi_image_selector.MultiImageSelectorActivity;
 
 /**
  * Created by LJH on 2018/8/21.
@@ -227,14 +231,14 @@ public class NewsAddFragment extends BaseFragment {
         if (resultCode == getActivity().RESULT_OK) {
             switch (requestCode) {
                 case CODE_GALLERY_REQUEST:
-                    LogUtil.d(TAG, "CODE_GALLERY_REQUEST uri = " + data.getData());
-                    //判断手机系统版本号
-                    if (Build.VERSION.SDK_INT >= 19){
-                        //4.4及以上系统使用这个方法处理图片
-                        handleImageOnKitKat(data.getData());
-                    }else {
-                        //4.4以下系统使用这个放出处理图片
-                        handleImageBeforeKitKat(data.getData());
+                    if (data == null) {
+                        return;
+                    }
+                    // 获取返回的图片列表(存放的是图片路径)
+                    List<String> path = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
+                    if (null != path && path.size() > 0) {
+                        LogUtil.d(TAG, "CODE_GALLERY_REQUEST uri = " + path.get(0));
+                        diaplayImage(path.get(0));
                     }
                     break;
                 case CODE_CAMERA_REQUEST:
@@ -256,9 +260,11 @@ public class NewsAddFragment extends BaseFragment {
      * 相册选择图片方法
      */
     private void choosePicture() {
-        Intent pickIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        pickIntent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-        startActivityForResult(pickIntent, CODE_GALLERY_REQUEST);
+        MultiImageSelector.create()
+                .showCamera(false) // 是否显示相机. 默认为显示
+                .count(1) // 最大选择图片数量, 默认为9. 只有在选择模式为多选时有效
+                .single() //单选模式
+                .start(this, CODE_GALLERY_REQUEST);
     }
 
     /**
@@ -343,6 +349,7 @@ public class NewsAddFragment extends BaseFragment {
             int width = mBinding.imgUpload.getWidth();
             int height = mBinding.imgUpload.getHeight();
             mBinding.imgUpload.setImageBitmap(BitmapUtil.getSmallBitmap(imagePath, width, height));
+            mBinding.imgUpload.setBackgroundColor(Color.TRANSPARENT);
         }else {
             ToastUtil.showToast("获取图片失败");
         }

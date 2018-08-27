@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 
 import com.barisetech.www.workmanage.base.BaseApplication;
 import com.barisetech.www.workmanage.base.BaseConstant;
+import com.barisetech.www.workmanage.base.BaseViewModel;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.incident.IncidentInfo;
 import com.barisetech.www.workmanage.callback.ModelCallBack;
@@ -22,12 +23,11 @@ import io.reactivex.disposables.CompositeDisposable;
 /**
  * Created by LJH on 2018/8/15.
  */
-public class IncidentViewModel extends AndroidViewModel implements ModelCallBack{
+public class IncidentViewModel extends BaseViewModel implements ModelCallBack{
     private static final String TAG = "IncidentViewModel";
 
     private AppDatabase appDatabase;
     private IncidentModel incidentModel;
-    private CompositeDisposable mDisposable = new CompositeDisposable();
 
     private LiveData<List<IncidentInfo>> mObservableAllIncidentByRead;
 
@@ -51,18 +51,12 @@ public class IncidentViewModel extends AndroidViewModel implements ModelCallBack
 
     }
 
-    @Override
-    protected void onCleared() {
-        super.onCleared();
-        mDisposable.clear();
-    }
-
     public void reqAllIncident() {
-        mDisposable.add(incidentModel.reqAllIncident());
+        addDisposable(incidentModel.reqAllIncident());
     }
 
     public void reqLiftIncident(String incidentId) {
-        mDisposable.add(incidentModel.reqLiftIncident(incidentId));
+        addDisposable(incidentModel.reqLiftIncident(incidentId));
     }
 
     public LiveData<List<IncidentInfo>> getmObservableAllIncidentByRead() {

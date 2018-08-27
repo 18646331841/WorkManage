@@ -6,29 +6,23 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.barisetech.www.workmanage.adapter.MessageAdapter;
 import com.barisetech.www.workmanage.adapter.ItemCallBack;
-import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.MessageInfo;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
-import com.barisetech.www.workmanage.bean.alarm.ReqAllAlarm;
 import com.barisetech.www.workmanage.bean.incident.IncidentInfo;
 import com.barisetech.www.workmanage.databinding.FragmentMessageBinding;
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.utils.LogUtil;
-import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
-import com.barisetech.www.workmanage.utils.TimeUtil;
 import com.barisetech.www.workmanage.viewmodel.AlarmViewModel;
 import com.barisetech.www.workmanage.viewmodel.IncidentViewModel;
 import com.barisetech.www.workmanage.widget.popumenu.FloatMenu;
@@ -38,7 +32,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -48,7 +41,7 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
     public static final String TAG = "Messagefragment";
 
     private AlarmViewModel alarmViewModel;
-    private List<MessageInfo> curMessageList = new ArrayList<>();
+    private List<MessageInfo> curMessageList;
     private List<? extends MessageInfo> curAlarmList;
     private List<? extends MessageInfo> curIncidentList;
 
@@ -60,6 +53,12 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
     private boolean flag = false;
 
     public Messagefragment() {
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        curMessageList = new ArrayList<>();
     }
 
     public static Messagefragment newInstance() {
@@ -82,7 +81,7 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
 
         EventBus.getDefault().register(this);
 
-        messageAdapter = new MessageAdapter(itemCallBack);
+        messageAdapter = new MessageAdapter(itemCallBack, curMessageList);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         mBinding.messageRecyclerView.setLayoutManager(llm);
@@ -97,29 +96,26 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
         mBinding.imgAnalysisAlarm.setOnClickListener(this);
         mBinding.imgIncident.setOnClickListener(this);
         mBinding.imgNews.setOnClickListener(this);
-        messageAdapter.setOnItemClickListener(new MessageAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                FloatMenu floatMenu = new FloatMenu(getActivity());
+        messageAdapter.setOnItemLongClickListener((view, position) -> {
+            FloatMenu floatMenu = new FloatMenu(getActivity());
 //                floatMenu.items("菜单1", "菜单2", "菜单3");
-                floatMenu.inflate(R.layout.layout_menu_warn);
-                floatMenu.show(mpoint);
-                floatMenu.setOnItemClickListener((v, position1) -> {
-                    switch (position1){
-                        case 1:
-                            Toast.makeText(getActivity(), "1", Toast.LENGTH_SHORT).show();
-                            break;
-                        case 5:
-                            mBinding.mulitpleMenu.setVisibility(View.VISIBLE);
-                            mBinding.tvNewMsg.setVisibility(View.GONE);
-                            messageAdapter.setFlag(MessageAdapter.SHOW_ALL);
-                            mBinding.allSelectTv.setText("全选");
-                            flag = false;
-                            messageAdapter.notifyDataSetChanged();
-                            break;
-                    }
-                });
-            }
+            floatMenu.inflate(R.layout.layout_menu_warn);
+            floatMenu.show(mpoint);
+            floatMenu.setOnItemClickListener((v, position1) -> {
+                switch (position1){
+                    case 1:
+                        Toast.makeText(getActivity(), "1", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 5:
+                        mBinding.mulitpleMenu.setVisibility(View.VISIBLE);
+                        mBinding.tvNewMsg.setVisibility(View.GONE);
+                        messageAdapter.setFlag(MessageAdapter.SHOW_ALL);
+                        mBinding.allSelectTv.setText("全选");
+                        flag = false;
+                        messageAdapter.notifyDataSetChanged();
+                        break;
+                }
+            });
         });
         return mBinding.getRoot();
     }
@@ -147,7 +143,10 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
                 EventBus.getDefault().post(new EventBusMessage(EventFragment.TAG));
                 break;
             case R.id.img_analysis_alarm:
-                EventBus.getDefault().post(new EventBusMessage(AlarmAnalysisFragment.TAG));
+                //TODO
+                EventBusMessage eventBusMessage = new EventBusMessage(AlarmAnalysisFragment.TAG);
+                eventBusMessage.setArg1(new AlarmInfo());
+                EventBus.getDefault().post(eventBusMessage);
                 break;
             case R.id.img_news:
                 EventBus.getDefault().post(new EventBusMessage(NewsListFragment.TAG));
@@ -202,38 +201,45 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
 
     @Override
     public void subscribeToModel() {
-        alarmViewModel.getNotReadAlarmInfos().observe(this, alarmInfos -> {
-            if (null != alarmInfos && alarmInfos.size() != 0) {
-                LogUtil.d(TAG, "observe alarmInfos = " + alarmInfos.size());
-                mBinding.messageAlarmNum.setText(String.valueOf(alarmInfos.size()));
+        if (!alarmViewModel.getNotReadAlarmInfos().hasObservers()) {
 
-                curAlarmList = alarmInfos;
-                curMessageList.clear();
-                curMessageList.addAll(curAlarmList);
-                if (null != curIncidentList) {
-                    curMessageList.addAll(curIncidentList);
-                }
+            alarmViewModel.getNotReadAlarmInfos().observe(this, alarmInfos -> {
+                if (null != alarmInfos && alarmInfos.size() != 0) {
+                    LogUtil.d(TAG, "observe alarmInfos = " + alarmInfos.size());
+                    mBinding.messageAlarmNum.setText(String.valueOf(alarmInfos.size()));
+                    mBinding.messageAlarmNum.setVisibility(View.VISIBLE);
 
-                LogUtil.d(TAG, "alarminfos curMessageList = " + curMessageList.size());
-                messageAdapter.setCommentList(curMessageList);
-            }
-        });
-
-        incidentViewModel.getmObservableAllIncidentByRead().observe(this, incidentInfos -> {
-            if (null != incidentInfos && incidentInfos.size() != 0) {
-                LogUtil.d(TAG, "observe incidentInfos = " + incidentInfos.size());
-                curIncidentList = incidentInfos;
-
-                curMessageList.clear();
-                if (null != curAlarmList) {
+                    curAlarmList = alarmInfos;
+                    curMessageList.clear();
                     curMessageList.addAll(curAlarmList);
-                }
-                curMessageList.addAll(curIncidentList);
+                    if (null != curIncidentList) {
+                        curMessageList.addAll(curIncidentList);
+                    }
 
-                LogUtil.d(TAG, "incidents curMessageList = " + curMessageList.size());
-                messageAdapter.setCommentList(curMessageList);
-            }
-        });
+                    LogUtil.d(TAG, "alarminfos curMessageList = " + curMessageList.size());
+                    messageAdapter.notifyDataSetChanged();
+                }
+            });
+        }
+
+        if (!incidentViewModel.getmObservableAllIncidentByRead().hasObservers()) {
+
+            incidentViewModel.getmObservableAllIncidentByRead().observe(this, incidentInfos -> {
+                if (null != incidentInfos && incidentInfos.size() != 0) {
+                    LogUtil.d(TAG, "observe incidentInfos = " + incidentInfos.size());
+                    curIncidentList = incidentInfos;
+
+                    curMessageList.clear();
+                    if (null != curAlarmList) {
+                        curMessageList.addAll(curAlarmList);
+                    }
+                    curMessageList.addAll(curIncidentList);
+
+                    LogUtil.d(TAG, "incidents curMessageList = " + curMessageList.size());
+                    messageAdapter.notifyDataSetChanged();
+                }
+            });
+        }
 
         //TODO 需要确定好逻辑
 //        ReqAllAlarm reqAllAlarm = new ReqAllAlarm();

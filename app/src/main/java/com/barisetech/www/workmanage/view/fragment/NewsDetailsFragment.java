@@ -92,14 +92,13 @@ public class NewsDetailsFragment extends BaseFragment {
 
         WebSettings webSettings = mBinding.newsDetailsWv.getSettings();
         webSettings.setJavaScriptEnabled(true);
-        webSettings.setAllowContentAccess(true);
+        webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
         webSettings.setAppCacheEnabled(false);
-        webSettings.setBuiltInZoomControls(false);
+        webSettings.setSupportMultipleWindows(true);
         webSettings.setUseWideViewPort(true);
-        webSettings.setLoadWithOverviewMode(true);
-        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-        mBinding.newsDetailsWv.loadUrl(curUrl);
+        mBinding.newsDetailsWv.setWebViewClient(new WebViewClient());
         mBinding.newsDetailsWv.setWebChromeClient(new WebChromeClient());
+        mBinding.newsDetailsWv.loadUrl(curUrl);
     }
 
     @Override

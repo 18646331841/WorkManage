@@ -3,9 +3,7 @@ package com.barisetech.www.workmanage.adapter;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,18 +12,14 @@ import android.widget.CheckBox;
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.bean.MessageInfo;
 import com.barisetech.www.workmanage.databinding.ItemMessageBinding;
-import com.barisetech.www.workmanage.utils.LogUtil;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.Myholder>{
     private static final String TAG = "MessageAdapter";
     private List<MessageInfo> mList;
-    private OnItemClickListener mOnItemClickListener;
+    private OnItemLongClickListener mOnItemClickListener;
     public HashMap<Integer, MessageInfo> map;
 
     public static final int SHOW_ALL = 1;//全选
@@ -42,56 +36,56 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.Myholder
     @Nullable
     private final ItemCallBack mItemCallBack;
 
-    public MessageAdapter(@Nullable ItemCallBack itemCallBack) {
+    public MessageAdapter(@Nullable ItemCallBack itemCallBack, List<MessageInfo> messageInfos) {
         mItemCallBack = itemCallBack;
         map = new HashMap<>();
-        mList = new ArrayList<>();
+        mList = messageInfos;
     }
 
-    public void setCommentList(final List<? extends MessageInfo> messageInfos) {
-        if (mList.size() <= 0) {
-            mList.addAll(messageInfos);
-            LogUtil.d(TAG, "mListsize = " + mList.size());
-            notifyItemRangeInserted(0, mList.size());
-        } else {
-            List<MessageInfo> old = new ArrayList<>();
-            old.addAll(mList);
-
-            DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffUtil.Callback() {
-                @Override
-                public int getOldListSize() {
-                    LogUtil.d(TAG, "OldListSize = " + old.size());
-                    return old.size();
-                }
-
-                @Override
-                public int getNewListSize() {
-                    LogUtil.d(TAG, "NewListSize = " + messageInfos.size());
-                    return messageInfos.size();
-                }
-
-                @Override
-                public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-                    MessageInfo old = mList.get(oldItemPosition);
-                    MessageInfo messageInfo = messageInfos.get(newItemPosition);
-                    if (old.getMessageType() == messageInfo.getMessageType()) {
-                        return old.getId() == messageInfo.getId();
-                    }
-                    return false;
-                }
-
-                @Override
-                public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-                    MessageInfo old = mList.get(oldItemPosition);
-                    MessageInfo messageInfo = messageInfos.get(newItemPosition);
-                    return old.getContent().equals(messageInfo.getContent());
-                }
-            });
-            mList.clear();
-            mList.addAll(messageInfos);
-            diffResult.dispatchUpdatesTo(this);
-        }
-    }
+//    public void setCommentList(final List<? extends MessageInfo> messageInfos) {
+//        if (mList.size() <= 0) {
+//            mList.addAll(messageInfos);
+//            LogUtil.d(TAG, "mListsize = " + mList.size());
+//            notifyItemRangeInserted(0, mList.size());
+//        } else {
+//            List<MessageInfo> old = new ArrayList<>();
+//            old.addAll(mList);
+//
+//            DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffUtil.Callback() {
+//                @Override
+//                public int getOldListSize() {
+//                    LogUtil.d(TAG, "OldListSize = " + old.size());
+//                    return old.size();
+//                }
+//
+//                @Override
+//                public int getNewListSize() {
+//                    LogUtil.d(TAG, "NewListSize = " + messageInfos.size());
+//                    return messageInfos.size();
+//                }
+//
+//                @Override
+//                public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+//                    MessageInfo old = mList.get(oldItemPosition);
+//                    MessageInfo messageInfo = messageInfos.get(newItemPosition);
+//                    if (old.getMessageType() == messageInfo.getMessageType()) {
+//                        return old.getId() == messageInfo.getId();
+//                    }
+//                    return false;
+//                }
+//
+//                @Override
+//                public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+//                    MessageInfo old = mList.get(oldItemPosition);
+//                    MessageInfo messageInfo = messageInfos.get(newItemPosition);
+//                    return old.getContent().equals(messageInfo.getContent());
+//                }
+//            });
+//            mList.clear();
+//            mList.addAll(messageInfos);
+//            diffResult.dispatchUpdatesTo(this);
+//        }
+//    }
 
 
     /*
@@ -167,19 +161,16 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.Myholder
         });
         holder.binding.executePendingBindings();
         if (mOnItemClickListener != null){
-            holder.binding.getRoot().setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    if (flag != SHOW_ALL) {
-                        mOnItemClickListener.onItemClick(holder.binding.getRoot(), position);
-                    }
-                    return true;
+            holder.binding.getRoot().setOnLongClickListener(v -> {
+                if (flag != SHOW_ALL) {
+                    mOnItemClickListener.onItemClick(holder.binding.getRoot(), position);
                 }
+                return true;
             });
         }
     }
 
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+    public void setOnItemLongClickListener(OnItemLongClickListener onItemClickListener) {
         mOnItemClickListener = onItemClickListener;
     }
 
@@ -197,7 +188,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.Myholder
             this.binding = binding;
         }
     }
-    public interface OnItemClickListener {
+    public interface OnItemLongClickListener {
         void onItemClick(View view, int position);
     }
 }

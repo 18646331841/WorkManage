@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.barisetech.www.workmanage.base.BaseApplication;
 import com.barisetech.www.workmanage.base.BaseConstant;
+import com.barisetech.www.workmanage.base.BaseViewModel;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.bean.alarm.ReqAllAlarm;
@@ -30,12 +31,11 @@ import io.reactivex.disposables.CompositeDisposable;
 /**
  * Created by LJH on 2018/8/10.
  */
-public class AlarmViewModel extends AndroidViewModel implements ModelCallBack {
+public class AlarmViewModel extends BaseViewModel implements ModelCallBack {
     private static final String TAG = "AlarmViewModel";
 
     private AppDatabase appDatabase;
     private AlarmModel alarmModel;
-    private CompositeDisposable mDisposable = new CompositeDisposable();
 
     private LiveData<AlarmInfo> mObservableAlarmInfo;
     private LiveData<List<AlarmInfo>> mObservableAllAlarmInfos;
@@ -61,14 +61,14 @@ public class AlarmViewModel extends AndroidViewModel implements ModelCallBack {
     }
 
     public void getAlarmNum() {
-        mDisposable.add(alarmModel.reqAlarmNum());
+        addDisposable(alarmModel.reqAlarmNum());
     }
 
     /**
      * 获取所有未解除警报
      */
     public void getAllUnliftAlarm() {
-        mDisposable.add(alarmModel.reqAllAlarm());
+        addDisposable(alarmModel.reqAllAlarm());
     }
 
     /**
@@ -77,7 +77,7 @@ public class AlarmViewModel extends AndroidViewModel implements ModelCallBack {
      */
     public void getAllAlarmByCondition(ReqAllAlarm reqAllAlarm) {
         if (null != reqAllAlarm) {
-            mDisposable.add(alarmModel.reqAllAlarm(reqAllAlarm));
+            addDisposable(alarmModel.reqAllAlarm(reqAllAlarm));
         }
     }
 
@@ -87,14 +87,14 @@ public class AlarmViewModel extends AndroidViewModel implements ModelCallBack {
      */
     public void getAllAlarmByConditionToDB(ReqAllAlarm reqAllAlarm) {
         if (null != reqAllAlarm) {
-            mDisposable.add(alarmModel.reqAllAlarmAndToDB(reqAllAlarm));
+            addDisposable(alarmModel.reqAllAlarmAndToDB(reqAllAlarm));
         }
     }
 
     public void reqLiftAlarm(int alarmId) {
         String user = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_ACCOUNT, "");
         if (!TextUtils.isEmpty(user)) {
-            mDisposable.add(alarmModel.reqLiftAlarm(String.valueOf(alarmId), user));
+            addDisposable(alarmModel.reqLiftAlarm(String.valueOf(alarmId), user));
         }
     }
 
@@ -113,12 +113,6 @@ public class AlarmViewModel extends AndroidViewModel implements ModelCallBack {
         if (errorCode == Config.ERROR_UNAUTHORIZED) {
             EventBus.getDefault().post(new EventBusMessage(LoginActivity.TAG));
         }
-    }
-
-    @Override
-    protected void onCleared() {
-        super.onCleared();
-        mDisposable.clear();
     }
 
     public static class Factory extends ViewModelProvider.NewInstanceFactory {

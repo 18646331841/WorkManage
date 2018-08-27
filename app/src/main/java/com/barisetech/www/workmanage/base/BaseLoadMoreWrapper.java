@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.barisetech.www.workmanage.R;
+import com.barisetech.www.workmanage.utils.LogUtil;
 
 /**
  * Created by LJH on 2018/8/26.
@@ -35,6 +36,8 @@ public class BaseLoadMoreWrapper extends RecyclerView.Adapter<RecyclerView.ViewH
     private View mLoadingView;
     // Loading end view
     private View mLoadingEndView;
+    // Loading complete view
+    private View mLoadingCompleteView;
     // Loading view height
     private int mLoadingViewHeight;
 
@@ -74,8 +77,7 @@ public class BaseLoadMoreWrapper extends RecyclerView.Adapter<RecyclerView.ViewH
             // Set loading view height.
             loadMoreViewHolder.rlLoadingFooter.removeAllViews();
             if (mLoadingViewHeight > 0) {
-                RelativeLayout.LayoutParams params =
-                        (RelativeLayout.LayoutParams) loadMoreViewHolder.rlLoadingFooter.getLayoutParams();
+                ViewGroup.LayoutParams params = loadMoreViewHolder.rlLoadingFooter.getLayoutParams();
                 params.height = mLoadingViewHeight;
                 loadMoreViewHolder.rlLoadingFooter.setLayoutParams(params);
             }
@@ -94,7 +96,14 @@ public class BaseLoadMoreWrapper extends RecyclerView.Adapter<RecyclerView.ViewH
                     break;
 
                 case LOADING_COMPLETE: // Loading done
-                    // TODO
+                    if (mLoadingCompleteView != null) {
+                        // Custom loading end view
+                        loadMoreViewHolder.rlLoadingFooter.addView(mLoadingCompleteView);
+                    } else {
+                        // Default loading end view
+                        View loadingEndView = View.inflate(mContext, R.layout.layout_loading_complete, null);
+                        loadMoreViewHolder.rlLoadingFooter.addView(loadingEndView);
+                    }
                     break;
 
                 case LOADING_END: // Loading end
@@ -140,6 +149,10 @@ public class BaseLoadMoreWrapper extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
+    public void setmLoadingCompleteView(View mLoadingCompleteView) {
+        this.mLoadingCompleteView = mLoadingCompleteView;
+    }
+
     /**
      * Loading holder
      */
@@ -160,6 +173,7 @@ public class BaseLoadMoreWrapper extends RecyclerView.Adapter<RecyclerView.ViewH
      */
     public void setLoadState(int loadingState) {
         this.mLoadingState = loadingState;
+        LogUtil.d("BaseLoadMore", "setLoadState = " + loadingState);
         notifyDataSetChanged();
     }
 

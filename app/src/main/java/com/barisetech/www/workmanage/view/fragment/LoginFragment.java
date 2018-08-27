@@ -28,6 +28,8 @@ import com.barisetech.www.workmanage.viewmodel.LoginViewModel;
 
 import org.greenrobot.eventbus.EventBus;
 
+import io.reactivex.disposables.Disposable;
+
 public class LoginFragment extends BaseFragment {
     public static final String TAG = "LoginFragment";
 
@@ -35,6 +37,7 @@ public class LoginFragment extends BaseFragment {
     private LoginViewModel loginViewModel;
     private boolean isFirst = true;
 
+    private Disposable curDisposable;
 
     public LoginFragment() {
 
@@ -76,9 +79,10 @@ public class LoginFragment extends BaseFragment {
             if (TextUtils.isEmpty(account) || TextUtils.isEmpty(password)) {
                 ToastUtil.showToast(getString(R.string.account_null));
             } else {
+                loginViewModel.removeDisposable(curDisposable);
                 isFirst = false;
                 EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_SHOW));
-                loginViewModel.login(account, password);
+                curDisposable = loginViewModel.login(account, password);
             }
         });
     }
