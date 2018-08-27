@@ -67,6 +67,7 @@ public class ManageFragment extends BaseFragment implements View.OnClickListener
                 EventBus.getDefault().post(new EventBusMessage(SiteFragment.TAG));
                 break;
             case R.id.item_num:
+                EventBus.getDefault().post(new EventBusMessage(DigitizingFragment.TAG));
                 break;
             case R.id.item_pipeline:
                 break;

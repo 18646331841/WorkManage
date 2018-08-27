@@ -12,6 +12,8 @@ import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.view.fragment.AddSiteFragment;
 import com.barisetech.www.workmanage.view.fragment.AlarmDetailsFragment;
 import com.barisetech.www.workmanage.view.fragment.AlarmListFragment;
+import com.barisetech.www.workmanage.view.fragment.DigitizingDetailFragment;
+import com.barisetech.www.workmanage.view.fragment.DigitizingFragment;
 import com.barisetech.www.workmanage.view.fragment.FingerprintManagerFragment;
 import com.barisetech.www.workmanage.view.fragment.MapFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsAddFragment;
@@ -113,6 +115,16 @@ public class SecondActivity extends BaseActivity {
                 transaction
                         .addToBackStack(AddSiteFragment.TAG)
                         .replace(R.id.second_framelayout, AddSiteFragment.newInstance(), tag).commit();
+                break;
+            case DigitizingFragment.TAG:
+                transaction
+                        .replace(R.id.second_framelayout, DigitizingFragment.newInstance(), tag)
+                        .commit();
+                break;
+            case DigitizingDetailFragment.TAG:
+                transaction
+                        .addToBackStack(DigitizingDetailFragment.TAG)
+                        .replace(R.id.second_framelayout, DigitizingDetailFragment.newInstance(), tag).commit();
                 break;
         }
     }

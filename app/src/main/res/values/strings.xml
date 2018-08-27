@@ -103,6 +103,9 @@
     <string name="hint_phone">请输入联系方式</string>
     <string name="hint_name">请输入姓名</string>
     <string name="submit_add">确定新添</string>
+    <string name="digitizing_detail">数字化仪详情</string>
+    <string name="normal_param">基本参数</string>
+    <string name="advanced_param">高级参数</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->
