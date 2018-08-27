@@ -9,6 +9,7 @@ import com.barisetech.www.workmanage.base.BaseActivity;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.RawBean;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
+import com.barisetech.www.workmanage.view.fragment.AddSiteFragment;
 import com.barisetech.www.workmanage.view.fragment.AlarmDetailsFragment;
 import com.barisetech.www.workmanage.view.fragment.AlarmListFragment;
 import com.barisetech.www.workmanage.view.fragment.FingerprintManagerFragment;
@@ -16,6 +17,7 @@ import com.barisetech.www.workmanage.view.fragment.MapFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsAddFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsDetailsFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsListFragment;
+import com.barisetech.www.workmanage.view.fragment.SiteFragment;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -101,6 +103,16 @@ public class SecondActivity extends BaseActivity {
                 transaction
                         .addToBackStack(NewsAddFragment.TAG)
                         .replace(R.id.second_framelayout, NewsAddFragment.newInstance(), tag).commit();
+                break;
+            case SiteFragment.TAG:
+                transaction
+                        .replace(R.id.second_framelayout, SiteFragment.newInstance(), tag)
+                        .commit();
+                break;
+            case AddSiteFragment.TAG:
+                transaction
+                        .addToBackStack(AddSiteFragment.TAG)
+                        .replace(R.id.second_framelayout, AddSiteFragment.newInstance(), tag).commit();
                 break;
         }
     }

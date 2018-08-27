@@ -125,4 +125,45 @@
         <attr name="stroke_width_selected" format="dimension" />
         <attr name="display_view_count" format="integer" />
     </declare-styleable>
+
+
+    <declare-styleable name="order">
+
+        <!--标签-->
+        <attr name="ddd_label" format="reference" />
+
+        <!--内容-->
+        <attr name="ddd_content" format="reference|string" />
+
+        <!--内容类型-->
+        <attr name="dddInputType" format="reference|string" />
+
+        <!--内容颜色-->
+        <attr name="ddd_content_color" format="reference|color" />
+
+        <!--内容提示-->
+        <attr name="ddd_content_hint" format="reference|string" />
+
+        <!--内容提示颜色-->
+        <attr name="ddd_content_hint_color" format="reference|color" />
+
+        <!--内容是否可编辑-->
+        <attr name="ddd_content_enable" format="reference|boolean" />
+
+        <!--是否显示指示箭头-->
+        <attr name="ddd_is_indicate" format="reference|boolean" />
+
+        <!--是否需要下标线-->
+        <attr name="ddd_is_bottom_line" format="reference|boolean" />
+
+        <attr name="label" format="reference|string" />
+        <attr name="labelStart" format="reference|string" />
+        <attr name="labelEnd" format="reference|string" />
+        <attr name="sectionName" format="reference|string" />
+        <attr name="isShrink" format="reference|boolean" />
+        <attr name="hintStr" format="reference|string" />
+        <attr name="hintEnable" format="reference|boolean" />
+        <attr name="textStr" format="reference|string" />
+
+    </declare-styleable>
 </resources>
