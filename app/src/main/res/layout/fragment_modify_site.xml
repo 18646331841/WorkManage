@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:order="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="fragment"
+            type="com.barisetech.www.workmanage.base.BaseFragment" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/layout_toolbar"
+            app:toolbar="@{fragment.observableToolbar}" />
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.barisetech.www.workmanage.widget.FormView
+                    android:id="@+id/site_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    order:ddd_content_enable="true"
+                    order:ddd_content_hint="@string/hint_site_id"
+                    order:ddd_is_bottom_line="true"
+                    order:ddd_label="@string/tv_id" />
+
+                <com.barisetech.www.workmanage.widget.FormView
+                    android:id="@+id/site_company"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    order:ddd_content_enable="true"
+                    order:ddd_content_hint="@string/hint_company"
+                    order:ddd_is_bottom_line="true"
+                    order:ddd_label="@string/along_company" />
+                <com.barisetech.www.workmanage.widget.FormView
+                    android:id="@+id/site_longitude"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    order:ddd_content_enable="true"
+                    order:ddd_content_hint="@string/hint_longitude"
+                    order:ddd_is_bottom_line="true"
+                    order:ddd_label="@string/longitude" />
+                <com.barisetech.www.workmanage.widget.FormView
+                    android:id="@+id/site_latitude"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    order:ddd_content_enable="true"
+                    order:ddd_content_hint="@string/hint_latitude"
+                    order:ddd_is_bottom_line="true"
+                    order:ddd_label="@string/latitude" />
+                <com.barisetech.www.workmanage.widget.FormView
+                    android:id="@+id/site_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    order:ddd_content_enable="true"
+                    order:ddd_content_hint="@string/hint_phone"
+                    order:ddd_is_bottom_line="true"
+                    order:ddd_label="@string/phone_num" />
+
+                <com.barisetech.www.workmanage.widget.FormView
+                    android:id="@+id/site_principal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    order:ddd_content_enable="true"
+                    order:ddd_content_hint="@string/hint_name"
+                    order:ddd_is_bottom_line="true"
+                    order:ddd_label="@string/principal" />
+                <com.barisetech.www.workmanage.widget.FormView
+                    android:id="@+id/site_line_whether"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    order:ddd_content_hint=""
+                    order:ddd_is_bottom_line="true"
+                    order:ddd_is_indicate="true"
+                    order:ddd_label="@string/line_whether"/>
+                <com.barisetech.www.workmanage.widget.FormView
+                    android:id="@+id/site_double_sensor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    order:ddd_content_hint=""
+                    order:ddd_is_bottom_line="true"
+                    order:ddd_is_indicate="true"
+                    order:ddd_label="@string/double_snesor"/>
+                <com.barisetech.www.workmanage.widget.FormView
+                    android:id="@+id/site_double_filter"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    order:ddd_content_hint=""
+                    order:ddd_is_bottom_line="true"
+                    order:ddd_is_indicate="true"
+                    order:ddd_label="@string/double_filter"/>
+                <com.barisetech.www.workmanage.widget.FormView
+                    android:id="@+id/site_leak_plugin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    order:ddd_content_hint=""
+                    order:ddd_is_bottom_line="true"
+                    order:ddd_is_indicate="true"
+                    order:ddd_label="@string/leak_plugin"/>
+
+                <Button
+                    android:id="@+id/sumbit_modify"
+                    android:layout_width="@dimen/dp_315"
+                    android:layout_height="@dimen/dp_50"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:background="@drawable/shane_button_corners"
+                    android:text="@string/submit_modify"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_18"/>
+
+                <Button
+                    android:id="@+id/delete_site"
+                    android:layout_width="@dimen/dp_315"
+                    android:layout_height="@dimen/dp_50"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:background="@drawable/shane_button_corners_red"
+                    android:text="@string/delete_site"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_18"/>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+
+
+</layout>

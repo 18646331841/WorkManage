@@ -106,6 +106,10 @@
     <string name="digitizing_detail">数字化仪详情</string>
     <string name="normal_param">基本参数</string>
     <string name="advanced_param">高级参数</string>
+    <string name="submit_modify">确定修改</string>
+    <string name="delete_site">删除站点</string>
+    <string name="modify_site">修改站点</string>
+    <string name="to_pipeline_collection">添加到管线集合</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->
