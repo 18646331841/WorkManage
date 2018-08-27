@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableField;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,20 +14,21 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.barisetech.www.workmanage.R;
+import com.barisetech.www.workmanage.adapter.ImgSelectAdapter;
+import com.barisetech.www.workmanage.adapter.ItemCallBack;
 import com.barisetech.www.workmanage.base.BaseApplication;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.databinding.FragmentAlarmAnalysisBinding;
-import com.barisetech.www.workmanage.utils.BitmapUtil;
 import com.barisetech.www.workmanage.utils.LogUtil;
-import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.viewmodel.AlarmViewModel;
 import com.barisetech.www.workmanage.widget.CustomPopupWindow;
 
@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.nereo.multi_image_selector.MultiImageSelector;
+import me.nereo.multi_image_selector.MultiImageSelectorActivity;
 
 public class AlarmAnalysisFragment extends BaseFragment {
     public static final String TAG = "AlarmAnalysisFragment";
@@ -57,11 +58,12 @@ public class AlarmAnalysisFragment extends BaseFragment {
 
     private CustomPopupWindow customPopupWindow;
     private Uri CameraImageUri;
-    private static final int MAX_IMG_NUM = 6;//最多选择图片数量
+    public static final int MAX_IMG_NUM = 6;//最多选择图片数量
     /**
      * 被选择的所有图片路径集合
      */
     private List<String> curImgPaths;
+    private ImgSelectAdapter alarmImgAdapter;
 
     public AlarmAnalysisFragment() {
         // Required empty public constructor
@@ -117,19 +119,33 @@ public class AlarmAnalysisFragment extends BaseFragment {
                 .builder();
 
         customPopupWindow.getItemView(R.id.pop_pic).setOnClickListener(view -> {
-//            choosePicture();
+            choosePicture();
             customPopupWindow.dismiss();
         });
 
         customPopupWindow.getItemView(R.id.pop_camera).setOnClickListener(view -> {
-//            openCamera();
+            openCamera();
             customPopupWindow.dismiss();
         });
 
         customPopupWindow.getItemView(R.id.pop_cancel).setOnClickListener(view -> {
             customPopupWindow.dismiss();
         });
+
+        alarmImgAdapter = new ImgSelectAdapter(curImgPaths, getContext(), MAX_IMG_NUM);
+        alarmImgAdapter.setItemCallBack(itemCallBack);
+        alarmImgAdapter.setOnDeleteClick(onDeleteClick);
+        mBinding.alarmAnalysisGv.setAdapter(alarmImgAdapter);
     }
+
+    private ItemCallBack itemCallBack = item -> {
+        customPopupWindow.showAtLocation(R.layout.fragment_alarm_analysis, Gravity.BOTTOM, 0, 0);
+    };
+
+    private ImgSelectAdapter.OnDeleteClick onDeleteClick = position -> {
+        curImgPaths.remove(position);
+        alarmImgAdapter.notifyDataSetChanged();
+    };
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -137,14 +153,13 @@ public class AlarmAnalysisFragment extends BaseFragment {
         if (resultCode == getActivity().RESULT_OK) {
             switch (requestCode) {
                 case CODE_GALLERY_REQUEST:
-                    LogUtil.d(TAG, "CODE_GALLERY_REQUEST uri = " + data.getData());
-                    //判断手机系统版本号
-                    if (Build.VERSION.SDK_INT >= 19){
-                        //4.4及以上系统使用这个方法处理图片
-                        handleImageOnKitKat(data.getData());
-                    }else {
-                        //4.4以下系统使用这个放出处理图片
-                        handleImageBeforeKitKat(data.getData());
+                    if (null != data) {
+                        // 获取返回的图片列表(存放的是图片路径)
+                        List<String> path = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
+                        if (null != path && path.size() > 0) {
+                            LogUtil.d(TAG, "CODE_GALLERY_REQUEST uri = " + path.get(0));
+                            addImg(path);
+                        }
                     }
                     break;
                 case CODE_CAMERA_REQUEST:
@@ -228,12 +243,12 @@ public class AlarmAnalysisFragment extends BaseFragment {
             //如果是file类型的Uri，直接获取图片路径即可
             imagePath = uri.getPath();
         }
-        diaplayImage(imagePath);//根据图片路径显示图片
+        addImg(imagePath);
     }
 
     private void handleImageBeforeKitKat(Uri uri){
         String imagePath = getImagePath(uri,null);
-        diaplayImage(imagePath);
+        addImg(imagePath);
     }
 
     private String getImagePath(Uri uri,String selection){
@@ -249,18 +264,14 @@ public class AlarmAnalysisFragment extends BaseFragment {
         return path;
     }
 
-    private void diaplayImage(String imagePath){
-        if (imagePath != null){
+    private void addImg(String imgPath) {
+        curImgPaths.add(imgPath);
+        alarmImgAdapter.notifyDataSetChanged();
+    }
 
-
-//            curImgPath = imagePath;
-//            int width = mBinding.imgUpload.getWidth();
-//            int height = mBinding.imgUpload.getHeight();
-//            mBinding.imgUpload.setImageBitmap(BitmapUtil.getSmallBitmap(imagePath, width, height));
-//            mBinding.imgUpload.setBackgroundColor(Color.TRANSPARENT);
-        }else {
-            ToastUtil.showToast("获取图片失败");
-        }
+    private void addImg(List<String> imgPaths) {
+        curImgPaths.addAll(imgPaths);
+        alarmImgAdapter.notifyDataSetChanged();
     }
 
     @Override
