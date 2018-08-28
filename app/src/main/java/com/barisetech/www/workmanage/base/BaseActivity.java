@@ -41,7 +41,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         LogUtil.d(TAG, "Base onCreate");
-//        setCustomDensity(this, getApplication());
+        setCustomDensity(this, getApplication());
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
         mContext = this;

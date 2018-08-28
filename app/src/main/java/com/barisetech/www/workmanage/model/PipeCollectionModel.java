@@ -38,7 +38,7 @@ public class PipeCollectionModel extends BaseModel {
      * 获取管线集合数量
      * @return
      */
-    public Disposable reqPcNUM() {
+    public Disposable reqPcNum() {
         Disposable disposable = pipeCollectionsService.getPcNum(mToken)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())

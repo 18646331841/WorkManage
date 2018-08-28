@@ -15,8 +15,6 @@ import com.barisetech.www.workmanage.view.LoginActivity;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.List;
-
 import io.reactivex.disposables.Disposable;
 
 /**
@@ -37,7 +35,7 @@ public class PipeCollectionsViewModel extends BaseViewModel implements ModelCall
      * @return
      */
     public Disposable reqPcNum() {
-        Disposable disposable = pipeCollectionModel.reqPcNUM();
+        Disposable disposable = pipeCollectionModel.reqPcNum();
         addDisposable(disposable);
         return disposable;
     }

@@ -123,6 +123,8 @@ public class ScrollTitleView extends ScrollView {
                 break;
         }
         int scrollY = getScrollY();
+//        LogUtil.d(TAG,  "ScrollY = " + scrollY);
+
         boolean subItemHasScroll = false;
         subItemHasScroll = isScroll();
 
@@ -132,11 +134,16 @@ public class ScrollTitleView extends ScrollView {
             } else if (dir < 0) {
                 result = false;
             }
-        }else {
+        } else if (scrollY > mTitleHeight) {
+            //锤子滑动适配
+            if (dir <= 0) {
+                result = false;
+            }
+        } else {
             if (!subItemHasScroll) {
                 if (dir > 0) {
                     result = false;
-                } else if (dir < 0){
+                } else if (dir < 0) {
                     result = true;
                 }
             }
