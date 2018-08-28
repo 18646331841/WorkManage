@@ -12,6 +12,9 @@ public class Config {
      */
     public static final String NEWS_BASE_URL = "http://www.barisetech.com:8082/";
 
+
+
+
     /**
      * 网络请求异常码
      */
