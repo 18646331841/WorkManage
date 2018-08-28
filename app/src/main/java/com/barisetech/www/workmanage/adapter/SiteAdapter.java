@@ -40,7 +40,7 @@ public class SiteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         ViewHolder viewHolder = (ViewHolder)holder;
         SiteBean bean = mList.get(position);
         viewHolder.img.setBackgroundResource(R.drawable.ic_site);
-        viewHolder.tv_site_info.setText(bean.getName());
+        viewHolder.tv_site_info.setText(bean.Name);
         viewHolder.l_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

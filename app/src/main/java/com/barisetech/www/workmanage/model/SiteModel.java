@@ -1,18 +1,28 @@
 package com.barisetech.www.workmanage.model;
 
+import android.arch.lifecycle.LiveData;
+
+import com.barisetech.www.workmanage.base.BaseModel;
 import com.barisetech.www.workmanage.base.BaseResponse;
 import com.barisetech.www.workmanage.bean.TypeResponse;
+import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
+import com.barisetech.www.workmanage.bean.alarm.AlarmInfoNewest;
+import com.barisetech.www.workmanage.bean.alarm.ReqAllAlarm;
+import com.barisetech.www.workmanage.bean.alarm.ReqLiftAlarm;
 import com.barisetech.www.workmanage.bean.news.NewsInfo;
 import com.barisetech.www.workmanage.bean.news.ReqAddNews;
 import com.barisetech.www.workmanage.bean.news.ReqNewsInfos;
 import com.barisetech.www.workmanage.bean.site.ReqSiteInfos;
 import com.barisetech.www.workmanage.bean.site.SiteBean;
 import com.barisetech.www.workmanage.callback.ModelCallBack;
+import com.barisetech.www.workmanage.db.AppDatabase;
 import com.barisetech.www.workmanage.http.Config;
 import com.barisetech.www.workmanage.http.HttpService;
 import com.barisetech.www.workmanage.http.ObserverCallBack;
+import com.barisetech.www.workmanage.http.api.AlarmService;
 import com.barisetech.www.workmanage.http.api.NewsService;
 import com.barisetech.www.workmanage.http.api.SiteService;
+import com.barisetech.www.workmanage.utils.LogUtil;
 
 import java.util.List;
 
@@ -22,99 +32,59 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * Created by LJH on 2018/8/20.
  */
-public class SiteModel {
-    public static final String TAG = "NewsModel";
+public class SiteModel extends BaseModel{
 
-    public final String basePath = "api/Sites/";
+    public static final String TAG = "SiteModel";
+
+    private ModelCallBack modelCallBack;
+    private SiteService siteService;
 
     public static final int TYPE_NUM = 1;
     public static final int TYPE_GET_SITE = 2;
     public static final int TYPE_ADD = 3;
     public static final int TYPE_QUERY_SITE = 4;
 
-    private ModelCallBack modelCallBack;
-    private SiteService siteService;
 
-    public SiteModel(ModelCallBack callBack) {
-        modelCallBack = callBack;
+
+    public SiteModel(ModelCallBack modelCallBack) {
+        super(modelCallBack);
+        this.modelCallBack = modelCallBack;
         siteService = HttpService.getInstance().buildJsonRetrofit().create(SiteService.class);
     }
 
-    /**
-     * 获取新闻数量
-     * @return
-     */
-    public Disposable siteNum() {
-        Disposable disposable = siteService.getSiteNum(Config.BASE_URL + basePath)
+
+    public Disposable reqSiteNum(){
+        Disposable disposable = siteService.getSiteNum(mToken)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .subscribeWith(new ObserverCallBack<Integer>(){
+                .subscribeWith(new ObserverCallBack<Integer>() {
                     @Override
                     protected void onThrowable(Throwable e) {
                         modelCallBack.fail(Config.ERROR_NETWORK);
-
                     }
 
                     @Override
                     protected void onFailure(BaseResponse response) {
-                        if (response.Code == 401) {
+                        if (response.Code == 401){
                             modelCallBack.fail(Config.ERROR_UNAUTHORIZED);
                         }
                         modelCallBack.fail(Config.ERROR_FAIL);
-
                     }
 
                     @Override
                     protected void onSuccess(Integer response) {
-                        TypeResponse typeResponse = new TypeResponse(TYPE_NUM, response);
-                        modelCallBack.netResult(typeResponse);
+                        modelCallBack.netResult(response);
                     }
                 });
         return disposable;
     }
 
-    /**
-     * 根据Id得到某条新闻
-     * @param id
-     * @return
-     */
-    public Disposable getSiteById(int id) {
-        Disposable disposable = siteService.getSiteById(Config.BASE_URL + basePath + "/" + id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .subscribeWith(new ObserverCallBack<SiteBean>() {
-                    @Override
-                    protected void onThrowable(Throwable e) {
-                        modelCallBack.fail(Config.ERROR_NETWORK);
-
-                    }
-
-                    @Override
-                    protected void onFailure(BaseResponse response) {
-                        if (response.Code == 401) {
-                            modelCallBack.fail(Config.ERROR_UNAUTHORIZED);
-                        }
-                        modelCallBack.fail(Config.ERROR_FAIL);
-
-                    }
-
-                    @Override
-                    protected void onSuccess(SiteBean response) {
-                        TypeResponse typeResponse = new TypeResponse(TYPE_GET_SITE, response);
-                        modelCallBack.netResult(typeResponse);
-                    }
-                });
-
-        return disposable;
-    }
-
-    /**
-     * 查询新闻
-     * @param reqQuery
-     * @return
-     */
-    public Disposable querySite(ReqSiteInfos reqQuery) {
-        Disposable disposable = siteService.reqSites(Config.BASE_URL + basePath, reqQuery)
+    public Disposable reqAllSite(ReqSiteInfos reqSiteInfos){
+        if (null==reqSiteInfos){
+            return null;
+        }
+        reqSiteInfos.setMachineCode(mToken);
+        Disposable disposable = siteService.getAllSite(reqSiteInfos)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<List<SiteBean>>() {
@@ -139,41 +109,6 @@ public class SiteModel {
                         modelCallBack.netResult(typeResponse);
                     }
                 });
-
         return disposable;
     }
-
-    /**
-     * 添加或修改新闻
-     * @param reqAddNews
-     * @return
-     */
-//    public Disposable addOrUpdateNews(ReqAddNews reqAddNews) {
-//        Disposable disposable = newsService.addOrUpdateNews(Config.NEWS_BASE_URL + basePath, reqAddNews)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(Schedulers.io())
-//                .subscribeWith(new ObserverCallBack<Integer>() {
-//                    @Override
-//                    protected void onThrowable(Throwable e) {
-//                        modelCallBack.fail(Config.ERROR_NETWORK);
-//
-//                    }
-//
-//                    @Override
-//                    protected void onFailure(BaseResponse response) {
-//                        if (response.Code == 401) {
-//                            modelCallBack.fail(Config.ERROR_UNAUTHORIZED);
-//                        }
-//                        modelCallBack.fail(Config.ERROR_FAIL);
-//                    }
-//
-//                    @Override
-//                    protected void onSuccess(Integer response) {
-//                        TypeResponse typeResponse = new TypeResponse(TYPE_ADD, response);
-//                        modelCallBack.netResult(typeResponse);
-//                    }
-//                });
-//
-//        return disposable;
-//    }
 }

@@ -119,10 +119,11 @@ public class SiteFragment extends BaseFragment {
         loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING);
 
         ReqSiteInfos reqSiteInfos = new ReqSiteInfos();
+        reqSiteInfos.setSiteId("0");
         reqSiteInfos.setStartIndex(String.valueOf(formIndex));
         reqSiteInfos.setNumberOfRecords(String.valueOf(toIndex));
 
-        curDisposable = siteViewModel.reqQuerySite(reqSiteInfos);
+        curDisposable = siteViewModel.reqAllSite(reqSiteInfos);
     }
 
     @Override
@@ -134,20 +135,23 @@ public class SiteFragment extends BaseFragment {
     @Override
     public void subscribeToModel() {
 
-        observerList = sitebean -> {
-            if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+        observerList = new Observer<List<SiteBean>>() {
+            @Override
+            public void onChanged(@Nullable List<SiteBean> siteBeans) {
+                if (SiteFragment.this.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
 
-                if (null != sitebean) {
-                    if (sitebean.size() > 0) {
-                        siteList.addAll(sitebean);
-                        LogUtil.d(TAG, "load complete = " + siteList);
-                        loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_COMPLETE);
+                    if (null != siteBeans) {
+                        if (siteBeans.size() > 0) {
+                            siteList.addAll(siteBeans);
+                            LogUtil.d(TAG, "load complete = " + siteList);
+                            loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_COMPLETE);
+                        } else {
+                            loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_END);
+                        }
                     } else {
-                        loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_END);
-                    }
-                } else {
-                    if (null != siteList && siteList.size() > 0) {
-                        loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_END);
+                        if (null != siteList && siteList.size() > 0) {
+                            loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_END);
+                        }
                     }
                 }
             }
@@ -155,7 +159,7 @@ public class SiteFragment extends BaseFragment {
 
         if (!siteViewModel.getmObservableSiteInfos().hasObservers()) {
             //防止多次订阅
-           siteViewModel.getmObservableSiteInfos().observe(this, observerList);
+            siteViewModel.getmObservableSiteInfos().observe(this, observerList);
         }
 
         if (null == siteList || siteList.size() <= 0) {
