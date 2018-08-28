@@ -193,10 +193,11 @@
                     <com.barisetech.www.workmanage.widget.MyCustomHeightGridView
                         android:id="@+id/alarm_analysis_gv"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         app:layout_constraintTop_toBottomOf="@id/alarm_analysis_up_img_tv"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
+                        android:verticalSpacing="@dimen/dp_5"
                         android:horizontalSpacing="@dimen/dp_5"
                         android:numColumns="3">
 

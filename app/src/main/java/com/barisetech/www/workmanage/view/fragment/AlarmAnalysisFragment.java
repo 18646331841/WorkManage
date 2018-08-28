@@ -157,7 +157,7 @@ public class AlarmAnalysisFragment extends BaseFragment {
                         // 获取返回的图片列表(存放的是图片路径)
                         List<String> path = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
                         if (null != path && path.size() > 0) {
-                            LogUtil.d(TAG, "CODE_GALLERY_REQUEST uri = " + path.get(0));
+                            LogUtil.d(TAG, "CODE_GALLERY_REQUEST uri = " + path);
                             addImg(path);
                         }
                     }
@@ -181,11 +181,14 @@ public class AlarmAnalysisFragment extends BaseFragment {
      * 相册选择图片方法
      */
     private void choosePicture() {
-        MultiImageSelector.create()
-                .showCamera(false) // 是否显示相机. 默认为显示
-                .count(MAX_IMG_NUM) // 最大选择图片数量, 默认为9. 只有在选择模式为多选时有效
-                .multi() // 多选模式, 默认模式;
-                .start(this, CODE_GALLERY_REQUEST);
+        int count = MAX_IMG_NUM - curImgPaths.size();
+        if (count > 0) {
+            MultiImageSelector.create()
+                    .showCamera(false) // 是否显示相机. 默认为显示
+                    .count(MAX_IMG_NUM - curImgPaths.size()) // 最大选择图片数量, 默认为9. 只有在选择模式为多选时有效
+                    .multi() // 多选模式, 默认模式;
+                    .start(this, CODE_GALLERY_REQUEST);
+        }
     }
 
     /**

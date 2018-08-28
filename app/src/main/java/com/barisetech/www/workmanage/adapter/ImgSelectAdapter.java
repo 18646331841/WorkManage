@@ -9,6 +9,7 @@ import android.widget.ImageView;
 
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.utils.BitmapUtil;
+import com.barisetech.www.workmanage.utils.LogUtil;
 import com.barisetech.www.workmanage.view.fragment.AlarmAnalysisFragment;
 
 import java.util.List;
@@ -24,6 +25,8 @@ public class ImgSelectAdapter extends BaseAdapter {
     private int maxNum;
     private OnDeleteClick onDeleteClick;
     private ItemCallBack itemCallBack;
+    private int height;
+    private int width;
 
     public ImgSelectAdapter(List<String> mList, Context context, int max) {
         this.mList = mList;
@@ -78,9 +81,13 @@ public class ImgSelectAdapter extends BaseAdapter {
             }
             holder.imgDelete.setVisibility(View.GONE);
         } else {
-            int height = holder.imgSrc.getHeight();
-            int width = holder.imgSrc.getWidth();
+            if (width <= 0) {
+                width = convertView.getWidth();
+                height = width;
+            }
+            LogUtil.d(TAG, "position = " + sign + "width = " + width + ", height = " + height);
             holder.imgSrc.setImageBitmap(BitmapUtil.getSmallBitmap(mList.get(sign), width, height));
+            holder.imgSrc.setOnClickListener(null);
             holder.imgDelete.setVisibility(View.VISIBLE);
             holder.imgDelete.setOnClickListener(v -> {
                 if (null != onDeleteClick) {

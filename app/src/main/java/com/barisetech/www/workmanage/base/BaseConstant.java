@@ -4,6 +4,14 @@ package com.barisetech.www.workmanage.base;
  * Created by LJH on 2018/8/7.
  */
 public class BaseConstant {
+
+    /**
+     * 用户角色权限，分三类
+     */
+    public static final String ROLE_SUPER_ADMINS = "SuperAdmins";
+    public static final String ROLE_ADMINS = "Admins";
+    public static final String ROLE_USERS = "Users";
+
     /**
      * SharedPreferences keys
      */
@@ -11,6 +19,8 @@ public class BaseConstant {
     public static final String SP_LOGIN_FP = "login_FP";
     //登录用户account
     public static final String SP_ACCOUNT = "account";
+    //登录用户权限
+    public static final String SP_ROLE = "role";
     //用户token
     public static final String SP_TOKEN = "token";
     //Ip port, value = ip_port

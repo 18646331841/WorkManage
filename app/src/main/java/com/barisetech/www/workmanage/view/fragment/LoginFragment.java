@@ -122,6 +122,8 @@ public class LoginFragment extends BaseFragment {
                     if (!NetworkUtil.isNetworkAvailable(BaseApplication.getInstance().getApplicationContext())) {
                         ToastUtil.showToast(getString(R.string.network_error));
                     }
+                } else {
+                    ToastUtil.showToast(getString(R.string.login_fail));
                 }
             }
         });
