@@ -25,7 +25,7 @@ public class BaseLoadMoreWrapper extends RecyclerView.Adapter<RecyclerView.ViewH
     // Footer view
     private final int TYPE_FOOTER = 2;
     // The current loading state, the default is loading complete.
-    private int mLoadingState = 1;
+    private int mLoadingState = 2;
     // Loading
     public final int LOADING = 1;
     // Loading done

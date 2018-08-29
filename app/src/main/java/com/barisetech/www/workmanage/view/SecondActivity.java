@@ -20,6 +20,7 @@ import com.barisetech.www.workmanage.view.fragment.MapFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsAddFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsDetailsFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsListFragment;
+import com.barisetech.www.workmanage.view.fragment.PipeFragment;
 import com.barisetech.www.workmanage.view.fragment.SiteFragment;
 
 import org.greenrobot.eventbus.EventBus;
@@ -131,6 +132,11 @@ public class SecondActivity extends BaseActivity {
                 transaction
                         .addToBackStack(DigitizingDetailFragment.TAG)
                         .replace(R.id.second_framelayout, DigitizingDetailFragment.newInstance(), tag).commit();
+                break;
+            case PipeFragment.TAG:
+                transaction
+                        .addToBackStack(PipeFragment.TAG)
+                        .replace(R.id.second_framelayout, PipeFragment.newInstance(), tag).commit();
                 break;
         }
     }

@@ -218,6 +218,8 @@ public class NewsListFragment extends BaseFragment {
     }
 
     private void getNewNum() {
+        loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING);
+
         newsViewModel.reqNewsNum();
     }
 
@@ -259,6 +261,8 @@ public class NewsListFragment extends BaseFragment {
                     } else {
                         getDatas(0, maxNum);
                     }
+                } else {
+                    loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_END);
                 }
             });
         }

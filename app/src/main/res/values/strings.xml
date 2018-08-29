@@ -71,6 +71,8 @@
     <string name="tv_pipeline_work_status">管线工况</string>
     <string name="tv_contacts">联系人</string>
 
+    <string name="title_pipe">管线</string>
+
     <string name="popup_tip_pic">相册</string>
     <string name="popup_tip_camera">相机</string>
     <string name="popup_tip_cancle">取消</string>

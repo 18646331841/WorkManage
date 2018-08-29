@@ -70,6 +70,7 @@ public class ManageFragment extends BaseFragment implements View.OnClickListener
                 EventBus.getDefault().post(new EventBusMessage(DigitizingFragment.TAG));
                 break;
             case R.id.item_pipeline:
+                EventBus.getDefault().post(new EventBusMessage(PipeFragment.TAG));
                 break;
             case R.id.item_pipeline_collection:
                 break;

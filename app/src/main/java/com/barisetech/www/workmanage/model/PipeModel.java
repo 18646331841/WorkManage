@@ -144,6 +144,7 @@ public class PipeModel extends BaseModel {
         if (null == reqAllPipe) {
             return null;
         }
+        reqAllPipe.setMachineCode(mToken);
         Disposable disposable = pipeService.getAllPipe(reqAllPipe)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
