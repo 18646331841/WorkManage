@@ -14,6 +14,7 @@ import com.barisetech.www.workmanage.base.BaseApplication;
 import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseViewModel;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
+import com.barisetech.www.workmanage.bean.FailResponse;
 import com.barisetech.www.workmanage.bean.TypeResponse;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.bean.alarm.ReqAllAlarm;
@@ -99,12 +100,14 @@ public class SiteViewModel extends BaseViewModel implements ModelCallBack {
     }
 
     @Override
-    public void fail(int errorCode) {
+    public void fail(Object object) {
         EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_CLOSE));
-        if (errorCode == Config.ERROR_UNAUTHORIZED) {
-            EventBus.getDefault().post(new EventBusMessage(LoginActivity.TAG));
+        if (object instanceof FailResponse) {
+            FailResponse failResponse = (FailResponse) object;
+            if (failResponse.code == Config.ERROR_UNAUTHORIZED) {
+                EventBus.getDefault().post(new EventBusMessage(LoginActivity.TAG));
+            }
         }
-
     }
 
     public MediatorLiveData<Integer> getmObservableAddResult() {

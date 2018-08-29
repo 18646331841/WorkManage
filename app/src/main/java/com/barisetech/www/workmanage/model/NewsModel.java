@@ -1,6 +1,7 @@
 package com.barisetech.www.workmanage.model;
 
 import com.barisetech.www.workmanage.base.BaseResponse;
+import com.barisetech.www.workmanage.bean.FailResponse;
 import com.barisetech.www.workmanage.bean.TypeResponse;
 import com.barisetech.www.workmanage.bean.news.NewsInfo;
 import com.barisetech.www.workmanage.bean.news.ReqAddNews;
@@ -48,17 +49,20 @@ public class NewsModel {
                 .subscribeWith(new ObserverCallBack<Integer>(){
                     @Override
                     protected void onThrowable(Throwable e) {
-                        modelCallBack.fail(Config.ERROR_NETWORK);
+                        FailResponse failResponse = new FailResponse(TYPE_NUM, Config.ERROR_NETWORK);
+                        modelCallBack.fail(failResponse);
 
                     }
 
                     @Override
                     protected void onFailure(BaseResponse response) {
+                        FailResponse failResponse;
                         if (response.Code == 401) {
-                            modelCallBack.fail(Config.ERROR_UNAUTHORIZED);
+                            failResponse = new FailResponse(TYPE_NUM, Config.ERROR_UNAUTHORIZED);
+                        } else {
+                            failResponse = new FailResponse(TYPE_NUM, Config.ERROR_FAIL);
                         }
-                        modelCallBack.fail(Config.ERROR_FAIL);
-
+                        modelCallBack.fail(failResponse);
                     }
 
                     @Override

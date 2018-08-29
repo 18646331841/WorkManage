@@ -56,7 +56,10 @@ public class NewsListFragment extends BaseFragment {
     private Disposable curDisposable;
 
     private List<NewsInfo> curList;
-    private Observer<List<NewsInfo>> observerList;
+    /**
+     * 最多有多少条
+     */
+    private int maxNum = 0;
 
     public NewsListFragment() {
         // Required empty public constructor
@@ -177,7 +180,20 @@ public class NewsListFragment extends BaseFragment {
         mBinding.newsListRecycler.addOnScrollListener(new OnScrollListener() {
             @Override
             public void onLoadMore() {
-                updateRecyclerView(curList.size(), PAGE_COUNT);
+                if (curList.size() == maxNum) {
+//                    if (maxNum != 0) {
+                        //已加载到最大，不再加载
+                        loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_END);
+//                    }
+                } else {
+                    int count = maxNum - curList.size();
+                    if (count < PAGE_COUNT) {
+                        //还剩不到PAGE_COUNT数量的数据加载
+                        updateRecyclerView(curList.size(), count);
+                    } else {
+                        updateRecyclerView(curList.size(), PAGE_COUNT);
+                    }
+                }
             }
         });
     }
@@ -201,6 +217,10 @@ public class NewsListFragment extends BaseFragment {
         curDisposable = newsViewModel.reqQueryNews(reqNewsInfos);
     }
 
+    private void getNewNum() {
+        newsViewModel.reqNewsNum();
+    }
+
     @Override
     public void bindViewModel() {
         newsViewModel = ViewModelProviders.of(this).get(NewsViewModel.class);
@@ -208,32 +228,44 @@ public class NewsListFragment extends BaseFragment {
 
     @Override
     public void subscribeToModel() {
-        observerList = newsInfos -> {
-            if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
-
-                if (null != newsInfos) {
-                    if (newsInfos.size() > 0) {
-                        curList.addAll(newsInfos);
-                        LogUtil.d(TAG, "load complete = " + curList);
-                        loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_COMPLETE);
-                    } else {
-                        loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_END);
-                    }
-                } else {
-                    if (null != curList && curList.size() > 0) {
-                        loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_END);
-                    }
-                }
-            }
-        };
-
         if (!newsViewModel.getmObservableNewsInfos().hasObservers()) {
             //防止多次订阅
-            newsViewModel.getmObservableNewsInfos().observe(this, observerList);
+            newsViewModel.getmObservableNewsInfos().observe(this, newsInfos -> {
+                if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+
+                    if (null != newsInfos) {
+                        if (newsInfos.size() > 0) {
+                            curList.addAll(newsInfos);
+                            LogUtil.d(TAG, "load complete = " + curList);
+                            loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_COMPLETE);
+                        } else {
+                            loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_END);
+                        }
+                    } else {
+                        if (null != curList && curList.size() > 0) {
+                            loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_END);
+                        }
+                    }
+                }
+            });
+        }
+
+        if (!newsViewModel.getmObservableNewsNum().hasObservers()) {
+            newsViewModel.getmObservableNewsNum().observe(this, integer -> {
+                if (null != integer) {
+                    maxNum = integer;
+                    if (maxNum >= PAGE_COUNT) {
+                        getDatas(0, PAGE_COUNT);
+                    } else {
+                        getDatas(0, maxNum);
+                    }
+                }
+            });
         }
 
         if (null == curList || curList.size() <= 0) {
-            getDatas(0, PAGE_COUNT);
+//            getDatas(0, PAGE_COUNT);
+            getNewNum();
         }
     }
 }

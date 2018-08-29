@@ -9,10 +9,13 @@ import com.barisetech.www.workmanage.base.BaseApplication;
 import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseViewModel;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
+import com.barisetech.www.workmanage.bean.FailResponse;
 import com.barisetech.www.workmanage.bean.incident.IncidentInfo;
 import com.barisetech.www.workmanage.callback.ModelCallBack;
 import com.barisetech.www.workmanage.db.AppDatabase;
+import com.barisetech.www.workmanage.http.Config;
 import com.barisetech.www.workmanage.model.IncidentModel;
+import com.barisetech.www.workmanage.view.LoginActivity;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -46,9 +49,8 @@ public class IncidentViewModel extends BaseViewModel implements ModelCallBack{
     }
 
     @Override
-    public void fail(int errorCode) {
+    public void fail(Object object) {
         EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_CLOSE));
-
     }
 
     public void reqAllIncident() {

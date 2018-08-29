@@ -12,7 +12,7 @@ public interface ModelCallBack {
 
     /**
      * 网络请求失败
-     * @param errorCode 失败码
+     * @param errorObject
      */
-    void fail(int errorCode);
+    void fail(Object errorObject);
 }
