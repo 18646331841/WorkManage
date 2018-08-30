@@ -90,7 +90,7 @@ public class SiteViewModel extends BaseViewModel implements ModelCallBack {
                     case SiteModel.TYPE_ADD:
                         mObservableAddResult.setValue((Integer) typeResponse.data);
                         break;
-                    case SiteModel.TYPE_QUERY_SITE:
+                    case SiteModel.TYPE_ALL:
                         mObservableSiteInfos.setValue((List<SiteBean>) typeResponse.data);
                         break;
                 }

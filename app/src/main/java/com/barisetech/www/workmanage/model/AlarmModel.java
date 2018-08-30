@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 
 import com.barisetech.www.workmanage.base.BaseModel;
 import com.barisetech.www.workmanage.base.BaseResponse;
+import com.barisetech.www.workmanage.bean.FailResponse;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfoNewest;
 import com.barisetech.www.workmanage.bean.alarm.ReqAllAlarm;
@@ -30,6 +31,12 @@ public class AlarmModel extends BaseModel{
     private AppDatabase appDatabase;
     private ModelCallBack modelCallBack;
 
+    public static final int TYPE_NUM = 1;
+    public static final int TYPE_NEW_ALARM = 2;
+    public static final int TYPE_UNLIFT_ALARM = 3;
+    public static final int TYPE_All_ALARM = 4;
+    public static final int TYPE_LIFT_ALARM = 5;
+
     public AlarmModel(AppDatabase appDatabase, ModelCallBack callBack) {
         super(callBack);
         this.appDatabase = appDatabase;
@@ -48,15 +55,19 @@ public class AlarmModel extends BaseModel{
                 .subscribeWith(new ObserverCallBack<Integer>(){
                     @Override
                     protected void onThrowable(Throwable e) {
-                        modelCallBack.fail(Config.ERROR_NETWORK);
+                        FailResponse failResponse = new FailResponse(TYPE_NUM, Config.ERROR_NETWORK);
+                        modelCallBack.fail(failResponse);
                     }
 
                     @Override
                     protected void onFailure(BaseResponse response) {
+                        FailResponse failResponse;
                         if (response.Code == 401) {
-                            modelCallBack.fail(Config.ERROR_UNAUTHORIZED);
+                            failResponse = new FailResponse(TYPE_NUM, Config.ERROR_UNAUTHORIZED);
+                        } else {
+                            failResponse = new FailResponse(TYPE_NUM, Config.ERROR_FAIL);
                         }
-                        modelCallBack.fail(Config.ERROR_FAIL);
+                        modelCallBack.fail(failResponse);
                     }
 
                     @Override
@@ -86,15 +97,19 @@ public class AlarmModel extends BaseModel{
                 .subscribeWith(new ObserverCallBack<List<AlarmInfo>>() {
                     @Override
                     protected void onThrowable(Throwable e) {
-                        modelCallBack.fail(Config.ERROR_NETWORK);
+                        FailResponse failResponse = new FailResponse(TYPE_UNLIFT_ALARM, Config.ERROR_NETWORK);
+                        modelCallBack.fail(failResponse);
                     }
 
                     @Override
                     protected void onFailure(BaseResponse response) {
+                        FailResponse failResponse;
                         if (response.Code == 401) {
-                            modelCallBack.fail(Config.ERROR_UNAUTHORIZED);
+                            failResponse = new FailResponse(TYPE_UNLIFT_ALARM, Config.ERROR_UNAUTHORIZED);
+                        } else {
+                            failResponse = new FailResponse(TYPE_UNLIFT_ALARM, Config.ERROR_FAIL);
                         }
-                        modelCallBack.fail(Config.ERROR_FAIL);
+                        modelCallBack.fail(failResponse);
                     }
 
                     @Override
@@ -119,16 +134,19 @@ public class AlarmModel extends BaseModel{
                 .subscribeWith(new ObserverCallBack<List<AlarmInfo>>() {
                     @Override
                     protected void onThrowable(Throwable e) {
-                        modelCallBack.fail(Config.ERROR_NETWORK);
-
+                        FailResponse failResponse = new FailResponse(TYPE_All_ALARM, Config.ERROR_NETWORK);
+                        modelCallBack.fail(failResponse);
                     }
 
                     @Override
                     protected void onFailure(BaseResponse response) {
+                        FailResponse failResponse;
                         if (response.Code == 401) {
-                            modelCallBack.fail(Config.ERROR_UNAUTHORIZED);
+                            failResponse = new FailResponse(TYPE_All_ALARM, Config.ERROR_UNAUTHORIZED);
+                        } else {
+                            failResponse = new FailResponse(TYPE_All_ALARM, Config.ERROR_FAIL);
                         }
-                        modelCallBack.fail(Config.ERROR_FAIL);
+                        modelCallBack.fail(failResponse);
                     }
 
                     @Override
@@ -153,15 +171,19 @@ public class AlarmModel extends BaseModel{
                 .subscribeWith(new ObserverCallBack<List<AlarmInfo>>() {
                     @Override
                     protected void onThrowable(Throwable e) {
-                        modelCallBack.fail(Config.ERROR_NETWORK);
+                        FailResponse failResponse = new FailResponse(TYPE_All_ALARM, Config.ERROR_NETWORK);
+                        modelCallBack.fail(failResponse);
                     }
 
                     @Override
                     protected void onFailure(BaseResponse response) {
+                        FailResponse failResponse;
                         if (response.Code == 401) {
-                            modelCallBack.fail(Config.ERROR_UNAUTHORIZED);
+                            failResponse = new FailResponse(TYPE_All_ALARM, Config.ERROR_UNAUTHORIZED);
+                        } else {
+                            failResponse = new FailResponse(TYPE_All_ALARM, Config.ERROR_FAIL);
                         }
-                        modelCallBack.fail(Config.ERROR_FAIL);
+                        modelCallBack.fail(failResponse);
                     }
 
                     @Override
@@ -191,15 +213,19 @@ public class AlarmModel extends BaseModel{
                 .subscribeWith(new ObserverCallBack<AlarmInfoNewest>() {
                     @Override
                     protected void onThrowable(Throwable e) {
-                        modelCallBack.fail(Config.ERROR_NETWORK);
+                        FailResponse failResponse = new FailResponse(TYPE_NEW_ALARM, Config.ERROR_NETWORK);
+                        modelCallBack.fail(failResponse);
                     }
 
                     @Override
                     protected void onFailure(BaseResponse response) {
+                        FailResponse failResponse;
                         if (response.Code == 401) {
-                            modelCallBack.fail(Config.ERROR_UNAUTHORIZED);
+                            failResponse = new FailResponse(TYPE_NEW_ALARM, Config.ERROR_UNAUTHORIZED);
+                        } else {
+                            failResponse = new FailResponse(TYPE_NEW_ALARM, Config.ERROR_FAIL);
                         }
-                        modelCallBack.fail(Config.ERROR_FAIL);
+                        modelCallBack.fail(failResponse);
                     }
 
                     @Override
@@ -222,15 +248,19 @@ public class AlarmModel extends BaseModel{
                 .subscribeWith(new ObserverCallBack<Boolean>() {
                     @Override
                     protected void onThrowable(Throwable e) {
-                        modelCallBack.fail(Config.ERROR_NETWORK);
+                        FailResponse failResponse = new FailResponse(TYPE_LIFT_ALARM, Config.ERROR_NETWORK);
+                        modelCallBack.fail(failResponse);
                     }
 
                     @Override
                     protected void onFailure(BaseResponse response) {
+                        FailResponse failResponse;
                         if (response.Code == 401) {
-                            modelCallBack.fail(Config.ERROR_UNAUTHORIZED);
+                            failResponse = new FailResponse(TYPE_LIFT_ALARM, Config.ERROR_UNAUTHORIZED);
+                        } else {
+                            failResponse = new FailResponse(TYPE_LIFT_ALARM, Config.ERROR_FAIL);
                         }
-                        modelCallBack.fail(Config.ERROR_FAIL);
+                        modelCallBack.fail(failResponse);
                     }
 
                     @Override

@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 
 import com.barisetech.www.workmanage.base.BaseModel;
 import com.barisetech.www.workmanage.base.BaseResponse;
+import com.barisetech.www.workmanage.bean.FailResponse;
 import com.barisetech.www.workmanage.bean.TypeResponse;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfoNewest;
@@ -40,11 +41,9 @@ public class SiteModel extends BaseModel{
     private SiteService siteService;
 
     public static final int TYPE_NUM = 1;
-    public static final int TYPE_GET_SITE = 2;
+    public static final int TYPE_DELETE = 2;
     public static final int TYPE_ADD = 3;
-    public static final int TYPE_QUERY_SITE = 4;
-
-
+    public static final int TYPE_ALL = 4;
 
     public SiteModel(ModelCallBack modelCallBack) {
         super(modelCallBack);
@@ -60,15 +59,20 @@ public class SiteModel extends BaseModel{
                 .subscribeWith(new ObserverCallBack<Integer>() {
                     @Override
                     protected void onThrowable(Throwable e) {
-                        modelCallBack.fail(Config.ERROR_NETWORK);
+                        FailResponse failResponse = new FailResponse(TYPE_NUM, Config.ERROR_NETWORK);
+                        modelCallBack.fail(failResponse);
+
                     }
 
                     @Override
                     protected void onFailure(BaseResponse response) {
-                        if (response.Code == 401){
-                            modelCallBack.fail(Config.ERROR_UNAUTHORIZED);
+                        FailResponse failResponse;
+                        if (response.Code == 401) {
+                            failResponse = new FailResponse(TYPE_NUM, Config.ERROR_UNAUTHORIZED);
+                        } else {
+                            failResponse = new FailResponse(TYPE_NUM, Config.ERROR_FAIL);
                         }
-                        modelCallBack.fail(Config.ERROR_FAIL);
+                        modelCallBack.fail(failResponse);
                     }
 
                     @Override
@@ -90,22 +94,25 @@ public class SiteModel extends BaseModel{
                 .subscribeWith(new ObserverCallBack<List<SiteBean>>() {
                     @Override
                     protected void onThrowable(Throwable e) {
-                        modelCallBack.fail(Config.ERROR_NETWORK);
+                        FailResponse failResponse = new FailResponse(TYPE_ALL, Config.ERROR_NETWORK);
+                        modelCallBack.fail(failResponse);
 
                     }
 
                     @Override
                     protected void onFailure(BaseResponse response) {
+                        FailResponse failResponse;
                         if (response.Code == 401) {
-                            modelCallBack.fail(Config.ERROR_UNAUTHORIZED);
+                            failResponse = new FailResponse(TYPE_ALL, Config.ERROR_UNAUTHORIZED);
+                        } else {
+                            failResponse = new FailResponse(TYPE_ALL, Config.ERROR_FAIL);
                         }
-                        modelCallBack.fail(Config.ERROR_FAIL);
-
+                        modelCallBack.fail(failResponse);
                     }
 
                     @Override
                     protected void onSuccess(List<SiteBean> response) {
-                        TypeResponse typeResponse = new TypeResponse(TYPE_QUERY_SITE, response);
+                        TypeResponse typeResponse = new TypeResponse(TYPE_ALL, response);
                         modelCallBack.netResult(typeResponse);
                     }
                 });

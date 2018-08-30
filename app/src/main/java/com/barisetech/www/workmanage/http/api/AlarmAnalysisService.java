@@ -1,0 +1,62 @@
+package com.barisetech.www.workmanage.http.api;
+
+import com.barisetech.www.workmanage.base.BaseResponse;
+import com.barisetech.www.workmanage.bean.alarmanalysis.AlarmAnalysis;
+import com.barisetech.www.workmanage.bean.alarmanalysis.ReqAllAlarmAnalysis;
+import com.barisetech.www.workmanage.bean.pipe.PipeInfo;
+import com.barisetech.www.workmanage.bean.pipe.ReqAddPipe;
+import com.barisetech.www.workmanage.bean.pipe.ReqAllPipe;
+import com.barisetech.www.workmanage.bean.pipe.ReqDeletePipe;
+
+import java.util.List;
+
+import io.reactivex.Observable;
+import retrofit2.http.Body;
+import retrofit2.http.DELETE;
+import retrofit2.http.GET;
+import retrofit2.http.POST;
+import retrofit2.http.PUT;
+import retrofit2.http.Path;
+
+/**
+ * Created by LJH on 2018/8/10.
+ */
+public interface AlarmAnalysisService {
+
+    /**
+     * 获取全部警报分析
+     *
+     * @param reqAllAlarmAnalysis
+     * @return
+     */
+    @POST("/api/AlarmAnalysis")//TODO 返回对象需要修改
+    Observable<BaseResponse<List<AlarmAnalysis>>> getAllAnalysis(@Body ReqAllAlarmAnalysis reqAllAlarmAnalysis);
+
+    /**
+     * 获取警报分析数量
+     *
+     * @param token
+     * @return
+     */
+    @GET("/api/AlarmAnalysis/${token}")
+    Observable<BaseResponse<Integer>> getAnalysisNum(@Path("token") String token);
+
+    /**
+     * 添加或修改警报分析
+     *
+     * @param token
+     * @param reqPipeInfo
+     * @return >0表示成功
+     */
+    @PUT("/api/AlarmAnalysis/${token}")
+    Observable<BaseResponse<Integer>> addOrModifyAnalysis(@Path("token") String token, @Body ReqAddPipe reqPipeInfo);
+
+    /**
+     * 删除警报分析
+     * @param token
+     * @param reqDeletePipe
+     * @return
+     */
+    @DELETE("/api/AlarmAnalysis/${token}")
+    Observable<BaseResponse<Boolean>> deleteAnalysis(@Path("token") String token, @Body ReqDeletePipe reqDeletePipe);
+}

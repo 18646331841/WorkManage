@@ -2,6 +2,7 @@ package com.barisetech.www.workmanage.model;
 
 import com.barisetech.www.workmanage.base.BaseModel;
 import com.barisetech.www.workmanage.base.BaseResponse;
+import com.barisetech.www.workmanage.bean.FailResponse;
 import com.barisetech.www.workmanage.bean.pipe.PipeInfo;
 import com.barisetech.www.workmanage.bean.pipe.ReqAddPipe;
 import com.barisetech.www.workmanage.bean.pipe.ReqAllPipe;
@@ -27,6 +28,11 @@ public class PipeModel extends BaseModel {
     private ModelCallBack modelCallBack;
     private PipeService pipeService;
 
+    public static final int TYPE_NUM = 1;
+    public static final int TYPE_DELETE = 2;
+    public static final int TYPE_ADD = 3;
+    public static final int TYPE_ALL = 4;
+
     public PipeModel(ModelCallBack modelCallBack) {
         super(modelCallBack);
         this.modelCallBack = modelCallBack;
@@ -44,15 +50,20 @@ public class PipeModel extends BaseModel {
                 .subscribeWith(new ObserverCallBack<Integer>() {
                     @Override
                     protected void onThrowable(Throwable e) {
-                        modelCallBack.fail(Config.ERROR_NETWORK);
+                        FailResponse failResponse = new FailResponse(TYPE_NUM, Config.ERROR_NETWORK);
+                        modelCallBack.fail(failResponse);
+
                     }
 
                     @Override
                     protected void onFailure(BaseResponse response) {
+                        FailResponse failResponse;
                         if (response.Code == 401) {
-                            modelCallBack.fail(Config.ERROR_UNAUTHORIZED);
+                            failResponse = new FailResponse(TYPE_NUM, Config.ERROR_UNAUTHORIZED);
+                        } else {
+                            failResponse = new FailResponse(TYPE_NUM, Config.ERROR_FAIL);
                         }
-                        modelCallBack.fail(Config.ERROR_FAIL);
+                        modelCallBack.fail(failResponse);
                     }
 
                     @Override
@@ -79,15 +90,20 @@ public class PipeModel extends BaseModel {
                 .subscribeWith(new ObserverCallBack<String>() {
                     @Override
                     protected void onThrowable(Throwable e) {
-                        modelCallBack.fail(Config.ERROR_NETWORK);
+                        FailResponse failResponse = new FailResponse(TYPE_ADD, Config.ERROR_NETWORK);
+                        modelCallBack.fail(failResponse);
+
                     }
 
                     @Override
                     protected void onFailure(BaseResponse response) {
+                        FailResponse failResponse;
                         if (response.Code == 401) {
-                            modelCallBack.fail(Config.ERROR_UNAUTHORIZED);
+                            failResponse = new FailResponse(TYPE_ADD, Config.ERROR_UNAUTHORIZED);
+                        } else {
+                            failResponse = new FailResponse(TYPE_ADD, Config.ERROR_FAIL);
                         }
-                        modelCallBack.fail(Config.ERROR_FAIL);
+                        modelCallBack.fail(failResponse);
                     }
 
                     @Override
@@ -115,15 +131,20 @@ public class PipeModel extends BaseModel {
                 .subscribeWith(new ObserverCallBack<Boolean>() {
                     @Override
                     protected void onThrowable(Throwable e) {
-                        modelCallBack.fail(Config.ERROR_NETWORK);
+                        FailResponse failResponse = new FailResponse(TYPE_DELETE, Config.ERROR_NETWORK);
+                        modelCallBack.fail(failResponse);
+
                     }
 
                     @Override
                     protected void onFailure(BaseResponse response) {
+                        FailResponse failResponse;
                         if (response.Code == 401) {
-                            modelCallBack.fail(Config.ERROR_UNAUTHORIZED);
+                            failResponse = new FailResponse(TYPE_DELETE, Config.ERROR_UNAUTHORIZED);
+                        } else {
+                            failResponse = new FailResponse(TYPE_DELETE, Config.ERROR_FAIL);
                         }
-                        modelCallBack.fail(Config.ERROR_FAIL);
+                        modelCallBack.fail(failResponse);
                     }
 
                     @Override
@@ -151,15 +172,20 @@ public class PipeModel extends BaseModel {
                 .subscribeWith(new ObserverCallBack<List<PipeInfo>>() {
                     @Override
                     protected void onThrowable(Throwable e) {
-                        modelCallBack.fail(Config.ERROR_NETWORK);
+                        FailResponse failResponse = new FailResponse(TYPE_ALL, Config.ERROR_NETWORK);
+                        modelCallBack.fail(failResponse);
+
                     }
 
                     @Override
                     protected void onFailure(BaseResponse response) {
+                        FailResponse failResponse;
                         if (response.Code == 401) {
-                            modelCallBack.fail(Config.ERROR_UNAUTHORIZED);
+                            failResponse = new FailResponse(TYPE_ALL, Config.ERROR_UNAUTHORIZED);
+                        } else {
+                            failResponse = new FailResponse(TYPE_ALL, Config.ERROR_FAIL);
                         }
-                        modelCallBack.fail(Config.ERROR_FAIL);
+                        modelCallBack.fail(failResponse);
                     }
 
                     @Override

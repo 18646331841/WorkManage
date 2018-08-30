@@ -18,7 +18,6 @@ public class SiteDetailFragment extends BaseFragment{
     public static final String TAG = "SiteDetailFragment";
     FragmentSiteDetailBinding mBinding;
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

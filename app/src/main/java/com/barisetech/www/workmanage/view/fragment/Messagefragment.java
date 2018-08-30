@@ -106,6 +106,11 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
                     case 1:
                         Toast.makeText(getActivity(), "1", Toast.LENGTH_SHORT).show();
                         break;
+                    case 4:
+                        EventBusMessage eventBusMessage = new EventBusMessage(AlarmAnalysisFragment.TAG);
+                        eventBusMessage.setArg1(curMessageList.get(position));
+                        EventBus.getDefault().post(eventBusMessage);
+                        break;
                     case 5:
                         mBinding.mulitpleMenu.setVisibility(View.VISIBLE);
                         mBinding.tvNewMsg.setVisibility(View.GONE);

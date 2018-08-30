@@ -95,7 +95,7 @@ public class PipeViewModel extends BaseViewModel implements ModelCallBack {
             TypeResponse typeResponse = (TypeResponse) object;
             mDelivery.post(() -> {
                 switch (typeResponse.type) {
-                    case SiteModel.TYPE_QUERY_SITE:
+                    case SiteModel.TYPE_ALL:
                         mObservableAllPipe.setValue((List<PipeInfo>) typeResponse.data);
                         break;
                 }
