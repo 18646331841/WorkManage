@@ -194,7 +194,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/dp_47"
                     android:background="@drawable/shane_button_corners"
-                    android:text="@string/alarm_to_map"
+                    android:text="@string/news_add_confirm_upload"
                     android:textColor="@color/white"
                     android:textSize="@dimen/sp_18"/>
 

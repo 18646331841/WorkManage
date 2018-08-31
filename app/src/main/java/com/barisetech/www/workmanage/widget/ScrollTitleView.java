@@ -113,9 +113,15 @@ public class ScrollTitleView extends ScrollView {
                 break;
             case MotionEvent.ACTION_MOVE:
                 int y = (int) ev.getY();
-                dir = (y > mLastMotionY ? 1 : -1);
+//                dir = (y > mLastMotionY ? 1 : -1);
+                if (y > mLastMotionY) {
+                    dir = 1;
+                } else if (y < mLastMotionY) {
+                    dir = -1;
+                }
                 distanseX = (int) (mLastMotionX - ev.getX());
                 distanseY = mLastMotionY - y;
+//                LogUtil.d(TAG, "distanseY = " + distanseY);
                 break;
             case MotionEvent.ACTION_UP:
                 break;
