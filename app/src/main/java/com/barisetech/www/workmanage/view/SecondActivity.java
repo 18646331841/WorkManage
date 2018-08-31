@@ -135,7 +135,6 @@ public class SecondActivity extends BaseActivity {
                 break;
             case PipeFragment.TAG:
                 transaction
-                        .addToBackStack(PipeFragment.TAG)
                         .replace(R.id.second_framelayout, PipeFragment.newInstance(), tag).commit();
                 break;
         }

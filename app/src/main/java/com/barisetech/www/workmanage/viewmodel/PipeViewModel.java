@@ -3,6 +3,7 @@ package com.barisetech.www.workmanage.viewmodel;
 import android.app.Application;
 import android.arch.lifecycle.MutableLiveData;
 import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 
 import com.barisetech.www.workmanage.base.BaseConstant;
@@ -36,17 +37,24 @@ public class PipeViewModel extends BaseViewModel implements ModelCallBack {
 
     private PipeModel pipeModel;
     private MutableLiveData<List<PipeInfo>> mObservableAllPipe;
+    private MutableLiveData<Integer> mObservablePipeNum;
 
     public PipeViewModel(@NonNull Application application) {
         super(application);
+        mDelivery = new Handler(Looper.getMainLooper());
+
         pipeModel = new PipeModel(this);
 
         mObservableAllPipe = new MutableLiveData<>();
         mObservableAllPipe.setValue(null);
+
+        mObservablePipeNum = new MutableLiveData<>();
+        mObservablePipeNum.setValue(null);
     }
 
     /**
      * 获取管线数量
+     *
      * @return
      */
     public Disposable reqPipeNum() {
@@ -57,6 +65,7 @@ public class PipeViewModel extends BaseViewModel implements ModelCallBack {
 
     /**
      * 添加或修改管线
+     *
      * @param reqAddPipe
      * @return
      */
@@ -68,6 +77,7 @@ public class PipeViewModel extends BaseViewModel implements ModelCallBack {
 
     /**
      * 删除管线
+     *
      * @param reqDeletePipe
      * @return
      */
@@ -79,6 +89,7 @@ public class PipeViewModel extends BaseViewModel implements ModelCallBack {
 
     /**
      * 获取所有管线
+     *
      * @param reqAllPipe
      * @return
      */
@@ -98,6 +109,9 @@ public class PipeViewModel extends BaseViewModel implements ModelCallBack {
                     case SiteModel.TYPE_ALL:
                         mObservableAllPipe.setValue((List<PipeInfo>) typeResponse.data);
                         break;
+                    case SiteModel.TYPE_NUM:
+                        mObservablePipeNum.setValue((Integer) typeResponse.data);
+                        break;
                 }
             });
         }
@@ -116,5 +130,9 @@ public class PipeViewModel extends BaseViewModel implements ModelCallBack {
 
     public MutableLiveData<List<PipeInfo>> getmObservableAllPipe() {
         return mObservableAllPipe;
+    }
+
+    public MutableLiveData<Integer> getmObservablePipeNum() {
+        return mObservablePipeNum;
     }
 }

@@ -207,6 +207,9 @@ public class NewsListFragment extends BaseFragment {
     private void getDatas(int fromIndex, int toIndex) {
         LogUtil.d(TAG, "fromIndex =" + fromIndex + ", toIndex = " + toIndex);
 //        EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_SHOW));
+        if (toIndex <= 0) {
+            return;
+        }
         loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING);
 
         ReqNewsInfos reqNewsInfos = new ReqNewsInfos();

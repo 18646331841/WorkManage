@@ -41,6 +41,7 @@ public class PipeFragment extends BaseFragment {
     private Disposable curDisposable;
     //每次加载个数
     private static final int PAGE_COUNT = 10;
+    private int maxNum;
 
     public PipeFragment() {
         // Required empty public constructor
@@ -90,7 +91,20 @@ public class PipeFragment extends BaseFragment {
         mBinding.pipeList.addOnScrollListener(new OnScrollListener() {
             @Override
             public void onLoadMore() {
-                updateRecyclerView(pipeInfoList.size(), PAGE_COUNT);
+                if (pipeInfoList.size() == maxNum) {
+//                    if (maxNum != 0) {
+                    //已加载到最大，不再加载
+                    loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_END);
+//                    }
+                } else {
+                    int count = maxNum - pipeInfoList.size();
+                    if (count < PAGE_COUNT) {
+                        //还剩不到PAGE_COUNT数量的数据加载
+                        updateRecyclerView(pipeInfoList.size(), count);
+                    } else {
+                        updateRecyclerView(pipeInfoList.size(), PAGE_COUNT);
+                    }
+                }
             }
         });
     }
@@ -100,6 +114,9 @@ public class PipeFragment extends BaseFragment {
     }
 
     private void getDatas(int formIndex, int toIndex) {
+        if (toIndex <= 0) {
+            return;
+        }
         loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING);
 
         ReqAllPipe reqAllPipe = new ReqAllPipe();
@@ -108,6 +125,12 @@ public class PipeFragment extends BaseFragment {
         reqAllPipe.setNumberOfRecords(String.valueOf(toIndex));
 
         curDisposable = pipeViewModel.reqAllPipe(reqAllPipe);
+    }
+
+    private void getPipeNums() {
+        loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING);
+
+        pipeViewModel.reqPipeNum();
     }
 
     @Override
@@ -138,8 +161,25 @@ public class PipeFragment extends BaseFragment {
             });
         }
 
+        if (!pipeViewModel.getmObservablePipeNum().hasObservers()) {
+            pipeViewModel.getmObservablePipeNum().observe(this, integer -> {
+                if (PipeFragment.this.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                    if (null != integer) {
+                        maxNum = integer;
+                        if (maxNum >= PAGE_COUNT) {
+                            getDatas(0, PAGE_COUNT);
+                        } else {
+                            getDatas(0, maxNum);
+                        }
+                    } else {
+                        loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_END);
+                    }
+                }
+            });
+        }
+
         if (null == pipeInfoList || pipeInfoList.size() <= 0) {
-            getDatas(0, PAGE_COUNT);
+            getPipeNums();
         }
     }
 

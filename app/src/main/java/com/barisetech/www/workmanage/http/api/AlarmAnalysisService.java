@@ -2,7 +2,9 @@ package com.barisetech.www.workmanage.http.api;
 
 import com.barisetech.www.workmanage.base.BaseResponse;
 import com.barisetech.www.workmanage.bean.alarmanalysis.AlarmAnalysis;
+import com.barisetech.www.workmanage.bean.alarmanalysis.ReqAddAlarmAnalysis;
 import com.barisetech.www.workmanage.bean.alarmanalysis.ReqAllAlarmAnalysis;
+import com.barisetech.www.workmanage.bean.alarmanalysis.ReqDeleteAlarmAnalysis;
 import com.barisetech.www.workmanage.bean.pipe.PipeInfo;
 import com.barisetech.www.workmanage.bean.pipe.ReqAddPipe;
 import com.barisetech.www.workmanage.bean.pipe.ReqAllPipe;
@@ -45,18 +47,18 @@ public interface AlarmAnalysisService {
      * 添加或修改警报分析
      *
      * @param token
-     * @param reqPipeInfo
+     * @param reqAddAlarmAnalysis
      * @return >0表示成功
      */
     @PUT("/api/AlarmAnalysis/${token}")
-    Observable<BaseResponse<Integer>> addOrModifyAnalysis(@Path("token") String token, @Body ReqAddPipe reqPipeInfo);
+    Observable<BaseResponse<Integer>> addOrModifyAnalysis(@Path("token") String token, @Body ReqAddAlarmAnalysis reqAddAlarmAnalysis);
 
     /**
      * 删除警报分析
      * @param token
-     * @param reqDeletePipe
+     * @param reqDeleteAlarmAnalysis
      * @return
      */
     @DELETE("/api/AlarmAnalysis/${token}")
-    Observable<BaseResponse<Boolean>> deleteAnalysis(@Path("token") String token, @Body ReqDeletePipe reqDeletePipe);
+    Observable<BaseResponse<Boolean>> deleteAnalysis(@Path("token") String token, @Body ReqDeleteAlarmAnalysis reqDeleteAlarmAnalysis);
 }

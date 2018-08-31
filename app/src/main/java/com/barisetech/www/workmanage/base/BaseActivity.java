@@ -37,9 +37,20 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected CommonDialogFragment commonDialogFragment;
 
     private boolean isShow = true;//activity是否在前台显示
+    public static final int LANDSCAPE = 2;
+    public static final int PORTRAIT = 1;
+    public int screenOrientation;//当前屏幕方向
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            LogUtil.d(TAG, "landscape");
+            screenOrientation = LANDSCAPE;
+        } else if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            LogUtil.d(TAG, "portrait");
+            screenOrientation = PORTRAIT;
+        }
+
         LogUtil.d(TAG, "Base onCreate");
         setCustomDensity(this, getApplication());
         super.onCreate(savedInstanceState);
@@ -56,6 +67,19 @@ public abstract class BaseActivity extends AppCompatActivity {
         actionBar.hide();
 
         initView(savedInstanceState);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            LogUtil.d(TAG, "landscape");
+            screenOrientation = LANDSCAPE;
+        } else if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            LogUtil.d(TAG, "portrait");
+            screenOrientation = PORTRAIT;
+        }
+        setCustomDensity(this, getApplication());
     }
 
     @Override
@@ -201,45 +225,49 @@ public abstract class BaseActivity extends AppCompatActivity {
     private static float sNoncompatDensity;
     private static float sNoncompatScaledDensity;
 
-    /**
-     * 屏幕设配方法
-     * @param activity
-     * @param application
-     */
-    private static void setCustomDensity(@NonNull Activity activity, @NonNull final Application application) {
-        final DisplayMetrics appDisplayMetrics = application.getResources().getDisplayMetrics();
+    private void setCustomDensity(@NonNull Activity activity, @NonNull final Application application) {
+        if (screenOrientation == PORTRAIT) {
 
-        if (sNoncompatDensity == 0) {
-            sNoncompatDensity = appDisplayMetrics.density;
-            sNoncompatScaledDensity = appDisplayMetrics.scaledDensity;
-            application.registerComponentCallbacks(new ComponentCallbacks() {
-                @Override
-                public void onConfigurationChanged(Configuration configuration) {
-                    if (configuration == null && configuration.fontScale > 0) {
-                        sNoncompatScaledDensity = application.getResources().getDisplayMetrics().scaledDensity;
+            final DisplayMetrics appDisplayMetrics = application.getResources().getDisplayMetrics();
+
+            if (sNoncompatDensity == 0) {
+                sNoncompatDensity = appDisplayMetrics.density;
+                LogUtil.d(TAG, "sNoncompatDensity = " + sNoncompatDensity);
+                sNoncompatScaledDensity = appDisplayMetrics.scaledDensity;
+                application.registerComponentCallbacks(new ComponentCallbacks() {
+                    @Override
+                    public void onConfigurationChanged(Configuration configuration) {
+                        if (configuration == null && configuration.fontScale > 0) {
+                            sNoncompatScaledDensity = application.getResources().getDisplayMetrics().scaledDensity;
+                        }
                     }
-                }
 
-                @Override
-                public void onLowMemory() {
+                    @Override
+                    public void onLowMemory() {
 
-                }
-            });
+                    }
+                });
+            }
+
+            LogUtil.d("BaseActivity", "widthPixel = " + appDisplayMetrics.widthPixels + ", heightPixel = " +
+                    appDisplayMetrics.heightPixels);
+            final float targetDensity = ((float) appDisplayMetrics.widthPixels) / 375f;//根据实际设计修改
+            LogUtil.d(TAG, "targetDensity = " + targetDensity);
+            final float targetScaledDensity = targetDensity * (sNoncompatScaledDensity / sNoncompatDensity);
+            final int targetDensityDpi = (int) (160 * targetDensity);
+
+            appDisplayMetrics.density = targetDensity;
+            appDisplayMetrics.scaledDensity = targetScaledDensity;
+            appDisplayMetrics.densityDpi = targetDensityDpi;
+
+            final DisplayMetrics activityDisplayMetrics = activity.getResources().getDisplayMetrics();
+            LogUtil.d(TAG, "original density = " + activityDisplayMetrics.density);
+
+            activityDisplayMetrics.density = targetDensity;
+            LogUtil.d(TAG, "new density = " + activityDisplayMetrics.density);
+
+            activityDisplayMetrics.densityDpi = targetDensityDpi;
+            activityDisplayMetrics.scaledDensity = targetScaledDensity;
         }
-
-        LogUtil.d("BaseActivity", "widthPixel = " + appDisplayMetrics.widthPixels + ", heightPixel = " +
-                appDisplayMetrics.heightPixels);
-        final float targetDensity = appDisplayMetrics.widthPixels / 360;//根据实际设计修改
-        final float targetScaledDensity = targetDensity * (sNoncompatScaledDensity / sNoncompatDensity);
-        final int targetDensityDpi = (int) (160 * targetDensity);
-
-        appDisplayMetrics.density = targetDensity;
-        appDisplayMetrics.scaledDensity = targetScaledDensity;
-        appDisplayMetrics.densityDpi = targetDensityDpi;
-
-        final DisplayMetrics activityDisplayMetrics = activity.getResources().getDisplayMetrics();
-        activityDisplayMetrics.density = targetDensity;
-        activityDisplayMetrics.densityDpi = targetDensityDpi;
-        activityDisplayMetrics.scaledDensity = targetScaledDensity;
     }
 }

@@ -4,15 +4,15 @@ import com.barisetech.www.workmanage.base.BaseModel;
 import com.barisetech.www.workmanage.base.BaseResponse;
 import com.barisetech.www.workmanage.bean.FailResponse;
 import com.barisetech.www.workmanage.bean.TypeResponse;
-import com.barisetech.www.workmanage.bean.pipe.PipeInfo;
-import com.barisetech.www.workmanage.bean.pipe.ReqAddPipe;
-import com.barisetech.www.workmanage.bean.pipe.ReqAllPipe;
-import com.barisetech.www.workmanage.bean.pipe.ReqDeletePipe;
+import com.barisetech.www.workmanage.bean.alarmanalysis.AlarmAnalysis;
+import com.barisetech.www.workmanage.bean.alarmanalysis.ReqAddAlarmAnalysis;
+import com.barisetech.www.workmanage.bean.alarmanalysis.ReqAllAlarmAnalysis;
+import com.barisetech.www.workmanage.bean.alarmanalysis.ReqDeleteAlarmAnalysis;
 import com.barisetech.www.workmanage.callback.ModelCallBack;
 import com.barisetech.www.workmanage.http.Config;
 import com.barisetech.www.workmanage.http.HttpService;
 import com.barisetech.www.workmanage.http.ObserverCallBack;
-import com.barisetech.www.workmanage.http.api.PipeService;
+import com.barisetech.www.workmanage.http.api.AlarmAnalysisService;
 import com.barisetech.www.workmanage.utils.LogUtil;
 
 import java.util.List;
@@ -23,29 +23,29 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * Created by LJH on 2018/8/28.
  */
-public class PipeModel extends BaseModel {
-    public static final String TAG = "PipeModel";
+public class AlarmAnalysisModel extends BaseModel {
+    public static final String TAG = "AlarmAnalysisModel";
 
     private ModelCallBack modelCallBack;
-    private PipeService pipeService;
+    private AlarmAnalysisService AlarmAnalysisService;
 
     public static final int TYPE_NUM = 1;
     public static final int TYPE_DELETE = 2;
     public static final int TYPE_ADD = 3;
     public static final int TYPE_ALL = 4;
 
-    public PipeModel(ModelCallBack modelCallBack) {
+    public AlarmAnalysisModel(ModelCallBack modelCallBack) {
         super(modelCallBack);
         this.modelCallBack = modelCallBack;
-        pipeService = HttpService.getInstance().buildJsonRetrofit().create(PipeService.class);
+        AlarmAnalysisService = HttpService.getInstance().buildJsonRetrofit().create(AlarmAnalysisService.class);
     }
 
     /**
-     * 获取管线数量
+     * 获取警报分析数量
      * @return
      */
-    public Disposable reqPipeNum() {
-        Disposable disposable = pipeService.getPipeNum(mToken)
+    public Disposable reqAnalysisNum() {
+        Disposable disposable = AlarmAnalysisService.getAnalysisNum(mToken)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<Integer>() {
@@ -69,7 +69,7 @@ public class PipeModel extends BaseModel {
 
                     @Override
                     protected void onSuccess(Integer response) {
-                        LogUtil.d(TAG, "Pipe = " + response);
+                        LogUtil.d(TAG, "Analysis = " + response);
                         TypeResponse typeResponse = new TypeResponse(TYPE_NUM, response);
                         modelCallBack.netResult(typeResponse);
                     }
@@ -78,18 +78,18 @@ public class PipeModel extends BaseModel {
     }
 
     /**
-     * 添加或修改管线
-     * @param reqAddPipe
+     * 添加或修改警报分析
+     * @param reqAddAlarmAnalysis
      * @return
      */
-    public Disposable reqAddOrModifyPipe(ReqAddPipe reqAddPipe) {
-        if (reqAddPipe == null) {
+    public Disposable reqAddOrModifyAnalysis(ReqAddAlarmAnalysis reqAddAlarmAnalysis) {
+        if (reqAddAlarmAnalysis == null) {
             return null;
         }
-        Disposable disposable = pipeService.addOrModifyPipe(mToken, reqAddPipe)
+        Disposable disposable = AlarmAnalysisService.addOrModifyAnalysis(mToken, reqAddAlarmAnalysis)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .subscribeWith(new ObserverCallBack<String>() {
+                .subscribeWith(new ObserverCallBack<Integer>() {
                     @Override
                     protected void onThrowable(Throwable e) {
                         FailResponse failResponse = new FailResponse(TYPE_ADD, Config.ERROR_NETWORK);
@@ -109,8 +109,8 @@ public class PipeModel extends BaseModel {
                     }
 
                     @Override
-                    protected void onSuccess(String response) {
-                        LogUtil.d(TAG, "AddOrModifyPipe result = " + response);
+                    protected void onSuccess(Integer response) {
+                        LogUtil.d(TAG, "reqAddOrModifyAnalysis result = " + response);
                         TypeResponse typeResponse = new TypeResponse(TYPE_ADD, response);
                         modelCallBack.netResult(typeResponse);
                     }
@@ -119,16 +119,16 @@ public class PipeModel extends BaseModel {
     }
 
     /**
-     * 删除管线
-     * @param reqDeletePipe
+     * 删除警报分析
+     * @param reqDeleteAlarmAnalysis
      * @return
      */
-    public Disposable reqDeletePipe(ReqDeletePipe reqDeletePipe) {
-        if (null == reqDeletePipe) {
+    public Disposable reqDeleteAnalysis(ReqDeleteAlarmAnalysis reqDeleteAlarmAnalysis) {
+        if (null == reqDeleteAlarmAnalysis) {
             return null;
         }
 
-        Disposable disposable = pipeService.deletePipe(mToken, reqDeletePipe)
+        Disposable disposable = AlarmAnalysisService.deleteAnalysis(mToken, reqDeleteAlarmAnalysis)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<Boolean>() {
@@ -152,7 +152,7 @@ public class PipeModel extends BaseModel {
 
                     @Override
                     protected void onSuccess(Boolean response) {
-                        LogUtil.d(TAG, "DeletePipe result = " + response);
+                        LogUtil.d(TAG, "reqDeleteAnalysis result = " + response);
                         TypeResponse typeResponse = new TypeResponse(TYPE_DELETE, response);
                         modelCallBack.netResult(typeResponse);
                     }
@@ -161,19 +161,19 @@ public class PipeModel extends BaseModel {
     }
 
     /**
-     * 获取所有管线
-     * @param reqAllPipe
+     * 获取所有警报分析
+     * @param reqAllAlarmAnalysis
      * @return
      */
-    public Disposable reqAllPipe(ReqAllPipe reqAllPipe) {
-        if (null == reqAllPipe) {
+    public Disposable reqAllAnalysis(ReqAllAlarmAnalysis reqAllAlarmAnalysis) {
+        if (null == reqAllAlarmAnalysis) {
             return null;
         }
-        reqAllPipe.setMachineCode(mToken);
-        Disposable disposable = pipeService.getAllPipe(reqAllPipe)
+//        reqAllAlarmAnalysis.setMachineCode(mToken);
+        Disposable disposable = AlarmAnalysisService.getAllAnalysis(reqAllAlarmAnalysis)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .subscribeWith(new ObserverCallBack<List<PipeInfo>>() {
+                .subscribeWith(new ObserverCallBack<List<AlarmAnalysis>>() {
                     @Override
                     protected void onThrowable(Throwable e) {
                         FailResponse failResponse = new FailResponse(TYPE_ALL, Config.ERROR_NETWORK);
@@ -193,7 +193,7 @@ public class PipeModel extends BaseModel {
                     }
 
                     @Override
-                    protected void onSuccess(List<PipeInfo> response) {
+                    protected void onSuccess(List<AlarmAnalysis> response) {
                         LogUtil.d(TAG, "AllPipe result = " + response);
                         TypeResponse typeResponse = new TypeResponse(TYPE_ALL, response);
                         modelCallBack.netResult(typeResponse);
