@@ -12,14 +12,20 @@ import com.barisetech.www.workmanage.base.BaseApplication;
 import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
+import com.barisetech.www.workmanage.bean.site.SiteBean;
 import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
 import com.barisetech.www.workmanage.view.fragment.AlarmAnalysisFragment;
 import com.barisetech.www.workmanage.view.fragment.AlarmDetailsFragment;
 import com.barisetech.www.workmanage.view.fragment.AlarmListFragment;
+import com.barisetech.www.workmanage.view.fragment.DigitizingFragment;
 import com.barisetech.www.workmanage.view.fragment.FingerprintManagerFragment;
 import com.barisetech.www.workmanage.view.fragment.NavigationFragment;
+import com.barisetech.www.workmanage.view.fragment.NewsAddFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsDetailsFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsListFragment;
+import com.barisetech.www.workmanage.view.fragment.PipeFragment;
+import com.barisetech.www.workmanage.view.fragment.SiteDetailFragment;
+import com.barisetech.www.workmanage.view.fragment.SiteFragment;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -130,7 +136,7 @@ public class MainActivity extends BaseActivity {
                     break;
                 case AlarmAnalysisFragment.TAG:
                     transaction
-                            .replace(R.id.second_framelayout, AlarmAnalysisFragment.newInstance((AlarmInfo)
+                            .replace(R.id.fragment_content, AlarmAnalysisFragment.newInstance((AlarmInfo)
                                     eventBusMessage.getArg1()), tag).commit();
                     break;
                 case NewsListFragment.TAG:
@@ -138,11 +144,37 @@ public class MainActivity extends BaseActivity {
                             .addToBackStack(tag)
                             .replace(R.id.fragment_content, NewsListFragment.newInstance(), tag).commit();
                     break;
-                case NewsDetailsFragment.TAG:
+                case NewsAddFragment.TAG:
                     transaction
+                            .addToBackStack(tag)
+                            .replace(R.id.fragment_content, NewsAddFragment.newInstance(), tag).commit();
+                    break;
+                case NewsDetailsFragment.TAG:
+                transaction
                             .addToBackStack(tag)
                             .replace(R.id.fragment_content, NewsDetailsFragment.newInstance((String) eventBusMessage
                                     .getArg1()), tag).commit();
+                    break;
+                case SiteFragment.TAG:
+                    transaction
+                            .addToBackStack(tag)
+                            .replace(R.id.fragment_content, SiteFragment.newInstance(), tag).commit();
+                    break;
+                case SiteDetailFragment.TAG:
+                    transaction
+                            .addToBackStack(tag)
+                            .replace(R.id.fragment_content, SiteDetailFragment.newInstance((SiteBean) eventBusMessage
+                                    .getArg1()), tag).commit();
+                    break;
+                case DigitizingFragment.TAG:
+                    transaction
+                            .addToBackStack(tag)
+                            .replace(R.id.fragment_content, DigitizingFragment.newInstance(), tag).commit();
+                    break;
+                case PipeFragment.TAG:
+                    transaction
+                            .addToBackStack(tag)
+                            .replace(R.id.fragment_content, PipeFragment.newInstance(), tag).commit();
                     break;
             }
         }
