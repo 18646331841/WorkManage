@@ -41,6 +41,8 @@
     <string name="title_alarm_details">警报详情</string>
     <string name="alarm_to_map">转到地图</string>
     <string name="alarm_lift">解除警报</string>
+    <string name="alarm_lift_success">解除成功</string>
+    <string name="alarm_lift_fail">解除失败</string>
     <string name="belong_line">所在管线</string>
     <string name="waveform">波形图</string>
     <string name="build_alarm_analysis">生成警报分析</string>

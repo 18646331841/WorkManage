@@ -5,6 +5,7 @@ import android.arch.lifecycle.LiveData;
 import com.barisetech.www.workmanage.base.BaseModel;
 import com.barisetech.www.workmanage.base.BaseResponse;
 import com.barisetech.www.workmanage.bean.FailResponse;
+import com.barisetech.www.workmanage.bean.TypeResponse;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfoNewest;
 import com.barisetech.www.workmanage.bean.alarm.ReqAllAlarm;
@@ -73,7 +74,8 @@ public class AlarmModel extends BaseModel{
                     @Override
                     protected void onSuccess(Integer response) {
                         LogUtil.d(TAG, "AlarmNum = " + response);
-                        modelCallBack.netResult(response);
+                        TypeResponse typeResponse = new TypeResponse(TYPE_NUM, response);
+                        modelCallBack.netResult(typeResponse);
                     }
                 });
         return disposable;
@@ -114,7 +116,9 @@ public class AlarmModel extends BaseModel{
 
                     @Override
                     protected void onSuccess(List<AlarmInfo> response) {
-                        modelCallBack.netResult(response);
+                        TypeResponse typeResponse = new TypeResponse(TYPE_UNLIFT_ALARM, response);
+                        modelCallBack.netResult(typeResponse);
+                        //TODO
                         appDatabase.alarmInfoDao().insertAll(response);
                     }
                 });
@@ -151,7 +155,9 @@ public class AlarmModel extends BaseModel{
 
                     @Override
                     protected void onSuccess(List<AlarmInfo> response) {
-                        modelCallBack.netResult(response);
+                        TypeResponse typeResponse = new TypeResponse(TYPE_All_ALARM, response);
+                        modelCallBack.netResult(typeResponse);
+                        //TODO
                         appDatabase.alarmInfoDao().insertAll(response);
                     }
                 });
@@ -230,7 +236,8 @@ public class AlarmModel extends BaseModel{
 
                     @Override
                     protected void onSuccess(AlarmInfoNewest response) {
-                        modelCallBack.netResult(response);
+                        TypeResponse typeResponse = new TypeResponse(TYPE_NEW_ALARM, response);
+                        modelCallBack.netResult(typeResponse);
                     }
                 });
         return disposable;
@@ -265,7 +272,8 @@ public class AlarmModel extends BaseModel{
 
                     @Override
                     protected void onSuccess(Boolean response) {
-                        modelCallBack.netResult(response);
+                        TypeResponse typeResponse = new TypeResponse(TYPE_LIFT_ALARM, response);
+                        modelCallBack.netResult(typeResponse);
                     }
                 });
 

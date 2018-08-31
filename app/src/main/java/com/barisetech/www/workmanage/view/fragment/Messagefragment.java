@@ -1,5 +1,6 @@
 package com.barisetech.www.workmanage.view.fragment;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.graphics.Point;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import com.barisetech.www.workmanage.adapter.MessageAdapter;
 import com.barisetech.www.workmanage.adapter.ItemCallBack;
+import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.MessageInfo;
@@ -23,6 +25,7 @@ import com.barisetech.www.workmanage.bean.incident.IncidentInfo;
 import com.barisetech.www.workmanage.databinding.FragmentMessageBinding;
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.utils.LogUtil;
+import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.viewmodel.AlarmViewModel;
 import com.barisetech.www.workmanage.viewmodel.IncidentViewModel;
 import com.barisetech.www.workmanage.widget.popumenu.FloatMenu;
@@ -104,7 +107,9 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
             floatMenu.setOnItemClickListener((v, position1) -> {
                 switch (position1){
                     case 1:
-                        Toast.makeText(getActivity(), "1", Toast.LENGTH_SHORT).show();
+                        AlarmInfo alarmInfo = (AlarmInfo) curMessageList.get(position);
+                        EventBus.getDefault().post(BaseConstant.PROGRESS_SHOW);
+                        alarmViewModel.reqLiftAlarm(alarmInfo.getKey());
                         break;
                     case 4:
                         EventBusMessage eventBusMessage = new EventBusMessage(AlarmAnalysisFragment.TAG);
@@ -242,6 +247,19 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
 
                     LogUtil.d(TAG, "incidents curMessageList = " + curMessageList.size());
                     messageAdapter.notifyDataSetChanged();
+                }
+            });
+        }
+
+        if (!alarmViewModel.getmObservableLiftAlarm().hasObservers()) {
+
+            alarmViewModel.getmObservableLiftAlarm().observe(this, aBoolean -> {
+                if (null != aBoolean) {
+                    if (aBoolean) {
+                        ToastUtil.showToast(getString(R.string.alarm_lift_success));
+                    } else {
+                        ToastUtil.showToast(getString(R.string.alarm_lift_fail));
+                    }
                 }
             });
         }
