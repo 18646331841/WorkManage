@@ -76,93 +76,35 @@
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dp_16"
                     android:layout_marginLeft="@dimen/dp_30"
-                    android:layout_marginTop="@dimen/dp_16"
-                    android:layout_marginBottom="@dimen/dp_16">
+                    android:layout_marginTop="@dimen/dp_16">
 
                     <TextView
-                        android:id="@+id/alarm_analysis_select_reason_tv"
+                        android:id="@+id/alarm_analysis_add_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/alarm_analysis_reason"
+                        android:text="@string/alarm_analysis_add_title"
                         android:textColor="@color/text_black"
                         android:textSize="@dimen/sp_16"
-                        app:layout_constraintBottom_toTopOf="@id/alarm_analysis_rg"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"/>
-
-                    <RadioGroup
-                        android:id="@+id/alarm_analysis_rg"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp_16"
-                        android:orientation="horizontal"
-                        app:layout_constraintTop_toBottomOf="@id/alarm_analysis_select_reason_tv"
+                        app:layout_constraintBottom_toTopOf="@id/alarm_analysis_title_et"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent">
-
-                        <RadioButton
-                            android:id="@+id/alarm_analysis_misinformation"
-                            android:layout_width="@dimen/dp_70"
-                            android:layout_height="@dimen/dp_30"
-                            android:background="@drawable/radio_button_style"
-                            android:button="@null"
-                            android:gravity="center"
-                            android:text="@string/alarm_analysis_misinformation"
-                            android:textColor="@drawable/font_white_black_selector"
-                            android:textSize="@dimen/sp_16"/>
-
-                        <RadioButton
-                            android:id="@+id/alarm_analysis_leak"
-                            android:layout_width="@dimen/dp_70"
-                            android:layout_height="@dimen/dp_30"
-                            android:layout_marginLeft="@dimen/dp_10"
-                            android:background="@drawable/radio_button_style"
-                            android:button="@null"
-                            android:gravity="center"
-                            android:text="@string/alarm_analysis_leak"
-                            android:textColor="@drawable/font_white_black_selector"
-                            android:textSize="@dimen/sp_16"/>
-
-                        <RadioButton
-                            android:id="@+id/alarm_analysis_test"
-                            android:layout_width="@dimen/dp_70"
-                            android:layout_height="@dimen/dp_30"
-                            android:layout_marginLeft="@dimen/dp_10"
-                            android:background="@drawable/radio_button_style"
-                            android:button="@null"
-                            android:gravity="center"
-                            android:text="@string/alarm_analysis_test"
-                            android:textColor="@drawable/font_white_black_selector"
-                            android:textSize="@dimen/sp_16"/>
-
-                        <RadioButton
-                            android:id="@+id/alarm_analysis_other"
-                            android:layout_width="@dimen/dp_70"
-                            android:layout_height="@dimen/dp_30"
-                            android:layout_marginLeft="@dimen/dp_10"
-                            android:background="@drawable/radio_button_style"
-                            android:button="@null"
-                            android:gravity="center"
-                            android:text="@string/alarm_analysis_other"
-                            android:textColor="@drawable/font_white_black_selector"
-                            android:textSize="@dimen/sp_16"/>
-                    </RadioGroup>
+                        app:layout_constraintTop_toTopOf="parent"/>
 
                     <EditText
-                        android:id="@+id/alarm_analysis_remark_et"
+                        android:id="@+id/alarm_analysis_title_et"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/dp_30"
-                        android:background="@color/edit_bg"
                         android:layout_marginTop="@dimen/dp_16"
+                        android:background="@color/edit_bg"
+                        android:maxLength="13"
+                        android:hint="@string/alarm_analysis_input_title"
                         android:padding="@dimen/dp_9"
                         android:textCursorDrawable="@drawable/cursor_color"
                         android:textSize="@dimen/sp_14"
-                        android:hint="@string/alarm_analysis_input_remark"
-                        app:layout_constraintTop_toBottomOf="@id/alarm_analysis_rg"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"/>
+                        app:layout_constraintTop_toBottomOf="@id/alarm_analysis_add_title"/>
 
                 </android.support.constraint.ConstraintLayout>
 
@@ -174,10 +116,129 @@
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dp_16"
+                    android:layout_marginLeft="@dimen/dp_30"
+                    android:layout_marginTop="@dimen/dp_16">
+
+                    <TextView
+                        android:id="@+id/alarm_analysis_select_reason_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/alarm_analysis_reason"
+                        android:textColor="@color/text_black"
+                        android:textSize="@dimen/sp_16"
+                        app:layout_constraintBottom_toTopOf="@id/alarm_analysis_rg"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
+                    <RadioGroup
+                        android:id="@+id/alarm_analysis_rg"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_16"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/alarm_analysis_select_reason_tv">
+
+                        <RadioButton
+                            android:id="@+id/alarm_analysis_misinformation"
+                            android:layout_width="@dimen/dp_95"
+                            android:layout_height="@dimen/dp_30"
+                            android:background="@drawable/radio_button_style"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:text="@string/alarm_analysis_misinformation"
+                            android:textColor="@drawable/font_white_black_selector"
+                            android:textSize="@dimen/sp_16"/>
+
+                        <RadioButton
+                            android:id="@+id/alarm_analysis_leak"
+                            android:layout_width="@dimen/dp_95"
+                            android:layout_height="@dimen/dp_30"
+                            android:layout_marginLeft="@dimen/dp_10"
+                            android:background="@drawable/radio_button_style"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:text="@string/alarm_analysis_leak"
+                            android:textColor="@drawable/font_white_black_selector"
+                            android:textSize="@dimen/sp_16"/>
+
+                        <RadioButton
+                            android:id="@+id/alarm_analysis_test"
+                            android:layout_width="@dimen/dp_95"
+                            android:layout_height="@dimen/dp_30"
+                            android:layout_marginLeft="@dimen/dp_10"
+                            android:background="@drawable/radio_button_style"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:text="@string/alarm_analysis_test"
+                            android:textColor="@drawable/font_white_black_selector"
+                            android:textSize="@dimen/sp_16"/>
+
+                    </RadioGroup>
+
+                    <RadioGroup
+                        android:id="@+id/alarm_analysis_rg2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_16"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/alarm_analysis_rg">
+
+                        <RadioButton
+                            android:id="@+id/alarm_analysis_4"
+                            android:layout_width="@dimen/dp_95"
+                            android:layout_height="@dimen/dp_30"
+                            android:background="@drawable/radio_button_style"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:text="@string/alarm_analysis_misinformation"
+                            android:textColor="@drawable/font_white_black_selector"
+                            android:textSize="@dimen/sp_16"/>
+
+                        <RadioButton
+                            android:id="@+id/alarm_analysis_5"
+                            android:layout_width="@dimen/dp_95"
+                            android:layout_height="@dimen/dp_30"
+                            android:layout_marginLeft="@dimen/dp_10"
+                            android:background="@drawable/radio_button_style"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:text="@string/alarm_analysis_leak"
+                            android:textColor="@drawable/font_white_black_selector"
+                            android:textSize="@dimen/sp_16"/>
+
+                        <RadioButton
+                            android:id="@+id/alarm_analysis_6"
+                            android:layout_width="@dimen/dp_95"
+                            android:layout_height="@dimen/dp_30"
+                            android:layout_marginLeft="@dimen/dp_10"
+                            android:background="@drawable/radio_button_style"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:text="@string/alarm_analysis_test"
+                            android:textColor="@drawable/font_white_black_selector"
+                            android:textSize="@dimen/sp_16"/>
+
+                    </RadioGroup>
+
+                </android.support.constraint.ConstraintLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_1"
+                    android:background="@color/alarm_analysis_split_line"/>
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dp_16"
                     android:layout_marginLeft="@dimen/dp_30"
                     android:layout_marginRight="@dimen/dp_30"
-                    android:layout_marginTop="@dimen/dp_16"
-                    android:layout_marginBottom="@dimen/dp_16">
+                    android:layout_marginTop="@dimen/dp_16">
 
                     <TextView
                         android:id="@+id/alarm_analysis_up_img_tv"
@@ -187,19 +248,19 @@
                         android:textColor="@color/text_black"
                         android:textSize="@dimen/sp_16"
                         app:layout_constraintBottom_toTopOf="@id/alarm_analysis_gv"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"/>
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"/>
 
                     <com.barisetech.www.workmanage.widget.MyCustomHeightGridView
                         android:id="@+id/alarm_analysis_gv"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@id/alarm_analysis_up_img_tv"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        android:verticalSpacing="@dimen/dp_5"
                         android:horizontalSpacing="@dimen/dp_5"
-                        android:numColumns="3">
+                        android:numColumns="3"
+                        android:verticalSpacing="@dimen/dp_5"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/alarm_analysis_up_img_tv">
 
                     </com.barisetech.www.workmanage.widget.MyCustomHeightGridView>
 
@@ -213,10 +274,10 @@
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dp_16"
                     android:layout_marginLeft="@dimen/dp_30"
                     android:layout_marginRight="@dimen/dp_30"
-                    android:layout_marginTop="@dimen/dp_16"
-                    android:layout_marginBottom="@dimen/dp_16">
+                    android:layout_marginTop="@dimen/dp_16">
 
                     <TextView
                         android:id="@+id/alarm_analysis_add_abstract"
@@ -226,23 +287,89 @@
                         android:textColor="@color/text_black"
                         android:textSize="@dimen/sp_16"
                         app:layout_constraintBottom_toTopOf="@id/alarm_analysis_abstract_et"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"/>
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"/>
 
                     <EditText
                         android:id="@+id/alarm_analysis_abstract_et"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/edit_bg"
                         android:layout_marginTop="@dimen/dp_16"
-                        android:textCursorDrawable="@drawable/cursor_color"
-                        android:padding="@dimen/dp_9"
-                        android:textSize="@dimen/sp_14"
+                        android:background="@color/edit_bg"
                         android:hint="@string/alarm_analysis_input_abstract"
-                        app:layout_constraintTop_toBottomOf="@id/alarm_analysis_add_abstract"
+                        android:padding="@dimen/dp_9"
+                        android:textCursorDrawable="@drawable/cursor_color"
+                        android:textSize="@dimen/sp_14"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"/>
+                        app:layout_constraintTop_toBottomOf="@id/alarm_analysis_add_abstract"/>
 
+                </android.support.constraint.ConstraintLayout>
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dp_16"
+                    android:layout_marginLeft="@dimen/dp_30"
+                    android:layout_marginTop="@dimen/dp_16">
+
+                    <TextView
+                        android:id="@+id/alarm_analysis_read_level_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/alarm_analysis_read_level"
+                        android:textColor="@color/text_black"
+                        android:textSize="@dimen/sp_16"
+                        app:layout_constraintBottom_toTopOf="@id/alarm_analysis_read_level"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
+                    <RadioGroup
+                        android:id="@+id/alarm_analysis_read_level"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_16"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/alarm_analysis_read_level_tv">
+
+                        <RadioButton
+                            android:id="@+id/alarm_analysis_super_admin"
+                            android:layout_width="@dimen/dp_95"
+                            android:layout_height="@dimen/dp_30"
+                            android:background="@drawable/radio_button_style"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:text="@string/alarm_analysis_super_admin"
+                            android:textColor="@drawable/font_white_black_selector"
+                            android:textSize="@dimen/sp_16"/>
+
+                        <RadioButton
+                            android:id="@+id/alarm_analysis_admin"
+                            android:layout_width="@dimen/dp_95"
+                            android:layout_height="@dimen/dp_30"
+                            android:layout_marginLeft="@dimen/dp_10"
+                            android:background="@drawable/radio_button_style"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:text="@string/alarm_analysis_admin"
+                            android:textColor="@drawable/font_white_black_selector"
+                            android:textSize="@dimen/sp_16"/>
+
+                        <RadioButton
+                            android:id="@+id/alarm_analysis_user"
+                            android:layout_width="@dimen/dp_95"
+                            android:layout_height="@dimen/dp_30"
+                            android:layout_marginLeft="@dimen/dp_10"
+                            android:background="@drawable/radio_button_style"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:text="@string/alarm_analysis_user"
+                            android:textColor="@drawable/font_white_black_selector"
+                            android:textSize="@dimen/sp_16"/>
+
+                    </RadioGroup>
                 </android.support.constraint.ConstraintLayout>
 
                 <View
