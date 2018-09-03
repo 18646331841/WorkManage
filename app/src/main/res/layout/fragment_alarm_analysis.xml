@@ -78,6 +78,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/dp_16"
                     android:layout_marginLeft="@dimen/dp_30"
+                    android:layout_marginRight="@dimen/dp_30"
                     android:layout_marginTop="@dimen/dp_16">
 
                     <TextView
@@ -97,8 +98,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dp_16"
                         android:background="@color/edit_bg"
-                        android:maxLength="13"
                         android:hint="@string/alarm_analysis_input_title"
+                        android:maxLength="13"
                         android:padding="@dimen/dp_9"
                         android:textCursorDrawable="@drawable/cursor_color"
                         android:textSize="@dimen/sp_14"
@@ -142,25 +143,13 @@
                         app:layout_constraintTop_toBottomOf="@id/alarm_analysis_select_reason_tv">
 
                         <RadioButton
-                            android:id="@+id/alarm_analysis_misinformation"
+                            android:id="@+id/alarm_analysis_wait_confirm"
                             android:layout_width="@dimen/dp_95"
                             android:layout_height="@dimen/dp_30"
                             android:background="@drawable/radio_button_style"
                             android:button="@null"
                             android:gravity="center"
-                            android:text="@string/alarm_analysis_misinformation"
-                            android:textColor="@drawable/font_white_black_selector"
-                            android:textSize="@dimen/sp_16"/>
-
-                        <RadioButton
-                            android:id="@+id/alarm_analysis_leak"
-                            android:layout_width="@dimen/dp_95"
-                            android:layout_height="@dimen/dp_30"
-                            android:layout_marginLeft="@dimen/dp_10"
-                            android:background="@drawable/radio_button_style"
-                            android:button="@null"
-                            android:gravity="center"
-                            android:text="@string/alarm_analysis_leak"
+                            android:text="@string/alarm_analysis_wait_confirm"
                             android:textColor="@drawable/font_white_black_selector"
                             android:textSize="@dimen/sp_16"/>
 
@@ -173,6 +162,18 @@
                             android:button="@null"
                             android:gravity="center"
                             android:text="@string/alarm_analysis_test"
+                            android:textColor="@drawable/font_white_black_selector"
+                            android:textSize="@dimen/sp_16"/>
+
+                        <RadioButton
+                            android:id="@+id/alarm_analysis_normal"
+                            android:layout_width="@dimen/dp_95"
+                            android:layout_height="@dimen/dp_30"
+                            android:layout_marginLeft="@dimen/dp_10"
+                            android:background="@drawable/radio_button_style"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:text="@string/alarm_analysis_normal"
                             android:textColor="@drawable/font_white_black_selector"
                             android:textSize="@dimen/sp_16"/>
 
@@ -189,7 +190,7 @@
                         app:layout_constraintTop_toBottomOf="@id/alarm_analysis_rg">
 
                         <RadioButton
-                            android:id="@+id/alarm_analysis_4"
+                            android:id="@+id/alarm_analysis_misinformation"
                             android:layout_width="@dimen/dp_95"
                             android:layout_height="@dimen/dp_30"
                             android:background="@drawable/radio_button_style"
@@ -200,26 +201,26 @@
                             android:textSize="@dimen/sp_16"/>
 
                         <RadioButton
-                            android:id="@+id/alarm_analysis_5"
+                            android:id="@+id/alarm_analysis_device_fault"
                             android:layout_width="@dimen/dp_95"
                             android:layout_height="@dimen/dp_30"
                             android:layout_marginLeft="@dimen/dp_10"
                             android:background="@drawable/radio_button_style"
                             android:button="@null"
                             android:gravity="center"
-                            android:text="@string/alarm_analysis_leak"
+                            android:text="@string/alarm_analysis_device_fault"
                             android:textColor="@drawable/font_white_black_selector"
                             android:textSize="@dimen/sp_16"/>
 
                         <RadioButton
-                            android:id="@+id/alarm_analysis_6"
+                            android:id="@+id/alarm_analysis_net_fault"
                             android:layout_width="@dimen/dp_95"
                             android:layout_height="@dimen/dp_30"
                             android:layout_marginLeft="@dimen/dp_10"
                             android:background="@drawable/radio_button_style"
                             android:button="@null"
                             android:gravity="center"
-                            android:text="@string/alarm_analysis_test"
+                            android:text="@string/alarm_analysis_net_fault"
                             android:textColor="@drawable/font_white_black_selector"
                             android:textSize="@dimen/sp_16"/>
 
@@ -378,7 +379,7 @@
                     android:background="@color/alarm_analysis_split_line"/>
 
                 <Button
-                    android:id="@+id/alarm_analysis_add"
+                    android:id="@+id/alarm_analysis_upload"
                     android:layout_width="@dimen/dp_315"
                     android:layout_height="@dimen/dp_50"
                     android:layout_gravity="center"

@@ -11,12 +11,23 @@ import android.view.ViewGroup;
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
+import com.barisetech.www.workmanage.bean.site.SiteBean;
 import com.barisetech.www.workmanage.databinding.FragmentSiteDetailBinding;
 
 public class SiteDetailFragment extends BaseFragment{
 
     public static final String TAG = "SiteDetailFragment";
     FragmentSiteDetailBinding mBinding;
+
+    private static final String SITE_ID = "siteBean";
+
+    public static SiteDetailFragment newInstance(SiteBean siteBean) {
+        SiteDetailFragment fragment = new SiteDetailFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(SITE_ID, siteBean);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
 
     @Nullable
     @Override

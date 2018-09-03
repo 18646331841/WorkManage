@@ -1,6 +1,8 @@
 package com.barisetech.www.workmanage.bean.site;
 
-public class SiteBean {
+import java.io.Serializable;
+
+public class SiteBean implements Serializable{
 
     /**
      * SiteId : 0

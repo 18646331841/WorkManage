@@ -20,7 +20,10 @@ import com.barisetech.www.workmanage.utils.LogUtil;
 
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -286,6 +289,22 @@ public class AlarmModel extends BaseModel{
 
     public LiveData<List<AlarmInfo>> getAlarmInfosByRead(boolean isRead) {
         return appDatabase.alarmInfoDao().getAlarmInfosByRead(isRead);
+    }
+
+    /**
+     * 解除警报
+     * @param alarmId
+     */
+    public void liftAlarm(int alarmId) {
+
+        AlarmInfo alarmInfoSync = appDatabase.alarmInfoDao().getAlarmInfoSync(alarmId);
+        alarmInfoSync.setLifted(true);
+        Disposable subscribe = appDatabase.alarmInfoDao().updateAlarmLift(alarmInfoSync)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aBoolean -> {
+                    LogUtil.d(TAG, "alarmId = " + alarmId + " is lift");
+                });
     }
 
     public LiveData<AlarmInfo> getAlarmInfo(int key) {

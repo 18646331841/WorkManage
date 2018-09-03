@@ -1,6 +1,5 @@
 package com.barisetech.www.workmanage.view.fragment;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.graphics.Point;
@@ -11,7 +10,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.barisetech.www.workmanage.adapter.MessageAdapter;
 import com.barisetech.www.workmanage.adapter.ItemCallBack;
@@ -54,6 +52,7 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
     private Point mpoint = new Point();
 
     private boolean flag = false;
+    private AlarmInfo curAlarmInfo;
 
     public Messagefragment() {
     }
@@ -100,16 +99,15 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
         mBinding.imgIncident.setOnClickListener(this);
         mBinding.imgNews.setOnClickListener(this);
         messageAdapter.setOnItemLongClickListener((view, position) -> {
+            curAlarmInfo = (AlarmInfo) curMessageList.get(position);
             FloatMenu floatMenu = new FloatMenu(getActivity());
-//                floatMenu.items("菜单1", "菜单2", "菜单3");
             floatMenu.inflate(R.layout.layout_menu_warn);
             floatMenu.show(mpoint);
             floatMenu.setOnItemClickListener((v, position1) -> {
                 switch (position1){
                     case 1:
-                        AlarmInfo alarmInfo = (AlarmInfo) curMessageList.get(position);
-                        EventBus.getDefault().post(BaseConstant.PROGRESS_SHOW);
-                        alarmViewModel.reqLiftAlarm(alarmInfo.getKey());
+                        EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_SHOW));
+                        alarmViewModel.reqLiftAlarm(curAlarmInfo.getKey());
                         break;
                     case 4:
                         EventBusMessage eventBusMessage = new EventBusMessage(AlarmAnalysisFragment.TAG);
@@ -257,6 +255,9 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
                 if (null != aBoolean) {
                     if (aBoolean) {
                         ToastUtil.showToast(getString(R.string.alarm_lift_success));
+                        if (curAlarmInfo != null) {
+                            alarmViewModel.setLiftAlarm(curAlarmInfo.getKey());
+                        }
                     } else {
                         ToastUtil.showToast(getString(R.string.alarm_lift_fail));
                     }

@@ -31,10 +31,12 @@
     <string name="alarm_analysis_reason">选择警报原因</string>
     <string name="alarm_analysis_upload_screenshot">上传管线截图</string>
     <string name="alarm_analysis_content">警报内容</string>
-    <string name="alarm_analysis_misinformation">误报</string>
-    <string name="alarm_analysis_leak">泄露</string>
+    <string name="alarm_analysis_wait_confirm">待确定</string>
     <string name="alarm_analysis_test">测试</string>
-    <string name="alarm_analysis_other">其他</string>
+    <string name="alarm_analysis_normal">正常</string>
+    <string name="alarm_analysis_misinformation">误报</string>
+    <string name="alarm_analysis_device_fault">设备故障</string>
+    <string name="alarm_analysis_net_fault">网络故障</string>
     <string name="alarm_analysis_add_abstract">添加摘要</string>
     <string name="alarm_analysis_input_abstract">请输入摘要内容</string>
     <string name="alarm_analysis_read_level">阅读等级</string>
@@ -42,6 +44,8 @@
     <string name="alarm_analysis_admin">管理员</string>
     <string name="alarm_analysis_user">用户</string>
     <string name="alarm_analysis_upload">上传</string>
+    <string name="alarm_analysis_upload_success">上传成功</string>
+    <string name="alarm_analysis_upload_fail">上传失败</string>
 
     <string name="title_alarm_details">警报详情</string>
     <string name="alarm_to_map">转到地图</string>

@@ -13,6 +13,13 @@ public class BaseConstant {
     public static final String ROLE_USERS = "Users";
 
     /**
+     * int型用户等级
+     */
+    public static final int LEVEL_SUPER_ADMINS = 3;
+    public static final int LEVEL_ADMINS = 2;
+    public static final int LEVEL_USERS = 1;
+
+    /**
      * SharedPreferences keys
      */
     //指纹登录
