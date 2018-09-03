@@ -217,7 +217,7 @@ public class AlarmInfo extends MessageInfo implements Serializable{
 
     public void setLiftUser(String LiftUser) {
         this.LiftUser = LiftUser;
-        toDetails();
+        details = toDetails();
     }
 
     public String getWarningMessage() {

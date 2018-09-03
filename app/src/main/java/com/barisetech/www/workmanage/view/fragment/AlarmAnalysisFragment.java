@@ -277,6 +277,9 @@ public class AlarmAnalysisFragment extends BaseFragment {
         reqAddAlarmAnalysis.setAlarmDetail(curAlarmInfo.getDetails());
         String account = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_ACCOUNT, "default");
         reqAddAlarmAnalysis.setAnalyst(account);
+        reqAddAlarmAnalysis.setReadQuantity("0");
+
+        reqAddAlarmAnalysis.setReadPeopleList(new ArrayList<>());
         reqAddAlarmAnalysis.setIsAdd("true");
         List<ImageInfo> imageInfos = new ArrayList<>();
         if (null != curImgPaths && curImgPaths.size() > 0) {
