@@ -252,16 +252,16 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
         if (!alarmViewModel.getmObservableLiftAlarm().hasObservers()) {
 
             alarmViewModel.getmObservableLiftAlarm().observe(this, aBoolean -> {
-                if (null != aBoolean) {
-                    if (aBoolean) {
-                        ToastUtil.showToast(getString(R.string.alarm_lift_success));
-                        if (curAlarmInfo != null) {
-                            alarmViewModel.setLiftAlarm(curAlarmInfo.getKey());
-                        }
-                    } else {
-                        ToastUtil.showToast(getString(R.string.alarm_lift_fail));
-                    }
-                }
+//                if (null != aBoolean) {
+//                    if (aBoolean) {
+//                        ToastUtil.showToast(getString(R.string.alarm_lift_success));
+//                        if (curAlarmInfo != null) {
+//                            alarmViewModel.setLiftAlarm(curAlarmInfo.getKey());
+//                        }
+//                    } else {
+//                        ToastUtil.showToast(getString(R.string.alarm_lift_fail));
+//                    }
+//                }
             });
         }
 

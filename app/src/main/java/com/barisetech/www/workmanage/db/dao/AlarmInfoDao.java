@@ -11,7 +11,7 @@ import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 
 import java.util.List;
 
-import io.reactivex.Single;
+import io.reactivex.Flowable;
 
 /**
  * Created by LJH on 2018/8/12.
@@ -34,6 +34,9 @@ public interface AlarmInfoDao {
     @Query("select * from alarm_info where 'Key' = :key Limit 1")
     AlarmInfo getAlarmInfoSync(int key);
 
+    @Query("select * from alarm_info where 'Key' = :key Limit 1")
+    Flowable<AlarmInfo> getAlarmInfoRxjava(int key);
+
     @Update
-    Single<Boolean> updateAlarmLift(AlarmInfo alarmInfo);
+    void updateAlarmLift(AlarmInfo alarmInfo);
 }

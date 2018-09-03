@@ -44,7 +44,6 @@ import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
 import com.barisetech.www.workmanage.utils.TimeUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.viewmodel.AlarmAnalysisViewModel;
-import com.barisetech.www.workmanage.viewmodel.AlarmViewModel;
 import com.barisetech.www.workmanage.widget.CustomPopupWindow;
 
 import org.greenrobot.eventbus.EventBus;

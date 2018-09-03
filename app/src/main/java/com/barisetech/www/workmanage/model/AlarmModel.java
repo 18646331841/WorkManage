@@ -296,15 +296,17 @@ public class AlarmModel extends BaseModel{
      * @param alarmId
      */
     public void liftAlarm(int alarmId) {
-
-        AlarmInfo alarmInfoSync = appDatabase.alarmInfoDao().getAlarmInfoSync(alarmId);
-        alarmInfoSync.setLifted(true);
-        Disposable subscribe = appDatabase.alarmInfoDao().updateAlarmLift(alarmInfoSync)
+        appDatabase.alarmInfoDao().getAlarmInfoRxjava(alarmId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(aBoolean -> {
-                    LogUtil.d(TAG, "alarmId = " + alarmId + " is lift");
-                });
+                .doOnNext(alarmInfo -> {
+                    if (alarmInfo != null) {
+                        alarmInfo.setLifted(true);
+                        appDatabase.alarmInfoDao().updateAlarmLift(alarmInfo);
+                        LogUtil.d(TAG,  "alarm = " + alarmInfo.getKey() + " is lift");
+                    }
+                })
+                .subscribe();
     }
 
     public LiveData<AlarmInfo> getAlarmInfo(int key) {
