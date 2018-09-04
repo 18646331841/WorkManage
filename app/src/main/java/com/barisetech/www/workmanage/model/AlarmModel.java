@@ -21,6 +21,8 @@ import com.barisetech.www.workmanage.utils.LogUtil;
 import java.util.List;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -29,7 +31,7 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * Created by LJH on 2018/8/10.
  */
-public class AlarmModel extends BaseModel{
+public class AlarmModel extends BaseModel {
     public static final String TAG = "AlarmModel";
 
     private AppDatabase appDatabase;
@@ -49,6 +51,7 @@ public class AlarmModel extends BaseModel{
 
     /**
      * 获取警报数量
+     *
      * @return
      */
     public Disposable reqAlarmNum() {
@@ -56,7 +59,7 @@ public class AlarmModel extends BaseModel{
         Disposable disposable = alarmService.getAlarmNum(mToken)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .subscribeWith(new ObserverCallBack<Integer>(){
+                .subscribeWith(new ObserverCallBack<Integer>() {
                     @Override
                     protected void onThrowable(Throwable e) {
                         FailResponse failResponse = new FailResponse(TYPE_NUM, Config.ERROR_NETWORK);
@@ -86,6 +89,7 @@ public class AlarmModel extends BaseModel{
 
     /**
      * 获取所有未解除警报
+     *
      * @return
      */
     public Disposable reqAllAlarm() {
@@ -130,6 +134,7 @@ public class AlarmModel extends BaseModel{
 
     /**
      * 通过参数筛选获取警报
+     *
      * @return
      */
     public Disposable reqAllAlarm(ReqAllAlarm reqAllAlarm) {
@@ -169,6 +174,7 @@ public class AlarmModel extends BaseModel{
 
     /**
      * 通过参数筛选获取警报并存储在数据库中
+     *
      * @return
      */
     public Disposable reqAllAlarmAndToDB(ReqAllAlarm reqAllAlarm) {
@@ -197,7 +203,7 @@ public class AlarmModel extends BaseModel{
 
                     @Override
                     protected void onSuccess(List<AlarmInfo> response) {
-                        for(int i = 0; i < response.size(); i++) {
+                        for (int i = 0; i < response.size(); i++) {
                             AlarmInfo alarmInfo = appDatabase.alarmInfoDao().getAlarmInfoSync(response.get(i).getKey());
                             if (null != alarmInfo) {
                                 response.get(i).setRead(alarmInfo.isRead());
@@ -212,6 +218,7 @@ public class AlarmModel extends BaseModel{
 
     /**
      * 获取最新警报信息
+     *
      * @return
      */
     public Disposable reqAlarmNewest() {
@@ -293,19 +300,20 @@ public class AlarmModel extends BaseModel{
 
     /**
      * 解除警报
-     * @param alarmId
+     *
+     * @param alarmInfo
      */
-    public void liftAlarm(int alarmId) {
-        appDatabase.alarmInfoDao().getAlarmInfoRxjava(alarmId)
-                .subscribeOn(Schedulers.io())
+    public void liftAlarm(AlarmInfo alarmInfo) {
+        Disposable subscribe = Observable.create(new ObservableOnSubscribe<Boolean>() {
+            @Override
+            public void subscribe(ObservableEmitter<Boolean> e) throws Exception {
+                alarmInfo.setLifted(true);
+                appDatabase.alarmInfoDao().updateAlarmLift(alarmInfo);
+                LogUtil.d(TAG, "alarmInfo = " + alarmInfo.getKey() + " is lifted");
+
+            }
+        }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnNext(alarmInfo -> {
-                    if (alarmInfo != null) {
-                        alarmInfo.setLifted(true);
-                        appDatabase.alarmInfoDao().updateAlarmLift(alarmInfo);
-                        LogUtil.d(TAG,  "alarm = " + alarmInfo.getKey() + " is lift");
-                    }
-                })
                 .subscribe();
     }
 

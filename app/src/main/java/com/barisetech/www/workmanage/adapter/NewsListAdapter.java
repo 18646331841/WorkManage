@@ -2,6 +2,7 @@ package com.barisetech.www.workmanage.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.constraint.ConstraintLayout;
@@ -16,6 +17,7 @@ import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.bean.news.NewsImageInfo;
 import com.barisetech.www.workmanage.bean.news.NewsInfo;
 import com.barisetech.www.workmanage.utils.BitmapUtil;
+import com.barisetech.www.workmanage.utils.DisplayUtil;
 import com.barisetech.www.workmanage.utils.LogUtil;
 
 import java.util.ArrayList;
@@ -33,6 +35,8 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private Handler mHandler = new Handler(Looper.getMainLooper()); //获取主线程的Handler
 
     private ItemCallBack itemCallBack;
+    private int imgWidth;
+    private int imgHeight;
 
     public NewsListAdapter(List<NewsInfo> datas, Context context) {
         // 初始化变量
@@ -67,7 +71,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.news_title_tv);
             describe = (TextView) itemView.findViewById(R.id.news_describe_tv);
-            time = (TextView) itemView.findViewById(R.id.news_title_tv);
+            time = (TextView) itemView.findViewById(R.id.news_time_tv);
             imageView = (ImageView) itemView.findViewById(R.id.news_img);
             constraintLayout = itemView.findViewById(R.id.news_list_item_cl);
         }
@@ -89,11 +93,17 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         normalHolder.time.setText(newsInfo.getReleaseTime());
         List<NewsImageInfo> images = newsInfo.getImage();
         if (null != images && images.size() > 0) {
+            if (imgWidth <= 0) {
+                imgWidth = DisplayUtil.dip2px(context, 110);
+                imgHeight = DisplayUtil.dip2px(context, 80);
+                LogUtil.d(TAG, "width = " + imgWidth + " height = " + imgHeight);
+            }
 
-            Bitmap bitmap = BitmapUtil.stringToBitmap(images.get(0).getData(), 50, 50);
+            Bitmap bitmap = BitmapUtil.stringToBitmap(images.get(0).getData(), imgWidth, imgHeight);
 
             if (null != bitmap) {
                 normalHolder.imageView.setImageBitmap(bitmap);
+                normalHolder.imageView.setBackgroundColor(Color.TRANSPARENT);
                 normalHolder.imageView.setVisibility(View.VISIBLE);
             } else {
                 normalHolder.imageView.setImageBitmap(null);

@@ -15,6 +15,7 @@ import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.bean.site.SiteBean;
 import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
 import com.barisetech.www.workmanage.view.fragment.AlarmAnalysisFragment;
+import com.barisetech.www.workmanage.view.fragment.AlarmAnalysisListFragment;
 import com.barisetech.www.workmanage.view.fragment.AlarmDetailsFragment;
 import com.barisetech.www.workmanage.view.fragment.AlarmListFragment;
 import com.barisetech.www.workmanage.view.fragment.DigitizingFragment;
@@ -138,6 +139,11 @@ public class MainActivity extends BaseActivity {
                     transaction
                             .replace(R.id.fragment_content, AlarmAnalysisFragment.newInstance((AlarmInfo)
                                     eventBusMessage.getArg1()), tag).commit();
+                    break;
+                case AlarmAnalysisListFragment.TAG:
+                    transaction
+                            .addToBackStack(tag)
+                            .replace(R.id.fragment_content, AlarmAnalysisListFragment.newInstance(), tag).commit();
                     break;
                 case NewsListFragment.TAG:
                     transaction

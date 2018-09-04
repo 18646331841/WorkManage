@@ -99,13 +99,13 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
         mBinding.imgIncident.setOnClickListener(this);
         mBinding.imgNews.setOnClickListener(this);
         messageAdapter.setOnItemLongClickListener((view, position) -> {
-            curAlarmInfo = (AlarmInfo) curMessageList.get(position);
             FloatMenu floatMenu = new FloatMenu(getActivity());
             floatMenu.inflate(R.layout.layout_menu_warn);
             floatMenu.show(mpoint);
             floatMenu.setOnItemClickListener((v, position1) -> {
                 switch (position1){
                     case 1:
+                        curAlarmInfo = (AlarmInfo) curMessageList.get(position);
                         EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_SHOW));
                         alarmViewModel.reqLiftAlarm(curAlarmInfo.getKey());
                         break;
@@ -151,9 +151,7 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
                 EventBus.getDefault().post(new EventBusMessage(EventFragment.TAG));
                 break;
             case R.id.img_analysis_alarm:
-                //TODO
-                EventBusMessage eventBusMessage = new EventBusMessage(AlarmAnalysisFragment.TAG);
-                eventBusMessage.setArg1(new AlarmInfo());
+                EventBusMessage eventBusMessage = new EventBusMessage(AlarmAnalysisListFragment.TAG);
                 EventBus.getDefault().post(eventBusMessage);
                 break;
             case R.id.img_news:
@@ -252,16 +250,16 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
         if (!alarmViewModel.getmObservableLiftAlarm().hasObservers()) {
 
             alarmViewModel.getmObservableLiftAlarm().observe(this, aBoolean -> {
-//                if (null != aBoolean) {
-//                    if (aBoolean) {
-//                        ToastUtil.showToast(getString(R.string.alarm_lift_success));
-//                        if (curAlarmInfo != null) {
-//                            alarmViewModel.setLiftAlarm(curAlarmInfo.getKey());
-//                        }
-//                    } else {
-//                        ToastUtil.showToast(getString(R.string.alarm_lift_fail));
-//                    }
-//                }
+                if (null != aBoolean) {
+                    if (aBoolean) {
+                        ToastUtil.showToast(getString(R.string.alarm_lift_success));
+                        if (curAlarmInfo != null) {
+                            alarmViewModel.setLiftAlarm(curAlarmInfo);
+                        }
+                    } else {
+                        ToastUtil.showToast(getString(R.string.alarm_lift_fail));
+                    }
+                }
             });
         }
 

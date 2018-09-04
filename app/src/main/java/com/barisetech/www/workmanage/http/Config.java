@@ -5,7 +5,7 @@ package com.barisetech.www.workmanage.http;
  */
 public class Config {
     //默认的
-    public static final String BASE_URL = "http://www.barisetech.com:8081/";
+    public static final String BASE_URL = "http://222.34.135.77:8081/";
 
     /**
      * 新闻接口默认base_url

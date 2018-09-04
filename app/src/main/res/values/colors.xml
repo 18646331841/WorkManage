@@ -6,6 +6,7 @@
     <color name="white">#ffffff</color>
     <color name="theme_color">#2e86d0</color>
     <color name="line_gray">#d4d6d9</color>
+    <color name="filter_blue">#008aff</color>
 
     <color name="blue_text">#3890E0</color>
     <color name="message_item_gray">#999999</color>
@@ -13,7 +14,7 @@
     <color name="alarm_details_card_title">#a3c1da</color>
     <color name="red_alarm_lift">#f36161</color>
     <color name="gray_alarm_details_text">#666666</color>
-
+    <color name="gray_white_split_line">#ECEDEE</color>
     <color name="alarm_analysis_split_line">#E9EAEC</color>
     <color name="text_black">#333333</color>
     <color name="edit_bg">#f7f6f6</color>

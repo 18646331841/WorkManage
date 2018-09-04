@@ -12,6 +12,7 @@ import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.FailResponse;
 import com.barisetech.www.workmanage.bean.TypeResponse;
 import com.barisetech.www.workmanage.bean.alarm.ReqAllAlarm;
+import com.barisetech.www.workmanage.bean.alarmanalysis.AlarmAnalysis;
 import com.barisetech.www.workmanage.bean.alarmanalysis.ReqAddAlarmAnalysis;
 import com.barisetech.www.workmanage.bean.alarmanalysis.ReqAllAlarmAnalysis;
 import com.barisetech.www.workmanage.bean.alarmanalysis.ReqDeleteAlarmAnalysis;
@@ -42,6 +43,8 @@ public class AlarmAnalysisViewModel extends BaseViewModel implements ModelCallBa
     private AlarmAnalysisModel alarmAnalysisModel;
 
     private MutableLiveData<Integer> mObservableAdd;
+    private MutableLiveData<Integer> mObservableNum;
+    private MutableLiveData<List<AlarmAnalysis>> mObservableAll;
 
     public AlarmAnalysisViewModel(@NonNull Application application) {
         super(application);
@@ -51,6 +54,12 @@ public class AlarmAnalysisViewModel extends BaseViewModel implements ModelCallBa
 
         mObservableAdd = new MutableLiveData<>();
         mObservableAdd.setValue(null);
+
+        mObservableNum = new MutableLiveData<>();
+        mObservableNum.setValue(null);
+
+        mObservableAll = new MutableLiveData<>();
+        mObservableAll.setValue(null);
     }
 
     /**
@@ -94,7 +103,7 @@ public class AlarmAnalysisViewModel extends BaseViewModel implements ModelCallBa
      * @param reqAllAlarmAnalysis
      * @return
      */
-    public Disposable reqAllPipe(ReqAllAlarmAnalysis reqAllAlarmAnalysis) {
+    public Disposable reqAllAnalysis(ReqAllAlarmAnalysis reqAllAlarmAnalysis) {
         Disposable disposable = alarmAnalysisModel.reqAllAnalysis(reqAllAlarmAnalysis);
         addDisposable(disposable);
         return disposable;
@@ -109,6 +118,12 @@ public class AlarmAnalysisViewModel extends BaseViewModel implements ModelCallBa
                 switch (typeResponse.type) {
                     case AlarmAnalysisModel.TYPE_ADD:
                         mObservableAdd.setValue((Integer) typeResponse.data);
+                        break;
+                    case AlarmAnalysisModel.TYPE_NUM:
+                        mObservableNum.setValue((Integer) typeResponse.data);
+                        break;
+                    case AlarmAnalysisModel.TYPE_ALL:
+                        mObservableAll.setValue((List<AlarmAnalysis>) typeResponse.data);
                         break;
                 }
             });
@@ -128,5 +143,13 @@ public class AlarmAnalysisViewModel extends BaseViewModel implements ModelCallBa
 
     public MutableLiveData<Integer> getmObservableAdd() {
         return mObservableAdd;
+    }
+
+    public MutableLiveData<Integer> getmObservableNum() {
+        return mObservableNum;
+    }
+
+    public MutableLiveData<List<AlarmAnalysis>> getmObservableAll() {
+        return mObservableAll;
     }
 }

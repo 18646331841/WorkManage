@@ -11,6 +11,7 @@ import com.barisetech.www.workmanage.bean.RawBean;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.view.fragment.AddSiteFragment;
 import com.barisetech.www.workmanage.view.fragment.AlarmAnalysisFragment;
+import com.barisetech.www.workmanage.view.fragment.AlarmAnalysisListFragment;
 import com.barisetech.www.workmanage.view.fragment.AlarmDetailsFragment;
 import com.barisetech.www.workmanage.view.fragment.AlarmListFragment;
 import com.barisetech.www.workmanage.view.fragment.DigitizingDetailFragment;
@@ -92,6 +93,10 @@ public class SecondActivity extends BaseActivity {
                 transaction
                         .replace(R.id.second_framelayout, AlarmAnalysisFragment.newInstance((AlarmInfo)
                                 eventBusMessage.getArg1()), tag).commit();
+                break;
+            case AlarmAnalysisListFragment.TAG:
+                transaction
+                        .replace(R.id.second_framelayout, AlarmAnalysisListFragment.newInstance(), tag).commit();
                 break;
             case MapFragment.TAG:
                 Bundle bundle = new Bundle();

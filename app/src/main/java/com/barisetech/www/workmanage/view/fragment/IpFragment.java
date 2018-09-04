@@ -48,7 +48,7 @@ public class IpFragment extends BaseFragment {
 
     private void initView() {
         //TODO 后期去掉
-        mBinding.etIp.setText("www.barisetech.com");
+        mBinding.etIp.setText("222.34.135.77");
         mBinding.etPort.setText("8081");
 
         String ipAndPort = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_IP_PORT, "");

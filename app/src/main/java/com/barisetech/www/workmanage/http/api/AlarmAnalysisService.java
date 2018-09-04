@@ -40,7 +40,7 @@ public interface AlarmAnalysisService {
      * @param token
      * @return
      */
-    @GET("/api/AlarmAnalysis/${token}")
+    @GET("/api/AlarmAnalysis/{token}")
     Observable<BaseResponse<Integer>> getAnalysisNum(@Path("token") String token);
 
     /**
@@ -50,7 +50,7 @@ public interface AlarmAnalysisService {
      * @param reqAddAlarmAnalysis
      * @return >0表示成功
      */
-    @PUT("/api/AlarmAnalysis/${token}")
+    @PUT("/api/AlarmAnalysis/{token}")
     Observable<BaseResponse<Integer>> addOrModifyAnalysis(@Path("token") String token, @Body ReqAddAlarmAnalysis reqAddAlarmAnalysis);
 
     /**
@@ -59,6 +59,6 @@ public interface AlarmAnalysisService {
      * @param reqDeleteAlarmAnalysis
      * @return
      */
-    @DELETE("/api/AlarmAnalysis/${token}")
+    @DELETE("/api/AlarmAnalysis/{token}")
     Observable<BaseResponse<Boolean>> deleteAnalysis(@Path("token") String token, @Body ReqDeleteAlarmAnalysis reqDeleteAlarmAnalysis);
 }

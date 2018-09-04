@@ -9,35 +9,48 @@
     <android.support.constraint.ConstraintLayout
         android:id="@+id/news_list_item_cl"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_20"
+        android:layout_marginLeft="@dimen/dp_28"
+        android:layout_marginRight="@dimen/dp_30"
+        android:layout_marginTop="@dimen/dp_21">
 
         <TextView
             android:id="@+id/news_title_tv"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/dp_185"
             android:layout_height="wrap_content"
+            android:textColor="@color/text_black"
+            android:textSize="@dimen/sp_16"
+            android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/news_describe_tv"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
             android:id="@+id/news_describe_tv"
-            android:layout_width="@dimen/dp_225"
+            android:layout_width="@dimen/dp_185"
             android:layout_height="wrap_content"
+            android:textSize="@dimen/sp_14"
             app:layout_constraintBottom_toTopOf="@id/news_time_tv"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/news_title_tv"/>
 
         <TextView
             android:id="@+id/news_time_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/news_describe_tv"
-            />
+            android:textColor="@color/message_item_gray"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/news_describe_tv"/>
 
         <ImageView
             android:id="@+id/news_img"
-            android:layout_width="@dimen/dp_50"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/dp_110"
+            android:layout_height="@dimen/dp_80"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:background="@android:color/transparent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
     </android.support.constraint.ConstraintLayout>
@@ -45,6 +58,6 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_1"
-        android:background="@color/gray_alarm_details_text"/>
+        android:background="@color/gray_white_split_line"/>
 
 </LinearLayout>

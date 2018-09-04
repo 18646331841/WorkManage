@@ -112,10 +112,10 @@ public class AlarmViewModel extends BaseViewModel implements ModelCallBack {
 
     /**
      * 设置警报解除
-     * @param alarmId
+     * @param alarmInfo
      */
-    public void setLiftAlarm(int alarmId) {
-        alarmModel.liftAlarm(alarmId);
+    public void setLiftAlarm(AlarmInfo alarmInfo) {
+        alarmModel.liftAlarm(alarmInfo);
     }
 
     public LiveData<List<AlarmInfo>> getNotReadAlarmInfos() {

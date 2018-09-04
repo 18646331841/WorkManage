@@ -135,38 +135,38 @@ public class AlarmAnalysisFragment extends BaseFragment {
         mBinding.setMyFragment(this);
 
         mBinding.alarmAnalysisWaitConfirm.setOnClickListener(view -> {
-            cleanDownRadioGroup();
+            cleanRadioButton();
             RadioButton radioButton = (RadioButton) view;
             radioButton.setChecked(true);
             curReason = REASON_WAIT;
         });
         mBinding.alarmAnalysisTest.setOnClickListener(view -> {
-            cleanDownRadioGroup();
+            cleanRadioButton();
             RadioButton radioButton = (RadioButton) view;
             radioButton.setChecked(true);
             curReason = REASON_TEST;
         });
         mBinding.alarmAnalysisNormal.setOnClickListener(view -> {
-            cleanDownRadioGroup();
+            cleanRadioButton();
             RadioButton radioButton = (RadioButton) view;
             radioButton.setChecked(true);
             curReason = REASON_NORMAL;
         });
 
         mBinding.alarmAnalysisMisinformation.setOnClickListener(view -> {
-            cleanUpRadioGroup();
+            cleanRadioButton();
             RadioButton radioButton = (RadioButton) view;
             radioButton.setChecked(true);
             curReason = REASON_MISINFO;
         });
         mBinding.alarmAnalysisDeviceFault.setOnClickListener(view -> {
-            cleanUpRadioGroup();
+            cleanRadioButton();
             RadioButton radioButton = (RadioButton) view;
             radioButton.setChecked(true);
             curReason = REASON_DEVICE_FAULT;
         });
         mBinding.alarmAnalysisNetFault.setOnClickListener(view -> {
-            cleanUpRadioGroup();
+            cleanRadioButton();
             RadioButton radioButton = (RadioButton) view;
             radioButton.setChecked(true);
             curReason = REASON_NET_FAULT;
@@ -218,21 +218,15 @@ public class AlarmAnalysisFragment extends BaseFragment {
     }
 
     /**
-     * 清空上行RadioGroup为未选中状态
+     * 清空RadioButton为未选中状态
      */
-    private void cleanUpRadioGroup() {
-        mBinding.alarmAnalysisNormal.setChecked(false);
-        mBinding.alarmAnalysisTest.setChecked(false);
-        mBinding.alarmAnalysisWaitConfirm.setChecked(false);
-    }
-
-    /**
-     * 清空下行RadioGroup为未选中状态
-     */
-    private void cleanDownRadioGroup() {
+    private void cleanRadioButton() {
         mBinding.alarmAnalysisMisinformation.setChecked(false);
         mBinding.alarmAnalysisDeviceFault.setChecked(false);
         mBinding.alarmAnalysisNetFault.setChecked(false);
+        mBinding.alarmAnalysisNormal.setChecked(false);
+        mBinding.alarmAnalysisTest.setChecked(false);
+        mBinding.alarmAnalysisWaitConfirm.setChecked(false);
     }
 
     private ItemCallBack itemCallBack = item -> {

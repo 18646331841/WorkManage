@@ -132,7 +132,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"/>
 
-                    <RadioGroup
+                    <LinearLayout
                         android:id="@+id/alarm_analysis_rg"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -177,9 +177,9 @@
                             android:textColor="@drawable/font_white_black_selector"
                             android:textSize="@dimen/sp_16"/>
 
-                    </RadioGroup>
+                    </LinearLayout>
 
-                    <RadioGroup
+                    <LinearLayout
                         android:id="@+id/alarm_analysis_rg2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -224,7 +224,7 @@
                             android:textColor="@drawable/font_white_black_selector"
                             android:textSize="@dimen/sp_16"/>
 
-                    </RadioGroup>
+                    </LinearLayout>
 
                 </android.support.constraint.ConstraintLayout>
 
