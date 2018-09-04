@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="analysisinfo"
+            type="com.barisetech.www.workmanage.bean.alarmanalysis.AlarmAnalysis"/>
+
+        <variable
+            name="callback"
+            type="com.barisetech.www.workmanage.adapter.ItemCallBack"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_30"
+        android:layout_marginRight="@dimen/dp_30"
+        android:orientation="horizontal"
+        android:onClick="@{() -> callback.onClick(analysisinfo)}">
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/message_item"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_82"
+                android:layout_gravity="center"
+                android:layout_margin="7dp"
+                android:elevation="@dimen/dp_3"
+                android:background="@drawable/item_shape">
+
+                <ImageView
+                    android:id="@+id/analysis_type"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:background="@drawable/typr_analysis"
+                    app:layout_constraintEnd_toStartOf="@+id/analysis_title"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <TextView
+                    android:id="@+id/analysis_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{analysisinfo.Tittle}"
+                    android:paddingTop="20dp"
+                    android:textColor="@color/message_item_normal"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/sp_15"
+                    app:layout_constraintEnd_toStartOf="@+id/analysis_type"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/analysis_type"/>
+
+                <TextView
+                    android:id="@+id/analysis_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_14"
+                    android:textSize="14sp"
+                    android:textColor="@color/message_item_gray"
+                    android:text="@{analysisinfo.ReleaseTime}"
+                    app:layout_constraintLeft_toLeftOf="@id/analysis_title"
+                    app:layout_constraintTop_toBottomOf="@+id/analysis_title"/>
+
+                <TextView
+                    android:id="@+id/analysis_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    android:textSize="14sp"
+                    android:textColor="@color/message_item_gray"
+                    app:showId="@{analysisinfo.Id}"
+                    app:layout_constraintLeft_toRightOf="@id/analysis_time"
+                    app:layout_constraintRight_toLeftOf="@id/analysis_read_num"
+                    app:layout_constraintBottom_toBottomOf="@+id/analysis_time"
+                    app:layout_constraintTop_toTopOf="@+id/analysis_time"/>
+
+                <TextView
+                    android:id="@+id/analysis_read_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    android:textSize="14sp"
+                    android:textColor="@color/message_item_gray"
+                    app:showReadNum="@{analysisinfo.ReadQuantity}"
+                    app:layout_constraintLeft_toRightOf="@id/analysis_id"
+                    app:layout_constraintBottom_toBottomOf="@+id/analysis_id"
+                    app:layout_constraintTop_toTopOf="@+id/analysis_id"/>
+
+            </android.support.constraint.ConstraintLayout>
+
+    </LinearLayout>
+</layout>

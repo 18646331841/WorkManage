@@ -1,5 +1,8 @@
 package com.barisetech.www.workmanage.bean.alarmanalysis;
 
+import android.databinding.BindingAdapter;
+import android.widget.TextView;
+
 import com.barisetech.www.workmanage.bean.ImageInfo;
 
 import java.util.List;
@@ -35,6 +38,16 @@ public class AlarmAnalysis {
     private int ReadQuantity;
     private String ReadPeopleList;
     private int ReadLV;
+
+    @BindingAdapter("showId")
+    public static void showId(TextView view, int id) {
+        view.setText("ID:" + id);
+    }
+
+    @BindingAdapter("showReadNum")
+    public static void showReadNum(TextView view, int num) {
+        view.setText("阅读 " + num);
+    }
 
     public int getId() {
         return Id;

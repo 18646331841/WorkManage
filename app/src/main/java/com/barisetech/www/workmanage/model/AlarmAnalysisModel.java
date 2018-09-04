@@ -169,7 +169,7 @@ public class AlarmAnalysisModel extends BaseModel {
         if (null == reqAllAlarmAnalysis) {
             return null;
         }
-//        reqAllAlarmAnalysis.setMachineCode(mToken);
+        reqAllAlarmAnalysis.setMachineCode(mToken);
         Disposable disposable = AlarmAnalysisService.getAllAnalysis(reqAllAlarmAnalysis)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
@@ -194,7 +194,7 @@ public class AlarmAnalysisModel extends BaseModel {
 
                     @Override
                     protected void onSuccess(List<AlarmAnalysis> response) {
-                        LogUtil.d(TAG, "AllPipe result = " + response);
+                        LogUtil.d(TAG, "AllAnalysis result = " + response);
                         TypeResponse typeResponse = new TypeResponse(TYPE_ALL, response);
                         modelCallBack.netResult(typeResponse);
                     }
