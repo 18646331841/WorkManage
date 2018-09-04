@@ -23,6 +23,7 @@ import com.barisetech.www.workmanage.view.fragment.NewsDetailsFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsListFragment;
 import com.barisetech.www.workmanage.view.fragment.PipeFragment;
 import com.barisetech.www.workmanage.view.fragment.SiteFragment;
+import com.barisetech.www.workmanage.view.fragment.WaveFormFragment;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -141,6 +142,10 @@ public class SecondActivity extends BaseActivity {
             case PipeFragment.TAG:
                 transaction
                         .replace(R.id.second_framelayout, PipeFragment.newInstance(), tag).commit();
+                break;
+            case WaveFormFragment.TAG:
+                transaction
+                        .replace(R.id.second_framelayout, WaveFormFragment.newInstance(), tag).commit();
                 break;
         }
     }

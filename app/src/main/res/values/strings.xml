@@ -136,6 +136,9 @@
     <string name="delete_site">删除站点</string>
     <string name="modify_site">修改站点</string>
     <string name="to_pipeline_collection">添加到管线集合</string>
+    <string name="infrasound_wave">次声波</string>
+    <string name="pressure">压力</string>
+    <string name="flow">流量</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->

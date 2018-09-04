@@ -113,6 +113,7 @@ public class AlarmDetailsFragment extends BaseFragment implements View.OnClickLi
 
                 break;
             case R.id.waveform_bt:
+                EventBus.getDefault().post(new EventBusMessage(WaveFormFragment.TAG));
 
                 break;
             case R.id.build_alarm_analysis_bt:
