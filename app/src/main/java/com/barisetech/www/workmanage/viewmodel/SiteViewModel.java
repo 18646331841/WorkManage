@@ -49,7 +49,7 @@ public class SiteViewModel extends BaseViewModel implements ModelCallBack {
 
     private Handler mDelivery;
 
-    private MediatorLiveData<Integer> mObservableAddResult;
+    private MediatorLiveData<Integer> mObservableSiteNum;
     private MediatorLiveData<List<SiteBean>> mObservableSiteInfos;
 
     public SiteViewModel(@NonNull Application application) {
@@ -60,8 +60,8 @@ public class SiteViewModel extends BaseViewModel implements ModelCallBack {
 
 
 
-        mObservableAddResult = new MediatorLiveData<>();
-        mObservableAddResult.setValue(null);
+        mObservableSiteNum = new MediatorLiveData<>();
+        mObservableSiteNum.setValue(null);
 
         mObservableSiteInfos = new MediatorLiveData<>();
         mObservableSiteInfos.setValue(null);
@@ -87,8 +87,8 @@ public class SiteViewModel extends BaseViewModel implements ModelCallBack {
             TypeResponse typeResponse = (TypeResponse) object;
             mDelivery.post(() -> {
                 switch (typeResponse.type) {
-                    case SiteModel.TYPE_ADD:
-                        mObservableAddResult.setValue((Integer) typeResponse.data);
+                    case SiteModel.TYPE_NUM:
+                        mObservableSiteNum.setValue((Integer) typeResponse.data);
                         break;
                     case SiteModel.TYPE_ALL:
                         mObservableSiteInfos.setValue((List<SiteBean>) typeResponse.data);
@@ -110,8 +110,8 @@ public class SiteViewModel extends BaseViewModel implements ModelCallBack {
         }
     }
 
-    public MediatorLiveData<Integer> getmObservableAddResult() {
-        return mObservableAddResult;
+    public MediatorLiveData<Integer> getmObservableSiteNum() {
+        return mObservableSiteNum;
     }
 
     public MediatorLiveData<List<SiteBean>> getmObservableSiteInfos() {

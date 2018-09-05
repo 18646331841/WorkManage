@@ -77,7 +77,8 @@ public class SiteModel extends BaseModel{
 
                     @Override
                     protected void onSuccess(Integer response) {
-                        modelCallBack.netResult(response);
+                        TypeResponse typeResponse = new TypeResponse(TYPE_NUM, response);
+                        modelCallBack.netResult(typeResponse);
                     }
                 });
         return disposable;

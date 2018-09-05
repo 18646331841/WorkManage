@@ -45,13 +45,12 @@ public class SiteFragment extends BaseFragment {
     private SiteViewModel siteViewModel;
     //每次加载个数
     private static final int PAGE_COUNT = 10;
+    private int maxNum;
     private BaseLoadMoreWrapper loadMoreWrapper;
 
-    private String curSiteType = "1";
     private Disposable curDisposable;
 
     private List<SiteBean> siteList;
-    private Observer<List<SiteBean>> observerList;
 
     public SiteFragment() {
 
@@ -104,7 +103,20 @@ public class SiteFragment extends BaseFragment {
         mBinding.siteList.addOnScrollListener(new OnScrollListener() {
             @Override
             public void onLoadMore() {
-                updateRecyclerView(siteList.size(), PAGE_COUNT);
+                if (siteList.size() == maxNum) {
+//                    if (maxNum != 0) {
+                    //已加载到最大，不再加载
+                    loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_END);
+//                    }
+                } else {
+                    int count = maxNum - siteList.size();
+                    if (count < PAGE_COUNT) {
+                        //还剩不到PAGE_COUNT数量的数据加载
+                        updateRecyclerView(siteList.size(), count);
+                    } else {
+                        updateRecyclerView(siteList.size(), PAGE_COUNT);
+                    }
+                }
             }
         });
     }
@@ -115,7 +127,9 @@ public class SiteFragment extends BaseFragment {
     }
 
     private void getDatas(int formIndex, int toIndex) {
-        EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_SHOW));
+        if (toIndex <= 0) {
+            return;
+        }
         loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING);
 
         ReqSiteInfos reqSiteInfos = new ReqSiteInfos();
@@ -124,6 +138,12 @@ public class SiteFragment extends BaseFragment {
         reqSiteInfos.setNumberOfRecords(String.valueOf(toIndex));
 
         curDisposable = siteViewModel.reqAllSite(reqSiteInfos);
+    }
+
+    private void getSiteNums() {
+        loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING);
+
+        siteViewModel.reqSiteNum();
     }
 
     @Override
@@ -135,35 +155,46 @@ public class SiteFragment extends BaseFragment {
     @Override
     public void subscribeToModel() {
 
-        observerList = new Observer<List<SiteBean>>() {
-            @Override
-            public void onChanged(@Nullable List<SiteBean> siteBeans) {
+        if (!siteViewModel.getmObservableSiteInfos().hasObservers()) {
+            siteViewModel.getmObservableSiteInfos().observe(this, siteBeans -> {
                 if (SiteFragment.this.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
 
                     if (null != siteBeans) {
                         if (siteBeans.size() > 0) {
                             siteList.addAll(siteBeans);
-                            LogUtil.d(TAG, "load complete = " + siteList);
+                            LogUtil.d(TAG, "load complete = " + siteBeans);
                             loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_COMPLETE);
                         } else {
                             loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_END);
                         }
                     } else {
-                        if (null != siteList && siteList.size() > 0) {
+                        if (null !=siteList && siteList.size() > 0) {
                             loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_END);
                         }
                     }
                 }
-            }
-        };
+            });
+        }
 
-        if (!siteViewModel.getmObservableSiteInfos().hasObservers()) {
-            //防止多次订阅
-            siteViewModel.getmObservableSiteInfos().observe(this, observerList);
+        if (!siteViewModel. getmObservableSiteNum().hasObservers()) {
+            siteViewModel. getmObservableSiteNum().observe(this, integer -> {
+                if (SiteFragment.this.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                    if (null != integer) {
+                        maxNum = integer;
+                        if (maxNum >= PAGE_COUNT) {
+                            getDatas(0, PAGE_COUNT);
+                        } else {
+                            getDatas(0, maxNum);
+                        }
+                    } else {
+                        loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_END);
+                    }
+                }
+            });
         }
 
         if (null == siteList || siteList.size() <= 0) {
-            getDatas(0, PAGE_COUNT);
+           getSiteNums();
         }
 
     }
