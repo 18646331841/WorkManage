@@ -30,6 +30,7 @@ import com.barisetech.www.workmanage.databinding.FragmentAlarmAnalysisListBindin
 import com.barisetech.www.workmanage.utils.DisplayUtil;
 import com.barisetech.www.workmanage.utils.LogUtil;
 import com.barisetech.www.workmanage.utils.TimeUtil;
+import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.viewmodel.AlarmAnalysisViewModel;
 
 import java.util.ArrayList;
@@ -95,11 +96,7 @@ public class AlarmAnalysisListFragment extends BaseFragment {
         endTimePicker = TimeUtil.getTimePicker(getActivity(), onEndTimeSetListener);
 
         mBinding.searchLayout.tvFilter.setOnClickListener(view -> {
-            if (mBinding.analysisListFilterLayout.getVisibility() == View.GONE) {
-                mBinding.analysisListFilterLayout.setVisibility(View.VISIBLE);
-            } else {
-                mBinding.analysisListFilterLayout.setVisibility(View.GONE);
-            }
+            transFilterLayout();
         });
 
         initRecyclerView();
@@ -137,6 +134,7 @@ public class AlarmAnalysisListFragment extends BaseFragment {
             cleanFilterGruop();
             radioButton.setChecked(true);
             selectType = BaseConstant.REASON_DEVICE_FAULT;
+            showDateRadio();
         });
         mBinding.analysisListNetFault.setOnClickListener(view -> {
             RadioButton radioButton = (RadioButton) view;
@@ -154,6 +152,37 @@ public class AlarmAnalysisListFragment extends BaseFragment {
             //显示结束日期选择器
             endDatePicker.show();
         });
+
+        mBinding.analysisListConfirm.setOnClickListener(view -> {
+            if (TextUtils.isEmpty(startTime)) {
+                ToastUtil.showToast("请选择开始时间");
+                return;
+            }
+            if (TextUtils.isEmpty(endTime)) {
+                ToastUtil.showToast("请选择结束时间");
+                return;
+            }
+            curDisposable.dispose();
+            transFilterLayout();
+            curType = selectType;
+            alarmAnalysisList.clear();
+            if (maxNum >= PAGE_COUNT) {
+                getDatas(0, PAGE_COUNT);
+            } else {
+                getDatas(0, maxNum);
+            }
+        });
+    }
+
+    /**
+     * 打开或关闭筛选选择框
+     */
+    private void transFilterLayout() {
+        if (mBinding.analysisListFilterLayout.getVisibility() == View.GONE) {
+            mBinding.analysisListFilterLayout.setVisibility(View.VISIBLE);
+        } else {
+            mBinding.analysisListFilterLayout.setVisibility(View.GONE);
+        }
     }
 
     /**
@@ -162,10 +191,6 @@ public class AlarmAnalysisListFragment extends BaseFragment {
     private void showDateRadio() {
         if (mBinding.analysisListDateLayout.getVisibility() == View.GONE) {
             mBinding.analysisListDateLayout.setVisibility(View.VISIBLE);
-            mBinding.analysisListStartTime.setText(getString(R.string.alarm_analysis_start_time));
-            mBinding.analysisListEndTime.setText(getString(R.string.alarm_analysis_end_time));
-            startTime = "";
-            endTime = "";
         }
     }
 
@@ -193,8 +218,19 @@ public class AlarmAnalysisListFragment extends BaseFragment {
      * 开始日期选择回调
      */
     private DatePickerDialog.OnDateSetListener onStartDateSetListener = (datePicker, year, monthOfYear, dayOfMonth) -> {
-        LogUtil.d(TAG, "year = " + year + " month = " + monthOfYear + " day = " + dayOfMonth);
-
+        String monthS = String.valueOf(monthOfYear + 1);
+        String dayS = String.valueOf(dayOfMonth);
+        if (monthS.length() == 1) {
+            monthS = "0" + monthS;
+        }
+        if (dayS.length() == 1) {
+            dayS = "0" + dayS;
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append(year).append("-")
+                .append(monthS).append("-")
+                .append(dayS).append(" ");
+        startTime = sb.toString();
         startTimePicker.show();
     };
 
@@ -202,8 +238,19 @@ public class AlarmAnalysisListFragment extends BaseFragment {
      * 结束日期选择回调
      */
     private DatePickerDialog.OnDateSetListener onEndDateSetListener = (datePicker, year, monthOfYear, dayOfMonth) -> {
-        LogUtil.d(TAG, "year = " + year + " month = " + monthOfYear + " day = " + dayOfMonth);
-
+        String monthS = String.valueOf(monthOfYear + 1);
+        String dayS = String.valueOf(dayOfMonth);
+        if (monthS.length() == 1) {
+            monthS = "0" + monthS;
+        }
+        if (dayS.length() == 1) {
+            dayS = "0" + dayS;
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append(year).append("-")
+                .append(monthS).append("-")
+                .append(dayS).append(" ");
+        endTime = sb.toString();
         endTimePicker.show();
     };
 
@@ -211,17 +258,40 @@ public class AlarmAnalysisListFragment extends BaseFragment {
      * 开始时间选择回调
      */
     private TimePickerDialog.OnTimeSetListener onStartTimeSetListener = ((timePicker, hour, minute) -> {
-        LogUtil.d(TAG, "hour = " + hour + " minute = " + minute);
-
+        String hourS = String.valueOf(hour);
+        String minuteS = String.valueOf(minute);
+        if (hourS.length() == 1) {
+            hourS = "0" + hourS;
+        }
+        if (minuteS.length() == 1) {
+            minuteS = "0" + minuteS;
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append(startTime)
+                .append(hourS).append(":")
+                .append(minuteS).append(":00");
+        startTime = sb.toString();
+        mBinding.analysisListStartTime.setText(startTime);
     });
 
     /**
      * 结束时间选择回调
      */
     private TimePickerDialog.OnTimeSetListener onEndTimeSetListener = ((timePicker, hour, minute) -> {
-        LogUtil.d(TAG, "hour = " + hour + " minute = " + minute);
-
-        curType = selectType;
+        String hourS = String.valueOf(hour);
+        String minuteS = String.valueOf(minute);
+        if (hourS.length() == 1) {
+            hourS = "0" + hourS;
+        }
+        if (minuteS.length() == 1) {
+            minuteS = "0" + minuteS;
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append(endTime)
+                .append(hourS).append(":")
+                .append(minuteS).append(":00");
+        endTime = sb.toString();
+        mBinding.analysisListEndTime.setText(endTime);
     });
 
     private void initRecyclerView() {
@@ -318,9 +388,9 @@ public class AlarmAnalysisListFragment extends BaseFragment {
                             loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_END);
                         }
                     } else {
-                        if (null != alarmAnalysisList && alarmAnalysisList.size() > 0) {
+//                        if (null != alarmAnalysisList && alarmAnalysisList.size() > 0) {
                             loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_END);
-                        }
+//                        }
                     }
                 }
             });

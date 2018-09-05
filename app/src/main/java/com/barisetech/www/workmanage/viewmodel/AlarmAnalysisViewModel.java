@@ -137,7 +137,14 @@ public class AlarmAnalysisViewModel extends BaseViewModel implements ModelCallBa
             FailResponse failResponse = (FailResponse) object;
             if (failResponse.code == Config.ERROR_UNAUTHORIZED) {
                 EventBus.getDefault().post(new EventBusMessage(LoginActivity.TAG));
+                return;
             }
+            mDelivery.post(() -> {
+                if (failResponse.type == AlarmAnalysisModel.TYPE_ALL) {
+                    mObservableAll.setValue(null);
+                }
+            });
+
         }
     }
 

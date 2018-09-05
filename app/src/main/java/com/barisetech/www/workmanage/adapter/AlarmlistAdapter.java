@@ -1,5 +1,6 @@
 package com.barisetech.www.workmanage.adapter;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,78 +15,44 @@ import com.barisetech.www.workmanage.databinding.ItemAlarmlistBinding;
 
 import java.util.List;
 
-public class AlarmlistAdapter extends RecyclerView.Adapter<AlarmlistAdapter.Myholder>{
+public class AlarmlistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
-    private List<? extends MessageInfo> mList;
+    private List<MessageInfo> mList;
+    private Context ctx;
+    private ItemCallBack itemCallBack;
 
-    @Nullable
-    private final ItemCallBack mItemCallBack;
-
-    public AlarmlistAdapter(@Nullable ItemCallBack itemCallBack) {
-        mItemCallBack = itemCallBack;
+    public AlarmlistAdapter(List<MessageInfo> list, Context context, @NonNull ItemCallBack itemCallBack) {
+        this.mList = list;
+        this.ctx = context;
+        this.itemCallBack = itemCallBack;
     }
-
-    public void setCommentList(final List<? extends MessageInfo> messageInfos) {
-        if (mList == null) {
-            mList = messageInfos;
-            notifyItemRangeInserted(0, messageInfos.size());
-        } else {
-            DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffUtil.Callback() {
-                @Override
-                public int getOldListSize() {
-                    return mList.size();
-                }
-
-                @Override
-                public int getNewListSize() {
-                    return messageInfos.size();
-                }
-
-                @Override
-                public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-                    MessageInfo old = mList.get(oldItemPosition);
-                    MessageInfo messageInfo = messageInfos.get(newItemPosition);
-                    return old.getId() == messageInfo.getId();
-                }
-
-                @Override
-                public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-                    MessageInfo old = mList.get(oldItemPosition);
-                    MessageInfo messageInfo = messageInfos.get(newItemPosition);
-                    return old.getContent().equals(messageInfo.getContent());
-                }
-            });
-            mList = messageInfos;
-            diffResult.dispatchUpdatesTo(this);
-        }
-    }
-
     @NonNull
     @Override
-    public Myholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemAlarmlistBinding binding = DataBindingUtil
-                .inflate(LayoutInflater.from(parent.getContext()), R.layout.item_alarmlist,
-                        parent, false);
-        binding.setCallback(mItemCallBack);
-        return new Myholder(binding);
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        ItemAlarmlistBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout
+                .item_alarmlist, parent, false);
+        binding.setCallback(itemCallBack);
+        return new MyHolder(binding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull Myholder holder, int position) {
-        MessageInfo messageInfo = mList.get(position);
-        holder.binding.setMessageinfo(messageInfo);
-        holder.binding.executePendingBindings();
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof MyHolder) {
+            MyHolder myHolder = (MyHolder) holder;
+            MessageInfo messageInfo = mList.get(position);
+
+            myHolder.binding.setMessageinfo(messageInfo);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return mList == null ? 0 : mList.size();
+        return mList.size();
     }
 
-    class Myholder extends RecyclerView.ViewHolder{
-
+    class MyHolder extends RecyclerView.ViewHolder{
         final ItemAlarmlistBinding binding;
-        public Myholder(ItemAlarmlistBinding binding) {
+        public MyHolder(ItemAlarmlistBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }

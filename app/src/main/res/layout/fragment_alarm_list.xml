@@ -1,16 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
-
+        <variable
+            name="fragment"
+            type="com.barisetech.www.workmanage.base.BaseFragment"/>
     </data>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                 xmlns:tools="http://schemas.android.com/tools"
-                 android:layout_width="match_parent"
-                 android:layout_height="match_parent"
-                 android:orientation="vertical"
-                 tools:context=".view.fragment.AlarmListFragment">
 
-        <include layout="@layout/layout_toolbar" android:id="@+id/toolbar"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/layout_toolbar"
+            app:toolbar="@{fragment.observableToolbar}"/>
+
+        <include
+            android:id="@+id/search_layout"
+            layout="@layout/layout_search_view"/>
+
+        <LinearLayout
+            android:id="@+id/alarm_list_filter_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/dp_13"
+            android:paddingLeft="@dimen/dp_30"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_13"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/alarm_list_all"
+                    android:layout_width="@dimen/dp_145"
+                    android:layout_height="@dimen/dp_30"
+                    android:background="@drawable/filter_button_style"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="@string/alarm_list_all"
+                    android:textColor="@drawable/font_gray_blue_selector"
+                    android:textSize="14sp"/>
+
+                <RadioButton
+                    android:id="@+id/alarm_list_unlift"
+                    android:layout_width="@dimen/dp_145"
+                    android:layout_height="@dimen/dp_30"
+                    android:layout_marginLeft="@dimen/dp_25"
+                    android:background="@drawable/filter_button_style"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="@string/alarm_list_unlift"
+                    android:textColor="@drawable/font_gray_blue_selector"
+                    android:textSize="14sp"/>
+            </LinearLayout>
+        </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/alarm_list"

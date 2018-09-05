@@ -170,7 +170,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dp_5"
-                        android:text="@string/title_warn"
+                        android:text="@string/title_alarm"
                         android:textColor="@color/white"
                         android:textSize="@dimen/sp_14"
                         app:layout_constraintLeft_toLeftOf="@id/message_alarm_fl"

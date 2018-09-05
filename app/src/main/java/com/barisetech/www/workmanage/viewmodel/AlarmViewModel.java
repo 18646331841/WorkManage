@@ -84,7 +84,8 @@ public class AlarmViewModel extends BaseViewModel implements ModelCallBack {
     }
 
     /**
-     * 通过条件筛选获取，并保存入数据库
+     * 通过条件筛选获取警报列表
+     *
      * @param reqAllAlarm
      */
     public void getAllAlarmByCondition(ReqAllAlarm reqAllAlarm) {
@@ -95,6 +96,7 @@ public class AlarmViewModel extends BaseViewModel implements ModelCallBack {
 
     /**
      * 通过条件筛选获取警报，并保存入数据库
+     *
      * @param reqAllAlarm
      */
     public void getAllAlarmByConditionToDB(ReqAllAlarm reqAllAlarm) {
@@ -112,6 +114,7 @@ public class AlarmViewModel extends BaseViewModel implements ModelCallBack {
 
     /**
      * 设置警报解除
+     *
      * @param alarmInfo
      */
     public void setLiftAlarm(AlarmInfo alarmInfo) {
@@ -131,6 +134,9 @@ public class AlarmViewModel extends BaseViewModel implements ModelCallBack {
                 switch (typeResponse.type) {
                     case AlarmModel.TYPE_LIFT_ALARM:
                         mObservableLiftAlarm.setValue((Boolean) typeResponse.data);
+                        break;
+                    case AlarmModel.TYPE_All_ALARM:
+
                         break;
                 }
             });

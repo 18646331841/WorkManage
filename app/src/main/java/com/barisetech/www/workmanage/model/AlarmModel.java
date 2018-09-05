@@ -42,6 +42,7 @@ public class AlarmModel extends BaseModel {
     public static final int TYPE_UNLIFT_ALARM = 3;
     public static final int TYPE_All_ALARM = 4;
     public static final int TYPE_LIFT_ALARM = 5;
+    public static final int TYPE_All_ALARM_DB = 6;
 
     public AlarmModel(AppDatabase appDatabase, ModelCallBack callBack) {
         super(callBack);
@@ -165,8 +166,6 @@ public class AlarmModel extends BaseModel {
                     protected void onSuccess(List<AlarmInfo> response) {
                         TypeResponse typeResponse = new TypeResponse(TYPE_All_ALARM, response);
                         modelCallBack.netResult(typeResponse);
-                        //TODO
-                        appDatabase.alarmInfoDao().insertAll(response);
                     }
                 });
         return disposable;
@@ -186,7 +185,7 @@ public class AlarmModel extends BaseModel {
                 .subscribeWith(new ObserverCallBack<List<AlarmInfo>>() {
                     @Override
                     protected void onThrowable(Throwable e) {
-                        FailResponse failResponse = new FailResponse(TYPE_All_ALARM, Config.ERROR_NETWORK);
+                        FailResponse failResponse = new FailResponse(TYPE_All_ALARM_DB, Config.ERROR_NETWORK);
                         modelCallBack.fail(failResponse);
                     }
 
@@ -194,9 +193,9 @@ public class AlarmModel extends BaseModel {
                     protected void onFailure(BaseResponse response) {
                         FailResponse failResponse;
                         if (response.Code == 401) {
-                            failResponse = new FailResponse(TYPE_All_ALARM, Config.ERROR_UNAUTHORIZED);
+                            failResponse = new FailResponse(TYPE_All_ALARM_DB, Config.ERROR_UNAUTHORIZED);
                         } else {
-                            failResponse = new FailResponse(TYPE_All_ALARM, Config.ERROR_FAIL);
+                            failResponse = new FailResponse(TYPE_All_ALARM_DB, Config.ERROR_FAIL);
                         }
                         modelCallBack.fail(failResponse);
                     }

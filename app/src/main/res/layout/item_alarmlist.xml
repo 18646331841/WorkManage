@@ -15,17 +15,54 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="160dp"
+        android:layout_height="wrap_content"
         android:onClick="@{() -> callback.onClick(messageinfo)}">
 
-        <TextView
-            android:id="@+id/message_content"
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/message_item"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30.5dp"
-            android:layout_marginRight="55dp"
-            android:text="@{messageinfo.content}"
-            android:textSize="14sp"/>
+            android:layout_height="160dp"
+            android:layout_gravity="center"
+            android:layout_margin="7dp"
+            android:elevation="@dimen/dp_5"
+            android:background="@drawable/item_shape">
+
+            <ImageView
+                android:id="@+id/message_type"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                app:layout_constraintBottom_toTopOf="@+id/message_content"
+                app:layout_constraintEnd_toStartOf="@+id/message_time"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
+                android:id="@+id/message_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{messageinfo.title}"
+                android:paddingTop="20dp"
+                android:paddingLeft="29dp"
+                android:textColor="@color/message_item_normal"
+                android:textSize="@dimen/sp_16"
+                app:layout_constraintEnd_toStartOf="@+id/message_type"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/message_type"/>
+
+            <TextView
+                android:id="@+id/message_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30.5dp"
+                android:layout_marginRight="55dp"
+                android:textSize="14sp"
+                android:textColor="@color/message_item_normal"
+                android:text="@{messageinfo.content}"
+                app:layout_constraintBottom_toTopOf="@+id/message_type"
+                app:layout_constraintTop_toBottomOf="@+id/message_type"/>
+
+        </android.support.constraint.ConstraintLayout>
     </RelativeLayout>
 
 
