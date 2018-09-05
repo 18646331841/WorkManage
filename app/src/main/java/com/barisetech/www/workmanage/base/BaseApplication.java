@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDexApplication;
 
 import com.barisetech.www.workmanage.bean.AccessTokenInfo;
 import com.barisetech.www.workmanage.bean.TokenInfo;
@@ -18,7 +19,7 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * Created by LJH on 2018/7/9.
  */
-public class BaseApplication extends Application {
+public class BaseApplication extends MultiDexApplication {
     public static final String TAG = "BaseApplication";
     private static BaseApplication Instance;
     public static String dataDir;

@@ -20,6 +20,16 @@ public class BaseConstant {
     public static final int LEVEL_USERS = 1;
 
     /**
+     * 警报分析原因类型
+     */
+    public static final int REASON_WAIT = 1;
+    public static final int REASON_TEST = 2;
+    public static final int REASON_NORMAL = 3;
+    public static final int REASON_MISINFO = 4;
+    public static final int REASON_DEVICE_FAULT = 5;
+    public static final int REASON_NET_FAULT = 6;
+
+    /**
      * SharedPreferences keys
      */
     //指纹登录

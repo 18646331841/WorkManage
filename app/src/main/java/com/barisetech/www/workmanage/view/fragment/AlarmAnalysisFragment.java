@@ -73,12 +73,6 @@ public class AlarmAnalysisFragment extends BaseFragment {
     //请求相机
     private final int CODE_CAMERA_REQUEST = 102;
 
-    private final int REASON_WAIT = 1;
-    private final int REASON_TEST = 2;
-    private final int REASON_NORMAL = 3;
-    private final int REASON_MISINFO = 4;
-    private final int REASON_DEVICE_FAULT = 5;
-    private final int REASON_NET_FAULT = 6;
     private int curReason;
 
     private int curReadLv;
@@ -138,38 +132,38 @@ public class AlarmAnalysisFragment extends BaseFragment {
             cleanRadioButton();
             RadioButton radioButton = (RadioButton) view;
             radioButton.setChecked(true);
-            curReason = REASON_WAIT;
+            curReason = BaseConstant.REASON_WAIT;
         });
         mBinding.alarmAnalysisTest.setOnClickListener(view -> {
             cleanRadioButton();
             RadioButton radioButton = (RadioButton) view;
             radioButton.setChecked(true);
-            curReason = REASON_TEST;
+            curReason = BaseConstant.REASON_TEST;
         });
         mBinding.alarmAnalysisNormal.setOnClickListener(view -> {
             cleanRadioButton();
             RadioButton radioButton = (RadioButton) view;
             radioButton.setChecked(true);
-            curReason = REASON_NORMAL;
+            curReason = BaseConstant.REASON_NORMAL;
         });
 
         mBinding.alarmAnalysisMisinformation.setOnClickListener(view -> {
             cleanRadioButton();
             RadioButton radioButton = (RadioButton) view;
             radioButton.setChecked(true);
-            curReason = REASON_MISINFO;
+            curReason = BaseConstant.REASON_MISINFO;
         });
         mBinding.alarmAnalysisDeviceFault.setOnClickListener(view -> {
             cleanRadioButton();
             RadioButton radioButton = (RadioButton) view;
             radioButton.setChecked(true);
-            curReason = REASON_DEVICE_FAULT;
+            curReason = BaseConstant.REASON_DEVICE_FAULT;
         });
         mBinding.alarmAnalysisNetFault.setOnClickListener(view -> {
             cleanRadioButton();
             RadioButton radioButton = (RadioButton) view;
             radioButton.setChecked(true);
-            curReason = REASON_NET_FAULT;
+            curReason = BaseConstant.REASON_NET_FAULT;
         });
 
         mBinding.alarmAnalysisSuperAdmin.setOnClickListener(view -> {

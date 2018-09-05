@@ -123,6 +123,39 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/analysis_list_date_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_13"
+                android:visibility="gone"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/analysis_list_start_time"
+                    android:layout_width="@dimen/dp_145"
+                    android:layout_height="@dimen/dp_30"
+                    android:background="@drawable/filter_button_style"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="@string/alarm_analysis_start_time"
+                    android:textColor="@drawable/font_gray_blue_selector"
+                    android:textSize="14sp"/>
+
+                <RadioButton
+                    android:id="@+id/analysis_list_end_time"
+                    android:layout_width="@dimen/dp_145"
+                    android:layout_height="@dimen/dp_30"
+                    android:layout_marginLeft="@dimen/dp_25"
+                    android:background="@drawable/filter_button_style"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="@string/alarm_analysis_end_time"
+                    android:textColor="@drawable/font_gray_blue_selector"
+                    android:textSize="14sp"/>
+
+            </LinearLayout>
+
         </LinearLayout>
 
         <android.support.v7.widget.RecyclerView

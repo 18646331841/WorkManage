@@ -46,6 +46,8 @@
     <string name="alarm_analysis_upload">上传</string>
     <string name="alarm_analysis_upload_success">上传成功</string>
     <string name="alarm_analysis_upload_fail">上传失败</string>
+    <string name="alarm_analysis_start_time">请选择开始时间</string>
+    <string name="alarm_analysis_end_time">请选择结束时间</string>
 
     <string name="title_alarm_details">警报详情</string>
     <string name="alarm_to_map">转到地图</string>

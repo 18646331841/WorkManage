@@ -257,15 +257,18 @@ public class NewsListFragment extends BaseFragment {
 
         if (!newsViewModel.getmObservableNewsNum().hasObservers()) {
             newsViewModel.getmObservableNewsNum().observe(this, integer -> {
-                if (null != integer) {
-                    maxNum = integer;
-                    if (maxNum >= PAGE_COUNT) {
-                        getDatas(0, PAGE_COUNT);
+                if (this.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+
+                    if (null != integer) {
+                        maxNum = integer;
+                        if (maxNum >= PAGE_COUNT) {
+                            getDatas(0, PAGE_COUNT);
+                        } else {
+                            getDatas(0, maxNum);
+                        }
                     } else {
-                        getDatas(0, maxNum);
+                        loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_END);
                     }
-                } else {
-                    loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_END);
                 }
             });
         }
