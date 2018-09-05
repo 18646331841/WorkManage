@@ -9,11 +9,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.barisetech.www.workmanage.R;
+import com.barisetech.www.workmanage.adapter.ItemCallBack;
 import com.barisetech.www.workmanage.adapter.OnScrollListener;
 import com.barisetech.www.workmanage.adapter.SiteAdapter;
 import com.barisetech.www.workmanage.base.BaseConstant;
@@ -21,11 +23,13 @@ import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.base.BaseLoadMoreWrapper;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
+import com.barisetech.www.workmanage.bean.news.NewsInfo;
 import com.barisetech.www.workmanage.bean.site.ReqSiteInfos;
 import com.barisetech.www.workmanage.bean.site.SiteBean;
 import com.barisetech.www.workmanage.databinding.FragmentSiteBinding;
 import com.barisetech.www.workmanage.utils.DisplayUtil;
 import com.barisetech.www.workmanage.utils.LogUtil;
+import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.viewmodel.SiteViewModel;
 
 import org.greenrobot.eventbus.EventBus;
@@ -118,6 +122,15 @@ public class SiteFragment extends BaseFragment {
                     }
                 }
             }
+        });
+        siteAdapter.OnClick(item -> {
+            if (item instanceof SiteBean) {
+                SiteBean siteBean = (SiteBean) item;
+                EventBusMessage eventBusMessage = new EventBusMessage(SiteDetailFragment.TAG);
+                eventBusMessage.setArg1(siteBean);
+                EventBus.getDefault().post(eventBusMessage);
+            }
+
         });
     }
 

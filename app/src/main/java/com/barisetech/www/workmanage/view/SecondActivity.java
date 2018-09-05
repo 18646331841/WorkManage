@@ -9,6 +9,7 @@ import com.barisetech.www.workmanage.base.BaseActivity;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.RawBean;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
+import com.barisetech.www.workmanage.bean.site.SiteBean;
 import com.barisetech.www.workmanage.view.fragment.AddSiteFragment;
 import com.barisetech.www.workmanage.view.fragment.AlarmAnalysisFragment;
 import com.barisetech.www.workmanage.view.fragment.AlarmAnalysisListFragment;
@@ -22,6 +23,7 @@ import com.barisetech.www.workmanage.view.fragment.NewsAddFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsDetailsFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsListFragment;
 import com.barisetech.www.workmanage.view.fragment.PipeFragment;
+import com.barisetech.www.workmanage.view.fragment.SiteDetailFragment;
 import com.barisetech.www.workmanage.view.fragment.SiteFragment;
 import com.barisetech.www.workmanage.view.fragment.WaveFormFragment;
 
@@ -146,6 +148,11 @@ public class SecondActivity extends BaseActivity {
             case WaveFormFragment.TAG:
                 transaction
                         .replace(R.id.second_framelayout, WaveFormFragment.newInstance(), tag).commit();
+                break;
+            case SiteDetailFragment.TAG:
+                transaction
+                        .replace(R.id.second_framelayout, SiteDetailFragment.newInstance((SiteBean)
+                                eventBusMessage.getArg1()), tag).commit();
                 break;
         }
     }

@@ -27,6 +27,10 @@ public class SiteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         this.mList = list;
         this.ctx = context;
     }
+
+    public void OnClick(ItemCallBack callBack){
+        this.callBack = callBack;
+    }
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
