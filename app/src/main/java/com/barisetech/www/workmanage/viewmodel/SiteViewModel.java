@@ -19,6 +19,8 @@ import com.barisetech.www.workmanage.bean.TypeResponse;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.bean.alarm.ReqAllAlarm;
 import com.barisetech.www.workmanage.bean.news.NewsInfo;
+import com.barisetech.www.workmanage.bean.pipe.ReqAddPipe;
+import com.barisetech.www.workmanage.bean.site.ReqAddSite;
 import com.barisetech.www.workmanage.bean.site.ReqSiteInfos;
 import com.barisetech.www.workmanage.bean.site.SiteBean;
 import com.barisetech.www.workmanage.callback.ModelCallBack;
@@ -76,6 +78,12 @@ public class SiteViewModel extends BaseViewModel implements ModelCallBack {
 
     public Disposable reqAllSite(ReqSiteInfos reqSiteInfos){
         Disposable disposable = siteModel.reqAllSite(reqSiteInfos);
+        addDisposable(disposable);
+        return disposable;
+    }
+
+    public Disposable reqAddOrModifySite(ReqAddSite reqAddSite) {
+        Disposable disposable = siteModel.reqAddOrModifySite(reqAddSite);
         addDisposable(disposable);
         return disposable;
     }

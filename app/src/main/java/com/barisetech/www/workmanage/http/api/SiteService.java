@@ -1,5 +1,6 @@
 package com.barisetech.www.workmanage.http.api;
 
+import com.barisetech.www.workmanage.adapter.SiteAdapter;
 import com.barisetech.www.workmanage.base.BaseResponse;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfoNewest;
@@ -11,6 +12,7 @@ import com.barisetech.www.workmanage.bean.pipecollections.PipeCollections;
 import com.barisetech.www.workmanage.bean.pipecollections.ReqAddPC;
 import com.barisetech.www.workmanage.bean.pipecollections.ReqAllPc;
 import com.barisetech.www.workmanage.bean.pipecollections.ReqDeletePc;
+import com.barisetech.www.workmanage.bean.site.ReqAddSite;
 import com.barisetech.www.workmanage.bean.site.ReqSiteInfos;
 import com.barisetech.www.workmanage.bean.site.SiteBean;
 
@@ -45,15 +47,15 @@ public interface SiteService {
     @GET("/api/Sites/{token}")
     Observable<BaseResponse<Integer>> getSiteNum(@Path("token") String token);
 
-//    /**
-//     * 添加或修改管线集合
-//     *
-//     * @param token
-//     * @param reqAddPC
-//     * @return
-//     */
-//    @PUT("/api/Pipecollections/{token}")
-//    Observable<BaseResponse<String>> addOrModifyPc(@Path("token") String token, @Body ReqAddPC reqAddPC);
+    /**
+     * 添加或修改管线集合
+     *
+     * @param token
+     * @param
+     * @return
+     */
+    @PUT("/api/Sites/{token}")
+     Observable<BaseResponse<String>> addOrModifySite(@Path("token") String token, @Body ReqAddSite siteBean);
 //
 //    /**
 //     * 删除管线集合

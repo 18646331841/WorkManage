@@ -11,14 +11,13 @@ import com.barisetech.www.workmanage.base.BaseViewModel;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.FailResponse;
 import com.barisetech.www.workmanage.bean.TypeResponse;
-import com.barisetech.www.workmanage.bean.pipe.PipeInfo;
-import com.barisetech.www.workmanage.bean.pipe.ReqAddPipe;
-import com.barisetech.www.workmanage.bean.pipe.ReqAllPipe;
-import com.barisetech.www.workmanage.bean.pipe.ReqDeletePipe;
+import com.barisetech.www.workmanage.bean.pipelindarea.PipeLindAreaInfo;
+import com.barisetech.www.workmanage.bean.pipelindarea.ReqAddPipelindArea;
+import com.barisetech.www.workmanage.bean.pipelindarea.ReqAllPipelindArea;
+import com.barisetech.www.workmanage.bean.pipelindarea.ReqDeletePipeLindArea;
 import com.barisetech.www.workmanage.callback.ModelCallBack;
 import com.barisetech.www.workmanage.http.Config;
-import com.barisetech.www.workmanage.model.PipeModel;
-import com.barisetech.www.workmanage.model.SiteModel;
+import com.barisetech.www.workmanage.model.PipeLindAreaModel;
 import com.barisetech.www.workmanage.view.LoginActivity;
 
 import org.greenrobot.eventbus.EventBus;
@@ -27,29 +26,27 @@ import java.util.List;
 
 import io.reactivex.disposables.Disposable;
 
-/**
- * Created by LJH on 2018/8/10.
- */
-public class PipeViewModel extends BaseViewModel implements ModelCallBack {
+public class PipeblindAreaViewModel extends BaseViewModel implements ModelCallBack {
+
     private static final String TAG = "PipeViewModel";
 
     private Handler mDelivery;
 
-    private PipeModel pipeModel;
-    private MutableLiveData<List<PipeInfo>> mObservableAllPipe;
-    private MutableLiveData<Integer> mObservablePipeNum;
+    private PipeLindAreaModel pipeLindAreaModel;
+    private MutableLiveData<List<PipeLindAreaInfo>> mObservableAllPipeLindArea;
+    private MutableLiveData<Integer> mObservablePipeLindAreaNum;
 
-    public PipeViewModel(@NonNull Application application) {
+    public PipeblindAreaViewModel(@NonNull Application application) {
         super(application);
         mDelivery = new Handler(Looper.getMainLooper());
 
-        pipeModel = new PipeModel(this);
+        pipeLindAreaModel = new PipeLindAreaModel(this);
 
-        mObservableAllPipe = new MutableLiveData<>();
-        mObservableAllPipe.setValue(null);
+        mObservableAllPipeLindArea = new MutableLiveData<>();
+        mObservableAllPipeLindArea.setValue(null);
 
-        mObservablePipeNum = new MutableLiveData<>();
-        mObservablePipeNum.setValue(null);
+        mObservablePipeLindAreaNum = new MutableLiveData<>();
+        mObservablePipeLindAreaNum.setValue(null);
     }
 
     /**
@@ -57,8 +54,8 @@ public class PipeViewModel extends BaseViewModel implements ModelCallBack {
      *
      * @return
      */
-    public Disposable reqPipeNum() {
-        Disposable disposable = pipeModel.reqPipeNum();
+    public Disposable reqPipeLindAreaNum() {
+        Disposable disposable = pipeLindAreaModel.reqPipeLindAreaNum();
         addDisposable(disposable);
         return disposable;
     }
@@ -66,11 +63,11 @@ public class PipeViewModel extends BaseViewModel implements ModelCallBack {
     /**
      * 添加或修改管线
      *
-     * @param reqAddPipe
+     * @param reqAddPipelindArea
      * @return
      */
-    public Disposable reqAddOrModifyPipe(ReqAddPipe reqAddPipe) {
-        Disposable disposable = pipeModel.reqAddOrModifyPipe(reqAddPipe);
+    public Disposable reqAddOrModifyPipeLindArea(ReqAddPipelindArea reqAddPipelindArea) {
+        Disposable disposable = pipeLindAreaModel.reqAddOrModifyPipeLindArea(reqAddPipelindArea);
         addDisposable(disposable);
         return disposable;
     }
@@ -78,11 +75,11 @@ public class PipeViewModel extends BaseViewModel implements ModelCallBack {
     /**
      * 删除管线
      *
-     * @param reqDeletePipe
+     * @param reqDeletePipeLindArea
      * @return
      */
-    public Disposable reqDeletePipe(ReqDeletePipe reqDeletePipe) {
-        Disposable disposable = pipeModel.reqDeletePipe(reqDeletePipe);
+    public Disposable reqDeletePipeLindArea(ReqDeletePipeLindArea reqDeletePipeLindArea) {
+        Disposable disposable = pipeLindAreaModel.reqDeletePipeLindArea(reqDeletePipeLindArea);
         addDisposable(disposable);
         return disposable;
     }
@@ -90,11 +87,11 @@ public class PipeViewModel extends BaseViewModel implements ModelCallBack {
     /**
      * 获取所有管线
      *
-     * @param reqAllPipe
+     * @param reqAllPipelindArea
      * @return
      */
-    public Disposable reqAllPipe(ReqAllPipe reqAllPipe) {
-        Disposable disposable = pipeModel.reqAllPipe(reqAllPipe);
+    public Disposable reqAllPipeLindArea(ReqAllPipelindArea reqAllPipelindArea) {
+        Disposable disposable = pipeLindAreaModel.reqAllPipeLindArea(reqAllPipelindArea);
         addDisposable(disposable);
         return disposable;
     }
@@ -106,11 +103,11 @@ public class PipeViewModel extends BaseViewModel implements ModelCallBack {
             TypeResponse typeResponse = (TypeResponse) object;
             mDelivery.post(() -> {
                 switch (typeResponse.type) {
-                    case PipeModel.TYPE_ALL:
-                        mObservableAllPipe.setValue((List<PipeInfo>) typeResponse.data);
+                    case PipeLindAreaModel.TYPE_ALL:
+                        mObservableAllPipeLindArea.setValue((List<PipeLindAreaInfo>) typeResponse.data);
                         break;
-                    case PipeModel.TYPE_NUM:
-                        mObservablePipeNum.setValue((Integer) typeResponse.data);
+                    case PipeLindAreaModel.TYPE_NUM:
+                        mObservablePipeLindAreaNum.setValue((Integer) typeResponse.data);
                         break;
                 }
             });
@@ -128,11 +125,11 @@ public class PipeViewModel extends BaseViewModel implements ModelCallBack {
         }
     }
 
-    public MutableLiveData<List<PipeInfo>> getmObservableAllPipe() {
-        return mObservableAllPipe;
+    public MutableLiveData<List<PipeLindAreaInfo>> getmObservableAllPipeLindArea() {
+        return mObservableAllPipeLindArea;
     }
 
-    public MutableLiveData<Integer> getmObservablePipeNum() {
-        return mObservablePipeNum;
+    public MutableLiveData<Integer> getmObservablePipeLindAreaNum() {
+        return mObservablePipeLindAreaNum;
     }
 }
