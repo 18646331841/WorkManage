@@ -28,9 +28,9 @@ public class LoginActivity extends BaseActivity {
     protected void bindViews() {
         String ipPort = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_IP_PORT, "");
         if (TextUtils.isEmpty(ipPort)) {
-            showActivityOrFragment(new EventBusMessage(IpFragment.TAG));
+            showActivityOrFragment(new EventBusMessage(IpFragment.TAG), true);
         } else {
-            showActivityOrFragment(new EventBusMessage(LoginFragment.TAG));
+            showActivityOrFragment(new EventBusMessage(LoginFragment.TAG), true);
         }
     }
 
@@ -45,7 +45,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     @Override
-    protected void showActivityOrFragment(EventBusMessage eventBusMessage) {
+    protected void showActivityOrFragment(EventBusMessage eventBusMessage, boolean isActivity) {
         String tag = eventBusMessage.message;
         switch (tag) {
             case LoginFragment.TAG:

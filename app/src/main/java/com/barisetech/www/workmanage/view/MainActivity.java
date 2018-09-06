@@ -45,7 +45,7 @@ public class MainActivity extends BaseActivity {
         if (TextUtils.isEmpty(account) || TextUtils.isEmpty(ipPort)) {
             //没有登录过,跳转到登录界面
             EventBusMessage eventBusMessage = new EventBusMessage(LoginActivity.TAG);
-            showActivityOrFragment(eventBusMessage);
+            showActivityOrFragment(eventBusMessage, true);
         }
         setContentView(R.layout.activity_main);
         BaseApplication.getInstance().requestPermissions(this);
@@ -94,7 +94,7 @@ public class MainActivity extends BaseActivity {
     }
 
 
-    protected void showActivityOrFragment(EventBusMessage eventBusMessage) {
+    protected void showActivityOrFragment(EventBusMessage eventBusMessage, boolean isActivity) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         String tag = eventBusMessage.message;
         if (!isTwoPanel) {

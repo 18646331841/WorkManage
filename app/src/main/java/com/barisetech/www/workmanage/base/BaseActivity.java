@@ -167,7 +167,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      *
      * @param eventBusMessage
      */
-    protected abstract void showActivityOrFragment(EventBusMessage eventBusMessage);
+    protected abstract void showActivityOrFragment(EventBusMessage eventBusMessage, boolean isActivity);
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void event(EventBusMessage eventBusMessage) {
@@ -183,7 +183,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                     break;
                 default:
                     if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
-                        showActivityOrFragment(eventBusMessage);
+                        showActivityOrFragment(eventBusMessage, false);
                     }
                     break;
             }

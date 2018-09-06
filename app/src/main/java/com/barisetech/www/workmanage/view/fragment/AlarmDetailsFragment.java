@@ -117,7 +117,9 @@ public class AlarmDetailsFragment extends BaseFragment implements View.OnClickLi
 
                 break;
             case R.id.build_alarm_analysis_bt:
-
+                EventBusMessage eventBusMessage = new EventBusMessage(AlarmAnalysisFragment.TAG);
+                eventBusMessage.setArg1(curAlarmInfo);
+                EventBus.getDefault().post(eventBusMessage);
                 break;
         }
     }

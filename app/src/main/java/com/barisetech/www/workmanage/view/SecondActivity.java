@@ -48,7 +48,7 @@ public class SecondActivity extends BaseActivity {
         if (null != bundleExtra) {
             EventBusMessage eventBusMessage = (EventBusMessage) bundleExtra.getSerializable("tag");
             if (null != eventBusMessage) {
-                showActivityOrFragment(eventBusMessage);
+                showActivityOrFragment(eventBusMessage, true);
             }
         }
 
@@ -73,7 +73,7 @@ public class SecondActivity extends BaseActivity {
     }
 
     @Override
-    protected void showActivityOrFragment(EventBusMessage eventBusMessage) {
+    protected void showActivityOrFragment(EventBusMessage eventBusMessage, boolean isActivity) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         String tag = eventBusMessage.message;
         switch (tag) {
@@ -92,14 +92,19 @@ public class SecondActivity extends BaseActivity {
                 break;
             case AlarmDetailsFragment.TAG:
                 transaction
-                        .addToBackStack(AlarmDetailsFragment.TAG)
                         .replace(R.id.second_framelayout, AlarmDetailsFragment.newInstance((AlarmInfo)
                                 eventBusMessage.getArg1()), tag).commit();
+                if (!isActivity) {
+                    transaction.addToBackStack(AlarmDetailsFragment.TAG);
+                }
                 break;
             case AlarmAnalysisFragment.TAG:
                 transaction
                         .replace(R.id.second_framelayout, AlarmAnalysisFragment.newInstance((AlarmInfo)
                                 eventBusMessage.getArg1()), tag).commit();
+                if (!isActivity) {
+                    transaction.addToBackStack(AlarmDetailsFragment.TAG);
+                }
                 break;
             case AlarmAnalysisListFragment.TAG:
                 transaction
@@ -107,9 +112,11 @@ public class SecondActivity extends BaseActivity {
                 break;
             case AlarmAnalysisDetailFragment.TAG:
                 transaction
-                        .addToBackStack(AlarmAnalysisDetailFragment.TAG)
                         .replace(R.id.second_framelayout, AlarmAnalysisDetailFragment.newInstance((AlarmAnalysis)
                                 eventBusMessage.getArg1()), tag).commit();
+                if (!isActivity) {
+                    transaction.addToBackStack(AlarmAnalysisDetailFragment.TAG);
+                }
                 break;
             case MapFragment.TAG:
                 Bundle bundle = new Bundle();
@@ -122,14 +129,18 @@ public class SecondActivity extends BaseActivity {
                 break;
             case NewsDetailsFragment.TAG:
                 transaction
-                        .addToBackStack(NewsDetailsFragment.TAG)
                         .replace(R.id.second_framelayout, NewsDetailsFragment.newInstance((String) eventBusMessage
                                 .getArg1()), tag).commit();
+                if (!isActivity) {
+                    transaction.addToBackStack(NewsDetailsFragment.TAG);
+                }
                 break;
             case NewsAddFragment.TAG:
                 transaction
-                        .addToBackStack(NewsAddFragment.TAG)
                         .replace(R.id.second_framelayout, NewsAddFragment.newInstance(), tag).commit();
+                if (!isActivity) {
+                    transaction.addToBackStack(NewsAddFragment.TAG);
+                }
                 break;
             case SiteFragment.TAG:
                 transaction
@@ -138,8 +149,10 @@ public class SecondActivity extends BaseActivity {
                 break;
             case AddSiteFragment.TAG:
                 transaction
-                        .addToBackStack(AddSiteFragment.TAG)
                         .replace(R.id.second_framelayout, AddSiteFragment.newInstance(), tag).commit();
+                if (!isActivity) {
+                    transaction.addToBackStack(AddSiteFragment.TAG);
+                }
                 break;
             case DigitizingFragment.TAG:
                 transaction
@@ -148,8 +161,10 @@ public class SecondActivity extends BaseActivity {
                 break;
             case DigitizingDetailFragment.TAG:
                 transaction
-                        .addToBackStack(DigitizingDetailFragment.TAG)
                         .replace(R.id.second_framelayout, DigitizingDetailFragment.newInstance(), tag).commit();
+                if (!isActivity) {
+                    transaction.addToBackStack(DigitizingDetailFragment.TAG);
+                }
                 break;
             case PipeFragment.TAG:
                 transaction
@@ -158,6 +173,9 @@ public class SecondActivity extends BaseActivity {
             case WaveFormFragment.TAG:
                 transaction
                         .replace(R.id.second_framelayout, WaveFormFragment.newInstance(), tag).commit();
+                if (!isActivity) {
+                    transaction.addToBackStack(WaveFormFragment.TAG);
+                }
                 break;
             case SiteDetailFragment.TAG:
                 transaction
