@@ -4,6 +4,7 @@ import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -31,8 +32,11 @@ import com.barisetech.www.workmanage.utils.DisplayUtil;
 import com.barisetech.www.workmanage.utils.LogUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.viewmodel.SiteViewModel;
+import com.barisetech.www.workmanage.widget.QPopuWindow;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +59,8 @@ public class SiteFragment extends BaseFragment {
     private Disposable curDisposable;
 
     private List<SiteBean> siteList;
+
+    private Point mPoint = new Point();
 
     public SiteFragment() {
 
@@ -81,6 +87,7 @@ public class SiteFragment extends BaseFragment {
         toolbarInfo.setTitle(getString(R.string.tv_site));
         toolbarInfo.setTwoText(getString(R.string.message_mission));
         observableToolbar.set(toolbarInfo);
+        EventBus.getDefault().register(this);
         initView();
         return mBinding.getRoot();
     }
@@ -132,6 +139,25 @@ public class SiteFragment extends BaseFragment {
             }
 
         });
+
+        siteAdapter.setOnItemLongClickListener((view, position) -> {
+            QPopuWindow.getInstance(getActivity()).builder
+                    .bindView(view,0)
+                    .setPopupItemList(new String[]{"全选","删除"})
+                    .setPointers(mPoint.x,mPoint.y)
+                    .setOnPopuListItemClickListener(new QPopuWindow.OnPopuListItemClickListener() {
+                        @Override
+                        public void onPopuListItemClick(View anchorView, int anchorViewPosition, int position) {
+                            ToastUtil.showToast("item"+position);
+                        }
+                    }).show();
+        });
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void PointEventBus(Point point) {
+        mPoint = point;
     }
 
     private void updateRecyclerView(int fromIndex, int toIndex) {
@@ -216,4 +242,10 @@ public class SiteFragment extends BaseFragment {
         super.onPause();
         siteViewModel.getmObservableSiteInfos().setValue(null);
     }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
 }

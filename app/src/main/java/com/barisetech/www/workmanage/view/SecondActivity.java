@@ -1,5 +1,6 @@
 package com.barisetech.www.workmanage.view;
 
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.MotionEvent;
@@ -31,8 +32,8 @@ import org.greenrobot.eventbus.EventBus;
 
 public class SecondActivity extends BaseActivity {
 
-    private int rawX;
-    private int rawY;
+
+    private Point point = new Point();
 
     @Override
     protected void loadViewLayout() {
@@ -53,9 +54,9 @@ public class SecondActivity extends BaseActivity {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        rawX= (int) ev.getRawX();
-        rawY= (int) ev.getRawY();
-        EventBus.getDefault().post(new RawBean(rawX,rawY));
+        point.x= (int) ev.getRawX();
+        point.y= (int) ev.getRawY();
+        EventBus.getDefault().post(point);
         return super.dispatchTouchEvent(ev);
     }
 

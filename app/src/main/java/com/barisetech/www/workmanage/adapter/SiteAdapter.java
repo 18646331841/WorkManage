@@ -21,6 +21,7 @@ public class SiteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     private List<SiteBean> mList;
     private Context ctx;
     private ItemCallBack callBack;
+    private OnItemLongClickListener mOnItemClickListener;
 
 
     public SiteAdapter(List<SiteBean> list,Context context){
@@ -54,7 +55,20 @@ public class SiteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
             }
         });
 
+        viewHolder.l_item.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                mOnItemClickListener.onItemClick(view,position);
+                return true;
+            }
+        });
+
     }
+
+    public void setOnItemLongClickListener(OnItemLongClickListener onItemClickListener) {
+        mOnItemClickListener = onItemClickListener;
+    }
+
 
     @Override
     public int getItemCount() {
@@ -71,5 +85,9 @@ public class SiteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
             tv_site_info = itemView.findViewById(R.id.item_data);
             l_item = itemView.findViewById(R.id.l_item);
         }
+    }
+
+    public interface OnItemLongClickListener {
+        void onItemClick(View view, int position);
     }
 }

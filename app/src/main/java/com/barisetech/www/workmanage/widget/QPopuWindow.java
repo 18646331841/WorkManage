@@ -41,7 +41,7 @@ import java.util.List;
     private static final int DEFAULT_TEXT_PADDING_TOP = 6;
     private static final int DEFAULT_TEXT_PADDING_RIGHT = 16;
     private static final int DEFAULT_TEXT_PADDING_BOTTOM = 6;
-    private static final int DEFAULT_NORMAL_BACKGROUND_COLOR = 0xCC000000;
+    private static final int DEFAULT_NORMAL_BACKGROUND_COLOR = 0xCC008AFF;
     private static final int DEFAULT_PRESSED_BACKGROUND_COLOR = 0xE7777777;
     private static final int DEFAULT_BACKGROUND_RADIUS = 5;
     private static final int DEFAULT_DIVIDER_COLOR = 0x9AFFFFFF;
