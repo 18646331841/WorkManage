@@ -274,7 +274,7 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
 //        reqAllAlarm.setStartTime(SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_LAST_TIME_NEWINFO, endTime));
 
         alarmViewModel.getAllUnliftAlarm();
-        incidentViewModel.reqAllIncident();
+        incidentViewModel.reqAllIncidentToDB();
     }
 
     @Override

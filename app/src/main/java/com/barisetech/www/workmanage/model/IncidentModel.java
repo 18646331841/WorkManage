@@ -5,6 +5,7 @@ import android.arch.lifecycle.LiveData;
 import com.barisetech.www.workmanage.base.BaseModel;
 import com.barisetech.www.workmanage.base.BaseResponse;
 import com.barisetech.www.workmanage.bean.FailResponse;
+import com.barisetech.www.workmanage.bean.TypeResponse;
 import com.barisetech.www.workmanage.bean.incident.IncidentInfo;
 import com.barisetech.www.workmanage.bean.incident.ReqAllIncident;
 import com.barisetech.www.workmanage.bean.incident.ReqIncidentSelectItem;
@@ -34,6 +35,7 @@ public class IncidentModel extends BaseModel{
     public static final int TYPE_LIFT = 2;
     public static final int TYPE_ADD = 3;
     public static final int TYPE_ALL = 4;
+    public static final int TYPE_ALL_DB = 5;
 
     public IncidentModel(AppDatabase appDatabase, ModelCallBack callBack) {
         super(callBack);
@@ -42,10 +44,10 @@ public class IncidentModel extends BaseModel{
     }
 
     /**
-     * 获取事件列表
+     * 获取事件列表,并保存到数据库中
      * @return
      */
-    public Disposable reqAllIncident() {
+    public Disposable reqAllIncidentToDB() {
         ReqIncidentSelectItem reqIncidentSelectItem = new ReqIncidentSelectItem();
         reqIncidentSelectItem.setMStartTime("2010-01-01 12:12:12");
         reqIncidentSelectItem.setMEndTime("2019-01-01 12:12:12");
@@ -60,6 +62,45 @@ public class IncidentModel extends BaseModel{
         reqAllIncident.setNumberOfRecord("10");
         reqAllIncident.setIncidentSelectItem(reqIncidentSelectItem);
 
+        IncidentService incidentService = HttpService.getInstance().buildJsonRetrofit().create(IncidentService.class);
+        Disposable disposable = incidentService.getAllIncident(reqAllIncident)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribeWith(new ObserverCallBack<List<IncidentInfo>>() {
+                    @Override
+                    protected void onThrowable(Throwable e) {
+                        FailResponse failResponse = new FailResponse(TYPE_ALL_DB, Config.ERROR_NETWORK);
+                        modelCallBack.fail(failResponse);
+
+                    }
+
+                    @Override
+                    protected void onFailure(BaseResponse response) {
+                        FailResponse failResponse;
+                        if (response.Code == 401) {
+                            failResponse = new FailResponse(TYPE_ALL_DB, Config.ERROR_UNAUTHORIZED);
+                        } else {
+                            failResponse = new FailResponse(TYPE_ALL_DB, Config.ERROR_FAIL);
+                        }
+                        modelCallBack.fail(failResponse);
+                    }
+
+                    @Override
+                    protected void onSuccess(List<IncidentInfo> response) {
+//                        modelCallBack.netResult(response);
+                        appDatabase.incidentDao().insertAll(response);
+                    }
+                });
+
+        return disposable;
+    }
+
+    /**
+     * 获取事件列表
+     * @return
+     */
+    public Disposable reqAllIncident(ReqAllIncident reqAllIncident) {
+        reqAllIncident.setMachineCode(mToken);
         IncidentService incidentService = HttpService.getInstance().buildJsonRetrofit().create(IncidentService.class);
         Disposable disposable = incidentService.getAllIncident(reqAllIncident)
                 .subscribeOn(Schedulers.io())
@@ -85,8 +126,8 @@ public class IncidentModel extends BaseModel{
 
                     @Override
                     protected void onSuccess(List<IncidentInfo> response) {
-                        modelCallBack.netResult(response);
-                        appDatabase.incidentDao().insertAll(response);
+                        TypeResponse typeResponse = new TypeResponse(TYPE_ALL, response);
+                        modelCallBack.netResult(typeResponse);
                     }
                 });
 
@@ -97,15 +138,7 @@ public class IncidentModel extends BaseModel{
      * 获取事件数量
      * @return
      */
-    public Disposable reqIncidentNum() {
-        ReqIncidentSelectItem reqIncidentSelectItem = new ReqIncidentSelectItem();
-        reqIncidentSelectItem.setMStartTime("2010-01-01 12:12:12");
-        reqIncidentSelectItem.setMEndTime("2019-01-01 12:12:12");
-        reqIncidentSelectItem.setTimeQueryChecked("true");
-        reqIncidentSelectItem.setSiteIdQueryChecked("false");
-        reqIncidentSelectItem.setSiteID("0");
-        reqIncidentSelectItem.setMIncidentType("1");
-
+    public Disposable reqIncidentNum(ReqIncidentSelectItem reqIncidentSelectItem) {
         IncidentService incidentService = HttpService.getInstance().buildJsonRetrofit().create(IncidentService.class);
         Disposable disposable = incidentService.getIncidentNum(mToken, reqIncidentSelectItem)
                 .subscribeOn(Schedulers.io())
@@ -131,7 +164,8 @@ public class IncidentModel extends BaseModel{
 
                     @Override
                     protected void onSuccess(Integer response) {
-                        modelCallBack.netResult(response);
+                        TypeResponse typeResponse = new TypeResponse(TYPE_NUM, response);
+                        modelCallBack.netResult(typeResponse);
                     }
                 });
         return disposable;
@@ -171,7 +205,8 @@ public class IncidentModel extends BaseModel{
 
                     @Override
                     protected void onSuccess(Boolean response) {
-                        modelCallBack.netResult(response);
+                        TypeResponse typeResponse = new TypeResponse(TYPE_LIFT, response);
+                        modelCallBack.netResult(typeResponse);
                     }
                 });
         return disposable;

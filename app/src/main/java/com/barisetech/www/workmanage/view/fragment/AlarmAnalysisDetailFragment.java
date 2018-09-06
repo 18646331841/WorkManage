@@ -1,19 +1,25 @@
 package com.barisetech.www.workmanage.view.fragment;
 
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.barisetech.www.workmanage.R;
+import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.bean.alarmanalysis.AlarmAnalysis;
+import com.barisetech.www.workmanage.bean.alarmanalysis.ReqAddAlarmAnalysis;
 import com.barisetech.www.workmanage.databinding.FragmentAlarmAnalysisDetailBinding;
+import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
+import com.barisetech.www.workmanage.viewmodel.AlarmAnalysisViewModel;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,6 +30,7 @@ public class AlarmAnalysisDetailFragment extends BaseFragment {
     private static final String ARG_ANALYSIS = "analysis";
     private AlarmAnalysis curAnalysis;
     FragmentAlarmAnalysisDetailBinding mBinding;
+    private AlarmAnalysisViewModel alarmAnalysisViewModel;
 
     public AlarmAnalysisDetailFragment() {
         // Required empty public constructor
@@ -63,11 +70,22 @@ public class AlarmAnalysisDetailFragment extends BaseFragment {
 
     private void initView() {
         mBinding.setAnalysisinfo(curAnalysis);
+
+        String account = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_ACCOUNT, "");
+        if (!TextUtils.isEmpty(account)) {
+            if (!curAnalysis.getReadPeopleList().contains(account)) {
+                ReqAddAlarmAnalysis reqAddAlarmAnalysis = new ReqAddAlarmAnalysis();
+                reqAddAlarmAnalysis.setId(String.valueOf(curAnalysis.getId()));
+                reqAddAlarmAnalysis.setIsNewReader("true");
+
+//                alarmAnalysisViewModel.reqAddOrModifyAnalysis(reqAddAlarmAnalysis);
+            }
+        }
     }
 
     @Override
     public void bindViewModel() {
-
+        alarmAnalysisViewModel = ViewModelProviders.of(this).get(AlarmAnalysisViewModel.class);
     }
 
     @Override
