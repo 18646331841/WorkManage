@@ -171,7 +171,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void event(EventBusMessage eventBusMessage) {
-        if (isShow) {
+//        if (isShow) {
+        if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
 
             switch (eventBusMessage.message) {
                 case BaseConstant.PROGRESS_SHOW:
@@ -187,6 +188,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                     break;
             }
         }
+//        }
     }
 
     /**

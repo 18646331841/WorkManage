@@ -23,6 +23,7 @@ import com.barisetech.www.workmanage.adapter.OnScrollListener;
 import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.base.BaseLoadMoreWrapper;
+import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.bean.alarmanalysis.AlarmAnalysis;
 import com.barisetech.www.workmanage.bean.alarmanalysis.ReqAllAlarmAnalysis;
@@ -32,6 +33,8 @@ import com.barisetech.www.workmanage.utils.LogUtil;
 import com.barisetech.www.workmanage.utils.TimeUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.viewmodel.AlarmAnalysisViewModel;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -325,7 +328,12 @@ public class AlarmAnalysisListFragment extends BaseFragment {
     }
 
     private ItemCallBack itemCallBack = item -> {
-        LogUtil.d(TAG, "Id = " + ((AlarmAnalysis) item).getId());
+        if (item instanceof AlarmAnalysis) {
+            AlarmAnalysis alarmAnalysis = (AlarmAnalysis) item;
+            EventBusMessage eventBusMessage = new EventBusMessage(AlarmAnalysisDetailFragment.TAG);
+            eventBusMessage.setArg1(alarmAnalysis);
+            EventBus.getDefault().post(eventBusMessage);
+        }
     };
 
     private void updateRecyclerView(int fromIndex, int toIndex) {

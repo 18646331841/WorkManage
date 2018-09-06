@@ -10,8 +10,10 @@ import com.barisetech.www.workmanage.base.BaseActivity;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.RawBean;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
+import com.barisetech.www.workmanage.bean.alarmanalysis.AlarmAnalysis;
 import com.barisetech.www.workmanage.bean.site.SiteBean;
 import com.barisetech.www.workmanage.view.fragment.AddSiteFragment;
+import com.barisetech.www.workmanage.view.fragment.AlarmAnalysisDetailFragment;
 import com.barisetech.www.workmanage.view.fragment.AlarmAnalysisFragment;
 import com.barisetech.www.workmanage.view.fragment.AlarmAnalysisListFragment;
 import com.barisetech.www.workmanage.view.fragment.AlarmDetailsFragment;
@@ -90,6 +92,7 @@ public class SecondActivity extends BaseActivity {
                 break;
             case AlarmDetailsFragment.TAG:
                 transaction
+                        .addToBackStack(AlarmDetailsFragment.TAG)
                         .replace(R.id.second_framelayout, AlarmDetailsFragment.newInstance((AlarmInfo)
                                 eventBusMessage.getArg1()), tag).commit();
                 break;
@@ -101,6 +104,12 @@ public class SecondActivity extends BaseActivity {
             case AlarmAnalysisListFragment.TAG:
                 transaction
                         .replace(R.id.second_framelayout, AlarmAnalysisListFragment.newInstance(), tag).commit();
+                break;
+            case AlarmAnalysisDetailFragment.TAG:
+                transaction
+                        .addToBackStack(AlarmAnalysisDetailFragment.TAG)
+                        .replace(R.id.second_framelayout, AlarmAnalysisDetailFragment.newInstance((AlarmAnalysis)
+                                eventBusMessage.getArg1()), tag).commit();
                 break;
             case MapFragment.TAG:
                 Bundle bundle = new Bundle();

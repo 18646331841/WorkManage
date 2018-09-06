@@ -3,14 +3,18 @@ package com.barisetech.www.workmanage.bean.alarmanalysis;
 import android.databinding.BindingAdapter;
 import android.widget.TextView;
 
+import com.barisetech.www.workmanage.R;
+import com.barisetech.www.workmanage.base.BaseApplication;
+import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.bean.ImageInfo;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by LJH on 2018/8/30.
  */
-public class AlarmAnalysis {
+public class AlarmAnalysis implements Serializable{
     /**
      * Id : 1
      * Tittle : 测试警报分析标题
@@ -47,6 +51,47 @@ public class AlarmAnalysis {
     @BindingAdapter("showReadNum")
     public static void showReadNum(TextView view, int num) {
         view.setText("阅读 " + num);
+    }
+
+    @BindingAdapter("showLevel")
+    public static void showLevel(TextView view, int level) {
+        BaseApplication application = BaseApplication.getInstance();
+        switch (level) {
+            case BaseConstant.LEVEL_SUPER_ADMINS:
+                view.setText(application.getString(R.string.alarm_analysis_super_admin));
+                break;
+            case BaseConstant.LEVEL_ADMINS:
+                view.setText(application.getString(R.string.alarm_analysis_admin));
+                break;
+            case BaseConstant.LEVEL_USERS:
+                view.setText(application.getString(R.string.alarm_analysis_user));
+                break;
+        }
+    }
+
+    @BindingAdapter("showReason")
+    public static void showReason(TextView view, int alarmCause) {
+        BaseApplication application = BaseApplication.getInstance();
+        switch (alarmCause) {
+            case BaseConstant.REASON_WAIT:
+                view.setText(application.getString(R.string.alarm_analysis_wait_confirm));
+                break;
+            case BaseConstant.REASON_TEST:
+                view.setText(application.getString(R.string.alarm_analysis_test));
+                break;
+            case BaseConstant.REASON_NORMAL:
+                view.setText(application.getString(R.string.alarm_analysis_normal));
+                break;
+            case BaseConstant.REASON_MISINFO:
+                view.setText(application.getString(R.string.alarm_analysis_misinformation));
+                break;
+            case BaseConstant.REASON_DEVICE_FAULT:
+                view.setText(application.getString(R.string.alarm_analysis_device_fault));
+                break;
+            case BaseConstant.REASON_NET_FAULT:
+                view.setText(application.getString(R.string.alarm_analysis_net_fault));
+                break;
+        }
     }
 
     public int getId() {

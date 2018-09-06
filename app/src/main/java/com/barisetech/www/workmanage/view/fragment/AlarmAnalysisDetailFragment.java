@@ -1,6 +1,7 @@
 package com.barisetech.www.workmanage.view.fragment;
 
 
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.Nullable;
@@ -10,23 +11,28 @@ import android.view.ViewGroup;
 
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.base.BaseFragment;
+import com.barisetech.www.workmanage.bean.ToolbarInfo;
+import com.barisetech.www.workmanage.bean.alarmanalysis.AlarmAnalysis;
+import com.barisetech.www.workmanage.databinding.FragmentAlarmAnalysisDetailBinding;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class AlarmAnalysisDetailFragment extends BaseFragment {
-    public static final String TAG = "NewsDetailsFragment";
+    public static final String TAG = "AlarmAnalysisDetailFragment";
 
     private static final String ARG_ANALYSIS = "analysis";
+    private AlarmAnalysis curAnalysis;
+    FragmentAlarmAnalysisDetailBinding mBinding;
 
     public AlarmAnalysisDetailFragment() {
         // Required empty public constructor
     }
 
-    public static AlarmAnalysisDetailFragment newInstance(String url) {
+    public static AlarmAnalysisDetailFragment newInstance(AlarmAnalysis alarmAnalysis) {
         AlarmAnalysisDetailFragment fragment = new AlarmAnalysisDetailFragment();
         Bundle bundle = new Bundle();
-        bundle.putString(ARG_ANALYSIS, url);
+        bundle.putSerializable(ARG_ANALYSIS, alarmAnalysis);
         fragment.setArguments(bundle);
 
         return fragment;
@@ -36,15 +42,27 @@ public class AlarmAnalysisDetailFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (null != getArguments()) {
-//            curUrl = getArguments().getString(ARG_ANALYSIS, "");
+            curAnalysis = (AlarmAnalysis) getArguments().getSerializable(ARG_ANALYSIS);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_alarm_analysis_detail, container, false);
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_alarm_analysis_detail, container, false);
+
+        setToolBarHeight(mBinding.toolbar.getRoot());
+        mBinding.setFragment(this);
+        ToolbarInfo toolbarInfo = new ToolbarInfo();
+        toolbarInfo.setTitle(getString(R.string.title_analysis_detail));
+        observableToolbar.set(toolbarInfo);
+
+        initView();
+        return mBinding.getRoot();
+    }
+
+    private void initView() {
+        mBinding.setAnalysisinfo(curAnalysis);
     }
 
     @Override

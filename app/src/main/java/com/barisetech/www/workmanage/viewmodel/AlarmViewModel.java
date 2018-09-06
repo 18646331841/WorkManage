@@ -18,12 +18,10 @@ import com.barisetech.www.workmanage.bean.FailResponse;
 import com.barisetech.www.workmanage.bean.TypeResponse;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.bean.alarm.ReqAllAlarm;
-import com.barisetech.www.workmanage.bean.site.SiteBean;
 import com.barisetech.www.workmanage.callback.ModelCallBack;
 import com.barisetech.www.workmanage.db.AppDatabase;
 import com.barisetech.www.workmanage.http.Config;
 import com.barisetech.www.workmanage.model.AlarmModel;
-import com.barisetech.www.workmanage.model.SiteModel;
 import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
 import com.barisetech.www.workmanage.view.LoginActivity;
 
@@ -31,7 +29,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
-import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Created by LJH on 2018/8/10.
@@ -47,6 +45,9 @@ public class AlarmViewModel extends BaseViewModel implements ModelCallBack {
     private LiveData<List<AlarmInfo>> mObservableAllAlarmInfos;
     private LiveData<List<AlarmInfo>> mObservableNotReadAlarmInfos;
 
+    private MutableLiveData<List<AlarmInfo>> mObservableNetAlarmInfos;
+    private MutableLiveData<Integer> mObservableNum;
+
     private MutableLiveData<Boolean> mObservableLiftAlarm;
 
     public AlarmViewModel(@NonNull Application application) {
@@ -60,6 +61,12 @@ public class AlarmViewModel extends BaseViewModel implements ModelCallBack {
 
         mObservableAllAlarmInfos = alarmModel.getAllAlarmInfo();
         mObservableNotReadAlarmInfos = alarmModel.getAlarmInfosByRead(false);
+
+        mObservableNetAlarmInfos = new MutableLiveData<>();
+        mObservableNetAlarmInfos.setValue(null);
+
+        mObservableNum = new MutableLiveData<>();
+        mObservableNum.setValue(null);
     }
 
     public AlarmViewModel(@NonNull Application application, int alarmId) {
@@ -72,7 +79,7 @@ public class AlarmViewModel extends BaseViewModel implements ModelCallBack {
 //        mObservableNotReadAlarmInfos = alarmModel.getAlarmInfosByRead(false);
     }
 
-    public void getAlarmNum() {
+    public void reqAlarmNum() {
         addDisposable(alarmModel.reqAlarmNum());
     }
 
@@ -88,10 +95,13 @@ public class AlarmViewModel extends BaseViewModel implements ModelCallBack {
      *
      * @param reqAllAlarm
      */
-    public void getAllAlarmByCondition(ReqAllAlarm reqAllAlarm) {
+    public Disposable reqAllAlarmByCondition(ReqAllAlarm reqAllAlarm) {
         if (null != reqAllAlarm) {
-            addDisposable(alarmModel.reqAllAlarm(reqAllAlarm));
+            Disposable disposable = alarmModel.reqAllAlarm(reqAllAlarm);
+            addDisposable(disposable);
+            return disposable;
         }
+        return null;
     }
 
     /**
@@ -136,7 +146,10 @@ public class AlarmViewModel extends BaseViewModel implements ModelCallBack {
                         mObservableLiftAlarm.setValue((Boolean) typeResponse.data);
                         break;
                     case AlarmModel.TYPE_All_ALARM:
-
+                        mObservableNetAlarmInfos.setValue((List<AlarmInfo>) typeResponse.data);
+                        break;
+                    case AlarmModel.TYPE_NUM:
+                        mObservableNum.setValue((Integer) typeResponse.data);
                         break;
                 }
             });
@@ -151,11 +164,25 @@ public class AlarmViewModel extends BaseViewModel implements ModelCallBack {
             if (failResponse.code == Config.ERROR_UNAUTHORIZED) {
                 EventBus.getDefault().post(new EventBusMessage(LoginActivity.TAG));
             }
+
+            mDelivery.post(() -> {
+                if (failResponse.type == AlarmModel.TYPE_All_ALARM) {
+                    mObservableNetAlarmInfos.setValue(null);
+                }
+            });
         }
     }
 
     public MutableLiveData<Boolean> getmObservableLiftAlarm() {
         return mObservableLiftAlarm;
+    }
+
+    public MutableLiveData<List<AlarmInfo>> getmObservableNetAlarmInfos() {
+        return mObservableNetAlarmInfos;
+    }
+
+    public MutableLiveData<Integer> getmObservableNum() {
+        return mObservableNum;
     }
 
     public static class Factory extends ViewModelProvider.NewInstanceFactory {

@@ -1,14 +1,277 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context=".view.fragment.AlarmAnalysisDetailFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <data>
+
+        <variable
+            name="analysisinfo"
+            type="com.barisetech.www.workmanage.bean.alarmanalysis.AlarmAnalysis"/>
+
+        <variable
+            name="fragment"
+            type="com.barisetech.www.workmanage.base.BaseFragment"/>
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment"/>
+        android:orientation="vertical">
 
-</FrameLayout>
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/layout_toolbar"
+            app:toolbar="@{fragment.observableToolbar}"/>
+
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_15"
+            android:layout_marginRight="@dimen/dp_15"
+            android:layout_marginTop="@dimen/dp_10"
+            app:cardCornerRadius="6dp"
+            app:cardElevation="@dimen/dp_10">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/analysis_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_title_top"
+                    android:paddingBottom="@dimen/dp_8"
+                    android:paddingLeft="@dimen/dp_15"
+                    android:paddingTop="@dimen/dp_9"
+                    android:text="@{analysisinfo.Tittle}"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_14"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/title_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_80"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:text="@string/analysis_detail_time"/>
+
+                    <TextView
+                        android:id="@+id/tv_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="28dp"
+                        android:text="@{analysisinfo.ReleaseTime}"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!--<android.support.constraint.ConstraintLayout-->
+                <!--android:id="@+id/normal_setting"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content">-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/analysis_title"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:background="@drawable/shape_title_top"-->
+                    <!--android:paddingBottom="@dimen/dp_8"-->
+                    <!--android:paddingLeft="@dimen/dp_15"-->
+                    <!--android:paddingTop="@dimen/dp_9"-->
+                    <!--android:text="@{analysisinfo.Tittle}"-->
+                    <!--android:textColor="@color/white"-->
+                    <!--android:textSize="@dimen/sp_14"-->
+                    <!--app:layout_constraintLeft_toLeftOf="@id/normal_setting"-->
+                    <!--app:layout_constraintRight_toRightOf="@id/normal_setting"-->
+                    <!--app:layout_constraintTop_toTopOf="@id/normal_setting"/>-->
+
+
+                <!--<TextView-->
+                    <!--android:id="@+id/title_time"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginLeft="@dimen/dp_80"-->
+                    <!--android:layout_marginTop="@dimen/dp_10"-->
+                    <!--android:text="@string/analysis_detail_time"-->
+                    <!--app:layout_constraintTop_toTopOf="@id/tv_time"-->
+                    <!--app:layout_constraintRight_toLeftOf="@id/tv_time"/>-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/tv_time"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginLeft="28dp"-->
+                    <!--android:text="@{analysisinfo.ReleaseTime}"-->
+                    <!--app:layout_constraintRight_toRightOf="analysis_title"-->
+                    <!--app:layout_constraintTop_toBottomOf="@id/analysis_title"/>-->
+
+
+                <!--<TextView-->
+                    <!--android:id="@+id/title_id"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="@dimen/dp_10"-->
+                    <!--android:text="@string/analysis_detail_id"-->
+                    <!--app:layout_constraintTop_toTopOf="@id/tv_id"-->
+                    <!--app:layout_constraintRight_toRightOf="@id/title_time"-->
+                    <!--app:layout_constraintTop_toBottomOf="@id/title_time"/>-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/tv_id"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="@dimen/dp_10"-->
+                    <!--android:text="@{String.valueOf(analysisinfo.AlarmID)}"-->
+                    <!--app:layout_constraintLeft_toLeftOf="@id/tv_time"-->
+                    <!--app:layout_constraintTop_toBottomOf="@id/tv_time"/>-->
+
+
+                <!--<TextView-->
+                    <!--android:id="@+id/title_info"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="@dimen/dp_10"-->
+                    <!--android:text="@string/analysis_detail_info"-->
+                    <!--app:layout_constraintTop_toTopOf="@id/tv_info"-->
+                    <!--app:layout_constraintRight_toRightOf="@id/title_id"-->
+                    <!--app:layout_constraintTop_toBottomOf="@id/title_id"/>-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/tv_info"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="@dimen/dp_10"-->
+                    <!--android:text="@{analysisinfo.AlarmDetail}"-->
+                    <!--app:layout_constraintLeft_toLeftOf="@id/tv_id"-->
+                    <!--app:layout_constraintTop_toBottomOf="@id/tv_id"/>-->
+
+
+                <!--<TextView-->
+                    <!--android:id="@+id/title_reason"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="@dimen/dp_10"-->
+                    <!--android:text="@string/analysis_detail_reason"-->
+                    <!--app:layout_constraintTop_toTopOf="@id/tv_reason"-->
+                    <!--app:layout_constraintRight_toRightOf="@id/title_info"-->
+                    <!--app:layout_constraintTop_toBottomOf="@id/title_info"/>-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/tv_reason"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="@dimen/dp_10"-->
+                    <!--app:layout_constraintLeft_toLeftOf="@id/tv_info"-->
+                    <!--app:layout_constraintTop_toBottomOf="@id/tv_info"-->
+                    <!--app:showReason="@{analysisinfo.AlarmCause}"/>-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/title_abstract"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="@dimen/dp_10"-->
+                    <!--android:text="@string/analysis_detail_abstract"-->
+                    <!--app:layout_constraintTop_toTopOf="@id/tv_abstract"-->
+                    <!--app:layout_constraintRight_toRightOf="@id/title_reason"-->
+                    <!--app:layout_constraintTop_toBottomOf="@id/title_reason"/>-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/tv_abstract"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="@dimen/dp_10"-->
+                    <!--android:text="@{analysisinfo.AbstractContent}"-->
+                    <!--app:layout_constraintLeft_toLeftOf="@id/tv_reason"-->
+                    <!--app:layout_constraintTop_toBottomOf="@id/tv_reason"/>-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/title_people"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="@dimen/dp_10"-->
+                    <!--android:text="@string/analysis_detail_people"-->
+                    <!--app:layout_constraintTop_toTopOf="@id/tv_people"-->
+                    <!--app:layout_constraintRight_toRightOf="@id/title_abstract"-->
+                    <!--app:layout_constraintTop_toBottomOf="@id/title_abstract"/>-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/tv_people"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="@dimen/dp_10"-->
+                    <!--android:text="@{analysisinfo.Analyst}"-->
+                    <!--app:layout_constraintLeft_toLeftOf="@id/tv_abstract"-->
+                    <!--app:layout_constraintTop_toBottomOf="@id/tv_abstract"/>-->
+
+
+                <!--<TextView-->
+                    <!--android:id="@+id/title_level"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="@dimen/dp_10"-->
+                    <!--android:text="@string/analysis_detail_level"-->
+                    <!--app:layout_constraintTop_toTopOf="@id/tv_level"-->
+                    <!--app:layout_constraintRight_toRightOf="@id/title_people"-->
+                    <!--app:layout_constraintTop_toBottomOf="@id/title_people"/>-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/tv_level"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="@dimen/dp_10"-->
+                    <!--app:layout_constraintLeft_toLeftOf="@id/tv_people"-->
+                    <!--app:layout_constraintTop_toBottomOf="@id/tv_people"-->
+                    <!--app:showLevel="@{analysisinfo.ReadLV}"/>-->
+
+
+                <!--<TextView-->
+                    <!--android:id="@+id/title_read_num"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="@dimen/dp_10"-->
+                    <!--android:text="@string/analysis_detail_read_num"-->
+                    <!--app:layout_constraintTop_toTopOf="@id/tv_read_num"-->
+                    <!--app:layout_constraintRight_toRightOf="@id/title_level"-->
+                    <!--app:layout_constraintTop_toBottomOf="@id/title_level"/>-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/tv_read_num"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="@dimen/dp_10"-->
+                    <!--android:text="@{String.valueOf(analysisinfo.ReadQuantity)}"-->
+                    <!--app:layout_constraintLeft_toLeftOf="@id/tv_level"-->
+                    <!--app:layout_constraintTop_toBottomOf="@id/tv_level"/>-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/title_read_peoples"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="@dimen/dp_10"-->
+                    <!--app:layout_constraintTop_toTopOf="@id/tv_read_peoples"-->
+                    <!--app:layout_constraintRight_toRightOf="@id/title_read_num"-->
+                    <!--app:layout_constraintTop_toBottomOf="@id/title_read_num"/>-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/tv_read_peoples"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="@dimen/dp_10"-->
+                    <!--android:text="@{analysisinfo.ReadPeopleList}"-->
+                    <!--app:layout_constraintLeft_toLeftOf="@id/tv_read_num"-->
+                    <!--app:layout_constraintTop_toBottomOf="@id/tv_read_num"/>-->
+
+            <!--</android.support.constraint.ConstraintLayout>-->
+
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
+</layout>

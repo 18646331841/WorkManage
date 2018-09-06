@@ -53,6 +53,16 @@
     <string name="alarm_analysis_end_time">请选择结束时间</string>
     <string name="alarm_analysis_confirm">确认</string>
 
+    <string name="title_analysis_detail">警报分析详情</string>
+    <string name="analysis_detail_time">时间</string>
+    <string name="analysis_detail_id">报警ID</string>
+    <string name="analysis_detail_info">报警信息</string>
+    <string name="analysis_detail_reason">报警原因</string>
+    <string name="analysis_detail_abstract">摘要</string>
+    <string name="analysis_detail_people">分析人</string>
+    <string name="analysis_detail_level">阅读等级</string>
+    <string name="analysis_detail_read_num">阅读人</string>
+
     <string name="title_alarm_details">警报详情</string>
     <string name="alarm_to_map">转到地图</string>
     <string name="alarm_lift">解除警报</string>

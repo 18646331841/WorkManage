@@ -11,17 +11,18 @@ import android.view.ViewGroup;
 
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.bean.MessageInfo;
+import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.databinding.ItemAlarmlistBinding;
 
 import java.util.List;
 
 public class AlarmlistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
-    private List<MessageInfo> mList;
+    private List<AlarmInfo> mList;
     private Context ctx;
     private ItemCallBack itemCallBack;
 
-    public AlarmlistAdapter(List<MessageInfo> list, Context context, @NonNull ItemCallBack itemCallBack) {
+    public AlarmlistAdapter(List<AlarmInfo> list, Context context, @NonNull ItemCallBack itemCallBack) {
         this.mList = list;
         this.ctx = context;
         this.itemCallBack = itemCallBack;
@@ -39,9 +40,10 @@ public class AlarmlistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof MyHolder) {
             MyHolder myHolder = (MyHolder) holder;
-            MessageInfo messageInfo = mList.get(position);
+            AlarmInfo alarmInfo = mList.get(position);
+            alarmInfo.toSuper();
 
-            myHolder.binding.setMessageinfo(messageInfo);
+            myHolder.binding.setMessageinfo(alarmInfo);
         }
     }
 

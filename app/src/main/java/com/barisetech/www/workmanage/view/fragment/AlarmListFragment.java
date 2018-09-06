@@ -8,28 +8,34 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
 
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.adapter.AlarmlistAdapter;
 import com.barisetech.www.workmanage.adapter.ItemCallBack;
 import com.barisetech.www.workmanage.adapter.OnScrollListener;
+import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.base.BaseLoadMoreWrapper;
+import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.MessageInfo;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
+import com.barisetech.www.workmanage.bean.alarm.ReqAllAlarm;
 import com.barisetech.www.workmanage.databinding.FragmentAlarmListBinding;
 import com.barisetech.www.workmanage.utils.DisplayUtil;
 import com.barisetech.www.workmanage.utils.LogUtil;
-import com.barisetech.www.workmanage.utils.TimeUtil;
 import com.barisetech.www.workmanage.viewmodel.AlarmViewModel;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.disposables.Disposable;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,7 +47,13 @@ public class AlarmListFragment extends BaseFragment {
     private FragmentAlarmListBinding mBinding;
     private AlarmlistAdapter alarmlistAdapter;
     private BaseLoadMoreWrapper loadMoreWrapper;
-    private List<MessageInfo> alarmList;
+    private List<AlarmInfo> alarmList;
+
+    private String startTime = "";
+    private String endTime = "";
+    private Disposable curDisposable;
+    private Boolean getByTime = false;
+    private Boolean getAllAlarm = true;
 
     //每次加载个数
     private static final int PAGE_COUNT = 10;
@@ -78,7 +90,58 @@ public class AlarmListFragment extends BaseFragment {
     }
 
     private void initView() {
+        initRecyclerView();
 
+        mBinding.searchLayout.tvFilter.setOnClickListener(view -> {
+            transFilterLayout();
+        });
+
+        mBinding.alarmListAll.setOnClickListener(view -> {
+            RadioButton radioButton = (RadioButton) view;
+            cleanFilterGruop();
+            radioButton.setChecked(true);
+            getAllAlarm = true;
+
+            curDisposable.dispose();
+            transFilterLayout();
+            alarmList.clear();
+            if (maxNum >= PAGE_COUNT) {
+                getDatas(0, PAGE_COUNT);
+            } else {
+                getDatas(0, maxNum);
+            }
+        });
+        mBinding.alarmListUnlift.setOnClickListener(view -> {
+            RadioButton radioButton = (RadioButton) view;
+            cleanFilterGruop();
+            radioButton.setChecked(true);
+            getAllAlarm = false;
+
+            curDisposable.dispose();
+            transFilterLayout();
+            alarmList.clear();
+            if (maxNum >= PAGE_COUNT) {
+                getDatas(0, PAGE_COUNT);
+            } else {
+                getDatas(0, maxNum);
+            }
+        });
+    }
+
+    private void cleanFilterGruop() {
+        mBinding.alarmListUnlift.setChecked(false);
+        mBinding.alarmListAll.setChecked(false);
+    }
+
+    /**
+     * 打开或关闭筛选选择框
+     */
+    private void transFilterLayout() {
+        if (mBinding.alarmListFilterLayout.getVisibility() == View.GONE) {
+            mBinding.alarmListFilterLayout.setVisibility(View.VISIBLE);
+        } else {
+            mBinding.alarmListFilterLayout.setVisibility(View.GONE);
+        }
     }
 
     private void initRecyclerView() {
@@ -121,12 +184,29 @@ public class AlarmListFragment extends BaseFragment {
         }
         loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING);
 
-//        curDisposable = alarmAnalysisViewModel.reqAllAnalysis(reqAllAlarmAnalysis);
+        ReqAllAlarm reqAllAlarm = new ReqAllAlarm();
+        reqAllAlarm.setIsAllAlarm(String.valueOf(getAllAlarm));
+        reqAllAlarm.setStartIndex(String.valueOf(formIndex));
+        reqAllAlarm.setNumberOfRecords(String.valueOf(toIndex));
+        reqAllAlarm.setGetByTimeDiff(String.valueOf(getByTime));
+        reqAllAlarm.setStartTime(startTime);
+        reqAllAlarm.setEndTime(endTime);
+
+        curDisposable = alarmViewModel.reqAllAlarmByCondition(reqAllAlarm);
+    }
+
+    private void getListNums() {
+        loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING);
+
+        alarmViewModel.reqAlarmNum();
     }
 
     private ItemCallBack itemCallBack = item -> {
         if (item instanceof AlarmInfo) {
             AlarmInfo alarmInfo = (AlarmInfo) item;
+            EventBusMessage eventBusMessage = new EventBusMessage(AlarmDetailsFragment.TAG);
+            eventBusMessage.setArg1(alarmInfo);
+            EventBus.getDefault().post(eventBusMessage);
         }
     };
 
@@ -137,13 +217,12 @@ public class AlarmListFragment extends BaseFragment {
 
     @Override
     public void subscribeToModel() {
-        if (!alarmViewModel.getmObservableAllAlarmInfos().hasObservers()) {
-            alarmViewModel.getmObservableAllAlarmInfos().observe(this, alarmInfos -> {
+        if (!alarmViewModel.getmObservableNetAlarmInfos().hasObservers()) {
+            alarmViewModel.getmObservableNetAlarmInfos().observe(this, alarmInfos -> {
                 if (this.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
                     if (null != alarmInfos) {
                         if (alarmInfos.size() > 0) {
                             alarmList.addAll(alarmInfos);
-                            LogUtil.d(TAG, "load complete = " + alarmInfos);
                             loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_COMPLETE);
                         } else {
                             loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_END);
@@ -153,6 +232,27 @@ public class AlarmListFragment extends BaseFragment {
                     }
                 }
             });
+        }
+
+        if (!alarmViewModel.getmObservableNum().hasObservers()) {
+            alarmViewModel.getmObservableNum().observe(this, integer -> {
+                if (this.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                    if (null != integer) {
+                        maxNum = integer;
+                        if (maxNum >= PAGE_COUNT) {
+                            getDatas(0, PAGE_COUNT);
+                        } else {
+                            getDatas(0, maxNum);
+                        }
+                    } else {
+                        loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_END);
+                    }
+                }
+            });
+        }
+
+        if (null == alarmList || alarmList.size() <= 0) {
+            getListNums();
         }
     }
 }

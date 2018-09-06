@@ -246,6 +246,14 @@ public class AlarmInfo extends MessageInfo implements Serializable{
         read = isRead;//设置父类read
     }
 
+    public void toSuper() {
+        id = Key;
+        read = isRead;//设置父类read
+        content = toContent();//设置父类content
+        details = toDetails();
+        time = TimeStamp;//设置父类时间
+    }
+
     public String toContent() {
         StringBuilder sb = new StringBuilder();
         sb.append("ID ").append(DisplayId).append(", ")
