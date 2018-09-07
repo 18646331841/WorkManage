@@ -112,6 +112,9 @@ public class NewsViewModel extends BaseViewModel implements ModelCallBack {
                     case NewsModel.TYPE_NUM:
                         mObservableNewsNum.setValue(null);
                         break;
+                    case NewsModel.TYPE_QUERY_NEWS:
+                        mObservableNewsInfos.setValue(null);
+                        break;
                 }
             });
         }

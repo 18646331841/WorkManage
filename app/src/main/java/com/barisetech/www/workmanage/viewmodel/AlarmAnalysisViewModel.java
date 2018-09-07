@@ -140,8 +140,13 @@ public class AlarmAnalysisViewModel extends BaseViewModel implements ModelCallBa
                 return;
             }
             mDelivery.post(() -> {
-                if (failResponse.type == AlarmAnalysisModel.TYPE_ALL) {
-                    mObservableAll.setValue(null);
+                switch (failResponse.type) {
+                    case AlarmAnalysisModel.TYPE_ALL:
+                        mObservableAll.setValue(null);
+                        break;
+                    case AlarmAnalysisModel.TYPE_NUM:
+                        mObservableNum.setValue(null);
+                        break;
                 }
             });
 

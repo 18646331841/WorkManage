@@ -12,6 +12,7 @@ import com.barisetech.www.workmanage.base.BaseApplication;
 import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
+import com.barisetech.www.workmanage.bean.incident.IncidentInfo;
 import com.barisetech.www.workmanage.bean.site.SiteBean;
 import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
 import com.barisetech.www.workmanage.view.fragment.AlarmAnalysisFragment;
@@ -20,6 +21,8 @@ import com.barisetech.www.workmanage.view.fragment.AlarmDetailsFragment;
 import com.barisetech.www.workmanage.view.fragment.AlarmListFragment;
 import com.barisetech.www.workmanage.view.fragment.DigitizingFragment;
 import com.barisetech.www.workmanage.view.fragment.FingerprintManagerFragment;
+import com.barisetech.www.workmanage.view.fragment.IncidentDetailsFragment;
+import com.barisetech.www.workmanage.view.fragment.IncidentListFragment;
 import com.barisetech.www.workmanage.view.fragment.NavigationFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsAddFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsDetailsFragment;
@@ -118,6 +121,17 @@ public class MainActivity extends BaseActivity {
                     intent2Activity(LoginActivity.class);
                     finish();
                     break;
+                case IncidentListFragment.TAG:
+                    transaction
+                            .addToBackStack(tag)
+                            .replace(R.id.fragment_content, IncidentListFragment.newInstance(), tag)
+                            .commit();
+                    break;
+                case IncidentDetailsFragment.TAG:
+                    transaction
+                            .addToBackStack(tag)
+                            .replace(R.id.second_framelayout, IncidentDetailsFragment.newInstance((IncidentInfo)
+                                    eventBusMessage.getArg1()), tag).commit();
                 case AlarmListFragment.TAG:
                     transaction
                             .addToBackStack(tag)

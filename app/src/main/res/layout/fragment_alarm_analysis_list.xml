@@ -169,7 +169,7 @@
                     android:background="@drawable/shane_button_corners"
                     android:layout_marginTop="@dimen/dp_13"
                     android:gravity="center"
-                    android:text="@string/alarm_analysis_confirm"
+                    android:text="@string/time_picker_confirm"
                     android:textColor="@color/white"
                     android:textSize="14sp"/>
             </LinearLayout>

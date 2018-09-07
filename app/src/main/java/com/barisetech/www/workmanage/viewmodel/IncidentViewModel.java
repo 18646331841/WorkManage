@@ -85,8 +85,13 @@ public class IncidentViewModel extends BaseViewModel implements ModelCallBack{
             }
 
             mDelivery.post(() -> {
-                if (failResponse.type == IncidentModel.TYPE_ALL) {
-                    mObservableIncidentsList.setValue(null);
+                switch (failResponse.type) {
+                    case IncidentModel.TYPE_ALL:
+                        mObservableIncidentsList.setValue(null);
+                        break;
+                    case IncidentModel.TYPE_NUM:
+                        mObservableIncidentNum.setValue(null);
+                        break;
                 }
             });
         }

@@ -166,8 +166,13 @@ public class AlarmViewModel extends BaseViewModel implements ModelCallBack {
             }
 
             mDelivery.post(() -> {
-                if (failResponse.type == AlarmModel.TYPE_All_ALARM) {
-                    mObservableNetAlarmInfos.setValue(null);
+                switch (failResponse.type) {
+                    case AlarmModel.TYPE_All_ALARM:
+                        mObservableNetAlarmInfos.setValue(null);
+                        break;
+                    case AlarmModel.TYPE_NUM:
+                        mObservableNum.setValue(null);
+                        break;
                 }
             });
         }

@@ -24,7 +24,7 @@
             layout="@layout/layout_search_view"/>
 
         <LinearLayout
-            android:id="@+id/alarm_list_filter_layout"
+            android:id="@+id/incident_list_filter_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -39,26 +39,136 @@
                 android:orientation="horizontal">
 
                 <RadioButton
-                    android:id="@+id/alarm_list_all"
+                    android:id="@+id/incident_list_digitizer_online"
                     android:layout_width="@dimen/dp_145"
                     android:layout_height="@dimen/dp_30"
                     android:background="@drawable/filter_button_style"
                     android:button="@null"
                     android:gravity="center"
-                    android:text="@string/alarm_list_all"
+                    android:text="@string/incident_list_digitizer_online"
                     android:textColor="@drawable/font_gray_blue_selector"
                     android:textSize="14sp"/>
 
                 <RadioButton
-                    android:id="@+id/alarm_list_unlift"
+                    android:id="@+id/incident_list_digitizer_offline"
                     android:layout_width="@dimen/dp_145"
                     android:layout_height="@dimen/dp_30"
                     android:layout_marginLeft="@dimen/dp_25"
                     android:background="@drawable/filter_button_style"
                     android:button="@null"
                     android:gravity="center"
-                    android:text="@string/alarm_list_unlift"
+                    android:text="@string/incident_list_digitizer_offline"
                     android:textColor="@drawable/font_gray_blue_selector"
+                    android:textSize="14sp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_13"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/incident_list_digitizer_time_off"
+                    android:layout_width="@dimen/dp_145"
+                    android:layout_height="@dimen/dp_30"
+                    android:background="@drawable/filter_button_style"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="@string/incident_list_digitizer_time_off"
+                    android:textColor="@drawable/font_gray_blue_selector"
+                    android:textSize="14sp"/>
+
+                <RadioButton
+                    android:id="@+id/incident_list_sensor_offline"
+                    android:layout_width="@dimen/dp_145"
+                    android:layout_height="@dimen/dp_30"
+                    android:layout_marginLeft="@dimen/dp_25"
+                    android:background="@drawable/filter_button_style"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="@string/incident_list_sensor_offline"
+                    android:textColor="@drawable/font_gray_blue_selector"
+                    android:textSize="14sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_13"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/incident_list_isolator_offline"
+                    android:layout_width="@dimen/dp_145"
+                    android:layout_height="@dimen/dp_30"
+                    android:background="@drawable/filter_button_style"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="@string/incident_list_isolator_offline"
+                    android:textColor="@drawable/font_gray_blue_selector"
+                    android:textSize="14sp"/>
+
+                <RadioButton
+                    android:id="@+id/incident_list_unknown"
+                    android:layout_width="@dimen/dp_145"
+                    android:layout_height="@dimen/dp_30"
+                    android:layout_marginLeft="@dimen/dp_25"
+                    android:background="@drawable/filter_button_style"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="@string/incident_list_unknown"
+                    android:textColor="@drawable/font_gray_blue_selector"
+                    android:textSize="14sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/incident_list_date_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_13"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/incident_list_start_time"
+                        android:layout_width="@dimen/dp_145"
+                        android:layout_height="@dimen/dp_30"
+                        android:background="@drawable/shape_button_corners_line_blue"
+                        android:button="@null"
+                        android:gravity="center"
+                        android:text="@string/alarm_analysis_start_time"
+                        android:textColor="@color/filter_blue"
+                        android:textSize="14sp"/>
+
+                    <RadioButton
+                        android:id="@+id/incident_list_end_time"
+                        android:layout_width="@dimen/dp_145"
+                        android:layout_height="@dimen/dp_30"
+                        android:layout_marginLeft="@dimen/dp_25"
+                        android:background="@drawable/shape_button_corners_line_blue"
+                        android:button="@null"
+                        android:gravity="center"
+                        android:text="@string/alarm_analysis_end_time"
+                        android:textColor="@color/filter_blue"
+                        android:textSize="14sp"/>
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/incident_list_confirm"
+                    android:layout_width="@dimen/dp_145"
+                    android:layout_height="@dimen/dp_30"
+                    android:layout_marginLeft="@dimen/dp_85"
+                    android:background="@drawable/shane_button_corners"
+                    android:layout_marginTop="@dimen/dp_13"
+                    android:gravity="center"
+                    android:text="@string/time_picker_confirm"
+                    android:textColor="@color/white"
                     android:textSize="14sp"/>
             </LinearLayout>
         </LinearLayout>

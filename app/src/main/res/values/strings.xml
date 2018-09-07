@@ -6,7 +6,18 @@
     <string name="title_manage">管理</string>
     <string name="title_myself">我</string>
     <string name="new_message">新消息</string>
+
     <string name="title_incident">事件</string>
+    <string name="incident_list_digitizer_online">数字化仪上线</string>
+    <string name="incident_list_digitizer_offline">数字化仪下线</string>
+    <string name="incident_list_digitizer_time_off">数字化仪时间不同步</string>
+    <string name="incident_list_sensor_offline">传感器不在线</string>
+    <string name="incident_list_isolator_offline">隔离器不在线</string>
+    <string name="incident_list_unknown">一个查不到数据的标志</string>
+
+    <string name="title_incident_detail">事件详情</string>
+    <string name="incident_detail_to_site">转到站点</string>
+    <string name="incident_detail_to_pipe">转到管线</string>
 
     <string name="title_news">新闻</string>
     <string name="title_news_details">新闻详情</string>
@@ -51,7 +62,6 @@
     <string name="alarm_analysis_upload_fail">上传失败</string>
     <string name="alarm_analysis_start_time">请选择开始时间</string>
     <string name="alarm_analysis_end_time">请选择结束时间</string>
-    <string name="alarm_analysis_confirm">确认</string>
 
     <string name="title_analysis_detail">警报分析详情</string>
     <string name="analysis_detail_time">时间</string>
@@ -115,6 +125,7 @@
     <string name="login_success">登录成功</string>
     <string name="login_fail">登录失败</string>
 
+    <string name="time_picker_confirm">确认</string>
     <string name="all_select">全选</string>
     <string name="mark_read">标记为已读</string>
     <string name="cancel_all_select">取消</string>

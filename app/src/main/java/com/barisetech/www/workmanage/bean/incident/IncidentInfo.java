@@ -7,11 +7,13 @@ import android.arch.persistence.room.PrimaryKey;
 import com.barisetech.www.workmanage.bean.MessageInfo;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by LJH on 2018/8/15.
  */
 @Entity(tableName = "incident_info")
-public class IncidentInfo extends MessageInfo{
+public class IncidentInfo extends MessageInfo implements Serializable {
 
     @Ignore
     private String[] typeToString = new String[]{"全部", "数字化仪上线", "数字化仪下线", "数字化仪时间不同步", "传感器不在线", "隔离器不在线",
@@ -170,6 +172,19 @@ public class IncidentInfo extends MessageInfo{
         isRead = read;
     }
 
+    public void toSuper() {
+        id = Key;//设置父类id
+        messageType = TYPE_INCIDENT;//设置父类类型
+        time = TimeStamp;//设置父类时间
+        int index = Type - 1;
+        if (index > 0 && index < typeToString.length) {
+            title = typeToString[Type - 1];//设置父类title
+        } else {
+            title = String.valueOf(Type);
+        }
+        content = toContent();//设置父类内容
+    }
+
     public String toContent() {
         StringBuilder sb = new StringBuilder();
         sb.append("时间：").append(TimeStamp)
@@ -179,6 +194,24 @@ public class IncidentInfo extends MessageInfo{
                 .append("\n管线名称：").append(PipeName)
                 .append("\n是否解除：").append(Lifted ? "已解除" : "未解除").append(", ")
                 .append("解除人: ").append(LiftedUser);
+        return sb.toString();
+    }
+
+    public String toDetails() {
+        StringBuilder sb = new StringBuilder();
+        sb
+                .append("              ID        ").append(Key).append("\n\n")
+                .append("数字化仪ID          ").append(SiteId).append("\n\n")
+                .append("站点名称        ").append(SiteName).append("\n\n")
+                .append("所在管线ID          ").append(PipeId).append("\n\n")
+                .append("所在管线        ").append(PipeName).append("\n\n")
+                .append("发生时间        ").append(TimeStamp).append("\n\n")
+                .append("事件类型        ").append(Type).append("\n\n")
+                .append("是否解除        ").append(Lifted ? "已解除" : "未解除").append("\n\n")
+                .append("操作人员        ").append(LiftedUser).append("\n\n")
+                .append("提示内容        ").append(IncidentContent).append("\n\n")
+                .append("        测试        ").append(Test).append("\n\n")
+                .append("        备注        ").append(Remark).append("\n\n");
         return sb.toString();
     }
 }

@@ -35,7 +35,7 @@
                 android:layout_height="44dp"
                 app:layout_constraintBottom_toTopOf="@+id/message_content"
                 app:layout_constraintEnd_toStartOf="@+id/message_time"
-                android:background="@drawable/type_alarm"
+                android:background="@drawable/type_incident"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
@@ -44,7 +44,7 @@
                 android:id="@+id/message_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{messageinfo.time}"
+                android:text="@{messageinfo.title}"
                 android:paddingTop="20dp"
                 android:textColor="@color/message_item_normal"
                 android:textSize="@dimen/sp_16"

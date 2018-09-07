@@ -38,6 +38,7 @@ public class IncidentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (holder instanceof MyHolder) {
             MyHolder myHolder = (MyHolder) holder;
             IncidentInfo incidentInfo = mList.get(position);
+            incidentInfo.toSuper();
 
             myHolder.binding.setMessageinfo(incidentInfo);
         }

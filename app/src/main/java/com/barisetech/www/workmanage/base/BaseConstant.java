@@ -30,6 +30,17 @@ public class BaseConstant {
     public static final int REASON_NET_FAULT = 6;
 
     /**
+     * 事件类型
+     */
+    public static final int TYPE_INCIDENT_ALL = 1;
+    public static final int TYPE_INCIDENT_DIGI_OFFLINE = 2;
+    public static final int TYPE_INCIDENT_DIGI_ONLINE = 3;
+    public static final int TYPE_INCIDENT_DIGI_TIME = 4;
+    public static final int TYPE_INCIDENT_SENSOR_OFFLINE = 5;
+    public static final int TYPE_INCIDENT_ISOLATOR_OFFLINE = 6;
+    public static final int TYPE_INCIDENT_UNKNOWN = 7;
+
+    /**
      * SharedPreferences keys
      */
     //指纹登录
