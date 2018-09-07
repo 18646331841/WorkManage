@@ -7,12 +7,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.bean.site.SiteBean;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class SiteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
@@ -22,10 +24,22 @@ public class SiteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     private Context ctx;
     private ItemCallBack callBack;
     private OnItemLongClickListener mOnItemClickListener;
+    public HashMap<Integer,SiteBean> map;
+
+    public static final int SHOW_ALL = 1;
+    public static final int HIDE_ALL = 2;
+
+    private int flag;
+
+    public void setFlag(int i){
+        flag = i;
+        notifyDataSetChanged();
+    }
 
 
     public SiteAdapter(List<SiteBean> list,Context context){
         this.mList = list;
+        map = new HashMap<>();
         this.ctx = context;
     }
 
@@ -40,12 +54,64 @@ public class SiteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         return new ViewHolder(view);
     }
 
+
+    /*
+     * 全选
+     * */
+    public void All(){
+        for(int i = 0; i < mList.size(); i++) {
+            map.put(i, mList.get(i));
+        }
+        notifyDataSetChanged();
+    }
+
+    /*
+     * 反选
+     * */
+
+    public void neverall() {
+        map.clear();
+        notifyDataSetChanged();
+    }
+
+    /*
+     * 单选
+     * */
+    public void singlesel(int postion) {
+        map.put(postion, mList.get(postion));
+        notifyDataSetChanged();
+    }
+
+
+
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ViewHolder viewHolder = (ViewHolder)holder;
         SiteBean bean = mList.get(position);
         viewHolder.img.setBackgroundResource(R.drawable.ic_site);
         viewHolder.tv_site_info.setText(bean.Name);
+        if (flag == SHOW_ALL){
+            viewHolder.select_item.setVisibility(View.VISIBLE);
+        }else if (flag == HIDE_ALL){
+            viewHolder.select_item.setVisibility(View.GONE);
+        }
+
+        if (null != map.get(position)) {
+            viewHolder.select_item.setChecked(true);
+        } else {
+            viewHolder.select_item.setChecked(false);
+        }
+
+        viewHolder.select_item.setOnClickListener(v -> {
+            if (v instanceof CheckBox) {
+                CheckBox checkBox = (CheckBox) v;
+                if (checkBox.isChecked()) {
+                    map.put(position, mList.get(position));
+                } else {
+                    map.remove(position);
+                }
+            }
+        });
         viewHolder.l_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,7 +128,6 @@ public class SiteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                 return true;
             }
         });
-
     }
 
     public void setOnItemLongClickListener(OnItemLongClickListener onItemClickListener) {
@@ -72,16 +137,18 @@ public class SiteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     @Override
     public int getItemCount() {
-        return mList.size();
+        return mList == null ? 0 : mList.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{
         ImageView img;
+        CheckBox select_item;
         TextView tv_site_info;
         ConstraintLayout l_item;
         public ViewHolder(View itemView) {
             super(itemView);
             img = itemView.findViewById(R.id.item_img);
+            select_item = itemView.findViewById(R.id.select_item);
             tv_site_info = itemView.findViewById(R.id.item_data);
             l_item = itemView.findViewById(R.id.l_item);
         }

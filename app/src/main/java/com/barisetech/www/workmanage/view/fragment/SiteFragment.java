@@ -44,7 +44,7 @@ import java.util.List;
 
 import io.reactivex.disposables.Disposable;
 
-public class SiteFragment extends BaseFragment {
+public class SiteFragment extends BaseFragment implements View.OnClickListener{
 
 
     public static final String TAG = "SiteFragment";
@@ -61,6 +61,7 @@ public class SiteFragment extends BaseFragment {
     private List<SiteBean> siteList;
 
     private Point mPoint = new Point();
+    private boolean flag = false;
 
     public SiteFragment() {
 
@@ -96,10 +97,9 @@ public class SiteFragment extends BaseFragment {
         mBinding.toolbar.tvTwo.setOnClickListener(view -> {
             EventBus.getDefault().post(new EventBusMessage(AddSiteFragment.TAG));
         });
-
+        mBinding.selectAll.setOnClickListener(this);
+        mBinding.selectAllCancel.setOnClickListener(this);
         initRecyclerView();
-
-
     }
 
     private void initRecyclerView() {
@@ -148,7 +148,14 @@ public class SiteFragment extends BaseFragment {
                     .setOnPopuListItemClickListener(new QPopuWindow.OnPopuListItemClickListener() {
                         @Override
                         public void onPopuListItemClick(View anchorView, int anchorViewPosition, int position) {
-                            ToastUtil.showToast("item"+position);
+                            switch (position){
+                                case 0:
+                                    mBinding.longMenu.setVisibility(View.VISIBLE);
+                                    siteAdapter.setFlag(siteAdapter.SHOW_ALL);
+                                    mBinding.selectAll.setText("全选");
+                                    flag = false;
+                                    siteAdapter.notifyDataSetChanged();
+                            }
                         }
                     }).show();
         });
@@ -248,4 +255,24 @@ public class SiteFragment extends BaseFragment {
         EventBus.getDefault().unregister(this);
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.select_all:
+                if (flag){
+                    siteAdapter.neverall();
+                    mBinding.selectAll.setText("全选");
+                    flag = false;
+                }else {
+                    siteAdapter.All();
+                    mBinding.selectAll.setText("取消全选");
+                    flag = true;
+                }
+                break;
+            case R.id.select_all_cancel:
+                mBinding.longMenu.setVisibility(View.GONE);
+                siteAdapter.setFlag(siteAdapter.HIDE_ALL);
+                break;
+        }
+    }
 }
