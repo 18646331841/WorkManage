@@ -12,6 +12,7 @@ import com.barisetech.www.workmanage.bean.RawBean;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.bean.alarmanalysis.AlarmAnalysis;
 import com.barisetech.www.workmanage.bean.incident.IncidentInfo;
+import com.barisetech.www.workmanage.bean.pipework.PipeWork;
 import com.barisetech.www.workmanage.bean.site.SiteBean;
 import com.barisetech.www.workmanage.view.fragment.AddSiteFragment;
 import com.barisetech.www.workmanage.view.fragment.AlarmAnalysisDetailFragment;
@@ -28,7 +29,9 @@ import com.barisetech.www.workmanage.view.fragment.MapFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsAddFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsDetailsFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsListFragment;
+import com.barisetech.www.workmanage.view.fragment.PipeCollectionFragment;
 import com.barisetech.www.workmanage.view.fragment.PipeFragment;
+import com.barisetech.www.workmanage.view.fragment.PipeWorkFragment;
 import com.barisetech.www.workmanage.view.fragment.SiteDetailFragment;
 import com.barisetech.www.workmanage.view.fragment.SiteFragment;
 import com.barisetech.www.workmanage.view.fragment.WaveFormFragment;
@@ -185,6 +188,14 @@ public class SecondActivity extends BaseActivity {
             case PipeFragment.TAG:
                 transaction
                         .replace(R.id.second_framelayout, PipeFragment.newInstance(), tag).commit();
+                break;
+            case PipeCollectionFragment.TAG:
+                transaction
+                        .replace(R.id.second_framelayout, PipeCollectionFragment.newInstance(), tag).commit();
+                break;
+            case PipeWorkFragment.TAG:
+                transaction
+                        .replace(R.id.second_framelayout, PipeWorkFragment.newInstance(), tag).commit();
                 break;
             case WaveFormFragment.TAG:
                 transaction

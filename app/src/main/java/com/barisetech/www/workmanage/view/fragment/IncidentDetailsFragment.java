@@ -1,7 +1,6 @@
 package com.barisetech.www.workmanage.view.fragment;
 
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableField;
 import android.os.Bundle;
@@ -12,15 +11,9 @@ import android.view.ViewGroup;
 
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.base.BaseFragment;
-import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
-import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.bean.incident.IncidentInfo;
 import com.barisetech.www.workmanage.databinding.FragmentIncidentDetailsBinding;
-import com.barisetech.www.workmanage.utils.LogUtil;
-import com.barisetech.www.workmanage.viewmodel.AlarmViewModel;
-
-import org.greenrobot.eventbus.EventBus;
 
 public class IncidentDetailsFragment extends BaseFragment implements View.OnClickListener{
     public static final String TAG = "IncidentDetailsFragment";

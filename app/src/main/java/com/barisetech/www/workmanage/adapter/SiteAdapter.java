@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class SiteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
-
+    private final String TAG = "SiteAdapter";
 
     private List<SiteBean> mList;
     private Context ctx;
@@ -29,11 +30,10 @@ public class SiteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     public static final int SHOW_ALL = 1;
     public static final int HIDE_ALL = 2;
 
-    private int flag;
+    private int flag = HIDE_ALL;
 
     public void setFlag(int i){
         flag = i;
-        notifyDataSetChanged();
     }
 
 

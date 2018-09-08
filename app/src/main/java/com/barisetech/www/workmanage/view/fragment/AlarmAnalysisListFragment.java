@@ -165,7 +165,7 @@ public class AlarmAnalysisListFragment extends BaseFragment {
                 ToastUtil.showToast("请选择结束时间");
                 return;
             }
-            curDisposable.dispose();
+            closeDisposable();
             transFilterLayout();
             curType = selectType;
             alarmAnalysisList.clear();
@@ -342,6 +342,7 @@ public class AlarmAnalysisListFragment extends BaseFragment {
 
     private void getDatas(int formIndex, int toIndex) {
         if (toIndex <= 0) {
+            loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_END);
             return;
         }
         loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING);
@@ -369,6 +370,12 @@ public class AlarmAnalysisListFragment extends BaseFragment {
         reqAllAlarmAnalysis.setType(String.valueOf(curType));
 
         curDisposable = alarmAnalysisViewModel.reqAllAnalysis(reqAllAlarmAnalysis);
+    }
+
+    private void closeDisposable() {
+        if (null != curDisposable) {
+            curDisposable.dispose();
+        }
     }
 
     private void getListNums() {

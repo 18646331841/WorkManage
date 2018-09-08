@@ -25,12 +25,10 @@ import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.base.BaseLoadMoreWrapper;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
-import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.bean.incident.IncidentInfo;
 import com.barisetech.www.workmanage.bean.incident.ReqAllIncident;
 import com.barisetech.www.workmanage.bean.incident.ReqIncidentSelectItem;
 import com.barisetech.www.workmanage.databinding.FragmentIncidentListBinding;
-import com.barisetech.www.workmanage.model.IncidentModel;
 import com.barisetech.www.workmanage.utils.DisplayUtil;
 import com.barisetech.www.workmanage.utils.LogUtil;
 import com.barisetech.www.workmanage.utils.TimeUtil;
@@ -348,6 +346,7 @@ public class IncidentListFragment extends BaseFragment {
 
     private void getDatas(int formIndex, int toIndex) {
         if (toIndex <= 0) {
+            loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_END);
             return;
         }
         loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING);

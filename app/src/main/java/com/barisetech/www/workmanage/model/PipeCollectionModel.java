@@ -3,6 +3,7 @@ package com.barisetech.www.workmanage.model;
 import com.barisetech.www.workmanage.base.BaseModel;
 import com.barisetech.www.workmanage.base.BaseResponse;
 import com.barisetech.www.workmanage.bean.FailResponse;
+import com.barisetech.www.workmanage.bean.TypeResponse;
 import com.barisetech.www.workmanage.bean.pipecollections.PipeCollections;
 import com.barisetech.www.workmanage.bean.pipecollections.ReqAddPC;
 import com.barisetech.www.workmanage.bean.pipecollections.ReqAllPc;
@@ -70,7 +71,8 @@ public class PipeCollectionModel extends BaseModel {
                     @Override
                     protected void onSuccess(Integer response) {
                         LogUtil.d(TAG, "Pc = " + response);
-                        modelCallBack.netResult(response);
+                        TypeResponse typeResponse = new TypeResponse(TYPE_NUM, response);
+                        modelCallBack.netResult(typeResponse);
                     }
                 });
         return disposable;
@@ -110,7 +112,8 @@ public class PipeCollectionModel extends BaseModel {
                     @Override
                     protected void onSuccess(String response) {
                         LogUtil.d(TAG, "AddOrModifyPc result = " + response);
-                        modelCallBack.netResult(response);
+                        TypeResponse typeResponse = new TypeResponse(TYPE_ADD, response);
+                        modelCallBack.netResult(typeResponse);
                     }
                 });
         return disposable;
@@ -151,7 +154,8 @@ public class PipeCollectionModel extends BaseModel {
                     @Override
                     protected void onSuccess(Boolean response) {
                         LogUtil.d(TAG, "DeletePc result = " + response);
-                        modelCallBack.netResult(response);
+                        TypeResponse typeResponse = new TypeResponse(TYPE_DELETE, response);
+                        modelCallBack.netResult(typeResponse);
                     }
                 });
         return disposable;
@@ -166,6 +170,7 @@ public class PipeCollectionModel extends BaseModel {
         if (null == reqAllPc) {
             return null;
         }
+        reqAllPc.setMachineCode(mToken);
         Disposable disposable = pipeCollectionsService.getAllPc(reqAllPc)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
@@ -191,7 +196,8 @@ public class PipeCollectionModel extends BaseModel {
                     @Override
                     protected void onSuccess(List<PipeCollections> response) {
                         LogUtil.d(TAG, "AllPc result = " + response);
-                        modelCallBack.netResult(response);
+                        TypeResponse typeResponse = new TypeResponse(TYPE_ALL, response);
+                        modelCallBack.netResult(typeResponse);
                     }
                 });
         return disposable;

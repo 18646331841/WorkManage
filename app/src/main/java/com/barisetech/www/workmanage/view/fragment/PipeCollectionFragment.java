@@ -14,59 +14,59 @@ import android.view.ViewGroup;
 
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.adapter.OnScrollListener;
-import com.barisetech.www.workmanage.adapter.PipeAdapter;
+import com.barisetech.www.workmanage.adapter.PipeCollectionAdapter;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.base.BaseLoadMoreWrapper;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
-import com.barisetech.www.workmanage.bean.pipe.PipeInfo;
-import com.barisetech.www.workmanage.bean.pipe.ReqAllPipe;
-import com.barisetech.www.workmanage.databinding.FragmentPipeBinding;
+import com.barisetech.www.workmanage.bean.pipecollections.PipeCollections;
+import com.barisetech.www.workmanage.bean.pipecollections.ReqAllPc;
+import com.barisetech.www.workmanage.databinding.FragmentPipeCollectionBinding;
 import com.barisetech.www.workmanage.utils.DisplayUtil;
 import com.barisetech.www.workmanage.utils.LogUtil;
-import com.barisetech.www.workmanage.viewmodel.PipeViewModel;
+import com.barisetech.www.workmanage.viewmodel.PipeCollectionsViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.disposables.Disposable;
 
-public class PipeFragment extends BaseFragment {
-    public static final String TAG = "PipeFragment";
+public class PipeCollectionFragment extends BaseFragment {
+    public static final String TAG = "PipeCollectionFragment";
 
-    FragmentPipeBinding mBinding;
-    private PipeAdapter pipeAdapter;
-    private List<PipeInfo> pipeInfoList;
+    private PipeCollectionAdapter pipeCollectionAdapter;
+    private List<PipeCollections> pipeCollectionsList;
+    FragmentPipeCollectionBinding mBinding;
     private BaseLoadMoreWrapper loadMoreWrapper;
-    private PipeViewModel pipeViewModel;
+    private PipeCollectionsViewModel pipeCollectionsViewModel;
     private Disposable curDisposable;
     //每次加载个数
     private static final int PAGE_COUNT = 10;
     private int maxNum;
 
-    public PipeFragment() {
+    public PipeCollectionFragment() {
         // Required empty public constructor
     }
 
-    public static PipeFragment newInstance() {
-        PipeFragment fragment = new PipeFragment();
+    public static PipeCollectionFragment newInstance() {
+        PipeCollectionFragment fragment = new PipeCollectionFragment();
         return fragment;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        pipeInfoList = new ArrayList<>();
+        pipeCollectionsList = new ArrayList<>();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_pipe, container, false);
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_pipe_collection, container, false);
 
         setToolBarHeight(mBinding.toolbar.getRoot());
         mBinding.setFragment(this);
         ToolbarInfo toolbarInfo = new ToolbarInfo();
-        toolbarInfo.setTitle(getString(R.string.title_pipe));
+        toolbarInfo.setTitle(getString(R.string.title_pipe_collection));
         toolbarInfo.setTwoText("新增");
         observableToolbar.set(toolbarInfo);
 
@@ -81,28 +81,28 @@ public class PipeFragment extends BaseFragment {
 
     private void initRecyclerView() {
 
-        pipeAdapter = new PipeAdapter(pipeInfoList, getContext());
-        loadMoreWrapper = new BaseLoadMoreWrapper(pipeAdapter);
+        pipeCollectionAdapter = new PipeCollectionAdapter(pipeCollectionsList, getContext());
+        loadMoreWrapper = new BaseLoadMoreWrapper(pipeCollectionAdapter);
         loadMoreWrapper.setLoadingViewHeight(DisplayUtil.dip2px(getContext(), 50));
-        mBinding.pipeList.setLayoutManager(new LinearLayoutManager(getContext()));
-        mBinding.pipeList.setAdapter(loadMoreWrapper);
-        mBinding.pipeList.setItemAnimator(new DefaultItemAnimator());
+        mBinding.pipeCollectionList.setLayoutManager(new LinearLayoutManager(getContext()));
+        mBinding.pipeCollectionList.setAdapter(loadMoreWrapper);
+        mBinding.pipeCollectionList.setItemAnimator(new DefaultItemAnimator());
 
-        mBinding.pipeList.addOnScrollListener(new OnScrollListener() {
+        mBinding.pipeCollectionList.addOnScrollListener(new OnScrollListener() {
             @Override
             public void onLoadMore() {
-                if (pipeInfoList.size() == maxNum) {
+                if (pipeCollectionsList.size() == maxNum) {
 //                    if (maxNum != 0) {
                     //已加载到最大，不再加载
                     loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_END);
 //                    }
                 } else {
-                    int count = maxNum - pipeInfoList.size();
+                    int count = maxNum - pipeCollectionsList.size();
                     if (count < PAGE_COUNT) {
                         //还剩不到PAGE_COUNT数量的数据加载
-                        updateRecyclerView(pipeInfoList.size(), count);
+                        updateRecyclerView(pipeCollectionsList.size(), count);
                     } else {
-                        updateRecyclerView(pipeInfoList.size(), PAGE_COUNT);
+                        updateRecyclerView(pipeCollectionsList.size(), PAGE_COUNT);
                     }
                 }
             }
@@ -120,35 +120,35 @@ public class PipeFragment extends BaseFragment {
         }
         loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING);
 
-        ReqAllPipe reqAllPipe = new ReqAllPipe();
-        reqAllPipe.setPipeId("0");
-        reqAllPipe.setStartIndex(String.valueOf(formIndex));
-        reqAllPipe.setNumberOfRecords(String.valueOf(toIndex));
+        ReqAllPc reqAllPc = new ReqAllPc();
+        reqAllPc.setStartIndex(String.valueOf(formIndex));
+        reqAllPc.setNumberOfRecords(String.valueOf(toIndex));
+        reqAllPc.setPipeCollectionId("0");
 
-        curDisposable = pipeViewModel.reqAllPipe(reqAllPipe);
+        curDisposable = pipeCollectionsViewModel.reqAllPc(reqAllPc);
     }
 
-    private void getPipeNums() {
+    private void getNums() {
         loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING);
 
-        pipeViewModel.reqPipeNum();
+        pipeCollectionsViewModel.reqPcNum();
     }
 
     @Override
     public void bindViewModel() {
-        pipeViewModel = ViewModelProviders.of(this).get(PipeViewModel.class);
+        pipeCollectionsViewModel = ViewModelProviders.of(this).get(PipeCollectionsViewModel.class);
     }
 
     @Override
     public void subscribeToModel() {
-        if (!pipeViewModel.getmObservableAllPipe().hasObservers()) {
-            pipeViewModel.getmObservableAllPipe().observe(this, pipeInfos -> {
-                if (PipeFragment.this.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+        if (!pipeCollectionsViewModel.getmObservableAllPC().hasObservers()) {
+            pipeCollectionsViewModel.getmObservableAllPC().observe(this, pipeCollections -> {
+                if (PipeCollectionFragment.this.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
 
-                    if (null != pipeInfos) {
-                        if (pipeInfos.size() > 0) {
-                            pipeInfoList.addAll(pipeInfos);
-                            LogUtil.d(TAG, "load complete = " + pipeInfos);
+                    if (null != pipeCollections) {
+                        if (pipeCollections.size() > 0) {
+                            pipeCollectionsList.addAll(pipeCollections);
+                            LogUtil.d(TAG, "load complete = " + pipeCollections);
                             loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_COMPLETE);
                         } else {
                             loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_END);
@@ -160,9 +160,9 @@ public class PipeFragment extends BaseFragment {
             });
         }
 
-        if (!pipeViewModel.getmObservablePipeNum().hasObservers()) {
-            pipeViewModel.getmObservablePipeNum().observe(this, integer -> {
-                if (PipeFragment.this.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+        if (!pipeCollectionsViewModel.getmObservableNum().hasObservers()) {
+            pipeCollectionsViewModel.getmObservableNum().observe(this, integer -> {
+                if (PipeCollectionFragment.this.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
                     if (null != integer) {
                         maxNum = integer;
                         if (maxNum >= PAGE_COUNT) {
@@ -177,8 +177,8 @@ public class PipeFragment extends BaseFragment {
             });
         }
 
-        if (null == pipeInfoList || pipeInfoList.size() <= 0) {
-            getPipeNums();
+        if (null == pipeCollectionsList || pipeCollectionsList.size() <= 0) {
+            getNums();
         }
     }
 }

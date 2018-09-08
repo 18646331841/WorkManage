@@ -102,7 +102,7 @@ public class AlarmListFragment extends BaseFragment {
             radioButton.setChecked(true);
             getAllAlarm = true;
 
-            curDisposable.dispose();
+            closeDisposable();
             transFilterLayout();
             alarmList.clear();
             if (maxNum >= PAGE_COUNT) {
@@ -117,7 +117,7 @@ public class AlarmListFragment extends BaseFragment {
             radioButton.setChecked(true);
             getAllAlarm = false;
 
-            curDisposable.dispose();
+            closeDisposable();
             transFilterLayout();
             alarmList.clear();
             if (maxNum >= PAGE_COUNT) {
@@ -126,6 +126,12 @@ public class AlarmListFragment extends BaseFragment {
                 getDatas(0, maxNum);
             }
         });
+    }
+
+    private void closeDisposable() {
+        if (null != curDisposable) {
+            curDisposable.dispose();
+        }
     }
 
     private void cleanFilterGruop() {
@@ -180,6 +186,7 @@ public class AlarmListFragment extends BaseFragment {
 
     private void getDatas(int formIndex, int toIndex) {
         if (toIndex <= 0) {
+            loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_END);
             return;
         }
         loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING);

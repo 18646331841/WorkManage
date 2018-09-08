@@ -100,30 +100,68 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
         mBinding.imgNews.setOnClickListener(this);
         messageAdapter.setOnItemLongClickListener((view, position) -> {
             FloatMenu floatMenu = new FloatMenu(getActivity());
-            floatMenu.inflate(R.layout.layout_menu_warn);
-            floatMenu.show(mpoint);
-            floatMenu.setOnItemClickListener((v, position1) -> {
-                switch (position1){
-                    case 1:
-                        curAlarmInfo = (AlarmInfo) curMessageList.get(position);
-                        EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_SHOW));
-                        alarmViewModel.reqLiftAlarm(curAlarmInfo.getKey());
-                        break;
-                    case 4:
-                        EventBusMessage eventBusMessage = new EventBusMessage(AlarmAnalysisFragment.TAG);
-                        eventBusMessage.setArg1(curMessageList.get(position));
-                        EventBus.getDefault().post(eventBusMessage);
-                        break;
-                    case 5:
-                        mBinding.mulitpleMenu.setVisibility(View.VISIBLE);
-                        mBinding.tvNewMsg.setVisibility(View.GONE);
-                        messageAdapter.setFlag(MessageAdapter.SHOW_ALL);
-                        mBinding.allSelectTv.setText("全选");
-                        flag = false;
-                        messageAdapter.notifyDataSetChanged();
-                        break;
-                }
-            });
+            MessageInfo messageInfo = curMessageList.get(position);
+            if (messageInfo instanceof AlarmInfo) {
+                AlarmInfo alarmInfo = (AlarmInfo) messageInfo;
+                floatMenu.inflate(R.layout.layout_menu_warn);
+                floatMenu.show(mpoint);
+                floatMenu.setOnItemClickListener((v, position1) -> {
+                    switch (position1) {
+                        case 0:
+                            EventBusMessage mapMessage = new EventBusMessage(MapFragment.TAG);
+                            EventBus.getDefault().post(mapMessage);
+                            break;
+                        case 1:
+                            curAlarmInfo = alarmInfo;
+                            EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_SHOW));
+                            alarmViewModel.reqLiftAlarm(curAlarmInfo.getKey());
+                            break;
+                        case 2:
+
+                            break;
+                        case 3:
+                            EventBusMessage waveFormMessage = new EventBusMessage(WaveFormFragment.TAG);
+                            EventBus.getDefault().post(waveFormMessage);
+                            break;
+                        case 4:
+                            EventBusMessage eventBusMessage = new EventBusMessage(AlarmAnalysisFragment.TAG);
+                            eventBusMessage.setArg1(alarmInfo);
+                            EventBus.getDefault().post(eventBusMessage);
+                            break;
+                        case 5:
+                            mBinding.mulitpleMenu.setVisibility(View.VISIBLE);
+                            mBinding.tvNewMsg.setVisibility(View.GONE);
+                            messageAdapter.setFlag(MessageAdapter.SHOW_ALL);
+                            mBinding.allSelectTv.setText("全选");
+                            flag = false;
+                            messageAdapter.notifyDataSetChanged();
+                            break;
+                    }
+                });
+            } else if (messageInfo instanceof IncidentInfo) {
+                IncidentInfo incidentInfo = (IncidentInfo) messageInfo;
+                floatMenu.inflate(R.layout.layout_menu_incident);
+                floatMenu.show(mpoint);
+                floatMenu.setOnItemClickListener((v, position1) -> {
+                    switch (position1) {
+                        case 0:
+
+                            break;
+                        case 1:
+
+                            break;
+                        case 2:
+                            mBinding.mulitpleMenu.setVisibility(View.VISIBLE);
+                            mBinding.tvNewMsg.setVisibility(View.GONE);
+                            messageAdapter.setFlag(MessageAdapter.SHOW_ALL);
+                            mBinding.allSelectTv.setText("全选");
+                            flag = false;
+                            messageAdapter.notifyDataSetChanged();
+                            break;
+                    }
+                });
+            }
+
         });
         return mBinding.getRoot();
     }
@@ -158,11 +196,11 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
                 EventBus.getDefault().post(new EventBusMessage(NewsListFragment.TAG));
                 break;
             case R.id.all_select_tv:
-                if (flag){
+                if (flag) {
                     messageAdapter.neverall();
                     mBinding.allSelectTv.setText("全选");
                     flag = false;
-                }else {
+                } else {
                     messageAdapter.All();
                     mBinding.allSelectTv.setText("取消全选");
                     flag = true;
@@ -195,7 +233,7 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void messageEventBus(Point point) {
-       mpoint = point;
+        mpoint = point;
     }
 
 
@@ -271,7 +309,8 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
 //        reqAllAlarm.setIsAllAlarm("true");
 //        reqAllAlarm.setGetByTimeDiff("true");
 //        reqAllAlarm.setEndTime(endTime);
-//        reqAllAlarm.setStartTime(SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_LAST_TIME_NEWINFO, endTime));
+//        reqAllAlarm.setStartTime(SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_LAST_TIME_NEWINFO,
+// endTime));
 
         alarmViewModel.getAllUnliftAlarm();
         incidentViewModel.reqAllIncidentToDB();

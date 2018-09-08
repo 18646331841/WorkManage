@@ -1,6 +1,8 @@
 package com.barisetech.www.workmanage.view.fragment;
 
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
@@ -14,59 +16,71 @@ import android.view.ViewGroup;
 
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.adapter.OnScrollListener;
-import com.barisetech.www.workmanage.adapter.PipeAdapter;
+import com.barisetech.www.workmanage.adapter.PipeWorkAdapter;
+import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.base.BaseLoadMoreWrapper;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
-import com.barisetech.www.workmanage.bean.pipe.PipeInfo;
-import com.barisetech.www.workmanage.bean.pipe.ReqAllPipe;
-import com.barisetech.www.workmanage.databinding.FragmentPipeBinding;
+import com.barisetech.www.workmanage.bean.pipework.PipeWork;
+import com.barisetech.www.workmanage.bean.pipework.ReqAllPW;
+import com.barisetech.www.workmanage.databinding.FragmentPipeWorkBinding;
 import com.barisetech.www.workmanage.utils.DisplayUtil;
 import com.barisetech.www.workmanage.utils.LogUtil;
-import com.barisetech.www.workmanage.viewmodel.PipeViewModel;
+import com.barisetech.www.workmanage.viewmodel.PipeWorkViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.disposables.Disposable;
 
-public class PipeFragment extends BaseFragment {
-    public static final String TAG = "PipeFragment";
+public class PipeWorkFragment extends BaseFragment {
+    public static final String TAG = "PipeWorkFragment";
 
-    FragmentPipeBinding mBinding;
-    private PipeAdapter pipeAdapter;
-    private List<PipeInfo> pipeInfoList;
+    private PipeWorkAdapter pipeWorkAdapter;
+    FragmentPipeWorkBinding mBinding;
+    private List<PipeWork> pipeWorkList;
     private BaseLoadMoreWrapper loadMoreWrapper;
-    private PipeViewModel pipeViewModel;
+    private PipeWorkViewModel pipeWorkViewModel;
     private Disposable curDisposable;
+
+    private DatePickerDialog startDatePicker;
+    private DatePickerDialog endDatePicker;
+    private TimePickerDialog startTimePicker;
+    private TimePickerDialog endTimePicker;
+
+    private String startTime = "";
+    private String endTime = "";
+
     //每次加载个数
     private static final int PAGE_COUNT = 10;
     private int maxNum;
+    private int curType = BaseConstant.TYPE_INCIDENT_ALL;
+    private int selectType;//选择的类型
 
-    public PipeFragment() {
+    public PipeWorkFragment() {
         // Required empty public constructor
     }
 
-    public static PipeFragment newInstance() {
-        PipeFragment fragment = new PipeFragment();
+    public static PipeWorkFragment newInstance() {
+        PipeWorkFragment fragment = new PipeWorkFragment();
         return fragment;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        pipeInfoList = new ArrayList<>();
+        pipeWorkList = new ArrayList<>();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_pipe, container, false);
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_pipe_work, container, false);
 
         setToolBarHeight(mBinding.toolbar.getRoot());
         mBinding.setFragment(this);
         ToolbarInfo toolbarInfo = new ToolbarInfo();
-        toolbarInfo.setTitle(getString(R.string.title_pipe));
+        toolbarInfo.setTitle(getString(R.string.title_pipe_work));
         toolbarInfo.setTwoText("新增");
         observableToolbar.set(toolbarInfo);
 
@@ -81,28 +95,28 @@ public class PipeFragment extends BaseFragment {
 
     private void initRecyclerView() {
 
-        pipeAdapter = new PipeAdapter(pipeInfoList, getContext());
-        loadMoreWrapper = new BaseLoadMoreWrapper(pipeAdapter);
+        pipeWorkAdapter = new PipeWorkAdapter(pipeWorkList, getContext());
+        loadMoreWrapper = new BaseLoadMoreWrapper(pipeWorkAdapter);
         loadMoreWrapper.setLoadingViewHeight(DisplayUtil.dip2px(getContext(), 50));
-        mBinding.pipeList.setLayoutManager(new LinearLayoutManager(getContext()));
-        mBinding.pipeList.setAdapter(loadMoreWrapper);
-        mBinding.pipeList.setItemAnimator(new DefaultItemAnimator());
+        mBinding.pipeWorkList.setLayoutManager(new LinearLayoutManager(getContext()));
+        mBinding.pipeWorkList.setAdapter(loadMoreWrapper);
+        mBinding.pipeWorkList.setItemAnimator(new DefaultItemAnimator());
 
-        mBinding.pipeList.addOnScrollListener(new OnScrollListener() {
+        mBinding.pipeWorkList.addOnScrollListener(new OnScrollListener() {
             @Override
             public void onLoadMore() {
-                if (pipeInfoList.size() == maxNum) {
+                if (pipeWorkList.size() == maxNum) {
 //                    if (maxNum != 0) {
                     //已加载到最大，不再加载
                     loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_END);
 //                    }
                 } else {
-                    int count = maxNum - pipeInfoList.size();
+                    int count = maxNum - pipeWorkList.size();
                     if (count < PAGE_COUNT) {
                         //还剩不到PAGE_COUNT数量的数据加载
-                        updateRecyclerView(pipeInfoList.size(), count);
+                        updateRecyclerView(pipeWorkList.size(), count);
                     } else {
-                        updateRecyclerView(pipeInfoList.size(), PAGE_COUNT);
+                        updateRecyclerView(pipeWorkList.size(), PAGE_COUNT);
                     }
                 }
             }
@@ -120,35 +134,36 @@ public class PipeFragment extends BaseFragment {
         }
         loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING);
 
-        ReqAllPipe reqAllPipe = new ReqAllPipe();
-        reqAllPipe.setPipeId("0");
-        reqAllPipe.setStartIndex(String.valueOf(formIndex));
-        reqAllPipe.setNumberOfRecords(String.valueOf(toIndex));
+        ReqAllPW reqAllPW = new ReqAllPW();
+        reqAllPW.setIsGetAll("false");
+        reqAllPW.setPipeIdQueryChecked("false");
+        reqAllPW.setPipeId("0");
+        reqAllPW.setTimeQueryChecked("true");
 
-        curDisposable = pipeViewModel.reqAllPipe(reqAllPipe);
+        curDisposable = pipeWorkViewModel.reqAllPw(reqAllPW);
     }
 
-    private void getPipeNums() {
+    private void getNums() {
         loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING);
 
-        pipeViewModel.reqPipeNum();
+        pipeWorkViewModel.reqPwNum();
     }
 
     @Override
     public void bindViewModel() {
-        pipeViewModel = ViewModelProviders.of(this).get(PipeViewModel.class);
+        pipeWorkViewModel = ViewModelProviders.of(this).get(PipeWorkViewModel.class);
     }
 
     @Override
     public void subscribeToModel() {
-        if (!pipeViewModel.getmObservableAllPipe().hasObservers()) {
-            pipeViewModel.getmObservableAllPipe().observe(this, pipeInfos -> {
-                if (PipeFragment.this.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+        if (!pipeWorkViewModel.getmObservableAllPW().hasObservers()) {
+            pipeWorkViewModel.getmObservableAllPW().observe(this, pipeWorks -> {
+                if (PipeWorkFragment.this.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
 
-                    if (null != pipeInfos) {
-                        if (pipeInfos.size() > 0) {
-                            pipeInfoList.addAll(pipeInfos);
-                            LogUtil.d(TAG, "load complete = " + pipeInfos);
+                    if (null != pipeWorks) {
+                        if (pipeWorks.size() > 0) {
+                            pipeWorkList.addAll(pipeWorks);
+                            LogUtil.d(TAG, "load complete = " + pipeWorks);
                             loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_COMPLETE);
                         } else {
                             loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_END);
@@ -160,9 +175,9 @@ public class PipeFragment extends BaseFragment {
             });
         }
 
-        if (!pipeViewModel.getmObservablePipeNum().hasObservers()) {
-            pipeViewModel.getmObservablePipeNum().observe(this, integer -> {
-                if (PipeFragment.this.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+        if (!pipeWorkViewModel.getmObservableNum().hasObservers()) {
+            pipeWorkViewModel.getmObservableNum().observe(this, integer -> {
+                if (PipeWorkFragment.this.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
                     if (null != integer) {
                         maxNum = integer;
                         if (maxNum >= PAGE_COUNT) {
@@ -177,8 +192,8 @@ public class PipeFragment extends BaseFragment {
             });
         }
 
-        if (null == pipeInfoList || pipeInfoList.size() <= 0) {
-            getPipeNums();
+        if (null == pipeWorkList || pipeWorkList.size() <= 0) {
+            getNums();
         }
     }
 }

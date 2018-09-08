@@ -23,11 +23,14 @@ import com.barisetech.www.workmanage.view.fragment.DigitizingFragment;
 import com.barisetech.www.workmanage.view.fragment.FingerprintManagerFragment;
 import com.barisetech.www.workmanage.view.fragment.IncidentDetailsFragment;
 import com.barisetech.www.workmanage.view.fragment.IncidentListFragment;
+import com.barisetech.www.workmanage.view.fragment.MapFragment;
 import com.barisetech.www.workmanage.view.fragment.NavigationFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsAddFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsDetailsFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsListFragment;
+import com.barisetech.www.workmanage.view.fragment.PipeCollectionFragment;
 import com.barisetech.www.workmanage.view.fragment.PipeFragment;
+import com.barisetech.www.workmanage.view.fragment.PipeWorkFragment;
 import com.barisetech.www.workmanage.view.fragment.SiteDetailFragment;
 import com.barisetech.www.workmanage.view.fragment.SiteFragment;
 
@@ -96,7 +99,6 @@ public class MainActivity extends BaseActivity {
     protected void setListener() {
     }
 
-
     protected void showActivityOrFragment(EventBusMessage eventBusMessage, boolean isActivity) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         String tag = eventBusMessage.message;
@@ -106,6 +108,10 @@ public class MainActivity extends BaseActivity {
                 case LoginActivity.TAG:
                     intent2Activity(LoginActivity.class);
                     finish();
+                    break;
+                case MapFragment.TAG:
+                    transaction.add(R.id.fragment_navigation, NavigationFragment.newInstance(tag), NavigationFragment
+                            .TAG).commit();
                     break;
                 default:
                     Bundle bundle = new Bundle();
@@ -195,6 +201,14 @@ public class MainActivity extends BaseActivity {
                     transaction
                             .addToBackStack(tag)
                             .replace(R.id.fragment_content, PipeFragment.newInstance(), tag).commit();
+                    break;
+                case PipeCollectionFragment.TAG:
+                    transaction
+                            .replace(R.id.fragment_content, PipeCollectionFragment.newInstance(), tag).commit();
+                    break;
+                case PipeWorkFragment.TAG:
+                    transaction
+                            .replace(R.id.fragment_content, PipeWorkFragment.newInstance(), tag).commit();
                     break;
             }
         }

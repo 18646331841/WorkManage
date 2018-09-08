@@ -1,11 +1,16 @@
 package com.barisetech.www.workmanage.viewmodel;
 
 import android.app.Application;
+import android.arch.lifecycle.MutableLiveData;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseViewModel;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.FailResponse;
+import com.barisetech.www.workmanage.bean.TypeResponse;
+import com.barisetech.www.workmanage.bean.pipecollections.PipeCollections;
 import com.barisetech.www.workmanage.bean.pipecollections.ReqAddPC;
 import com.barisetech.www.workmanage.bean.pipecollections.ReqAllPc;
 import com.barisetech.www.workmanage.bean.pipecollections.ReqDeletePc;
@@ -16,6 +21,8 @@ import com.barisetech.www.workmanage.view.LoginActivity;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.List;
+
 import io.reactivex.disposables.Disposable;
 
 /**
@@ -25,10 +32,20 @@ public class PipeCollectionsViewModel extends BaseViewModel implements ModelCall
     private static final String TAG = "PipeCollectionsViewModel";
 
     private PipeCollectionModel pipeCollectionModel;
+    private Handler mDelivery;
+
+    private MutableLiveData<List<PipeCollections>> mObservableAllPC;
+    private MutableLiveData<Integer> mObservableNum;
 
     public PipeCollectionsViewModel(@NonNull Application application) {
         super(application);
         pipeCollectionModel = new PipeCollectionModel(this);
+        mDelivery = new android.os.Handler(Looper.getMainLooper());
+
+        mObservableAllPC = new MutableLiveData<>();
+        mObservableAllPC.setValue(null);
+        mObservableNum = new MutableLiveData<>();
+        mObservableNum.setValue(null);
     }
 
     /**
@@ -77,6 +94,19 @@ public class PipeCollectionsViewModel extends BaseViewModel implements ModelCall
     @Override
     public void netResult(Object object) {
         EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_CLOSE));
+        if (object instanceof TypeResponse) {
+            TypeResponse typeResponse = (TypeResponse) object;
+            mDelivery.post(() -> {
+                switch (typeResponse.type) {
+                    case PipeCollectionModel.TYPE_ALL:
+                        mObservableAllPC.setValue((List<PipeCollections>) typeResponse.data);
+                        break;
+                    case PipeCollectionModel.TYPE_NUM:
+                        mObservableNum.setValue((Integer) typeResponse.data);
+                        break;
+                }
+            });
+        }
     }
 
     @Override
@@ -87,6 +117,25 @@ public class PipeCollectionsViewModel extends BaseViewModel implements ModelCall
             if (failResponse.code == Config.ERROR_UNAUTHORIZED) {
                 EventBus.getDefault().post(new EventBusMessage(LoginActivity.TAG));
             }
+
+            mDelivery.post(() -> {
+                switch (failResponse.type) {
+                    case PipeCollectionModel.TYPE_NUM:
+                        mObservableNum.setValue(null);
+                        break;
+                    case PipeCollectionModel.TYPE_ALL:
+                        mObservableAllPC.setValue(null);
+                        break;
+                }
+            });
         }
+    }
+
+    public MutableLiveData<List<PipeCollections>> getmObservableAllPC() {
+        return mObservableAllPC;
+    }
+
+    public MutableLiveData<Integer> getmObservableNum() {
+        return mObservableNum;
     }
 }

@@ -208,6 +208,7 @@ public class NewsListFragment extends BaseFragment {
         LogUtil.d(TAG, "fromIndex =" + fromIndex + ", toIndex = " + toIndex);
 //        EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_SHOW));
         if (toIndex <= 0) {
+            loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_END);
             return;
         }
         loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING);

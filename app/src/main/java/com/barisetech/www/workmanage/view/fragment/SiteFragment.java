@@ -151,10 +151,10 @@ public class SiteFragment extends BaseFragment implements View.OnClickListener{
                             switch (position){
                                 case 0:
                                     mBinding.longMenu.setVisibility(View.VISIBLE);
-                                    siteAdapter.setFlag(siteAdapter.SHOW_ALL);
                                     mBinding.selectAll.setText("全选");
                                     flag = false;
-                                    siteAdapter.notifyDataSetChanged();
+                                    siteAdapter.setFlag(siteAdapter.SHOW_ALL);
+                                    loadMoreWrapper.notifyDataSetChanged();
                             }
                         }
                     }).show();
@@ -272,6 +272,7 @@ public class SiteFragment extends BaseFragment implements View.OnClickListener{
             case R.id.select_all_cancel:
                 mBinding.longMenu.setVisibility(View.GONE);
                 siteAdapter.setFlag(siteAdapter.HIDE_ALL);
+                loadMoreWrapper.notifyDataSetChanged();
                 break;
         }
     }

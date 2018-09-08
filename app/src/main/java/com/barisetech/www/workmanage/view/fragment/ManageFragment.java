@@ -73,8 +73,10 @@ public class ManageFragment extends BaseFragment implements View.OnClickListener
                 EventBus.getDefault().post(new EventBusMessage(PipeFragment.TAG));
                 break;
             case R.id.item_pipeline_collection:
+                EventBus.getDefault().post(new EventBusMessage(PipeCollectionFragment.TAG));
                 break;
             case R.id.item_pipeline_work_status:
+                EventBus.getDefault().post(new EventBusMessage(PipeWorkFragment.TAG));
                 break;
             case R.id.item_pipeline_blind_area:
                 break;

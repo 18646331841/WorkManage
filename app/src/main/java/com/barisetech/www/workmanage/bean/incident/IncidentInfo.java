@@ -200,18 +200,18 @@ public class IncidentInfo extends MessageInfo implements Serializable {
     public String toDetails() {
         StringBuilder sb = new StringBuilder();
         sb
-                .append("              ID        ").append(Key).append("\n\n")
-                .append("数字化仪ID          ").append(SiteId).append("\n\n")
-                .append("站点名称        ").append(SiteName).append("\n\n")
-                .append("所在管线ID          ").append(PipeId).append("\n\n")
-                .append("所在管线        ").append(PipeName).append("\n\n")
-                .append("发生时间        ").append(TimeStamp).append("\n\n")
-                .append("事件类型        ").append(Type).append("\n\n")
-                .append("是否解除        ").append(Lifted ? "已解除" : "未解除").append("\n\n")
-                .append("操作人员        ").append(LiftedUser).append("\n\n")
-                .append("提示内容        ").append(IncidentContent).append("\n\n")
-                .append("        测试        ").append(Test).append("\n\n")
-                .append("        备注        ").append(Remark).append("\n\n");
+                .append("                ID        ").append(Key).append("\n\n")
+                .append("数字化仪ID        ").append(SiteId).append("\n\n")
+                .append("   站点名称        ").append(SiteName).append("\n\n")
+                .append("所在管线ID        ").append(PipeId).append("\n\n")
+                .append("   所在管线        ").append(PipeName).append("\n\n")
+                .append("   发生时间        ").append(TimeStamp).append("\n\n")
+                .append("   事件类型        ").append(Type).append("\n\n")
+                .append("   是否解除        ").append(Lifted ? "已解除" : "未解除").append("\n\n")
+                .append("   操作人员        ").append(LiftedUser).append("\n\n")
+                .append("   提示内容        ").append(IncidentContent).append("\n\n")
+                .append("           测试        ").append(Test).append("\n\n")
+                .append("           备注        ").append(Remark).append("\n\n");
         return sb.toString();
     }
 }

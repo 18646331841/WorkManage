@@ -1,5 +1,7 @@
 package com.barisetech.www.workmanage.bean.pipecollections;
 
+import com.barisetech.www.workmanage.bean.pipe.PipeInfo;
+
 import java.util.List;
 
 /**
@@ -24,7 +26,7 @@ public class PipeCollections {
     private String Telephone;
     private String Email;
     private String Remark;
-    private List<?> PipeCollects;
+    private List<PipeInfo> PipeCollects;
 
     public String getId() {
         return Id;
@@ -82,11 +84,11 @@ public class PipeCollections {
         this.Remark = Remark;
     }
 
-    public List<?> getPipeCollects() {
+    public List<PipeInfo> getPipeCollects() {
         return PipeCollects;
     }
 
-    public void setPipeCollects(List<?> PipeCollects) {
+    public void setPipeCollects(List<PipeInfo> PipeCollects) {
         this.PipeCollects = PipeCollects;
     }
 }
