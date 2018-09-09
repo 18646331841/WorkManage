@@ -26,6 +26,7 @@ import com.barisetech.www.workmanage.view.fragment.FingerprintManagerFragment;
 import com.barisetech.www.workmanage.view.fragment.IncidentDetailsFragment;
 import com.barisetech.www.workmanage.view.fragment.IncidentListFragment;
 import com.barisetech.www.workmanage.view.fragment.MapFragment;
+import com.barisetech.www.workmanage.view.fragment.ModifySiteFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsAddFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsDetailsFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsListFragment;
@@ -208,6 +209,18 @@ public class SecondActivity extends BaseActivity {
                 transaction
                         .replace(R.id.second_framelayout, SiteDetailFragment.newInstance((SiteBean)
                                 eventBusMessage.getArg1()), tag).commit();
+                if (!isActivity) {
+                    transaction.addToBackStack(tag);
+                }
+                break;
+
+            case ModifySiteFragment.TAG:
+                transaction
+                        .replace(R.id.second_framelayout, ModifySiteFragment.newInstance((SiteBean)
+                                eventBusMessage.getArg1()), tag).commit();
+                if (!isActivity) {
+                    transaction.addToBackStack(tag);
+                }
                 break;
         }
     }

@@ -62,7 +62,6 @@ public class SiteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         for(int i = 0; i < mList.size(); i++) {
             map.put(i, mList.get(i));
         }
-        notifyDataSetChanged();
     }
 
     /*
@@ -71,7 +70,6 @@ public class SiteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     public void neverall() {
         map.clear();
-        notifyDataSetChanged();
     }
 
     /*
@@ -92,8 +90,10 @@ public class SiteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         viewHolder.tv_site_info.setText(bean.Name);
         if (flag == SHOW_ALL){
             viewHolder.select_item.setVisibility(View.VISIBLE);
+            viewHolder.img.setVisibility(View.GONE);
         }else if (flag == HIDE_ALL){
             viewHolder.select_item.setVisibility(View.GONE);
+            viewHolder.img.setVisibility(View.VISIBLE);
         }
 
         if (null != map.get(position)) {

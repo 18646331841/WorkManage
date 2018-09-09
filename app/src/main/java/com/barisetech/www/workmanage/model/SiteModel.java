@@ -7,6 +7,7 @@ import com.barisetech.www.workmanage.base.BaseResponse;
 import com.barisetech.www.workmanage.bean.FailResponse;
 import com.barisetech.www.workmanage.bean.TypeResponse;
 import com.barisetech.www.workmanage.bean.site.ReqAddSite;
+import com.barisetech.www.workmanage.bean.site.ReqDelSiteInfo;
 import com.barisetech.www.workmanage.bean.site.ReqSiteInfos;
 import com.barisetech.www.workmanage.bean.site.SiteBean;
 import com.barisetech.www.workmanage.callback.ModelCallBack;
@@ -69,6 +70,43 @@ public class SiteModel extends BaseModel{
                     @Override
                     protected void onSuccess(Integer response) {
                         TypeResponse typeResponse = new TypeResponse(TYPE_NUM, response);
+                        modelCallBack.netResult(typeResponse);
+                    }
+                });
+        return disposable;
+    }
+
+
+    public Disposable reqDeletePipe(ReqDelSiteInfo reqDelSiteInfo) {
+        if (null == reqDelSiteInfo) {
+            return null;
+        }
+
+        Disposable disposable =siteService.deleteSite(mToken, reqDelSiteInfo)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribeWith(new ObserverCallBack<Boolean>() {
+                    @Override
+                    protected void onThrowable(Throwable e) {
+                        FailResponse failResponse = new FailResponse(TYPE_DELETE, Config.ERROR_NETWORK);
+                        modelCallBack.fail(failResponse);
+
+                    }
+                    @Override
+                    protected void onFailure(BaseResponse response) {
+                        FailResponse failResponse;
+                        if (response.Code == 401) {
+                            failResponse = new FailResponse(TYPE_DELETE, Config.ERROR_UNAUTHORIZED);
+                        } else {
+                            failResponse = new FailResponse(TYPE_DELETE, Config.ERROR_FAIL);
+                        }
+                        modelCallBack.fail(failResponse);
+                    }
+
+                    @Override
+                    protected void onSuccess(Boolean response) {
+                        LogUtil.d(TAG, "DeletePipe result = " + response);
+                        TypeResponse typeResponse = new TypeResponse(TYPE_DELETE, response);
                         modelCallBack.netResult(typeResponse);
                     }
                 });

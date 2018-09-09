@@ -69,8 +69,8 @@ public class SiteBean implements Serializable{
 
     public int SiteId;
     public String Name;
-    public int Longitude;
-    public int Latitude;
+    public double Longitude;
+    public double Latitude;
     public boolean IsOnLine;
     public String Company;
     public int EnergyRatio;

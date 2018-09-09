@@ -21,8 +21,7 @@
             android:gravity="center_vertical"
             android:text=""
             android:textColor="#262626"
-            android:textSize="@dimen/dp_16"
-            android:textStyle="bold" />
+            android:textSize="@dimen/dp_16" />
 
         <EditText
             android:id="@+id/et_content"
@@ -39,7 +38,6 @@
             android:textColor="#262626"
             android:textColorHint="#ABABAB"
             android:textSize="@dimen/dp_16"
-            android:textStyle="bold"
             android:visibility="gone" />
 
         <TextView
@@ -57,7 +55,6 @@
             android:textColor="#262626"
             android:textColorHint="#ABABAB"
             android:textSize="@dimen/dp_16"
-            android:textStyle="bold"
             android:visibility="gone" />
 
         <View

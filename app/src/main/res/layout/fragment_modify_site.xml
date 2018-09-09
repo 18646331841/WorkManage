@@ -27,7 +27,7 @@
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
 
                 <com.barisetech.www.workmanage.widget.FormView
                     android:id="@+id/site_id"
@@ -132,7 +132,8 @@
                     android:background="@drawable/shane_button_corners_red"
                     android:text="@string/delete_site"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/sp_18"/>
+                    android:textSize="@dimen/sp_18"
+                    android:layout_marginBottom="@dimen/dp_20"/>
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

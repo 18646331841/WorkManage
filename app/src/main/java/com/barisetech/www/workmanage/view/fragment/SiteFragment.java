@@ -88,7 +88,9 @@ public class SiteFragment extends BaseFragment implements View.OnClickListener{
         toolbarInfo.setTitle(getString(R.string.tv_site));
         toolbarInfo.setTwoText(getString(R.string.message_mission));
         observableToolbar.set(toolbarInfo);
-        EventBus.getDefault().register(this);
+        if (!EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().register(this);
+        }
         initView();
         return mBinding.getRoot();
     }
@@ -262,10 +264,12 @@ public class SiteFragment extends BaseFragment implements View.OnClickListener{
                 if (flag){
                     siteAdapter.neverall();
                     mBinding.selectAll.setText("全选");
+                    loadMoreWrapper.notifyDataSetChanged();
                     flag = false;
                 }else {
                     siteAdapter.All();
                     mBinding.selectAll.setText("取消全选");
+                    loadMoreWrapper.notifyDataSetChanged();
                     flag = true;
                 }
                 break;

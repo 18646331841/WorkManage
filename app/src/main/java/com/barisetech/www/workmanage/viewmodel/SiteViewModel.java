@@ -21,6 +21,7 @@ import com.barisetech.www.workmanage.bean.alarm.ReqAllAlarm;
 import com.barisetech.www.workmanage.bean.news.NewsInfo;
 import com.barisetech.www.workmanage.bean.pipe.ReqAddPipe;
 import com.barisetech.www.workmanage.bean.site.ReqAddSite;
+import com.barisetech.www.workmanage.bean.site.ReqDelSiteInfo;
 import com.barisetech.www.workmanage.bean.site.ReqSiteInfos;
 import com.barisetech.www.workmanage.bean.site.SiteBean;
 import com.barisetech.www.workmanage.callback.ModelCallBack;
@@ -53,6 +54,8 @@ public class SiteViewModel extends BaseViewModel implements ModelCallBack {
 
     private MediatorLiveData<Integer> mObservableSiteNum;
     private MediatorLiveData<List<SiteBean>> mObservableSiteInfos;
+    private MediatorLiveData<String> meObservableAddOrModifySite;
+    private MediatorLiveData<Boolean> mObservableSiteDel;
 
     public SiteViewModel(@NonNull Application application) {
         super(application);
@@ -67,6 +70,12 @@ public class SiteViewModel extends BaseViewModel implements ModelCallBack {
 
         mObservableSiteInfos = new MediatorLiveData<>();
         mObservableSiteInfos.setValue(null);
+
+        meObservableAddOrModifySite = new MediatorLiveData<>();
+        meObservableAddOrModifySite.setValue(null);
+
+        mObservableSiteDel = new MediatorLiveData<>();
+        mObservableSiteDel.setValue(null);
     }
 
 
@@ -88,6 +97,12 @@ public class SiteViewModel extends BaseViewModel implements ModelCallBack {
         return disposable;
     }
 
+    public Disposable reqDelSite(ReqDelSiteInfo reqDelSiteInfo) {
+        Disposable disposable = siteModel.reqDeletePipe(reqDelSiteInfo);
+        addDisposable(disposable);
+        return disposable;
+    }
+
     @Override
     public void netResult(Object object) {
         EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_CLOSE));
@@ -100,6 +115,12 @@ public class SiteViewModel extends BaseViewModel implements ModelCallBack {
                         break;
                     case SiteModel.TYPE_ALL:
                         mObservableSiteInfos.setValue((List<SiteBean>) typeResponse.data);
+                        break;
+                     case SiteModel.TYPE_ADD:
+                         meObservableAddOrModifySite.setValue((String) typeResponse.data);
+                         break;
+                    case SiteModel.TYPE_DELETE:
+                        mObservableSiteDel.setValue((boolean) typeResponse.data);
                         break;
                 }
             });
@@ -124,5 +145,11 @@ public class SiteViewModel extends BaseViewModel implements ModelCallBack {
 
     public MediatorLiveData<List<SiteBean>> getmObservableSiteInfos() {
         return mObservableSiteInfos;
+    }
+    public MediatorLiveData<String> getMeObservableAddOrModifySite() {
+        return meObservableAddOrModifySite;
+    }
+    public MediatorLiveData<Boolean> getmObservableSiteDel() {
+        return mObservableSiteDel;
     }
 }
