@@ -1,6 +1,7 @@
 package com.barisetech.www.workmanage.view.fragment;
 
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableField;
 import android.os.Bundle;
@@ -14,12 +15,14 @@ import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.bean.incident.IncidentInfo;
 import com.barisetech.www.workmanage.databinding.FragmentIncidentDetailsBinding;
+import com.barisetech.www.workmanage.viewmodel.IncidentViewModel;
 
 public class IncidentDetailsFragment extends BaseFragment implements View.OnClickListener{
     public static final String TAG = "IncidentDetailsFragment";
 
     private static final String INCIDENT_ID = "incident";
 
+    private IncidentViewModel incidentViewModel;
     private IncidentInfo curIncidentInfo;
     public ObservableField<IncidentInfo> incidentInfo;
     FragmentIncidentDetailsBinding mBinding;
@@ -71,7 +74,8 @@ public class IncidentDetailsFragment extends BaseFragment implements View.OnClic
 
     @Override
     public void bindViewModel() {
-
+        incidentViewModel = ViewModelProviders.of(this).get(IncidentViewModel.class);
+        incidentViewModel.setReadIncident(curIncidentInfo.getKey());
     }
 
     @Override

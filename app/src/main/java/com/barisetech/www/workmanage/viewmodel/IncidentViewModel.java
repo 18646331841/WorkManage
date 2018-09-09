@@ -100,8 +100,11 @@ public class IncidentViewModel extends BaseViewModel implements ModelCallBack{
     /**
      * 获取事件列表并保存到数据库
      */
-    public void reqAllIncidentToDB() {
-        addDisposable(incidentModel.reqAllIncidentToDB());
+    public void reqAllIncidentToDB(ReqAllIncident reqAllIncident) {
+        if (reqAllIncident == null) {
+            return;
+        }
+        addDisposable(incidentModel.reqAllIncidentToDB(reqAllIncident));
     }
 
     /**
@@ -130,6 +133,14 @@ public class IncidentViewModel extends BaseViewModel implements ModelCallBack{
             return disposable;
         }
         return null;
+    }
+
+    /**
+     * 设置事件已读
+     * @param key
+     */
+    public void setReadIncident(int key) {
+        incidentModel.readedIncident(key);
     }
 
     public void reqLiftIncident(String incidentId) {

@@ -8,10 +8,9 @@ import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
-
 import java.util.List;
 
-import io.reactivex.Flowable;
+import io.reactivex.Maybe;
 
 /**
  * Created by LJH on 2018/8/12.
@@ -28,14 +27,14 @@ public interface AlarmInfoDao {
     @Query("select * from alarm_info where isRead = :isRead")
     LiveData<List<AlarmInfo>> getAlarmInfosByRead(boolean isRead);
 
-    @Query("select * from alarm_info where 'Key' = :key Limit 1")
+    @Query("select * from alarm_info where `Key` = :key Limit 1")
     LiveData<AlarmInfo> getAlarmInfo(int key);
 
-    @Query("select * from alarm_info where 'Key' = :key Limit 1")
+    @Query("select * from alarm_info where `Key` = :key Limit 1")
     AlarmInfo getAlarmInfoSync(int key);
 
-    @Query("select * from alarm_info where 'Key' = :key Limit 1")
-    Flowable<AlarmInfo> getAlarmInfoRxjava(int key);
+    @Query("select * from alarm_info where `Key` = :key Limit 1")
+    Maybe<AlarmInfo> getAlarmInfoRxjava(int key);
 
     @Update
     void updateAlarmLift(AlarmInfo alarmInfo);

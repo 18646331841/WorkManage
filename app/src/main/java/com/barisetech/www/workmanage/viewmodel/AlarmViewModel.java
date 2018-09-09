@@ -48,6 +48,7 @@ public class AlarmViewModel extends BaseViewModel implements ModelCallBack {
     private MutableLiveData<List<AlarmInfo>> mObservableNetAlarmInfos;
     private MutableLiveData<Integer> mObservableNum;
 
+    private MutableLiveData<List<AlarmInfo>> mObservableUnliftAlarmInfos;
     private MutableLiveData<Boolean> mObservableLiftAlarm;
 
     public AlarmViewModel(@NonNull Application application) {
@@ -67,6 +68,9 @@ public class AlarmViewModel extends BaseViewModel implements ModelCallBack {
 
         mObservableNum = new MutableLiveData<>();
         mObservableNum.setValue(null);
+
+        mObservableUnliftAlarmInfos = new MutableLiveData<>();
+        mObservableUnliftAlarmInfos.setValue(null);
     }
 
     public AlarmViewModel(@NonNull Application application, int alarmId) {
@@ -131,6 +135,15 @@ public class AlarmViewModel extends BaseViewModel implements ModelCallBack {
         alarmModel.liftAlarm(alarmInfo);
     }
 
+    /**
+     * 设置警报已读
+     *
+     * @param key
+     */
+    public void setReadAlarm(int key) {
+        alarmModel.readedAlarm(key);
+    }
+
     public LiveData<List<AlarmInfo>> getNotReadAlarmInfos() {
         return mObservableNotReadAlarmInfos;
     }
@@ -144,6 +157,9 @@ public class AlarmViewModel extends BaseViewModel implements ModelCallBack {
                 switch (typeResponse.type) {
                     case AlarmModel.TYPE_LIFT_ALARM:
                         mObservableLiftAlarm.setValue((Boolean) typeResponse.data);
+                        break;
+                    case AlarmModel.TYPE_UNLIFT_ALARM:
+                        mObservableUnliftAlarmInfos.setValue((List<AlarmInfo>) typeResponse.data);
                         break;
                     case AlarmModel.TYPE_All_ALARM:
                         mObservableNetAlarmInfos.setValue((List<AlarmInfo>) typeResponse.data);
@@ -188,6 +204,10 @@ public class AlarmViewModel extends BaseViewModel implements ModelCallBack {
 
     public MutableLiveData<Integer> getmObservableNum() {
         return mObservableNum;
+    }
+
+    public MutableLiveData<List<AlarmInfo>> getmObservableUnliftAlarmInfos() {
+        return mObservableUnliftAlarmInfos;
     }
 
     public static class Factory extends ViewModelProvider.NewInstanceFactory {

@@ -18,8 +18,12 @@ import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.bean.alarmanalysis.AlarmAnalysis;
 import com.barisetech.www.workmanage.bean.alarmanalysis.ReqAddAlarmAnalysis;
 import com.barisetech.www.workmanage.databinding.FragmentAlarmAnalysisDetailBinding;
+import com.barisetech.www.workmanage.utils.LogUtil;
 import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
 import com.barisetech.www.workmanage.viewmodel.AlarmAnalysisViewModel;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -71,16 +75,6 @@ public class AlarmAnalysisDetailFragment extends BaseFragment {
     private void initView() {
         mBinding.setAnalysisinfo(curAnalysis);
 
-        String account = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_ACCOUNT, "");
-        if (!TextUtils.isEmpty(account)) {
-            if (!curAnalysis.getReadPeopleList().contains(account)) {
-                ReqAddAlarmAnalysis reqAddAlarmAnalysis = new ReqAddAlarmAnalysis();
-                reqAddAlarmAnalysis.setId(String.valueOf(curAnalysis.getId()));
-                reqAddAlarmAnalysis.setIsNewReader("true");
-
-//                alarmAnalysisViewModel.reqAddOrModifyAnalysis(reqAddAlarmAnalysis);
-            }
-        }
     }
 
     @Override
@@ -91,5 +85,27 @@ public class AlarmAnalysisDetailFragment extends BaseFragment {
     @Override
     public void subscribeToModel() {
 
+        String account = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_ACCOUNT, "");
+        if (!TextUtils.isEmpty(account)) {
+            if (!curAnalysis.getReadPeopleList().contains(account)) {
+                LogUtil.d(TAG, "first read");
+                ReqAddAlarmAnalysis reqAddAlarmAnalysis = new ReqAddAlarmAnalysis();
+                reqAddAlarmAnalysis.setId(String.valueOf(curAnalysis.getId()));
+                reqAddAlarmAnalysis.setIsNewReader("true");
+                reqAddAlarmAnalysis.setReadLV(String.valueOf(curAnalysis.getReadLV()));
+                reqAddAlarmAnalysis.setTittle(curAnalysis.getTittle());
+                reqAddAlarmAnalysis.setReleaseTime(curAnalysis.getReleaseTime());
+                reqAddAlarmAnalysis.setAlarmID(String.valueOf(curAnalysis.getAlarmID()));
+                reqAddAlarmAnalysis.setAlarmCause(String.valueOf(curAnalysis.getAlarmCause()));
+                reqAddAlarmAnalysis.setAlarmDetail(curAnalysis.getAlarmDetail());
+                reqAddAlarmAnalysis.setAnalyst(curAnalysis.getAnalyst());
+                reqAddAlarmAnalysis.setReadQuantity("0");
+                reqAddAlarmAnalysis.setIsAdd("false");
+                reqAddAlarmAnalysis.setReadPeopleList(new LinkedList<>());
+                reqAddAlarmAnalysis.setImageList(new ArrayList<>());
+
+                alarmAnalysisViewModel.reqAddOrModifyAnalysis(reqAddAlarmAnalysis);
+            }
+        }
     }
 }

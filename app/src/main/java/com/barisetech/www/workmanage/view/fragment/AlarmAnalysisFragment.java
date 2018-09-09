@@ -440,6 +440,7 @@ public class AlarmAnalysisFragment extends BaseFragment {
                     if (null != integer) {
                         if (integer > 0) {
                             ToastUtil.showToast(getString(R.string.alarm_analysis_upload_success));
+                            getActivity().onBackPressed();
                         } else {
                             ToastUtil.showToast(getString(R.string.alarm_analysis_upload_fail));
 

@@ -26,6 +26,7 @@ import com.barisetech.www.workmanage.bean.pipework.ReqAllPW;
 import com.barisetech.www.workmanage.databinding.FragmentPipeWorkBinding;
 import com.barisetech.www.workmanage.utils.DisplayUtil;
 import com.barisetech.www.workmanage.utils.LogUtil;
+import com.barisetech.www.workmanage.utils.TimeUtil;
 import com.barisetech.www.workmanage.viewmodel.PipeWorkViewModel;
 
 import java.util.ArrayList;
@@ -139,6 +140,11 @@ public class PipeWorkFragment extends BaseFragment {
         reqAllPW.setPipeIdQueryChecked("false");
         reqAllPW.setPipeId("0");
         reqAllPW.setTimeQueryChecked("true");
+        reqAllPW.setType("0");
+        reqAllPW.setMStartTime("1970-1-1 00:00:00");
+        reqAllPW.setMEndTime(TimeUtil.ms2Date(System.currentTimeMillis()));
+        reqAllPW.setStartIndex(String.valueOf(formIndex));
+        reqAllPW.setNumberOfRecords(String.valueOf(toIndex));
 
         curDisposable = pipeWorkViewModel.reqAllPw(reqAllPW);
     }

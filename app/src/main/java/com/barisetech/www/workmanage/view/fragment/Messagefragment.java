@@ -1,5 +1,6 @@
 package com.barisetech.www.workmanage.view.fragment;
 
+import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.graphics.Point;
@@ -19,10 +20,14 @@ import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.MessageInfo;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
+import com.barisetech.www.workmanage.bean.alarm.ReqAllAlarm;
 import com.barisetech.www.workmanage.bean.incident.IncidentInfo;
+import com.barisetech.www.workmanage.bean.incident.ReqAllIncident;
+import com.barisetech.www.workmanage.bean.incident.ReqIncidentSelectItem;
 import com.barisetech.www.workmanage.databinding.FragmentMessageBinding;
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.utils.LogUtil;
+import com.barisetech.www.workmanage.utils.TimeUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.viewmodel.AlarmViewModel;
 import com.barisetech.www.workmanage.viewmodel.IncidentViewModel;
@@ -172,10 +177,12 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
             EventBusMessage eventBusMessage = new EventBusMessage(AlarmDetailsFragment.TAG);
             eventBusMessage.setArg1(alarmInfo);
             EventBus.getDefault().post(eventBusMessage);
-            LogUtil.d(TAG, alarmInfo.toContent());
         } else if (item instanceof IncidentInfo) {
             IncidentInfo incidentInfo = (IncidentInfo) item;
             LogUtil.d(TAG, incidentInfo.toContent());
+            EventBusMessage eventBusMessage = new EventBusMessage(IncidentDetailsFragment.TAG);
+            eventBusMessage.setArg1(incidentInfo);
+            EventBus.getDefault().post(eventBusMessage);
         }
     };
 
@@ -236,6 +243,9 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
         mpoint = point;
     }
 
+    private void getAlarmListNums() {
+        alarmViewModel.reqAlarmNum();
+    }
 
     @Override
     public void bindViewModel() {
@@ -245,13 +255,24 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
 
     @Override
     public void subscribeToModel() {
+        if (!alarmViewModel.getmObservableNum().hasObservers()) {
+            alarmViewModel.getmObservableNum().observe(this, integer -> {
+                if (this.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                    if (null != integer) {
+                        //TODO
+
+
+                    }
+                }
+            });
+        }
+
         if (!alarmViewModel.getNotReadAlarmInfos().hasObservers()) {
 
             alarmViewModel.getNotReadAlarmInfos().observe(this, alarmInfos -> {
                 if (null != alarmInfos && alarmInfos.size() != 0) {
                     LogUtil.d(TAG, "observe alarmInfos = " + alarmInfos.size());
-                    mBinding.messageAlarmNum.setText(String.valueOf(alarmInfos.size()));
-                    mBinding.messageAlarmNum.setVisibility(View.VISIBLE);
+
 
                     curAlarmList = alarmInfos;
                     curMessageList.clear();
@@ -261,6 +282,15 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
                     }
 
                     LogUtil.d(TAG, "alarminfos curMessageList = " + curMessageList.size());
+                    messageAdapter.notifyDataSetChanged();
+                } else {
+                    LogUtil.d(TAG, "observe alarmInfos is null");
+
+                    curAlarmList = null;
+                    curMessageList.clear();
+                    if (null != curIncidentList) {
+                        curMessageList.addAll(curIncidentList);
+                    }
                     messageAdapter.notifyDataSetChanged();
                 }
             });
@@ -281,7 +311,28 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
 
                     LogUtil.d(TAG, "incidents curMessageList = " + curMessageList.size());
                     messageAdapter.notifyDataSetChanged();
+                } else {
+                    LogUtil.d(TAG, "observe incidentInfos is null");
+
+                    curIncidentList = null;
+                    curMessageList.clear();
+                    if (null != curAlarmList) {
+                        curMessageList.addAll(curAlarmList);
+                    }
+                    messageAdapter.notifyDataSetChanged();
                 }
+            });
+        }
+
+        if (!alarmViewModel.getmObservableUnliftAlarmInfos().hasObservers()) {
+            alarmViewModel.getmObservableUnliftAlarmInfos().observe(this, alarmInfos -> {
+//                if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                    if (null != alarmInfos && alarmInfos.size() > 0) {
+                        LogUtil.d(TAG, "unlift alarm num = " + alarmInfos.size());
+                        mBinding.messageAlarmNum.setText(String.valueOf(alarmInfos.size()));
+                        mBinding.messageAlarmNum.setVisibility(View.VISIBLE);
+                    }
+//                }
             });
         }
 
@@ -301,19 +352,33 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
             });
         }
 
+//        getAlarmListNums();
+
         //TODO 需要确定好逻辑
-//        ReqAllAlarm reqAllAlarm = new ReqAllAlarm();
-//        String endTime = TimeUtil.ms2Date(System.currentTimeMillis());
-//        reqAllAlarm.setStartIndex("1");
-//        reqAllAlarm.setNumberOfRecords("1");
-//        reqAllAlarm.setIsAllAlarm("true");
-//        reqAllAlarm.setGetByTimeDiff("true");
-//        reqAllAlarm.setEndTime(endTime);
-//        reqAllAlarm.setStartTime(SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_LAST_TIME_NEWINFO,
-// endTime));
+        ReqAllAlarm reqAllAlarm = new ReqAllAlarm();
+        reqAllAlarm.setStartIndex("0");
+        reqAllAlarm.setNumberOfRecords("0");
+        reqAllAlarm.setIsAllAlarm("true");
+        reqAllAlarm.setGetByTimeDiff("true");
+        reqAllAlarm.setStartTime("1970-1-1 00:00:00");
+        reqAllAlarm.setEndTime(TimeUtil.ms2Date(System.currentTimeMillis()));
+        alarmViewModel.getAllAlarmByConditionToDB(reqAllAlarm);
 
         alarmViewModel.getAllUnliftAlarm();
-        incidentViewModel.reqAllIncidentToDB();
+
+        ReqIncidentSelectItem reqIncidentSelectItem = new ReqIncidentSelectItem();
+        reqIncidentSelectItem.setMStartTime("2010-01-01 12:12:12");
+        reqIncidentSelectItem.setMEndTime("2019-01-01 12:12:12");
+        reqIncidentSelectItem.setTimeQueryChecked("true");
+        reqIncidentSelectItem.setSiteIdQueryChecked("false");
+        reqIncidentSelectItem.setSiteID("0");
+        reqIncidentSelectItem.setMIncidentType("1");
+
+        ReqAllIncident reqAllIncident = new ReqAllIncident();
+        reqAllIncident.setStartIndex("1");
+        reqAllIncident.setNumberOfRecord("10");
+        reqAllIncident.setIncidentSelectItem(reqIncidentSelectItem);
+        incidentViewModel.reqAllIncidentToDB(reqAllIncident);
     }
 
     @Override

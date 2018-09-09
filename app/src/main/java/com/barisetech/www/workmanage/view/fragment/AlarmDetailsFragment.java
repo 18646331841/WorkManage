@@ -88,6 +88,7 @@ public class AlarmDetailsFragment extends BaseFragment implements View.OnClickLi
     public void bindViewModel() {
         AlarmViewModel.Factory factory = new AlarmViewModel.Factory(getActivity().getApplication(), curAlarmInfo.getKey());
         alarmViewModel = ViewModelProviders.of(this, factory).get(AlarmViewModel.class);
+        alarmViewModel.setReadAlarm(curAlarmInfo.getKey());
     }
 
     @Override

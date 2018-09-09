@@ -240,6 +240,7 @@
                     android:layout_width="@dimen/dp_238"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_10"
+                    android:layout_marginBottom="@dimen/dp_9"
                     android:text="@{analysisinfo.ReadPeopleList}"
                     android:textSize="@dimen/sp_14"
                     app:layout_constraintLeft_toLeftOf="@id/tv_read_num"

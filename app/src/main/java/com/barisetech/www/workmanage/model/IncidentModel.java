@@ -16,16 +16,18 @@ import com.barisetech.www.workmanage.http.Config;
 import com.barisetech.www.workmanage.http.HttpService;
 import com.barisetech.www.workmanage.http.ObserverCallBack;
 import com.barisetech.www.workmanage.http.api.IncidentService;
+import com.barisetech.www.workmanage.utils.LogUtil;
 
 import java.util.List;
 
+import io.reactivex.Maybe;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by LJH on 2018/8/15.
  */
-public class IncidentModel extends BaseModel{
+public class IncidentModel extends BaseModel {
     public static final String TAG = "IncidentModel";
 
     private AppDatabase appDatabase;
@@ -45,23 +47,11 @@ public class IncidentModel extends BaseModel{
 
     /**
      * 获取事件列表,并保存到数据库中
+     *
      * @return
      */
-    public Disposable reqAllIncidentToDB() {
-        ReqIncidentSelectItem reqIncidentSelectItem = new ReqIncidentSelectItem();
-        reqIncidentSelectItem.setMStartTime("2010-01-01 12:12:12");
-        reqIncidentSelectItem.setMEndTime("2019-01-01 12:12:12");
-        reqIncidentSelectItem.setTimeQueryChecked("true");
-        reqIncidentSelectItem.setSiteIdQueryChecked("false");
-        reqIncidentSelectItem.setSiteID("0");
-        reqIncidentSelectItem.setMIncidentType("1");
-
-        ReqAllIncident reqAllIncident = new ReqAllIncident();
+    public Disposable reqAllIncidentToDB(ReqAllIncident reqAllIncident) {
         reqAllIncident.setMachineCode(mToken);
-        reqAllIncident.setStartIndex("1");
-        reqAllIncident.setNumberOfRecord("10");
-        reqAllIncident.setIncidentSelectItem(reqIncidentSelectItem);
-
         IncidentService incidentService = HttpService.getInstance().buildJsonRetrofit().create(IncidentService.class);
         Disposable disposable = incidentService.getAllIncident(reqAllIncident)
                 .subscribeOn(Schedulers.io())
@@ -88,6 +78,13 @@ public class IncidentModel extends BaseModel{
                     @Override
                     protected void onSuccess(List<IncidentInfo> response) {
 //                        modelCallBack.netResult(response);
+                        for (int i = 0; i < response.size(); i++) {
+                            IncidentInfo incidentInfoSync = appDatabase.incidentDao().getIncidentInfoSync(response
+                                    .get(i).getKey());
+                            if (null != incidentInfoSync) {
+                                response.get(i).setRead(incidentInfoSync.isRead());
+                            }
+                        }
                         appDatabase.incidentDao().insertAll(response);
                     }
                 });
@@ -97,6 +94,7 @@ public class IncidentModel extends BaseModel{
 
     /**
      * 获取事件列表
+     *
      * @return
      */
     public Disposable reqAllIncident(ReqAllIncident reqAllIncident) {
@@ -136,6 +134,7 @@ public class IncidentModel extends BaseModel{
 
     /**
      * 获取事件数量
+     *
      * @return
      */
     public Disposable reqIncidentNum(ReqIncidentSelectItem reqIncidentSelectItem) {
@@ -173,6 +172,7 @@ public class IncidentModel extends BaseModel{
 
     /**
      * 解除事件
+     *
      * @param incidentId
      * @return
      */
@@ -218,5 +218,20 @@ public class IncidentModel extends BaseModel{
 
     public LiveData<List<IncidentInfo>> getIncidentInfosByRead(boolean isRead) {
         return appDatabase.incidentDao().getIncidentInfosByRead(isRead);
+    }
+
+    public void readedIncident(int key) {
+        Disposable subscribe = appDatabase.incidentDao().getIncidentInfoRxjava(key)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribe(incidentInfo -> {
+                    if (incidentInfo != null) {
+                        incidentInfo.setRead(true);
+                        LogUtil.d(TAG, "read incident = " + key);
+                        appDatabase.incidentDao().updateIncident(incidentInfo);
+                    } else {
+                        LogUtil.d(TAG, "read incident is null");
+                    }
+                });
     }
 }

@@ -20,11 +20,13 @@ import com.barisetech.www.workmanage.utils.LogUtil;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
@@ -126,8 +128,6 @@ public class AlarmModel extends BaseModel {
                     protected void onSuccess(List<AlarmInfo> response) {
                         TypeResponse typeResponse = new TypeResponse(TYPE_UNLIFT_ALARM, response);
                         modelCallBack.netResult(typeResponse);
-                        //TODO
-                        appDatabase.alarmInfoDao().insertAll(response);
                     }
                 });
         return disposable;
@@ -318,5 +318,20 @@ public class AlarmModel extends BaseModel {
 
     public LiveData<AlarmInfo> getAlarmInfo(int key) {
         return appDatabase.alarmInfoDao().getAlarmInfo(key);
+    }
+
+    public void readedAlarm(int key) {
+        Disposable subscribe = appDatabase.alarmInfoDao().getAlarmInfoRxjava(key)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribe(alarmInfo -> {
+                    if (alarmInfo != null) {
+                        alarmInfo.setRead(true);
+                        LogUtil.d(TAG, "read alarm = " + key);
+                        appDatabase.alarmInfoDao().updateAlarmLift(alarmInfo);
+                    } else {
+                        LogUtil.d(TAG, "read alarminfo is null");
+                    }
+                });
     }
 }
