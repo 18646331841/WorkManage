@@ -112,6 +112,26 @@
 
     <string name="title_pipe_collection">管线集合</string>
 
+    <string name="title_pipe_collection_detail">管线集合详情</string>
+    <string name="pc_detail_id">管线集合ID</string>
+    <string name="pc_detail_name">管线集合名</string>
+    <string name="pc_detail_sort_id">排序ID</string>
+    <string name="pc_detail_manager">管理者</string>
+    <string name="pc_detail_phone">手机</string>
+    <string name="pc_detail_email">邮箱</string>
+    <string name="pc_detail_remark">备注</string>
+    <string name="pc_detail_add_pc">添加管线集合</string>
+    <string name="pc_detail_modify_pc">修改管线集合</string>
+
+    <string name="title_pipe_collection_add">新增管线集合</string>
+    <string name="hint_pc_id">请输入管线集合ID</string>
+    <string name="hint_pc_name">请输入管线集合名</string>
+    <string name="hint_pc_sort_id">请输入排序ID</string>
+    <string name="hint_pc_manager">请输入管理者</string>
+    <string name="hint_pc_phone">请输入手机</string>
+    <string name="hint_pc_email">请输入邮箱</string>
+    <string name="hint_pc_remark">请输入备注</string>
+
     <string name="title_pipe_work">管线工况</string>
 
     <string name="popup_tip_pic">相册</string>

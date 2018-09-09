@@ -12,6 +12,7 @@ import com.barisetech.www.workmanage.bean.RawBean;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.bean.alarmanalysis.AlarmAnalysis;
 import com.barisetech.www.workmanage.bean.incident.IncidentInfo;
+import com.barisetech.www.workmanage.bean.pipecollections.PipeCollections;
 import com.barisetech.www.workmanage.bean.pipework.PipeWork;
 import com.barisetech.www.workmanage.bean.site.SiteBean;
 import com.barisetech.www.workmanage.view.fragment.AddSiteFragment;
@@ -30,6 +31,8 @@ import com.barisetech.www.workmanage.view.fragment.ModifySiteFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsAddFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsDetailsFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsListFragment;
+import com.barisetech.www.workmanage.view.fragment.PipeCollectionAddFragment;
+import com.barisetech.www.workmanage.view.fragment.PipeCollectionDetailFragment;
 import com.barisetech.www.workmanage.view.fragment.PipeCollectionFragment;
 import com.barisetech.www.workmanage.view.fragment.PipeFragment;
 import com.barisetech.www.workmanage.view.fragment.PipeWorkFragment;
@@ -193,6 +196,21 @@ public class SecondActivity extends BaseActivity {
             case PipeCollectionFragment.TAG:
                 transaction
                         .replace(R.id.second_framelayout, PipeCollectionFragment.newInstance(), tag).commit();
+                break;
+            case PipeCollectionDetailFragment.TAG:
+                transaction
+                        .replace(R.id.second_framelayout, PipeCollectionDetailFragment.newInstance((PipeCollections)
+                                eventBusMessage.getArg1()), tag).commit();
+                if (!isActivity) {
+                    transaction.addToBackStack(tag);
+                }
+                break;
+            case PipeCollectionAddFragment.TAG:
+                transaction
+                        .replace(R.id.second_framelayout, PipeCollectionAddFragment.newInstance(), tag).commit();
+                if (!isActivity) {
+                    transaction.addToBackStack(tag);
+                }
                 break;
             case PipeWorkFragment.TAG:
                 transaction

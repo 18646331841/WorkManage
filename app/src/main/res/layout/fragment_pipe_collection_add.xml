@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:order="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="fragment"
+            type="com.barisetech.www.workmanage.base.BaseFragment" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/layout_toolbar"
+            app:toolbar="@{fragment.observableToolbar}" />
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.barisetech.www.workmanage.widget.FormView
+                    android:id="@+id/pc_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    order:ddd_content_enable="true"
+                    order:ddd_content_hint="@string/hint_pc_id"
+                    order:ddd_is_bottom_line="true"
+                    order:ddd_label="@string/pc_detail_id" />
+
+                <com.barisetech.www.workmanage.widget.FormView
+                    android:id="@+id/pc_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    order:ddd_content_enable="true"
+                    order:ddd_content_hint="@string/hint_pc_name"
+                    order:ddd_is_bottom_line="true"
+                    order:ddd_label="@string/pc_detail_name" />
+                <com.barisetech.www.workmanage.widget.FormView
+                    android:id="@+id/pc_sort_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    order:ddd_content_enable="true"
+                    order:ddd_content_hint="@string/hint_pc_sort_id"
+                    order:ddd_is_bottom_line="true"
+                    order:ddd_label="@string/pc_detail_sort_id" />
+                <com.barisetech.www.workmanage.widget.FormView
+                    android:id="@+id/pc_manager"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    order:ddd_content_enable="true"
+                    order:ddd_content_hint="@string/hint_pc_manager"
+                    order:ddd_is_bottom_line="true"
+                    order:ddd_label="@string/pc_detail_manager" />
+                <com.barisetech.www.workmanage.widget.FormView
+                    android:id="@+id/pc_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    order:ddd_content_enable="true"
+                    order:ddd_content_hint="@string/hint_pc_phone"
+                    order:ddd_is_bottom_line="true"
+                    order:ddd_label="@string/pc_detail_phone" />
+
+                <com.barisetech.www.workmanage.widget.FormView
+                    android:id="@+id/pc_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    order:ddd_content_enable="true"
+                    order:ddd_content_hint="@string/hint_pc_email"
+                    order:ddd_is_bottom_line="true"
+                    order:ddd_label="@string/pc_detail_email"/>
+
+                <com.barisetech.www.workmanage.widget.FormView
+                    android:id="@+id/pc_remark"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    order:ddd_content_hint="@string/hint_pc_remark"
+                    order:ddd_is_bottom_line="true"
+                    order:ddd_content_enable="true"
+                    order:ddd_label="@string/pc_detail_remark"/>
+
+                <Button
+                    android:id="@+id/add_pc"
+                    android:layout_width="@dimen/dp_315"
+                    android:layout_height="@dimen/dp_50"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:background="@drawable/shane_button_corners"
+                    android:text="@string/submit_add"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_18"/>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+
+
+</layout>

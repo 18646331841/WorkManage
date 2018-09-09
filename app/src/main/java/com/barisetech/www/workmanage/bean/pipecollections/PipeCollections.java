@@ -2,12 +2,13 @@ package com.barisetech.www.workmanage.bean.pipecollections;
 
 import com.barisetech.www.workmanage.bean.pipe.PipeInfo;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by LJH on 2018/8/28.
  */
-public class PipeCollections {
+public class PipeCollections implements Serializable{
     /**
      * Id : 6
      * Name : bbb

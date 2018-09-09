@@ -5,6 +5,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
+
 import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseViewModel;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
@@ -36,6 +37,7 @@ public class PipeCollectionsViewModel extends BaseViewModel implements ModelCall
 
     private MutableLiveData<List<PipeCollections>> mObservableAllPC;
     private MutableLiveData<Integer> mObservableNum;
+    private MutableLiveData<String> mObservableAdd;
 
     public PipeCollectionsViewModel(@NonNull Application application) {
         super(application);
@@ -46,10 +48,13 @@ public class PipeCollectionsViewModel extends BaseViewModel implements ModelCall
         mObservableAllPC.setValue(null);
         mObservableNum = new MutableLiveData<>();
         mObservableNum.setValue(null);
+        mObservableAdd = new MutableLiveData<>();
+        mObservableAdd.setValue(null);
     }
 
     /**
      * 获取管线集合数量
+     *
      * @return
      */
     public Disposable reqPcNum() {
@@ -60,6 +65,7 @@ public class PipeCollectionsViewModel extends BaseViewModel implements ModelCall
 
     /**
      * 添加或修改管线集合
+     *
      * @param reqAddPC
      * @return
      */
@@ -71,6 +77,7 @@ public class PipeCollectionsViewModel extends BaseViewModel implements ModelCall
 
     /**
      * 删除管线集合
+     *
      * @param reqDeletePc
      * @return
      */
@@ -82,6 +89,7 @@ public class PipeCollectionsViewModel extends BaseViewModel implements ModelCall
 
     /**
      * 获取所有管线集合
+     *
      * @param reqAllPc
      * @return
      */
@@ -103,6 +111,9 @@ public class PipeCollectionsViewModel extends BaseViewModel implements ModelCall
                         break;
                     case PipeCollectionModel.TYPE_NUM:
                         mObservableNum.setValue((Integer) typeResponse.data);
+                        break;
+                    case PipeCollectionModel.TYPE_ADD:
+                        mObservableAdd.setValue((String) typeResponse.data);
                         break;
                 }
             });
@@ -126,6 +137,9 @@ public class PipeCollectionsViewModel extends BaseViewModel implements ModelCall
                     case PipeCollectionModel.TYPE_ALL:
                         mObservableAllPC.setValue(null);
                         break;
+                    case PipeCollectionModel.TYPE_ADD:
+                        mObservableAdd.setValue(null);
+                        break;
                 }
             });
         }
@@ -137,5 +151,9 @@ public class PipeCollectionsViewModel extends BaseViewModel implements ModelCall
 
     public MutableLiveData<Integer> getmObservableNum() {
         return mObservableNum;
+    }
+
+    public MutableLiveData<String> getmObservableAdd() {
+        return mObservableAdd;
     }
 }

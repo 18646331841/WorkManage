@@ -21,9 +21,10 @@ public class PipeCollectionAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private Context ctx;
     private ItemCallBack callBack;
 
-    public PipeCollectionAdapter(List<PipeCollections> list, Context context){
+    public PipeCollectionAdapter(List<PipeCollections> list, Context context, ItemCallBack itemCallBack){
         this.mList = list;
         this.ctx = context;
+        this.callBack = itemCallBack;
     }
     @NonNull
     @Override

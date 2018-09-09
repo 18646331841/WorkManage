@@ -13,10 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.barisetech.www.workmanage.R;
+import com.barisetech.www.workmanage.adapter.ItemCallBack;
 import com.barisetech.www.workmanage.adapter.OnScrollListener;
 import com.barisetech.www.workmanage.adapter.PipeCollectionAdapter;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.base.BaseLoadMoreWrapper;
+import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.bean.pipecollections.PipeCollections;
 import com.barisetech.www.workmanage.bean.pipecollections.ReqAllPc;
@@ -24,6 +26,8 @@ import com.barisetech.www.workmanage.databinding.FragmentPipeCollectionBinding;
 import com.barisetech.www.workmanage.utils.DisplayUtil;
 import com.barisetech.www.workmanage.utils.LogUtil;
 import com.barisetech.www.workmanage.viewmodel.PipeCollectionsViewModel;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,11 +81,16 @@ public class PipeCollectionFragment extends BaseFragment {
 
     private void initView() {
         initRecyclerView();
+
+        mBinding.toolbar.tvTwo.setOnClickListener(view -> {
+            EventBusMessage eventBusMessage = new EventBusMessage(PipeCollectionAddFragment.TAG);
+            EventBus.getDefault().post(eventBusMessage);
+        });
     }
 
     private void initRecyclerView() {
 
-        pipeCollectionAdapter = new PipeCollectionAdapter(pipeCollectionsList, getContext());
+        pipeCollectionAdapter = new PipeCollectionAdapter(pipeCollectionsList, getContext(), itemCallBack);
         loadMoreWrapper = new BaseLoadMoreWrapper(pipeCollectionAdapter);
         loadMoreWrapper.setLoadingViewHeight(DisplayUtil.dip2px(getContext(), 50));
         mBinding.pipeCollectionList.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -133,6 +142,15 @@ public class PipeCollectionFragment extends BaseFragment {
 
         pipeCollectionsViewModel.reqPcNum();
     }
+
+    private ItemCallBack itemCallBack = item -> {
+        if (item instanceof PipeCollections) {
+            PipeCollections pipeCollections = (PipeCollections) item;
+            EventBusMessage eventBusMessage = new EventBusMessage(PipeCollectionDetailFragment.TAG);
+            eventBusMessage.setArg1(pipeCollections);
+            EventBus.getDefault().post(eventBusMessage);
+        }
+    };
 
     @Override
     public void bindViewModel() {
