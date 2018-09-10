@@ -6,6 +6,10 @@
     <data>
 
         <variable
+            name="pc"
+            type="com.barisetech.www.workmanage.bean.pipecollections.PipeCollections"/>
+
+        <variable
             name="fragment"
             type="com.barisetech.www.workmanage.base.BaseFragment"/>
     </data>
@@ -94,13 +98,24 @@
                     order:ddd_label="@string/pc_detail_remark"/>
 
                 <Button
-                    android:id="@+id/add_pc"
+                    android:id="@+id/modify_pc"
                     android:layout_width="@dimen/dp_315"
                     android:layout_height="@dimen/dp_50"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/dp_20"
                     android:background="@drawable/shane_button_corners"
-                    android:text="@string/submit_add"
+                    android:text="@string/submit_modify"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_18"/>
+
+                <Button
+                    android:id="@+id/delete_pc"
+                    android:layout_width="@dimen/dp_315"
+                    android:layout_height="@dimen/dp_50"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:background="@drawable/shane_button_corners_red"
+                    android:text="@string/pipe_collection_delete"
                     android:textColor="@color/white"
                     android:textSize="@dimen/sp_18"/>
             </LinearLayout>

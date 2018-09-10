@@ -38,6 +38,7 @@ public class PipeCollectionsViewModel extends BaseViewModel implements ModelCall
     private MutableLiveData<List<PipeCollections>> mObservableAllPC;
     private MutableLiveData<Integer> mObservableNum;
     private MutableLiveData<String> mObservableAdd;
+    private MutableLiveData<Boolean> mObservableDelete;
 
     public PipeCollectionsViewModel(@NonNull Application application) {
         super(application);
@@ -50,6 +51,8 @@ public class PipeCollectionsViewModel extends BaseViewModel implements ModelCall
         mObservableNum.setValue(null);
         mObservableAdd = new MutableLiveData<>();
         mObservableAdd.setValue(null);
+        mObservableDelete = new MutableLiveData<>();
+        mObservableDelete.setValue(null);
     }
 
     /**
@@ -115,6 +118,9 @@ public class PipeCollectionsViewModel extends BaseViewModel implements ModelCall
                     case PipeCollectionModel.TYPE_ADD:
                         mObservableAdd.setValue((String) typeResponse.data);
                         break;
+                    case PipeCollectionModel.TYPE_DELETE:
+                        mObservableDelete.setValue((Boolean) typeResponse.data);
+                        break;
                 }
             });
         }
@@ -140,6 +146,9 @@ public class PipeCollectionsViewModel extends BaseViewModel implements ModelCall
                     case PipeCollectionModel.TYPE_ADD:
                         mObservableAdd.setValue(null);
                         break;
+                    case PipeCollectionModel.TYPE_DELETE:
+                        mObservableDelete.setValue(false);
+                        break;
                 }
             });
         }
@@ -155,5 +164,9 @@ public class PipeCollectionsViewModel extends BaseViewModel implements ModelCall
 
     public MutableLiveData<String> getmObservableAdd() {
         return mObservableAdd;
+    }
+
+    public MutableLiveData<Boolean> getmObservableDelete() {
+        return mObservableDelete;
     }
 }

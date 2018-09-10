@@ -3,12 +3,13 @@ package com.barisetech.www.workmanage.bean.pipe;
 import com.barisetech.www.workmanage.bean.pipecollections.PipeCollections;
 import com.barisetech.www.workmanage.bean.site.SiteBean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by LJH on 2018/8/28.
  */
-public class PipeInfo {
+public class PipeInfo implements Serializable{
     /**
      * PipeId : 0
      * Name : 测试线路

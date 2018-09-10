@@ -12,38 +12,56 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.barisetech.www.workmanage.R;
+import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseFragment;
+import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.bean.pipecollections.PipeCollections;
 import com.barisetech.www.workmanage.bean.pipecollections.ReqAddPC;
-import com.barisetech.www.workmanage.databinding.FragmentPipeCollectionAddBinding;
+import com.barisetech.www.workmanage.bean.pipecollections.ReqDeletePc;
+import com.barisetech.www.workmanage.databinding.FragmentPipeCollectionModifyBinding;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.viewmodel.PipeCollectionsViewModel;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PipeCollectionAddFragment extends BaseFragment{
+public class PipeCollectionModifyFragment extends BaseFragment{
 
-    public static final String TAG = "PipeCollectionAddFragment";
-    FragmentPipeCollectionAddBinding mBinding;
+    public static final String TAG = "PipeCollectionModifyFragment";
+
+    FragmentPipeCollectionModifyBinding mBinding;
+    private static final String PC_ID = "pcId";
 
     private PipeCollections pipeCollections;
     private PipeCollectionsViewModel pipeCollectionsViewModel;
 
-    public static PipeCollectionAddFragment newInstance() {
+    public static PipeCollectionAddFragment newInstance(PipeCollections pipeCollections) {
         PipeCollectionAddFragment fragment = new PipeCollectionAddFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(PC_ID, pipeCollections);
+        fragment.setArguments(bundle);
         return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (null != getArguments()) {
+            pipeCollections = (PipeCollections) getArguments().getSerializable(PC_ID);
+        }
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_pipe_collection_add, container, false);
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_pipe_collection_modify, container, false);
         setToolBarHeight(mBinding.toolbar.getRoot());
         mBinding.setFragment(this);
         ToolbarInfo toolbarInfo = new ToolbarInfo();
-        toolbarInfo.setTitle(getString(R.string.title_pipe_collection_add));
+        toolbarInfo.setTitle(getString(R.string.title_pipe_collection_modify));
         observableToolbar.set(toolbarInfo);
 
         initView();
@@ -52,7 +70,15 @@ public class PipeCollectionAddFragment extends BaseFragment{
     }
 
     private void initView() {
-        mBinding.addPc.setOnClickListener(view -> {
+        mBinding.pcId.setText(pipeCollections.getId());
+        mBinding.pcName.setText(pipeCollections.getName());
+        mBinding.pcSortId.setText(pipeCollections.getSortID());
+        mBinding.pcManager.setText(pipeCollections.getManager());
+        mBinding.pcPhone.setText(pipeCollections.getTelephone());
+        mBinding.pcEmail.setText(pipeCollections.getEmail());
+        mBinding.pcRemark.setText(pipeCollections.getRemark());
+
+        mBinding.modifyPc.setOnClickListener(view -> {
             String id = mBinding.pcId.getText();
             String name = mBinding.pcName.getText();
             String sortId = mBinding.pcSortId.getText();
@@ -67,7 +93,7 @@ public class PipeCollectionAddFragment extends BaseFragment{
             }
 
             ReqAddPC reqAddPC = new ReqAddPC();
-            reqAddPC.setOperation("1");
+            reqAddPC.setOperation("0");
             PipeCollections pipeCollections = new PipeCollections();
             pipeCollections.setId(id);
             pipeCollections.setName(name);
@@ -82,7 +108,16 @@ public class PipeCollectionAddFragment extends BaseFragment{
 
             reqAddPC.setPipeCollect(pipeCollectionsList);
 
+            EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_SHOW));
             pipeCollectionsViewModel.reqAddOrModifyPc(reqAddPC);
+        });
+
+        mBinding.deletePc.setOnClickListener(view -> {
+            ReqDeletePc reqDeletePc = new ReqDeletePc();
+            reqDeletePc.setPipeCollectId(pipeCollections.getId());
+
+            EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_SHOW));
+            pipeCollectionsViewModel.reqDeletePc(reqDeletePc);
         });
     }
 
@@ -104,6 +139,18 @@ public class PipeCollectionAddFragment extends BaseFragment{
                         }
                     } else {
                         ToastUtil.showToast("添加失败");
+                    }
+                }
+            });
+        }
+
+        if (!pipeCollectionsViewModel.getmObservableDelete().hasObservers()) {
+            pipeCollectionsViewModel.getmObservableDelete().observe(this, aBoolean -> {
+                if (this.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                    if (aBoolean) {
+                        ToastUtil.showToast("删除成功");
+                    } else {
+                        ToastUtil.showToast("删除失败");
                     }
                 }
             });

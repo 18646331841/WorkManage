@@ -10,10 +10,13 @@ import android.view.ViewGroup;
 
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.base.BaseFragment;
+import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.bean.pipecollections.PipeCollections;
 import com.barisetech.www.workmanage.bean.site.SiteBean;
 import com.barisetech.www.workmanage.databinding.FragmentPipeCollectionDetailBinding;
+
+import org.greenrobot.eventbus.EventBus;
 
 public class PipeCollectionDetailFragment extends BaseFragment {
 
@@ -57,7 +60,12 @@ public class PipeCollectionDetailFragment extends BaseFragment {
     private void initView() {
         mBinding.setPc(curPipeCollection);
 
+        mBinding.modifyPipe.setOnClickListener(view -> {
+            EventBusMessage eventBusMessage = new EventBusMessage(PipeCollectionModifyFragment.TAG);
+            eventBusMessage.setArg1(curPipeCollection);
+            EventBus.getDefault().post(eventBusMessage);
 
+        });
     }
 
     @Override
