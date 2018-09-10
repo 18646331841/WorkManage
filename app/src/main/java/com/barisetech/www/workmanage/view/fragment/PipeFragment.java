@@ -17,6 +17,7 @@ import com.barisetech.www.workmanage.adapter.OnScrollListener;
 import com.barisetech.www.workmanage.adapter.PipeAdapter;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.base.BaseLoadMoreWrapper;
+import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.bean.pipe.PipeInfo;
 import com.barisetech.www.workmanage.bean.pipe.ReqAllPipe;
@@ -24,6 +25,8 @@ import com.barisetech.www.workmanage.databinding.FragmentPipeBinding;
 import com.barisetech.www.workmanage.utils.DisplayUtil;
 import com.barisetech.www.workmanage.utils.LogUtil;
 import com.barisetech.www.workmanage.viewmodel.PipeViewModel;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,7 +84,13 @@ public class PipeFragment extends BaseFragment {
 
     private void initRecyclerView() {
 
-        pipeAdapter = new PipeAdapter(pipeInfoList, getContext());
+        pipeAdapter = new PipeAdapter(pipeInfoList, getContext(), item -> {
+            if (item instanceof PipeInfo) {
+                EventBusMessage eventBusMessage = new EventBusMessage(PipeDetailFragment.TAG);
+                eventBusMessage.setArg1(item);
+                EventBus.getDefault().post(eventBusMessage);
+            }
+        });
         loadMoreWrapper = new BaseLoadMoreWrapper(pipeAdapter);
         loadMoreWrapper.setLoadingViewHeight(DisplayUtil.dip2px(getContext(), 50));
         mBinding.pipeList.setLayoutManager(new LinearLayoutManager(getContext()));

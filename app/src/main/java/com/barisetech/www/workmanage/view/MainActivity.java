@@ -13,6 +13,7 @@ import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.bean.incident.IncidentInfo;
+import com.barisetech.www.workmanage.bean.pipe.PipeInfo;
 import com.barisetech.www.workmanage.bean.pipecollections.PipeCollections;
 import com.barisetech.www.workmanage.bean.site.SiteBean;
 import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
@@ -33,6 +34,7 @@ import com.barisetech.www.workmanage.view.fragment.PipeCollectionAddFragment;
 import com.barisetech.www.workmanage.view.fragment.PipeCollectionDetailFragment;
 import com.barisetech.www.workmanage.view.fragment.PipeCollectionFragment;
 import com.barisetech.www.workmanage.view.fragment.PipeCollectionModifyFragment;
+import com.barisetech.www.workmanage.view.fragment.PipeDetailFragment;
 import com.barisetech.www.workmanage.view.fragment.PipeFragment;
 import com.barisetech.www.workmanage.view.fragment.PipeWorkFragment;
 import com.barisetech.www.workmanage.view.fragment.SiteDetailFragment;
@@ -205,6 +207,14 @@ public class MainActivity extends BaseActivity {
                     transaction
                             .addToBackStack(tag)
                             .replace(R.id.fragment_content, PipeFragment.newInstance(), tag).commit();
+                    break;
+                case PipeDetailFragment.TAG:
+                    transaction
+                            .replace(R.id.fragment_content, PipeDetailFragment.newInstance((PipeInfo) eventBusMessage
+                                    .getArg1()), tag).commit();
+                    if (!isActivity) {
+                        transaction.addToBackStack(tag);
+                    }
                     break;
                 case PipeCollectionFragment.TAG:
                     transaction

@@ -22,9 +22,10 @@ public class PipeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     private Context ctx;
     private ItemCallBack callBack;
 
-    public PipeAdapter(List<PipeInfo> list, Context context){
+    public PipeAdapter(List<PipeInfo> list, Context context, ItemCallBack itemCallBack){
         this.mList = list;
         this.ctx = context;
+        callBack = itemCallBack;
     }
     @NonNull
     @Override

@@ -38,8 +38,8 @@ public class PipeCollectionModifyFragment extends BaseFragment{
     private PipeCollections pipeCollections;
     private PipeCollectionsViewModel pipeCollectionsViewModel;
 
-    public static PipeCollectionAddFragment newInstance(PipeCollections pipeCollections) {
-        PipeCollectionAddFragment fragment = new PipeCollectionAddFragment();
+    public static PipeCollectionModifyFragment newInstance(PipeCollections pipeCollections) {
+        PipeCollectionModifyFragment fragment = new PipeCollectionModifyFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable(PC_ID, pipeCollections);
         fragment.setArguments(bundle);
@@ -132,13 +132,14 @@ public class PipeCollectionModifyFragment extends BaseFragment{
             pipeCollectionsViewModel.getmObservableAdd().observe(this, s -> {
                 if (this.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
                     if (null != s) {
-                        if (s.equals("成功添加")) {
-                            ToastUtil.showToast("添加成功");
-                        } else if (s.equals("失败添加")){
-                            ToastUtil.showToast("添加失败");
+                        if (s.equals("成功修改")) {
+                            ToastUtil.showToast("成功修改");
+                            getActivity().onBackPressed();
+                        } else if (s.equals("失败修改")){
+                            ToastUtil.showToast("失败修改");
                         }
                     } else {
-                        ToastUtil.showToast("添加失败");
+                        ToastUtil.showToast("失败修改");
                     }
                 }
             });
@@ -149,6 +150,7 @@ public class PipeCollectionModifyFragment extends BaseFragment{
                 if (this.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
                     if (aBoolean) {
                         ToastUtil.showToast("删除成功");
+                        getActivity().onBackPressed();
                     } else {
                         ToastUtil.showToast("删除失败");
                     }

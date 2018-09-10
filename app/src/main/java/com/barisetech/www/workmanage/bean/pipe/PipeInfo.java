@@ -1,7 +1,11 @@
 package com.barisetech.www.workmanage.bean.pipe;
 
+import android.databinding.BindingAdapter;
+import android.view.View;
+
 import com.barisetech.www.workmanage.bean.pipecollections.PipeCollections;
 import com.barisetech.www.workmanage.bean.site.SiteBean;
+import com.barisetech.www.workmanage.widget.LineView;
 
 import java.io.Serializable;
 import java.util.List;
@@ -81,4 +85,13 @@ public class PipeInfo implements Serializable{
     public String LlPluginId;
     public boolean IsTestMode;
     public List<SiteBean> Sites;
+
+    @BindingAdapter("setText")
+    public static void setText(LineView view, String text) {
+        view.setText(text);
+    }
+    @BindingAdapter("setText")
+    public static void setText(LineView view, int text) {
+        view.setText(String.valueOf(text));
+    }
 }

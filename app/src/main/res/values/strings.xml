@@ -110,6 +110,9 @@
 
     <string name="title_pipe">管线</string>
 
+    <string name="title_pipe_detail">管线详情</string>
+    <string name="pipe_detail_id">管线ID</string>
+
     <string name="title_pipe_collection">管线集合</string>
 
     <string name="title_pipe_collection_detail">管线集合详情</string>

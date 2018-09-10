@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:order="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="pipe"
+            type="com.barisetech.www.workmanage.bean.pipe.PipeInfo"/>
+
+        <variable
+            name="fragment"
+            type="com.barisetech.www.workmanage.base.BaseFragment" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/layout_toolbar"
+            app:toolbar="@{fragment.observableToolbar}" />
+
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_15"
+            android:layout_marginRight="@dimen/dp_15"
+            android:layout_marginTop="@dimen/dp_30"
+            app:cardCornerRadius="6dp"
+            app:cardElevation="@dimen/dp_10">
+
+            <LinearLayout
+                android:id="@+id/normal_setting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/pc_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_title_top"
+                    android:paddingBottom="@dimen/dp_8"
+                    android:paddingLeft="@dimen/dp_15"
+                    android:paddingTop="@dimen/dp_9"
+                    android:text="@string/normal_setting"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_14"/>
+
+                <com.barisetech.www.workmanage.widget.LineView
+                    android:id="@+id/pipe_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:ddd_content="国家开发的司空见惯了看法都是价格空间都是管理费多少开工ID十几个克劳福德时间GIF打暑假工if二级"
+                    order:ddd_content_enable="false"
+                    order:ddd_is_bottom_line="false"
+                    order:ddd_label="@string/pc_detail_id"/>
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+
+        <Button
+            android:id="@+id/modify_pipe"
+            android:layout_width="@dimen/dp_315"
+            android:layout_height="@dimen/dp_50"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/dp_30"
+            android:background="@drawable/shane_button_corners"
+            android:text="@string/pc_detail_modify_pc"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_18"/>
+
+    </LinearLayout>
+</layout>
