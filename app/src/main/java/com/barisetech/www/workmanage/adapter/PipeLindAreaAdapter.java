@@ -28,6 +28,12 @@ public class PipeLindAreaAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         this.mList = list;
         this.ctx = context;
     }
+
+
+    public void OnClick(ItemCallBack callBack){
+        this.callBack = callBack;
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -41,7 +47,8 @@ public class PipeLindAreaAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         ViewHolder viewHolder = (ViewHolder)holder;
         PipeLindAreaInfo pipeinfo = mList.get(position);
         viewHolder.img.setBackgroundResource(R.drawable.ic_line);
-        viewHolder.tv_pipelindarea_name.setText("");
+        viewHolder.tv_pipelindarea_name.setText(String.valueOf(pipeinfo.getId()));
+        viewHolder.img.setBackgroundResource(R.drawable.ic_blind_area);
         viewHolder.l_item.setOnClickListener(view -> {
             if (callBack!=null){
                 callBack.onClick(mList.get(position));

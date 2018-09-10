@@ -194,6 +194,10 @@
     <string name="contacts_name">联系人姓名</string>
     <string name="contacts_phone">联系人电话</string>
     <string name="contacts_email">联系人邮箱</string>
+    <string name="pipe_lind_area_detail">管线盲区详情</string>
+    <string name="del_pipe_lind_area">删除管线盲区</string>
+    <string name="modify_pipe_lind_area">修改管线盲区</string>
+    <string name="add_pipe_lind_area">添加管线盲区</string>
 
 
 

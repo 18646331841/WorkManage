@@ -13,6 +13,7 @@ import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.bean.alarmanalysis.AlarmAnalysis;
 import com.barisetech.www.workmanage.bean.incident.IncidentInfo;
 import com.barisetech.www.workmanage.bean.pipecollections.PipeCollections;
+import com.barisetech.www.workmanage.bean.pipelindarea.PipeLindAreaInfo;
 import com.barisetech.www.workmanage.bean.pipework.PipeWork;
 import com.barisetech.www.workmanage.bean.site.SiteBean;
 import com.barisetech.www.workmanage.view.fragment.AddSiteFragment;
@@ -35,6 +36,9 @@ import com.barisetech.www.workmanage.view.fragment.PipeCollectionAddFragment;
 import com.barisetech.www.workmanage.view.fragment.PipeCollectionDetailFragment;
 import com.barisetech.www.workmanage.view.fragment.PipeCollectionFragment;
 import com.barisetech.www.workmanage.view.fragment.PipeFragment;
+import com.barisetech.www.workmanage.view.fragment.PipeLindAreaAddFragment;
+import com.barisetech.www.workmanage.view.fragment.PipeLindAreaDetailFragment;
+import com.barisetech.www.workmanage.view.fragment.PipeLindAreaFragment;
 import com.barisetech.www.workmanage.view.fragment.PipeWorkFragment;
 import com.barisetech.www.workmanage.view.fragment.SiteDetailFragment;
 import com.barisetech.www.workmanage.view.fragment.SiteFragment;
@@ -240,6 +244,27 @@ public class SecondActivity extends BaseActivity {
                     transaction.addToBackStack(tag);
                 }
                 break;
+            case PipeLindAreaFragment.TAG:
+                transaction
+                        .replace(R.id.second_framelayout, PipeLindAreaFragment.newInstance(), tag).commit();
+                break;
+
+            case PipeLindAreaAddFragment.TAG:
+                transaction
+                        .replace(R.id.second_framelayout, PipeLindAreaAddFragment.newInstance(), tag).commit();
+                if (!isActivity) {
+                    transaction.addToBackStack(tag);
+                }
+                break;
+            case PipeLindAreaDetailFragment.TAG:
+                transaction
+                        .replace(R.id.second_framelayout, PipeLindAreaDetailFragment.newInstance((PipeLindAreaInfo)
+                                eventBusMessage.getArg1()), tag).commit();
+                if (!isActivity) {
+                    transaction.addToBackStack(tag);
+                }
+                break;
+
         }
     }
 }

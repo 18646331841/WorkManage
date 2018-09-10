@@ -17,12 +17,15 @@ import com.barisetech.www.workmanage.adapter.OnScrollListener;
 import com.barisetech.www.workmanage.adapter.PipeLindAreaAdapter;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.base.BaseLoadMoreWrapper;
+import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.bean.pipelindarea.PipeLindAreaInfo;
 import com.barisetech.www.workmanage.bean.pipelindarea.ReqAllPipelindArea;
 import com.barisetech.www.workmanage.databinding.FragmentPipeLindAreaBinding;
 import com.barisetech.www.workmanage.utils.DisplayUtil;
 import com.barisetech.www.workmanage.viewmodel.PipeblindAreaViewModel;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,12 +68,16 @@ public class PipeLindAreaFragment extends BaseFragment {
         mBinding.setFragment(this);
         ToolbarInfo toolbarInfo = new ToolbarInfo();
         toolbarInfo.setTitle(getString(R.string.tv_pipeline_blind_area));
+        toolbarInfo.setTwoText("新增");
         observableToolbar.set(toolbarInfo);
         initView();
         return mBinding.getRoot();
     }
 
     private void initView() {
+        mBinding.toolbar.tvTwo.setOnClickListener(view -> {
+            EventBus.getDefault().post(new EventBusMessage(PipeLindAreaAddFragment.TAG));
+        });
         initRecyclerView();
     }
 
@@ -101,6 +108,14 @@ public class PipeLindAreaFragment extends BaseFragment {
 
             }
         });
+        pipeLindAreaAdapter.OnClick(item -> {
+            if (item instanceof PipeLindAreaInfo){
+                PipeLindAreaInfo pipeLindAreaInfo = (PipeLindAreaInfo) item;
+                EventBusMessage eventBusMessage = new EventBusMessage(PipeLindAreaDetailFragment.TAG);
+                eventBusMessage.setArg1(pipeLindAreaInfo);
+                EventBus.getDefault().post(eventBusMessage);
+            }
+        });
 
     }
 
@@ -116,6 +131,9 @@ public class PipeLindAreaFragment extends BaseFragment {
         loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING);
         ReqAllPipelindArea reqAllPipelindArea = new ReqAllPipelindArea();
         reqAllPipelindArea.setPipeId("0");
+        reqAllPipelindArea.setIsGetAll("false");
+        reqAllPipelindArea.setPipeIdQueryChecked("false");
+        reqAllPipelindArea.setType("0");
         reqAllPipelindArea.setStartIndex(String.valueOf(fromIndex));
         reqAllPipelindArea.setNumberOfRecords(String.valueOf(toIndex));
 

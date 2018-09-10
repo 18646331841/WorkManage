@@ -1,6 +1,7 @@
 package com.barisetech.www.workmanage.viewmodel;
 
 import android.app.Application;
+import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.os.Handler;
 import android.os.Looper;
@@ -35,6 +36,8 @@ public class PipeblindAreaViewModel extends BaseViewModel implements ModelCallBa
     private PipeLindAreaModel pipeLindAreaModel;
     private MutableLiveData<List<PipeLindAreaInfo>> mObservableAllPipeLindArea;
     private MutableLiveData<Integer> mObservablePipeLindAreaNum;
+    private MediatorLiveData<String> meObservableAddOrModifyLindArea;
+    private MediatorLiveData<Boolean> mObservableLindAreaDel;
 
     public PipeblindAreaViewModel(@NonNull Application application) {
         super(application);
@@ -47,6 +50,12 @@ public class PipeblindAreaViewModel extends BaseViewModel implements ModelCallBa
 
         mObservablePipeLindAreaNum = new MutableLiveData<>();
         mObservablePipeLindAreaNum.setValue(null);
+
+        meObservableAddOrModifyLindArea = new MediatorLiveData<>();
+        meObservableAddOrModifyLindArea.setValue(null);
+
+        mObservableLindAreaDel = new MediatorLiveData<>();
+        mObservableLindAreaDel.setValue(null);
     }
 
     /**
@@ -109,6 +118,12 @@ public class PipeblindAreaViewModel extends BaseViewModel implements ModelCallBa
                     case PipeLindAreaModel.TYPE_NUM:
                         mObservablePipeLindAreaNum.setValue((Integer) typeResponse.data);
                         break;
+                    case PipeLindAreaModel.TYPE_ADD:
+                        meObservableAddOrModifyLindArea.setValue((String)typeResponse.data);
+                        break;
+                    case PipeLindAreaModel.TYPE_DELETE:
+                        mObservableLindAreaDel.setValue((boolean) typeResponse.data);
+                        break;
                 }
             });
         }
@@ -131,5 +146,13 @@ public class PipeblindAreaViewModel extends BaseViewModel implements ModelCallBa
 
     public MutableLiveData<Integer> getmObservablePipeLindAreaNum() {
         return mObservablePipeLindAreaNum;
+    }
+
+    public MediatorLiveData<Boolean> getmObservableLindAreaDel() {
+        return mObservableLindAreaDel;
+    }
+
+    public MediatorLiveData<String> getMeObservableAddOrModifyLindArea() {
+        return meObservableAddOrModifyLindArea;
     }
 }
