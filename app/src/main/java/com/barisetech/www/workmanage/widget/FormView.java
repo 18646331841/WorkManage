@@ -33,7 +33,7 @@ public class FormView extends LinearLayout{
     private TextView tvContent;
     private android.view.View vArrow;
     private android.view.View vLine;
-    private NumberDicemalTextWatcher mNumberDicemalTextWatcher;
+//    private NumberDicemalTextWatcher mNumberDicemalTextWatcher;
     private TextWatcher mTextWatcher;
 
     public FormView(Context context) {
@@ -48,7 +48,7 @@ public class FormView extends LinearLayout{
 
         mContext = context;
 
-        mNumberDicemalTextWatcher = new NumberDicemalTextWatcher();
+//        mNumberDicemalTextWatcher = new NumberDicemalTextWatcher();
         mTextWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -209,11 +209,11 @@ public class FormView extends LinearLayout{
             etContent.setInputType(InputType.TYPE_CLASS_PHONE | InputType.TYPE_TEXT_VARIATION_PHONETIC);
             tvContent.setInputType(InputType.TYPE_CLASS_PHONE | InputType.TYPE_TEXT_VARIATION_PHONETIC);
         } else if (NUMBER.equals(inputType)) {
-            etContent.addTextChangedListener(new NumberDicemalTextWatcher(etContent));
+//            etContent.addTextChangedListener(new NumberDicemalTextWatcher(etContent));
             etContent.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_NORMAL);
             tvContent.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_NORMAL);
         } else if (NUMBER_DECIMAL.equals(inputType)) {
-            etContent.addTextChangedListener(new NumberDicemalTextWatcher(etContent));
+//            etContent.addTextChangedListener(new NumberDicemalTextWatcher(etContent));
             etContent.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_VARIATION_NORMAL);
             tvContent.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_VARIATION_NORMAL);
         } else {
@@ -246,95 +246,4 @@ public class FormView extends LinearLayout{
         void onClick();
     }
 
-    /**
-     * 小数位处理保留两位
-     */
-    public class NumberDicemalTextWatcher implements TextWatcher {
-
-        private EditText mEditText;
-
-        private String discountStr;
-
-        public NumberDicemalTextWatcher() {
-        }
-
-        public NumberDicemalTextWatcher(EditText editText) {
-            mEditText = editText;
-        }
-
-        public void setEditText(EditText editText) {
-            mEditText = editText;
-        }
-
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            discountStr = s.toString();
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            String trim = s.toString().trim();
-
-            if (!TextUtils.isEmpty(trim)) {
-
-                if (trim.contains(".")) {
-                    String[] split = trim.split("\\.");
-                    if (split.length > 1) {
-
-                        String s0 = split[0];
-
-                        if (s0.length() == 11) {
-
-                            mEditText.setText(discountStr);
-                            try {
-                                String trim1 = mEditText.getText().toString().trim();
-                                mEditText.setSelection(trim1.length());
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                            return;
-
-                        } else {
-
-                            String s1 = split[1];
-                            if (!TextUtils.isEmpty(s1)) {
-                                if (s1.length() == 3) {
-
-                                    mEditText.setText(discountStr);
-                                    try {
-                                        String trim1 = mEditText.getText().toString().trim();
-                                        mEditText.setSelection(trim1.length());
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                    return;
-                                }
-                            }
-                        }
-                    }
-
-                } else {
-
-                    // 金额长度限制
-                    if (trim.length() == 11) {
-
-                        mEditText.setText(discountStr);
-                        try {
-                            String trim1 = mEditText.getText().toString().trim();
-                            mEditText.setSelection(trim1.length());
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        return;
-                    }
-                }
-            }
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-
-        }
-    }
 }

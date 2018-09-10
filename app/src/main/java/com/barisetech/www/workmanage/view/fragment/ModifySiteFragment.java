@@ -101,6 +101,7 @@ public class ModifySiteFragment extends BaseFragment implements View.OnClickList
            if (null!=flag){
                if (flag){
                    ToastUtil.showToast("删除成功");
+                   getActivity().onBackPressed();
                }else {
                    ToastUtil.showToast("删除失败");
                }

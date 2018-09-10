@@ -58,7 +58,7 @@ public interface SiteService {
      * @return
      */
     @PUT("/api/Sites/{token}")
-     Observable<BaseResponse<String>> addOrModifySite(@Path("token") String token, @Body ReqAddSite siteBean);
+     Observable<BaseResponse<String>> addOrModifySite(@Path("token") String token, @Body ReqAddSite reqAddSite);
 
     /**
      * 删除站点

@@ -36,7 +36,8 @@
                     order:ddd_content_enable="true"
                     order:ddd_content_hint="@string/hint_site_id"
                     order:ddd_is_bottom_line="true"
-                    order:ddd_label="@string/tv_id" />
+                    order:ddd_label="@string/tv_id"
+                    order:dddInputType="number"/>
 
                 <com.barisetech.www.workmanage.widget.FormView
                     android:id="@+id/site_company"
@@ -47,13 +48,22 @@
                     order:ddd_is_bottom_line="true"
                     order:ddd_label="@string/along_company" />
                 <com.barisetech.www.workmanage.widget.FormView
+                    android:id="@+id/site_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    order:ddd_content_enable="true"
+                    order:ddd_content_hint="@string/tv_name"
+                    order:ddd_is_bottom_line="true"
+                    order:ddd_label="@string/tv_name" />
+                <com.barisetech.www.workmanage.widget.FormView
                     android:id="@+id/site_longitude"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     order:ddd_content_enable="true"
                     order:ddd_content_hint="@string/hint_longitude"
                     order:ddd_is_bottom_line="true"
-                    order:ddd_label="@string/longitude" />
+                    order:ddd_label="@string/longitude"
+                    order:dddInputType="numberDecimal"/>
                 <com.barisetech.www.workmanage.widget.FormView
                     android:id="@+id/site_latitude"
                     android:layout_width="match_parent"
@@ -61,7 +71,8 @@
                     order:ddd_content_enable="true"
                     order:ddd_content_hint="@string/hint_latitude"
                     order:ddd_is_bottom_line="true"
-                    order:ddd_label="@string/latitude" />
+                    order:ddd_label="@string/latitude"
+                    order:dddInputType="numberDecimal"/>
                 <com.barisetech.www.workmanage.widget.FormView
                     android:id="@+id/site_phone"
                     android:layout_width="match_parent"
@@ -69,7 +80,8 @@
                     order:ddd_content_enable="true"
                     order:ddd_content_hint="@string/hint_phone"
                     order:ddd_is_bottom_line="true"
-                    order:ddd_label="@string/phone_num" />
+                    order:ddd_label="@string/phone_num"
+                    order:dddInputType="number"/>
 
                 <com.barisetech.www.workmanage.widget.FormView
                     android:id="@+id/site_principal"
