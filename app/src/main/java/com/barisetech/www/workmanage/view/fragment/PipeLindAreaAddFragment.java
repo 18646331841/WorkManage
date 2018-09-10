@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
+import com.barisetech.www.workmanage.bean.pipelindarea.PipeLindAreaInfo;
+import com.barisetech.www.workmanage.bean.pipelindarea.ReqAddPipelindArea;
 import com.barisetech.www.workmanage.databinding.FragmentPipeLindAreaAddBinding;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.viewmodel.PipeblindAreaViewModel;
@@ -44,6 +46,21 @@ public class PipeLindAreaAddFragment extends BaseFragment{
     }
 
     private void initView() {
+        mBinding.addLindArea.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ReqAddPipelindArea info = new ReqAddPipelindArea();
+                info.setId(mBinding.lindId.getText().toString());
+                info.setPipeId(mBinding.lindPipeId.getText().toString());
+                info.setType(mBinding.lindType.getText().toString());
+                info.setStartDistance(mBinding.lindStart.getText().toString());
+                info.setEndDistance(mBinding.lindEnd.getText().toString());
+                info.setIsEnabled(mBinding.lindIsenable.getText().toString().equals("是")?"true":"false");
+                info.setRemark(mBinding.lindRemark.getText().toString());
+                info.setIsAdd("true");
+                pipeblindAreaViewModel.reqAddOrModifyPipeLindArea(info);
+            }
+        });
     }
 
     @Override
@@ -56,11 +73,11 @@ public class PipeLindAreaAddFragment extends BaseFragment{
     public void subscribeToModel() {
         pipeblindAreaViewModel.getMeObservableAddOrModifyLindArea().observe(this,s -> {
             if (null!=s){
-                if (s.equals("")){
-                    ToastUtil.showToast("");
+                if (s.equals("成功添加")){
+                    ToastUtil.showToast("成功添加");
                     getActivity().onBackPressed();
-                }else if (s.equals("")){
-                    ToastUtil.showToast("");
+                }else if (s.equals("失败添加")){
+                    ToastUtil.showToast("失败添加");
                 }
             }
         });

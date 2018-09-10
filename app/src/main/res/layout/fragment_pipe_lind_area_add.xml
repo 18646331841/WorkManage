@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:order="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -19,5 +20,89 @@
             android:id="@+id/toolbar"
             layout="@layout/layout_toolbar"
             app:toolbar="@{fragment.observableToolbar}"/>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_marginTop="@dimen/dp_50"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.barisetech.www.workmanage.widget.FormView
+                    android:id="@+id/lind_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    order:ddd_content_enable="true"
+                    order:ddd_content_hint="@string/hint_lind_id"
+                    order:ddd_is_bottom_line="true"
+                    order:ddd_label="@string/lind_area_id"
+                    order:dddInputType="number"/>
+                <com.barisetech.www.workmanage.widget.FormView
+                    android:id="@+id/lind_pipe_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    order:ddd_content_enable="true"
+                    order:ddd_content_hint="@string/hint_lind_pipe_id"
+                    order:ddd_is_bottom_line="true"
+                    order:ddd_label="@string/lind_pipe_id" />
+
+                <com.barisetech.www.workmanage.widget.FormView
+                    android:id="@+id/lind_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    order:ddd_content_enable="true"
+                    order:ddd_content_hint="@string/hint_lind_type"
+                    order:ddd_is_bottom_line="true"
+                    order:ddd_label="@string/type" />
+                <com.barisetech.www.workmanage.widget.FormView
+                    android:id="@+id/lind_start"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    order:ddd_content_enable="true"
+                    order:ddd_content_hint="@string/hint_lind_start"
+                    order:ddd_is_bottom_line="true"
+                    order:ddd_label="@string/start_dic"
+                    order:dddInputType="numberDecimal"/>
+                <com.barisetech.www.workmanage.widget.FormView
+                    android:id="@+id/lind_end"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    order:ddd_content_enable="true"
+                    order:ddd_content_hint="@string/hint_lind_end"
+                    order:ddd_is_bottom_line="true"
+                    order:ddd_label="@string/enc_dic"
+                    order:dddInputType="numberDecimal"/>
+                <com.barisetech.www.workmanage.widget.FormView
+                    android:id="@+id/lind_remark"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    order:ddd_content_enable="true"
+                    order:ddd_content_hint="@string/hint_pc_remark"
+                    order:ddd_is_bottom_line="true"
+                    order:ddd_label="@string/pc_detail_remark"/>
+
+                <com.barisetech.www.workmanage.widget.FormView
+                    android:id="@+id/lind_isenable"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    order:ddd_content_hint=""
+                    order:ddd_is_bottom_line="true"
+                    order:ddd_is_indicate="true"
+                    order:ddd_label="@string/is_enable"/>
+
+                <Button
+                    android:id="@+id/add_lind_area"
+                    android:layout_width="@dimen/dp_315"
+                    android:layout_height="@dimen/dp_50"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/dp_50"
+                    android:background="@drawable/shane_button_corners"
+                    android:text="@string/submit_add"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_18"/>
+            </LinearLayout>
+        </ScrollView>
     </LinearLayout>
 </layout>

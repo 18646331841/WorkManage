@@ -201,7 +201,17 @@
     <string name="del_pipe_lind_area">删除管线盲区</string>
     <string name="modify_pipe_lind_area">修改管线盲区</string>
     <string name="add_pipe_lind_area">添加管线盲区</string>
-
+    <string name="lind_area_id">管线盲区ID</string>
+    <string name="type">类型</string>
+    <string name="start_dic">开始位置</string>
+    <string name="enc_dic">结束位置</string>
+    <string name="is_enable">是否启动</string>
+    <string name="hint_lind_id">请输入管线盲区ID</string>
+    <string name="hint_lind_type">请输入类型</string>
+    <string name="hint_lind_start">请输入开始位置</string>
+    <string name="hint_lind_end">请输入结束位置</string>
+    <string name="hint_lind_pipe_id">请输入管线ID</string>
+    <string name="lind_pipe_id">管线ID</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->

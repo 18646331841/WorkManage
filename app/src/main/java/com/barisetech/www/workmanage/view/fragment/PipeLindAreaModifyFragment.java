@@ -70,11 +70,11 @@ public class PipeLindAreaModifyFragment extends BaseFragment{
     public void subscribeToModel() {
         pipeblindAreaViewModel.getMeObservableAddOrModifyLindArea().observe(this,s -> {
             if (null!=s){
-                if (s.equals("")){
-                    ToastUtil.showToast("");
+                if (s.equals("成功修改")){
+                    ToastUtil.showToast("成功修改");
                     getActivity().onBackPressed();
-                }else if (s.equals("")){
-                    ToastUtil.showToast("");
+                }else if (s.equals("失败修改")){
+                    ToastUtil.showToast("失败修改");
                 }
             }
         });

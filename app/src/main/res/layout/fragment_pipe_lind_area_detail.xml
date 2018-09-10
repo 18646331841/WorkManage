@@ -19,5 +19,7 @@
             android:id="@+id/toolbar"
             layout="@layout/layout_toolbar"
             app:toolbar="@{fragment.observableToolbar}" />
+
+
     </LinearLayout>
 </layout>
