@@ -13,6 +13,8 @@ import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.bean.pipelindarea.PipeLindAreaInfo;
+import com.barisetech.www.workmanage.bean.pipelindarea.ReqAddPipelindArea;
+import com.barisetech.www.workmanage.bean.pipelindarea.ReqDeletePipeLindArea;
 import com.barisetech.www.workmanage.databinding.FragmentPipeLindAreaModifyBinding;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.viewmodel.PipeblindAreaViewModel;
@@ -39,7 +41,6 @@ public class PipeLindAreaModifyFragment extends BaseFragment{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (null != getArguments()) {
-            pipeLindAreaInfo = new PipeLindAreaInfo();
             pipeLindAreaInfo = (PipeLindAreaInfo) getArguments().getSerializable(LIND_AREA_ID);
         }
     }
@@ -59,6 +60,37 @@ public class PipeLindAreaModifyFragment extends BaseFragment{
     }
 
     private void initView() {
+        mBinding.modifyLindId.setText(String.valueOf(pipeLindAreaInfo.getId()));
+//        mBinding.modifyLindPipeId.setText(String.valueOf(pipeLindAreaInfo.getPipeId()));
+//        mBinding.modifyLindIsenable.setText(pipeLindAreaInfo.isIsEnabled()?"是":"否");
+//        mBinding.modifyLindType.setText(String.valueOf(pipeLindAreaInfo.getType()));
+//        mBinding.modifyLindStart.setText(String.valueOf(pipeLindAreaInfo.getStartDistance()));
+//        mBinding.modifyLindEnd.setText(String.valueOf(pipeLindAreaInfo.getEndDistance()));
+//        mBinding.modifyLindRemark.setText(pipeLindAreaInfo.getRemark());
+        mBinding.modifyLindArea.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ReqAddPipelindArea info = new ReqAddPipelindArea();
+                info.setIsAdd("false");
+//                info.setId(mBinding.modifyLindId.getText().toString());
+//                info.setPipeId(mBinding.modifyLindPipeId.getText().toString());
+//                info.setRemark(mBinding.modifyLindRemark.getText().toString());
+//                info.setType(mBinding.modifyLindType.getText().toString());
+//                info.setEndDistance(mBinding.modifyLindEnd.getText().toString());
+//                info.setStartDistance(mBinding.modifyLindStart.getText().toString());
+//                info.setIsEnabled(mBinding.modifyLindIsenable.getText().toString().equals("是")?"true":"false");
+                pipeblindAreaViewModel.reqAddOrModifyPipeLindArea(info);
+            }
+        });
+
+        mBinding.delLindArea.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ReqDeletePipeLindArea info = new ReqDeletePipeLindArea();
+                info.setPipeBlindAreaId(String.valueOf(pipeLindAreaInfo.getId()));
+                pipeblindAreaViewModel.reqDeletePipeLindArea(info);
+            }
+        });
     }
 
     @Override
@@ -83,10 +115,10 @@ public class PipeLindAreaModifyFragment extends BaseFragment{
         pipeblindAreaViewModel.getmObservableLindAreaDel().observe(this,flag->{
             if (null!=flag){
                 if (flag){
-                    ToastUtil.showToast("");
+                    ToastUtil.showToast("删除成功");
                     getActivity().onBackPressed();
                 }else {
-                    ToastUtil.showToast("");
+                    ToastUtil.showToast("删除失败");
                 }
             }
         });

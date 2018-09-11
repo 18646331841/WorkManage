@@ -72,7 +72,7 @@
                     order:ddd_content_enable="true"
                     order:ddd_content_hint="@string/hint_lind_end"
                     order:ddd_is_bottom_line="true"
-                    order:ddd_label="@string/enc_dic"
+                    order:ddd_label="@string/end_dic"
                     order:dddInputType="numberDecimal"/>
                 <com.barisetech.www.workmanage.widget.FormView
                     android:id="@+id/lind_remark"

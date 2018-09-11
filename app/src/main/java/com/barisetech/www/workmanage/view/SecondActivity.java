@@ -42,6 +42,7 @@ import com.barisetech.www.workmanage.view.fragment.PipeFragment;
 import com.barisetech.www.workmanage.view.fragment.PipeLindAreaAddFragment;
 import com.barisetech.www.workmanage.view.fragment.PipeLindAreaDetailFragment;
 import com.barisetech.www.workmanage.view.fragment.PipeLindAreaFragment;
+import com.barisetech.www.workmanage.view.fragment.PipeLindAreaModifyFragment;
 import com.barisetech.www.workmanage.view.fragment.PipeModifyFragment;
 import com.barisetech.www.workmanage.view.fragment.PipeWorkFragment;
 import com.barisetech.www.workmanage.view.fragment.SiteDetailFragment;
@@ -287,6 +288,15 @@ public class SecondActivity extends BaseActivity {
             case PipeLindAreaDetailFragment.TAG:
                 transaction
                         .replace(R.id.second_framelayout, PipeLindAreaDetailFragment.newInstance((PipeLindAreaInfo)
+                                eventBusMessage.getArg1()), tag).commit();
+                if (!isActivity) {
+                    transaction.addToBackStack(tag);
+                }
+                break;
+
+            case PipeLindAreaModifyFragment.TAG:
+                transaction
+                        .replace(R.id.second_framelayout, PipeLindAreaModifyFragment.newInstance((PipeLindAreaInfo)
                                 eventBusMessage.getArg1()), tag).commit();
                 if (!isActivity) {
                     transaction.addToBackStack(tag);

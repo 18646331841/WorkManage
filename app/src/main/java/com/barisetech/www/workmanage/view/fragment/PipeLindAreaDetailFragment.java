@@ -10,9 +10,12 @@ import android.view.ViewGroup;
 
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.base.BaseFragment;
+import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.bean.pipelindarea.PipeLindAreaInfo;
 import com.barisetech.www.workmanage.databinding.FragmentPipeLindAreaDetailBinding;
+
+import org.greenrobot.eventbus.EventBus;
 
 public class PipeLindAreaDetailFragment extends BaseFragment{
 
@@ -57,6 +60,21 @@ public class PipeLindAreaDetailFragment extends BaseFragment{
     }
 
     private void initView() {
+        mBinding.lindAreaId.setText(String.valueOf(pipeLindAreaInfo.getId()));
+        mBinding.pipeLindAreaId.setText(String.valueOf(pipeLindAreaInfo.getPipeId()));
+        mBinding.isEnable.setText(pipeLindAreaInfo.isIsEnabled()?"是":"否");
+        mBinding.lindAreaType.setText(String.valueOf(pipeLindAreaInfo.getType()));
+        mBinding.lindAreaStart.setText(String.valueOf(pipeLindAreaInfo.getStartDistance()));
+        mBinding.lindAreaEnd.setText(String.valueOf(pipeLindAreaInfo.getEndDistance()));
+        mBinding.lindAreaRemark.setText(pipeLindAreaInfo.getRemark());
+        mBinding.toLindModify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EventBusMessage eventBusMessage = new EventBusMessage(PipeLindAreaModifyFragment.TAG);
+                eventBusMessage.setArg1(pipeLindAreaInfo);
+                EventBus.getDefault().post(eventBusMessage);
+            }
+        });
     }
 
     @Override
