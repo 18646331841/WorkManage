@@ -7,6 +7,9 @@
     <string name="title_myself">我</string>
     <string name="new_message">新消息</string>
 
+    <string name="dialog_yes">是</string>
+    <string name="dialog_no">否</string>
+
     <string name="title_incident">事件</string>
     <string name="incident_list_digitizer_online">数字化仪上线</string>
     <string name="incident_list_digitizer_offline">数字化仪下线</string>
@@ -110,8 +113,30 @@
 
     <string name="title_pipe">管线</string>
 
+    <string name="title_pipe_modify">编辑管线</string>
+    <string name="pipe_modify_confirm_modify">确认修改</string>
+
     <string name="title_pipe_detail">管线详情</string>
     <string name="pipe_detail_id">管线ID</string>
+    <string name="pipe_detail_name">管线名称</string>
+    <string name="pipe_detail_sort_id">排序ID</string>
+    <string name="pipe_detail_belong_pc">所属管线集合</string>
+    <string name="pipe_detail_length">管道长度</string>
+    <string name="pipe_detail_material">材质</string>
+    <string name="pipe_detail_company">所属公司</string>
+    <string name="pipe_detail_start_site">起始站点</string>
+    <string name="pipe_detail_speed">声速</string>
+    <string name="pipe_detail_min_time">最小时间间隔</string>
+    <string name="pipe_detail_is_algorithm">算法</string>
+    <string name="pipe_detail_is_test">测试模式</string>
+    <string name="pipe_detail_ball">收发球卡堵定位</string>
+    <string name="pipe_detail_leak_age">泄露量评估</string>
+    <string name="pipe_detail_plugin_name">泄露查件</string>
+    <string name="pipe_detail_to_pw">转到管线工况</string>
+    <string name="pipe_detail_to_pb">转到管线盲区</string>
+    <string name="pipe_detail_build_pw">创建管线工况</string>
+    <string name="pipe_detail_build_pb">创建管线盲区</string>
+    <string name="pipe_detail_modify">修改</string>
 
     <string name="title_pipe_collection">管线集合</string>
 

@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by LJH on 2018/8/28.
  */
-public class PipeInfo implements Serializable{
+public class PipeInfo implements Serializable {
     /**
      * PipeId : 0
      * Name : 测试线路
@@ -90,8 +90,14 @@ public class PipeInfo implements Serializable{
     public static void setText(LineView view, String text) {
         view.setText(text);
     }
+
     @BindingAdapter("setText")
     public static void setText(LineView view, int text) {
         view.setText(String.valueOf(text));
+    }
+
+    @BindingAdapter("setText")
+    public static void setText(LineView view, Boolean text) {
+        view.setText(text ? "是" : "否");
     }
 }

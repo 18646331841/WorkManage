@@ -17,6 +17,7 @@ import com.barisetech.www.workmanage.bean.pipe.ReqAllPipe;
 import com.barisetech.www.workmanage.bean.pipe.ReqDeletePipe;
 import com.barisetech.www.workmanage.callback.ModelCallBack;
 import com.barisetech.www.workmanage.http.Config;
+import com.barisetech.www.workmanage.model.AlarmAnalysisModel;
 import com.barisetech.www.workmanage.model.PipeModel;
 import com.barisetech.www.workmanage.model.SiteModel;
 import com.barisetech.www.workmanage.view.LoginActivity;
@@ -38,6 +39,7 @@ public class PipeViewModel extends BaseViewModel implements ModelCallBack {
     private PipeModel pipeModel;
     private MutableLiveData<List<PipeInfo>> mObservableAllPipe;
     private MutableLiveData<Integer> mObservablePipeNum;
+    private MutableLiveData<String> mObservableAdd;
 
     public PipeViewModel(@NonNull Application application) {
         super(application);
@@ -50,6 +52,8 @@ public class PipeViewModel extends BaseViewModel implements ModelCallBack {
 
         mObservablePipeNum = new MutableLiveData<>();
         mObservablePipeNum.setValue(null);
+        mObservableAdd = new MutableLiveData<>();
+        mObservableAdd.setValue(null);
     }
 
     /**
@@ -112,6 +116,9 @@ public class PipeViewModel extends BaseViewModel implements ModelCallBack {
                     case PipeModel.TYPE_NUM:
                         mObservablePipeNum.setValue((Integer) typeResponse.data);
                         break;
+                    case PipeModel.TYPE_ADD:
+                        mObservableAdd.setValue((String) typeResponse.data);
+                        break;
                 }
             });
         }
@@ -125,6 +132,20 @@ public class PipeViewModel extends BaseViewModel implements ModelCallBack {
             if (failResponse.code == Config.ERROR_UNAUTHORIZED) {
                 EventBus.getDefault().post(new EventBusMessage(LoginActivity.TAG));
             }
+
+            mDelivery.post(() -> {
+                switch (failResponse.type) {
+                    case PipeModel.TYPE_ALL:
+                        mObservableAllPipe.setValue(null);
+                        break;
+                    case PipeModel.TYPE_NUM:
+                        mObservablePipeNum.setValue(0);
+                        break;
+                    case PipeModel.TYPE_ADD:
+                        mObservableAdd.setValue(null);
+                        break;
+                }
+            });
         }
     }
 
@@ -134,5 +155,9 @@ public class PipeViewModel extends BaseViewModel implements ModelCallBack {
 
     public MutableLiveData<Integer> getmObservablePipeNum() {
         return mObservablePipeNum;
+    }
+
+    public MutableLiveData<String> getmObservableAdd() {
+        return mObservableAdd;
     }
 }

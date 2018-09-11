@@ -28,6 +28,8 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.disposables.Disposable;
+
 public class PipeCollectionModifyFragment extends BaseFragment{
 
     public static final String TAG = "PipeCollectionModifyFragment";
@@ -37,6 +39,7 @@ public class PipeCollectionModifyFragment extends BaseFragment{
 
     private PipeCollections pipeCollections;
     private PipeCollectionsViewModel pipeCollectionsViewModel;
+    private Disposable curDisposable;
 
     public static PipeCollectionModifyFragment newInstance(PipeCollections pipeCollections) {
         PipeCollectionModifyFragment fragment = new PipeCollectionModifyFragment();
@@ -79,6 +82,8 @@ public class PipeCollectionModifyFragment extends BaseFragment{
         mBinding.pcRemark.setText(pipeCollections.getRemark());
 
         mBinding.modifyPc.setOnClickListener(view -> {
+            closeDisposable();
+
             String id = mBinding.pcId.getText();
             String name = mBinding.pcName.getText();
             String sortId = mBinding.pcSortId.getText();
@@ -109,16 +114,24 @@ public class PipeCollectionModifyFragment extends BaseFragment{
             reqAddPC.setPipeCollect(pipeCollectionsList);
 
             EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_SHOW));
-            pipeCollectionsViewModel.reqAddOrModifyPc(reqAddPC);
+            curDisposable = pipeCollectionsViewModel.reqAddOrModifyPc(reqAddPC);
         });
 
         mBinding.deletePc.setOnClickListener(view -> {
+            closeDisposable();
+
             ReqDeletePc reqDeletePc = new ReqDeletePc();
             reqDeletePc.setPipeCollectId(pipeCollections.getId());
 
             EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_SHOW));
-            pipeCollectionsViewModel.reqDeletePc(reqDeletePc);
+            curDisposable = pipeCollectionsViewModel.reqDeletePc(reqDeletePc);
         });
+    }
+
+    private void closeDisposable() {
+        if (null != curDisposable) {
+            curDisposable.dispose();
+        }
     }
 
     @Override

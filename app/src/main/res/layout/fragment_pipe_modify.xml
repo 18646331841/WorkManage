@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="pipe"
-            type="com.barisetech.www.workmanage.bean.pipe.PipeInfo"/>
+            name="myFragment"
+            type="com.barisetech.www.workmanage.view.fragment.PipeModifyFragment"/>
 
         <variable
             name="fragment"
@@ -65,7 +65,7 @@
                             android:id="@+id/pipe_id"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:setText="@{pipe.PipeId}"
+                            app:setText="@{myFragment.pipeInfoField.PipeId}"
                             order:ddd_content_enable="false"
                             order:ddd_is_bottom_line="false"
                             order:ddd_is_indicate="false"
@@ -75,7 +75,7 @@
                             android:id="@+id/pipe_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:setText="@{pipe.Name}"
+                            app:setText="@{myFragment.pipeInfoField.Name}"
                             order:ddd_content_enable="false"
                             order:ddd_is_bottom_line="false"
                             order:ddd_is_indicate="false"
@@ -85,7 +85,7 @@
                             android:id="@+id/pipe_sort_id"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:setText="@{pipe.SortID}"
+                            app:setText="@{myFragment.pipeInfoField.SortID}"
                             order:ddd_content_enable="false"
                             order:ddd_is_bottom_line="false"
                             order:ddd_is_indicate="false"
@@ -95,7 +95,7 @@
                             android:id="@+id/pipe_pc"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:setText="@{pipe.PipeCollectID.Id}"
+                            app:setText="@{myFragment.pipeInfoField.PipeCollectID.Id}"
                             order:ddd_content_enable="false"
                             order:ddd_is_bottom_line="false"
                             order:ddd_is_indicate="false"
@@ -105,7 +105,7 @@
                             android:id="@+id/pipe_length"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:setText="@{pipe.Length}"
+                            app:setText="@{myFragment.pipeInfoField.Length}"
                             order:ddd_content_enable="false"
                             order:ddd_is_bottom_line="false"
                             order:ddd_is_indicate="false"
@@ -115,7 +115,7 @@
                             android:id="@+id/pipe_material"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:setText="@{pipe.PipeMaterial}"
+                            app:setText="@{myFragment.pipeInfoField.PipeMaterial}"
                             order:ddd_content_enable="false"
                             order:ddd_is_bottom_line="false"
                             order:ddd_is_indicate="false"
@@ -125,7 +125,7 @@
                             android:id="@+id/pipe_company"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:setText="@{pipe.Company}"
+                            app:setText="@{myFragment.pipeInfoField.Company}"
                             order:ddd_content_enable="false"
                             order:ddd_is_bottom_line="false"
                             order:ddd_is_indicate="false"
@@ -135,7 +135,7 @@
                             android:id="@+id/pipe_start_site"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:setText="@{pipe.StartSiteId}"
+                            app:setText="@{myFragment.pipeInfoField.StartSiteId}"
                             order:ddd_content_enable="false"
                             order:ddd_is_bottom_line="false"
                             order:ddd_is_indicate="false"
@@ -145,7 +145,7 @@
                             android:id="@+id/pipe_speed"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:setText="@{pipe.Speed}"
+                            app:setText="@{myFragment.pipeInfoField.Speed}"
                             order:ddd_content_enable="false"
                             order:ddd_is_bottom_line="false"
                             order:ddd_is_indicate="false"
@@ -155,7 +155,7 @@
                             android:id="@+id/pipe_min_time"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:setText="@{pipe.LeakCheckGap}"
+                            app:setText="@{myFragment.pipeInfoField.LeakCheckGap}"
                             order:ddd_content_enable="false"
                             order:ddd_is_bottom_line="false"
                             order:ddd_is_indicate="false"
@@ -165,47 +165,47 @@
                             android:id="@+id/pipe_algorithm"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:setText="@{pipe.Algorithm}"
+                            app:setText="@{myFragment.pipeInfoField.Algorithm}"
                             order:ddd_content_enable="false"
                             order:ddd_is_bottom_line="false"
-                            order:ddd_is_indicate="false"
+                            order:ddd_is_indicate="true"
                             order:ddd_label="@string/pipe_detail_is_algorithm"/>
 
                         <com.barisetech.www.workmanage.widget.LineView
                             android:id="@+id/pipe_test"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:setText="@{pipe.IsTestMode}"
+                            app:setText="@{myFragment.pipeInfoField.IsTestMode}"
                             order:ddd_content_enable="false"
                             order:ddd_is_bottom_line="false"
-                            order:ddd_is_indicate="false"
+                            order:ddd_is_indicate="true"
                             order:ddd_label="@string/pipe_detail_is_test"/>
 
                         <com.barisetech.www.workmanage.widget.LineView
                             android:id="@+id/pipe_ball"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:setText="@{pipe.BallChokLocation}"
+                            app:setText="@{myFragment.pipeInfoField.BallChokLocation}"
                             order:ddd_content_enable="false"
                             order:ddd_is_bottom_line="false"
-                            order:ddd_is_indicate="false"
+                            order:ddd_is_indicate="true"
                             order:ddd_label="@string/pipe_detail_ball"/>
 
                         <com.barisetech.www.workmanage.widget.LineView
                             android:id="@+id/pipe_leak"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:setText="@{pipe.LeakageAssessment}"
+                            app:setText="@{myFragment.pipeInfoField.LeakageAssessment}"
                             order:ddd_content_enable="false"
                             order:ddd_is_bottom_line="false"
-                            order:ddd_is_indicate="false"
+                            order:ddd_is_indicate="true"
                             order:ddd_label="@string/pipe_detail_leak_age"/>
 
                         <com.barisetech.www.workmanage.widget.LineView
                             android:id="@+id/pipe_plugin"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:setText="@{pipe.LlPluginName}"
+                            app:setText="@{myFragment.pipeInfoField.LlPluginName}"
                             order:ddd_content_enable="false"
                             order:ddd_is_bottom_line="false"
                             order:ddd_is_indicate="false"
@@ -217,48 +217,16 @@
 
 
                 <Button
-                    android:id="@+id/to_pw"
+                    android:id="@+id/modify_pipe"
                     android:layout_width="@dimen/dp_315"
                     android:layout_height="@dimen/dp_50"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/dp_30"
                     android:background="@drawable/shane_button_corners"
-                    android:text="@string/pipe_detail_to_pw"
+                    android:text="@string/pipe_modify_confirm_modify"
                     android:textColor="@color/white"
                     android:textSize="@dimen/sp_18"/>
 
-                <Button
-                    android:id="@+id/to_pb"
-                    android:layout_width="@dimen/dp_315"
-                    android:layout_height="@dimen/dp_50"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/dp_30"
-                    android:background="@drawable/shane_button_corners"
-                    android:text="@string/pipe_detail_to_pb"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/sp_18"/>
-
-                <Button
-                    android:id="@+id/build_pw"
-                    android:layout_width="@dimen/dp_315"
-                    android:layout_height="@dimen/dp_50"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/dp_30"
-                    android:background="@drawable/shane_button_corners"
-                    android:text="@string/pipe_detail_build_pw"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/sp_18"/>
-
-                <Button
-                    android:id="@+id/build_pb"
-                    android:layout_width="@dimen/dp_315"
-                    android:layout_height="@dimen/dp_50"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/dp_30"
-                    android:background="@drawable/shane_button_corners"
-                    android:text="@string/pipe_detail_build_pb"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/sp_18"/>
             </LinearLayout>
 
         </ScrollView>

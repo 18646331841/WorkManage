@@ -5,6 +5,10 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.barisetech.www.workmanage.R;
 
@@ -123,6 +127,49 @@ public class DialogFragmentHelper {
             return builder.create();
         }, cancelable, cancelListener);
         dialogFragment.show(fragmentManager, CONfIRM_TAG);
+    }
+
+    /**
+     * 是否选择框
+     */
+    private static final int YES_NO_THEME = R.style.Base_AlertDialog;
+    public static final String YES_NO_TAG = TAG_HEAD + ":yesRadio";
+
+    public static final int DIALOG_YES = 0;
+    public static final int DIALOG_NO = 1;
+
+    public static CommonDialogFragment showYesDialog(FragmentManager fragmentManager, final String title, int
+            defaultValue, RadioGroup.OnCheckedChangeListener onCheckedChangeListener, boolean cancelable) {
+
+        return showYesDialog(fragmentManager, title, defaultValue, onCheckedChangeListener, cancelable, null);
+    }
+
+    public static CommonDialogFragment showYesDialog(FragmentManager fragmentManager, final String title, int
+            defaultValue, RadioGroup.OnCheckedChangeListener onCheckedChangeListener, boolean cancelable,
+                                                     CommonDialogFragment.OnDialogCancelListener cancelListener) {
+
+        CommonDialogFragment dialogFragment = CommonDialogFragment.newInstance((Context context) -> {
+            LayoutInflater inflater = LayoutInflater.from(context);
+            LinearLayout viewDialog = (LinearLayout) inflater.inflate(R.layout.dialog_yes_no_radio, null);
+            final RadioGroup radioGroup = viewDialog.findViewById(R.id.groupBroadcast);
+            final RadioButton yes = viewDialog.findViewById(R.id.dialog_yes_rb);
+            final RadioButton no = viewDialog.findViewById(R.id.dialog_no_rb);
+            if (defaultValue == DIALOG_YES) {
+                yes.setChecked(true);
+            } else {
+                no.setChecked(true);
+            }
+            radioGroup.setOnCheckedChangeListener(onCheckedChangeListener);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(context, YES_NO_THEME);
+            builder
+                    .setView(viewDialog)
+                    .setTitle(title);
+
+            return builder.create();
+        }, cancelable, cancelListener);
+        dialogFragment.show(fragmentManager, YES_NO_TAG);
+        return dialogFragment;
     }
 }
 
