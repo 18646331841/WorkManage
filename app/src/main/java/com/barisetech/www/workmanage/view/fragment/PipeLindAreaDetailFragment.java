@@ -39,7 +39,6 @@ public class PipeLindAreaDetailFragment extends BaseFragment{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (null != getArguments()) {
-            pipeLindAreaInfo = new PipeLindAreaInfo();
             pipeLindAreaInfo = (PipeLindAreaInfo) getArguments().getSerializable(LIND_AREA_ID);
         }
     }
@@ -53,10 +52,21 @@ public class PipeLindAreaDetailFragment extends BaseFragment{
         mBinding.setFragment(this);
         ToolbarInfo toolbarInfo = new ToolbarInfo();
         toolbarInfo.setTitle(getString(R.string.pipe_lind_area_detail));
-        toolbarInfo.setTwoText("修改");
         observableToolbar.set(toolbarInfo);
         initView();
         return mBinding.getRoot();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mBinding.lindAreaId.setText(String.valueOf(pipeLindAreaInfo.getId()));
+        mBinding.pipeLindAreaId.setText(String.valueOf(pipeLindAreaInfo.getPipeId()));
+        mBinding.isEnable.setText(pipeLindAreaInfo.isIsEnabled()?"是":"否");
+        mBinding.lindAreaType.setText(String.valueOf(pipeLindAreaInfo.getType()));
+        mBinding.lindAreaStart.setText(String.valueOf(pipeLindAreaInfo.getStartDistance()));
+        mBinding.lindAreaEnd.setText(String.valueOf(pipeLindAreaInfo.getEndDistance()));
+        mBinding.lindAreaRemark.setText(pipeLindAreaInfo.getRemark());
     }
 
     private void initView() {

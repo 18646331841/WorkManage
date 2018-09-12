@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:order="http://schemas.android.com/tools">
+    xmlns:order="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="fragment"
             type="com.barisetech.www.workmanage.base.BaseFragment"/>
@@ -89,6 +91,7 @@
                     order:ddd_is_bottom_line="true"
                     order:ddd_is_indicate="true"
                     order:ddd_label="@string/is_enable"/>
+
                 <Button
                     android:id="@+id/modify_lind_area"
                     android:layout_width="@dimen/dp_315"

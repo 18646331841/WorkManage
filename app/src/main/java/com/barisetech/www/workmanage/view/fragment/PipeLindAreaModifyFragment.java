@@ -61,24 +61,24 @@ public class PipeLindAreaModifyFragment extends BaseFragment{
 
     private void initView() {
         mBinding.modifyLindId.setText(String.valueOf(pipeLindAreaInfo.getId()));
-//        mBinding.modifyLindPipeId.setText(String.valueOf(pipeLindAreaInfo.getPipeId()));
-//        mBinding.modifyLindIsenable.setText(pipeLindAreaInfo.isIsEnabled()?"是":"否");
-//        mBinding.modifyLindType.setText(String.valueOf(pipeLindAreaInfo.getType()));
-//        mBinding.modifyLindStart.setText(String.valueOf(pipeLindAreaInfo.getStartDistance()));
-//        mBinding.modifyLindEnd.setText(String.valueOf(pipeLindAreaInfo.getEndDistance()));
-//        mBinding.modifyLindRemark.setText(pipeLindAreaInfo.getRemark());
+        mBinding.modifyLindPipeId.setText(String.valueOf(pipeLindAreaInfo.getPipeId()));
+        mBinding.modifyLindIsenable.setText(pipeLindAreaInfo.isIsEnabled()?"是":"否");
+        mBinding.modifyLindType.setText(String.valueOf(pipeLindAreaInfo.getType()));
+        mBinding.modifyLindStart.setText(String.valueOf(pipeLindAreaInfo.getStartDistance()));
+        mBinding.modifyLindEnd.setText(String.valueOf(pipeLindAreaInfo.getEndDistance()));
+        mBinding.modifyLindRemark.setText(pipeLindAreaInfo.getRemark());
         mBinding.modifyLindArea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ReqAddPipelindArea info = new ReqAddPipelindArea();
                 info.setIsAdd("false");
-//                info.setId(mBinding.modifyLindId.getText().toString());
-//                info.setPipeId(mBinding.modifyLindPipeId.getText().toString());
-//                info.setRemark(mBinding.modifyLindRemark.getText().toString());
-//                info.setType(mBinding.modifyLindType.getText().toString());
-//                info.setEndDistance(mBinding.modifyLindEnd.getText().toString());
-//                info.setStartDistance(mBinding.modifyLindStart.getText().toString());
-//                info.setIsEnabled(mBinding.modifyLindIsenable.getText().toString().equals("是")?"true":"false");
+                info.setId(mBinding.modifyLindId.getText().toString());
+                info.setPipeId(mBinding.modifyLindPipeId.getText().toString());
+                info.setRemark(mBinding.modifyLindRemark.getText().toString());
+                info.setType(mBinding.modifyLindType.getText().toString());
+                info.setEndDistance(mBinding.modifyLindEnd.getText().toString());
+                info.setStartDistance(mBinding.modifyLindStart.getText().toString());
+                info.setIsEnabled(mBinding.modifyLindIsenable.getText().toString().equals("是")?"true":"false");
                 pipeblindAreaViewModel.reqAddOrModifyPipeLindArea(info);
             }
         });
