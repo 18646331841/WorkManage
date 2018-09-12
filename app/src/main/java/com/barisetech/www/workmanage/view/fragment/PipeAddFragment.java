@@ -216,14 +216,14 @@ public class PipeAddFragment extends BaseFragment {
             pipeViewModel.getmObservableAdd().observe(this, s -> {
                 if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
                     if (null != s) {
-                        if (s.equals("成功修改")) {
-                            ToastUtil.showToast("成功修改");
+                        if (s.equals("成功添加")) {
+                            ToastUtil.showToast("成功添加");
                             getActivity().onBackPressed();
-                        } else if (s.equals("失败修改")) {
-                            ToastUtil.showToast("失败修改");
+                        } else if (s.equals("失败添加")) {
+                            ToastUtil.showToast("失败添加");
                         }
                     } else {
-                        ToastUtil.showToast("失败修改");
+                        ToastUtil.showToast("失败添加");
                     }
                 }
             });

@@ -1,6 +1,7 @@
 package com.barisetech.www.workmanage.view.fragment;
 
 
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -15,10 +16,13 @@ import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.maps.model.PolylineOptions;
 import com.barisetech.www.workmanage.R;
+import com.barisetech.www.workmanage.base.BaseFragment;
+import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.bean.map.LineStation;
 import com.barisetech.www.workmanage.bean.map.MapPosition;
 import com.barisetech.www.workmanage.bean.map.MarkerStation;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
+import com.barisetech.www.workmanage.databinding.FragmentMapBinding;
 import com.barisetech.www.workmanage.utils.LogUtil;
 
 import org.greenrobot.eventbus.EventBus;
@@ -29,16 +33,13 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MapFragment extends Fragment {
+public class MapFragment extends BaseFragment {
 
     public static final String TAG = "MapFragment";
     private MapView mMapView;
     private AMap mAMap;
     private MyLocationStyle myLocationStyle;
-
-    public MapFragment() {
-        // Required empty public constructor
-    }
+    FragmentMapBinding mBinding;
 
     public static MapFragment newInstance() {
         MapFragment fragment = new MapFragment();
@@ -48,10 +49,15 @@ public class MapFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_map, container, false);
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_map, container, false);
+        setToolBarHeight(mBinding.toolbar.getRoot());
+        mBinding.setFragment(this);
+        ToolbarInfo toolbarInfo = new ToolbarInfo();
+        toolbarInfo.setTitle(getString(R.string.title_map));
+        observableToolbar.set(toolbarInfo);
+        initView(savedInstanceState);
 
-        initView(root, savedInstanceState);
-        return root;
+        return mBinding.getRoot();
     }
 
     @Override
@@ -78,8 +84,8 @@ public class MapFragment extends Fragment {
         mMapView.onDestroy();
     }
 
-    private void initView(View root, Bundle savedInstanceState) {
-        mMapView = (MapView) root.findViewById(R.id.map);
+    private void initView(Bundle savedInstanceState) {
+        mMapView = mBinding.map;
         mMapView.onCreate(savedInstanceState);
         initMap();
     }
@@ -138,5 +144,15 @@ public class MapFragment extends Fragment {
                 .color(lineStation.color)
                 .width(lineStation.width);
         mAMap.addPolyline(polylineOptions);
+    }
+
+    @Override
+    public void bindViewModel() {
+
+    }
+
+    @Override
+    public void subscribeToModel() {
+
     }
 }

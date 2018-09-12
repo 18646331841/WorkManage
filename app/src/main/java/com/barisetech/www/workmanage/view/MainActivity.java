@@ -15,6 +15,7 @@ import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.bean.incident.IncidentInfo;
 import com.barisetech.www.workmanage.bean.pipe.PipeInfo;
 import com.barisetech.www.workmanage.bean.pipecollections.PipeCollections;
+import com.barisetech.www.workmanage.bean.pipework.PipeWork;
 import com.barisetech.www.workmanage.bean.site.SiteBean;
 import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
 import com.barisetech.www.workmanage.view.fragment.AlarmAnalysisFragment;
@@ -38,7 +39,10 @@ import com.barisetech.www.workmanage.view.fragment.PipeCollectionModifyFragment;
 import com.barisetech.www.workmanage.view.fragment.PipeDetailFragment;
 import com.barisetech.www.workmanage.view.fragment.PipeFragment;
 import com.barisetech.www.workmanage.view.fragment.PipeModifyFragment;
+import com.barisetech.www.workmanage.view.fragment.PipeWorkAddFragment;
+import com.barisetech.www.workmanage.view.fragment.PipeWorkDetailFragment;
 import com.barisetech.www.workmanage.view.fragment.PipeWorkFragment;
+import com.barisetech.www.workmanage.view.fragment.PipeWorkModifyFragment;
 import com.barisetech.www.workmanage.view.fragment.SiteDetailFragment;
 import com.barisetech.www.workmanage.view.fragment.SiteFragment;
 
@@ -259,6 +263,29 @@ public class MainActivity extends BaseActivity {
                 case PipeWorkFragment.TAG:
                     transaction
                             .replace(R.id.fragment_content, PipeWorkFragment.newInstance(), tag).commit();
+                    break;
+                case PipeWorkDetailFragment.TAG:
+                    transaction
+                            .replace(R.id.fragment_content, PipeWorkDetailFragment.newInstance((PipeWork)
+                                    eventBusMessage.getArg1()), tag).commit();
+                    if (!isActivity) {
+                        transaction.addToBackStack(tag);
+                    }
+                    break;
+                case PipeWorkModifyFragment.TAG:
+                    transaction
+                            .replace(R.id.fragment_content, PipeWorkModifyFragment.newInstance((PipeWork)
+                                    eventBusMessage.getArg1()), tag).commit();
+                    if (!isActivity) {
+                        transaction.addToBackStack(tag);
+                    }
+                    break;
+                case PipeWorkAddFragment.TAG:
+                    transaction
+                            .replace(R.id.fragment_content, PipeWorkAddFragment.newInstance(), tag).commit();
+                    if (!isActivity) {
+                        transaction.addToBackStack(tag);
+                    }
                     break;
             }
         }
