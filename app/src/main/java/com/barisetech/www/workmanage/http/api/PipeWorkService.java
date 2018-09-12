@@ -16,6 +16,7 @@ import io.reactivex.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -26,7 +27,7 @@ import retrofit2.http.Path;
 public interface PipeWorkService {
 
     /**
-     * 获取全部管线集合
+     * 获取全部管线工况
      *
      * @param reqAllPW
      * @return
@@ -35,7 +36,7 @@ public interface PipeWorkService {
     Observable<BaseResponse<List<PipeWork>>> getAllPw(@Body ReqAllPW reqAllPW);
 
     /**
-     * 获取管线集合数量
+     * 获取管线工况数量
      *
      * @param token
      * @return
@@ -44,7 +45,7 @@ public interface PipeWorkService {
     Observable<BaseResponse<Integer>> getPwNum(@Path("token") String token);
 
     /**
-     * 添加或修改管线集合
+     * 添加或修改管线工况
      *
      * @param token
      * @param reqAddPW
@@ -54,11 +55,11 @@ public interface PipeWorkService {
     Observable<BaseResponse<String>> addOrModifyPw(@Path("token") String token, @Body ReqAddPW reqAddPW);
 
     /**
-     * 删除管线集合
+     * 删除管线工况
      * @param token
      * @param reqDeletePW
      * @return
      */
-    @DELETE("/api/PipeWork/{token}")
+    @HTTP(method = "DELETE",path = "/api/PipeWork/{token}",hasBody = true)
     Observable<BaseResponse<Boolean>> deletePw(@Path("token") String token, @Body ReqDeletePW reqDeletePW);
 }

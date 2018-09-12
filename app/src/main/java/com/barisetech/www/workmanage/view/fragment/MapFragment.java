@@ -1,6 +1,8 @@
 package com.barisetech.www.workmanage.view.fragment;
 
 
+import android.arch.lifecycle.Lifecycle;
+import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -22,8 +24,15 @@ import com.barisetech.www.workmanage.bean.map.LineStation;
 import com.barisetech.www.workmanage.bean.map.MapPosition;
 import com.barisetech.www.workmanage.bean.map.MarkerStation;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
+import com.barisetech.www.workmanage.bean.map.PipeTrackInfo;
+import com.barisetech.www.workmanage.bean.map.ReqPipeTrack;
+import com.barisetech.www.workmanage.bean.pipe.PipeInfo;
+import com.barisetech.www.workmanage.bean.pipe.ReqAllPipe;
 import com.barisetech.www.workmanage.databinding.FragmentMapBinding;
 import com.barisetech.www.workmanage.utils.LogUtil;
+import com.barisetech.www.workmanage.utils.ToastUtil;
+import com.barisetech.www.workmanage.viewmodel.MapViewModel;
+import com.barisetech.www.workmanage.viewmodel.PipeViewModel;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -39,7 +48,12 @@ public class MapFragment extends BaseFragment {
     private MapView mMapView;
     private AMap mAMap;
     private MyLocationStyle myLocationStyle;
+    private MapViewModel mapViewModel;
+    private PipeViewModel pipeViewModel;
     FragmentMapBinding mBinding;
+
+    private List<PipeInfo> pipeInfoList;
+    private List<PipeTrackInfo> curPipeTrack;
 
     public static MapFragment newInstance() {
         MapFragment fragment = new MapFragment();
@@ -146,13 +160,68 @@ public class MapFragment extends BaseFragment {
         mAMap.addPolyline(polylineOptions);
     }
 
+    private void getPipeInfo(int fromIndex, int toIndex) {
+        ReqAllPipe reqAllPipe = new ReqAllPipe();
+        reqAllPipe.setPipeId("0");
+        reqAllPipe.setStartIndex(String.valueOf(fromIndex));
+        reqAllPipe.setNumberOfRecords(String.valueOf(toIndex));
+        pipeViewModel.reqAllPipe(reqAllPipe);
+    }
+
     @Override
     public void bindViewModel() {
-
+        mapViewModel = ViewModelProviders.of(this).get(MapViewModel.class);
+        pipeViewModel = ViewModelProviders.of(this).get(PipeViewModel.class);
     }
 
     @Override
     public void subscribeToModel() {
+        if (!pipeViewModel.getmObservablePipeNum().hasObservers()) {
+            pipeViewModel.getmObservablePipeNum().observe(this, integer -> {
+                if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                    if (null != integer && integer > 0) {
+                        getPipeInfo(0, integer);
+                    } else {
+                        ToastUtil.showToast("未找到管线");
+                    }
+                }
+            });
+        }
+        if (!pipeViewModel.getmObservableAllPipe().hasObservers()) {
+            pipeViewModel.getmObservableAllPipe().observe(this, pipeInfos -> {
+                if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                    if (null != pipeInfos) {
+                        if (pipeInfos.size() > 0) {
+                            pipeInfoList.addAll(pipeInfos);
 
+                            //接口方不给提供获取多个管线路径的接口，这里只能循环调用每个
+                            //管线的路径接口
+                            for (int i = 0; i < pipeInfos.size(); i++) {
+                                ReqPipeTrack reqPipeTrack = new ReqPipeTrack();
+                            }
+
+                        } else {
+                            ToastUtil.showToast("获取管线失败");
+                        }
+                    } else {
+                        ToastUtil.showToast("获取管线失败");
+                    }
+                }
+            });
+        }
+
+        if (!mapViewModel.getmObservableTrack().hasObservers()) {
+            mapViewModel.getmObservableTrack().observe(this, pipeTrackInfos -> {
+                if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                    if (null != pipeTrackInfos && pipeTrackInfos.size() > 0) {
+
+                    }
+                }
+            });
+        }
+
+        if (null == pipeInfoList || pipeInfoList.size() <= 0) {
+            pipeViewModel.reqPipeNum();
+        }
     }
 }

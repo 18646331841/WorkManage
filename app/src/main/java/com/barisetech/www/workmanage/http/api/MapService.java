@@ -21,5 +21,5 @@ public interface MapService {
      * @return
      */
     @POST("/api/MapPath")
-    Observable<BaseResponse<List<PipeTrackInfo>>> getAllAlarm(@Body ReqPipeTrack reqPipeTrack);
+    Observable<BaseResponse<List<PipeTrackInfo>>> getPipeTrack(@Body ReqPipeTrack reqPipeTrack);
 }
