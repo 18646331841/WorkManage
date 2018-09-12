@@ -33,6 +33,7 @@ import com.barisetech.www.workmanage.view.fragment.ModifySiteFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsAddFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsDetailsFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsListFragment;
+import com.barisetech.www.workmanage.view.fragment.PipeAddFragment;
 import com.barisetech.www.workmanage.view.fragment.PipeCollectionAddFragment;
 import com.barisetech.www.workmanage.view.fragment.PipeCollectionDetailFragment;
 import com.barisetech.www.workmanage.view.fragment.PipeCollectionFragment;
@@ -44,7 +45,10 @@ import com.barisetech.www.workmanage.view.fragment.PipeLindAreaDetailFragment;
 import com.barisetech.www.workmanage.view.fragment.PipeLindAreaFragment;
 import com.barisetech.www.workmanage.view.fragment.PipeLindAreaModifyFragment;
 import com.barisetech.www.workmanage.view.fragment.PipeModifyFragment;
+import com.barisetech.www.workmanage.view.fragment.PipeWorkAddFragment;
+import com.barisetech.www.workmanage.view.fragment.PipeWorkDetailFragment;
 import com.barisetech.www.workmanage.view.fragment.PipeWorkFragment;
+import com.barisetech.www.workmanage.view.fragment.PipeWorkModifyFragment;
 import com.barisetech.www.workmanage.view.fragment.SiteDetailFragment;
 import com.barisetech.www.workmanage.view.fragment.SiteFragment;
 import com.barisetech.www.workmanage.view.fragment.WaveFormFragment;
@@ -210,6 +214,13 @@ public class SecondActivity extends BaseActivity {
                     transaction.addToBackStack(tag);
                 }
                 break;
+            case PipeAddFragment.TAG:
+                transaction
+                        .replace(R.id.second_framelayout, PipeAddFragment.newInstance(), tag).commit();
+                if (!isActivity) {
+                    transaction.addToBackStack(tag);
+                }
+                break;
             case PipeModifyFragment.TAG:
                 transaction
                         .replace(R.id.second_framelayout, PipeModifyFragment.newInstance((PipeInfo) eventBusMessage
@@ -248,6 +259,29 @@ public class SecondActivity extends BaseActivity {
             case PipeWorkFragment.TAG:
                 transaction
                         .replace(R.id.second_framelayout, PipeWorkFragment.newInstance(), tag).commit();
+                break;
+            case PipeWorkDetailFragment.TAG:
+                transaction
+                        .replace(R.id.second_framelayout, PipeWorkDetailFragment.newInstance((PipeWork)
+                                eventBusMessage.getArg1()), tag).commit();
+                if (!isActivity) {
+                    transaction.addToBackStack(tag);
+                }
+                break;
+            case PipeWorkModifyFragment.TAG:
+                transaction
+                        .replace(R.id.second_framelayout, PipeWorkModifyFragment.newInstance((PipeWork)
+                                eventBusMessage.getArg1()), tag).commit();
+                if (!isActivity) {
+                    transaction.addToBackStack(tag);
+                }
+                break;
+            case PipeWorkAddFragment.TAG:
+                transaction
+                        .replace(R.id.second_framelayout, PipeWorkAddFragment.newInstance(), tag).commit();
+                if (!isActivity) {
+                    transaction.addToBackStack(tag);
+                }
                 break;
             case WaveFormFragment.TAG:
                 transaction

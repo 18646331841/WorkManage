@@ -80,6 +80,11 @@ public class PipeFragment extends BaseFragment {
 
     private void initView() {
         initRecyclerView();
+
+        mBinding.toolbar.tvTwo.setOnClickListener(view -> {
+            EventBusMessage eventBusMessage = new EventBusMessage(PipeAddFragment.TAG);
+            EventBus.getDefault().post(eventBusMessage);
+        });
     }
 
     private void initRecyclerView() {

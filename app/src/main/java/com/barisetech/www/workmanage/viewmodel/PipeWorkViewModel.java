@@ -42,6 +42,7 @@ public class PipeWorkViewModel extends BaseViewModel implements ModelCallBack {
 
     private MutableLiveData<List<PipeWork>> mObservableAllPW;
     private MutableLiveData<Integer> mObservableNum;
+    private MutableLiveData<String> mObservableAdd;
 
     public PipeWorkViewModel(@NonNull Application application) {
         super(application);
@@ -52,6 +53,8 @@ public class PipeWorkViewModel extends BaseViewModel implements ModelCallBack {
         mObservableAllPW.setValue(null);
         mObservableNum = new MutableLiveData<>();
         mObservableNum.setValue(null);
+        mObservableAdd = new MutableLiveData<>();
+        mObservableAdd.setValue(null);
     }
 
     /**
@@ -110,6 +113,9 @@ public class PipeWorkViewModel extends BaseViewModel implements ModelCallBack {
                     case PipeWorkModel.TYPE_NUM:
                         mObservableNum.setValue((Integer) typeResponse.data);
                         break;
+                    case PipeWorkModel.TYPE_ADD:
+                        mObservableAdd.setValue((String) typeResponse.data);
+                        break;
                 }
             });
         }
@@ -132,6 +138,9 @@ public class PipeWorkViewModel extends BaseViewModel implements ModelCallBack {
                     case PipeWorkModel.TYPE_NUM:
                         mObservableNum.setValue(null);
                         break;
+                    case PipeWorkModel.TYPE_ADD:
+                        mObservableAdd.setValue(null);
+                        break;
                 }
             });
         }
@@ -143,5 +152,9 @@ public class PipeWorkViewModel extends BaseViewModel implements ModelCallBack {
 
     public MutableLiveData<List<PipeWork>> getmObservableAllPW() {
         return mObservableAllPW;
+    }
+
+    public MutableLiveData<String> getmObservableAdd() {
+        return mObservableAdd;
     }
 }

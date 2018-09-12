@@ -15,11 +15,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.barisetech.www.workmanage.R;
+import com.barisetech.www.workmanage.adapter.ItemCallBack;
 import com.barisetech.www.workmanage.adapter.OnScrollListener;
 import com.barisetech.www.workmanage.adapter.PipeWorkAdapter;
 import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.base.BaseLoadMoreWrapper;
+import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.bean.pipework.PipeWork;
 import com.barisetech.www.workmanage.bean.pipework.ReqAllPW;
@@ -28,6 +30,8 @@ import com.barisetech.www.workmanage.utils.DisplayUtil;
 import com.barisetech.www.workmanage.utils.LogUtil;
 import com.barisetech.www.workmanage.utils.TimeUtil;
 import com.barisetech.www.workmanage.viewmodel.PipeWorkViewModel;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,7 +86,7 @@ public class PipeWorkFragment extends BaseFragment {
         mBinding.setFragment(this);
         ToolbarInfo toolbarInfo = new ToolbarInfo();
         toolbarInfo.setTitle(getString(R.string.title_pipe_work));
-        toolbarInfo.setTwoText("新增");
+        toolbarInfo.setOneText("新增");
         observableToolbar.set(toolbarInfo);
 
         initView();
@@ -92,11 +96,16 @@ public class PipeWorkFragment extends BaseFragment {
 
     private void initView() {
         initRecyclerView();
+
+        mBinding.toolbar.tvOne.setOnClickListener(view -> {
+            EventBusMessage eventBusMessage = new EventBusMessage(PipeWorkAddFragment.TAG);
+            EventBus.getDefault().post(eventBusMessage);
+        });
     }
 
     private void initRecyclerView() {
 
-        pipeWorkAdapter = new PipeWorkAdapter(pipeWorkList, getContext());
+        pipeWorkAdapter = new PipeWorkAdapter(pipeWorkList, getContext(), itemCallBack);
         loadMoreWrapper = new BaseLoadMoreWrapper(pipeWorkAdapter);
         loadMoreWrapper.setLoadingViewHeight(DisplayUtil.dip2px(getContext(), 50));
         mBinding.pipeWorkList.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -123,6 +132,12 @@ public class PipeWorkFragment extends BaseFragment {
             }
         });
     }
+
+    private ItemCallBack itemCallBack = item -> {
+        EventBusMessage eventBusMessage = new EventBusMessage(PipeWorkDetailFragment.TAG);
+        eventBusMessage.setArg1(item);
+        EventBus.getDefault().post(eventBusMessage);
+    };
 
     private void updateRecyclerView(int fromIndex, int toIndex) {
         getDatas(fromIndex, toIndex);

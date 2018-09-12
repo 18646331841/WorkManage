@@ -21,7 +21,7 @@ import com.barisetech.www.workmanage.bean.pipe.PipeInfo;
 import com.barisetech.www.workmanage.bean.pipe.ReqAddPipe;
 import com.barisetech.www.workmanage.bean.pipe.ReqPipeInfo;
 import com.barisetech.www.workmanage.bean.pipecollections.PipeCollections;
-import com.barisetech.www.workmanage.databinding.FragmentPipeModifyBinding;
+import com.barisetech.www.workmanage.databinding.FragmentPipeAddBinding;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.view.dialog.CommonDialogFragment;
 import com.barisetech.www.workmanage.view.dialog.DialogFragmentHelper;
@@ -34,44 +34,30 @@ import java.util.List;
 
 import io.reactivex.disposables.Disposable;
 
-public class PipeModifyFragment extends BaseFragment {
+public class PipeAddFragment extends BaseFragment {
 
-    public static final String TAG = "PipeModifyFragment";
+    public static final String TAG = "PipeAddFragment";
 
-    private static final String PIPE_ID = "pipeInfo";
-    private PipeInfo curPipeInfo;
-    FragmentPipeModifyBinding mBinding;
     private PipeViewModel pipeViewModel;
     private CommonDialogFragment commonDialogFragment;
     private Disposable curDisposable;
-    public static ObservableField<PipeInfo> pipeInfoField;
+    FragmentPipeAddBinding mBinding;
+    private ReqPipeInfo reqPipeInfo = new ReqPipeInfo();
 
-    public static PipeModifyFragment newInstance(PipeInfo pipeInfo) {
-        PipeModifyFragment fragment = new PipeModifyFragment();
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(PIPE_ID, pipeInfo);
-        fragment.setArguments(bundle);
+    public static PipeAddFragment newInstance() {
+        PipeAddFragment fragment = new PipeAddFragment();
         return fragment;
     }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (null != getArguments()) {
-            curPipeInfo = (PipeInfo) getArguments().getSerializable(PIPE_ID);
-        }
-    }
-
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
             savedInstanceState) {
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_pipe_modify, container, false);
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_pipe_add, container, false);
         setToolBarHeight(mBinding.toolbar.getRoot());
         mBinding.setFragment(this);
         ToolbarInfo toolbarInfo = new ToolbarInfo();
-        toolbarInfo.setTitle(getString(R.string.title_pipe_modify));
+        toolbarInfo.setTitle(getString(R.string.title_pipe_add));
         observableToolbar.set(toolbarInfo);
         initView();
 
@@ -93,70 +79,70 @@ public class PipeModifyFragment extends BaseFragment {
     }
 
     private void initView() {
-        pipeInfoField = new ObservableField<>();
-        pipeInfoField.set(curPipeInfo);
-        mBinding.setMyFragment(this);
-
+        
         mBinding.pipeAlgorithm.setOnItemClickListener(() -> {
-            showDialog(getString(R.string.pipe_detail_is_algorithm), curPipeInfo.Algorithm, (radioGroup, i) -> {
+            showDialog(getString(R.string.pipe_detail_is_algorithm), Boolean.valueOf(reqPipeInfo.Algorithm), (radioGroup, i) -> {
                 closeDialog();
                 switch (i) {
                     case R.id.dialog_yes_rb:
-                        curPipeInfo.Algorithm = true;
+                        reqPipeInfo.Algorithm = "true";
+                        mBinding.pipeAlgorithm.setText("是");
                         break;
                     case R.id.dialog_no_rb:
-                        curPipeInfo.Algorithm = false;
+                        reqPipeInfo.Algorithm = "false";
+                        mBinding.pipeAlgorithm.setText("否");
                         break;
                 }
-                pipeInfoField.notifyChange();
             });
         });
         mBinding.pipeTest.setOnItemClickListener(() -> {
-            showDialog(getString(R.string.pipe_detail_is_test), curPipeInfo.IsTestMode, (radioGroup, i) -> {
+            showDialog(getString(R.string.pipe_detail_is_test), Boolean.valueOf(reqPipeInfo.IsTestMode), (radioGroup, i) -> {
                 closeDialog();
 
                 switch (i) {
                     case R.id.dialog_yes_rb:
-                        curPipeInfo.IsTestMode = true;
-
+                        reqPipeInfo.IsTestMode = "true";
+                        mBinding.pipeTest.setText("是");
                         break;
                     case R.id.dialog_no_rb:
-                        curPipeInfo.IsTestMode = false;
+                        reqPipeInfo.IsTestMode = "false";
+                        mBinding.pipeTest.setText("否");
                         break;
                 }
-                pipeInfoField.notifyChange();
 
             });
         });
         mBinding.pipeBall.setOnItemClickListener(() -> {
-            showDialog(getString(R.string.pipe_detail_ball), curPipeInfo.BallChokLocation, (radioGroup, i) -> {
+            showDialog(getString(R.string.pipe_detail_ball), Boolean.valueOf(reqPipeInfo.BallChokLocation), (radioGroup, i) -> {
                 closeDialog();
 
                 switch (i) {
                     case R.id.dialog_yes_rb:
-                        curPipeInfo.BallChokLocation = true;
+                        reqPipeInfo.BallChokLocation = "true";
+                        mBinding.pipeBall.setText("是");
                         break;
                     case R.id.dialog_no_rb:
-                        curPipeInfo.BallChokLocation = false;
+                        reqPipeInfo.BallChokLocation = "false";
+                        mBinding.pipeBall.setText("否");
                         break;
                 }
-                pipeInfoField.notifyChange();
 
             });
         });
         mBinding.pipeLeak.setOnItemClickListener(() -> {
-            showDialog(getString(R.string.pipe_detail_leak_age), curPipeInfo.LeakageAssessment, (radioGroup, i) -> {
+            showDialog(getString(R.string.pipe_detail_leak_age), Boolean.valueOf(reqPipeInfo.LeakageAssessment), (radioGroup, i) -> {
                 closeDialog();
 
                 switch (i) {
                     case R.id.dialog_yes_rb:
-                        curPipeInfo.LeakageAssessment = true;
+                        reqPipeInfo.LeakageAssessment = "true";
+                        mBinding.pipeLeak.setText("是");
                         break;
                     case R.id.dialog_no_rb:
-                        curPipeInfo.LeakageAssessment = false;
+                        reqPipeInfo.LeakageAssessment = "false";
+                        mBinding.pipeLeak.setText("否");
                         break;
                 }
-                pipeInfoField.notifyChange();
 
             });
         });
@@ -175,24 +161,23 @@ public class PipeModifyFragment extends BaseFragment {
             String speed = mBinding.pipeSpeed.getText();
             String minTime = mBinding.pipeMinTime.getText();
 
-            curPipeInfo.PipeId = Integer.valueOf(id);
-            curPipeInfo.Name = name;
-            curPipeInfo.SortID = Integer.valueOf(sortId);
+            reqPipeInfo.PipeId = id;
+            reqPipeInfo.Name = name;
+            reqPipeInfo.SortID = sortId;
             PipeCollections pc = new PipeCollections();
             pc.setId(pcId);
-            curPipeInfo.PipeCollectID = pc;
-            curPipeInfo.Length = Integer.valueOf(length);
-            curPipeInfo.PipeMaterial = materail;
-            curPipeInfo.Company = company;
-            curPipeInfo.StartSiteId = Integer.valueOf(startSite);
-            curPipeInfo.Speed = Integer.valueOf(speed);
-            curPipeInfo.LeakCheckGap = Integer.valueOf(minTime);
-
-            ReqPipeInfo reqPipeInfo = new ReqPipeInfo();
-            reqPipeInfo.toPipe(curPipeInfo);
+            List<PipeCollections> pcList = new ArrayList<>();
+            pcList.add(pc);
+            reqPipeInfo.PipeCollectID = pcList;
+            reqPipeInfo.Length = length;
+            reqPipeInfo.PipeMaterial = materail;
+            reqPipeInfo.Company = company;
+            reqPipeInfo.StartSiteId = startSite;
+            reqPipeInfo.Speed = speed;
+            reqPipeInfo.LeakCheckGap = minTime;
 
             ReqAddPipe reqAddPipe = new ReqAddPipe();
-            reqAddPipe.setOperation("0");
+            reqAddPipe.setOperation("1");
             List<ReqPipeInfo> pipeInfos = new ArrayList<>();
             pipeInfos.add(reqPipeInfo);
             reqAddPipe.setPipeInfo(pipeInfos);
@@ -231,14 +216,14 @@ public class PipeModifyFragment extends BaseFragment {
             pipeViewModel.getmObservableAdd().observe(this, s -> {
                 if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
                     if (null != s) {
-                        if (s.equals("成功修改")) {
-                            ToastUtil.showToast("成功修改");
+                        if (s.equals("成功添加")) {
+                            ToastUtil.showToast("成功添加");
                             getActivity().onBackPressed();
-                        } else if (s.equals("失败修改")) {
-                            ToastUtil.showToast("失败修改");
+                        } else if (s.equals("失败添加")) {
+                            ToastUtil.showToast("失败添加");
                         }
                     } else {
-                        ToastUtil.showToast("失败修改");
+                        ToastUtil.showToast("失败添加");
                     }
                 }
             });

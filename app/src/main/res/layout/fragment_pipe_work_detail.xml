@@ -1,0 +1,633 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:order="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="pw"
+            type="com.barisetech.www.workmanage.bean.pipework.PipeWork"/>
+
+        <variable
+            name="fragment"
+            type="com.barisetech.www.workmanage.base.BaseFragment"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/layout_toolbar"
+            app:toolbar="@{fragment.observableToolbar}"/>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/normal_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_15"
+                    android:layout_marginRight="@dimen/dp_15"
+                    android:layout_marginTop="@dimen/dp_30"
+                    app:cardCornerRadius="6dp"
+                    app:cardElevation="@dimen/dp_10">
+
+                    <LinearLayout
+                        android:id="@+id/normal_setting"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingBottom="@dimen/dp_9">
+
+                        <TextView
+                            android:id="@+id/pw_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/shape_title_top"
+                            android:paddingBottom="@dimen/dp_8"
+                            android:paddingLeft="@dimen/dp_15"
+                            android:paddingTop="@dimen/dp_9"
+                            android:text="@string/normal_setting"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/sp_14"/>
+
+                        <com.barisetech.www.workmanage.widget.LineView
+                            android:id="@+id/pw_id"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:setText="@{pw.Id}"
+                            order:ddd_content_enable="false"
+                            order:ddd_is_bottom_line="false"
+                            order:ddd_is_indicate="false"
+                            order:ddd_label="@string/pipe_work_id"/>
+
+                        <com.barisetech.www.workmanage.widget.LineView
+                            android:id="@+id/pw_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:setText="@{pw.Name}"
+                            order:ddd_content_enable="false"
+                            order:ddd_is_bottom_line="false"
+                            order:ddd_is_indicate="false"
+                            order:ddd_label="@string/pipe_work_name"/>
+
+                        <com.barisetech.www.workmanage.widget.LineView
+                            android:id="@+id/pw_mark_time"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:setText="@{pw.RecordDate}"
+                            order:ddd_content_enable="false"
+                            order:ddd_is_bottom_line="false"
+                            order:ddd_is_indicate="false"
+                            order:ddd_label="@string/pipe_work_mark_time"/>
+
+                        <com.barisetech.www.workmanage.widget.LineView
+                            android:id="@+id/pw_user"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:setText="@{pw.User}"
+                            order:ddd_content_enable="false"
+                            order:ddd_is_bottom_line="false"
+                            order:ddd_is_indicate="false"
+                            order:ddd_label="@string/pipe_work_mark_user"/>
+
+                        <com.barisetech.www.workmanage.widget.LineView
+                            android:id="@+id/pw_pipe_id"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:setText="@{pw.PipeId}"
+                            order:ddd_content_enable="false"
+                            order:ddd_is_bottom_line="false"
+                            order:ddd_is_indicate="false"
+                            order:ddd_label="@string/pipe_work_pipe_id"/>
+
+                        <com.barisetech.www.workmanage.widget.LineView
+                            android:id="@+id/pw_pipe_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:setText="@{pw.PipeName}"
+                            order:ddd_content_enable="false"
+                            order:ddd_is_bottom_line="false"
+                            order:ddd_is_indicate="false"
+                            order:ddd_label="@string/pipe_work_name"/>
+
+                        <com.barisetech.www.workmanage.widget.LineView
+                            android:id="@+id/pw_pipe_diameter"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:setText="@{pw.PipeDiameter}"
+                            order:ddd_content_enable="false"
+                            order:ddd_is_bottom_line="false"
+                            order:ddd_is_indicate="false"
+                            order:ddd_label="@string/pipe_work_diameter"/>
+
+                        <com.barisetech.www.workmanage.widget.LineView
+                            android:id="@+id/pw_pipe_thickness"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:setText="@{pw.PipeThickness}"
+                            order:ddd_content_enable="false"
+                            order:ddd_is_bottom_line="false"
+                            order:ddd_is_indicate="false"
+                            order:ddd_label="@string/pipe_work_thickness"/>
+
+                        <com.barisetech.www.workmanage.widget.LineView
+                            android:id="@+id/pw_pipe_material"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:setText="@{pw.PipeMaterial}"
+                            order:ddd_content_enable="false"
+                            order:ddd_is_bottom_line="false"
+                            order:ddd_is_indicate="false"
+                            order:ddd_label="@string/pipe_work_material"/>
+
+                        <com.barisetech.www.workmanage.widget.LineView
+                            android:id="@+id/pw_pipe_length"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:setText="@{pw.PipeLength}"
+                            order:ddd_content_enable="false"
+                            order:ddd_is_bottom_line="false"
+                            order:ddd_is_indicate="false"
+                            order:ddd_label="@string/pipe_work_length"/>
+
+                        <com.barisetech.www.workmanage.widget.LineView
+                            android:id="@+id/pw_speed"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:setText="@{pw.Speed}"
+                            order:ddd_content_enable="false"
+                            order:ddd_is_bottom_line="false"
+                            order:ddd_is_indicate="false"
+                            order:ddd_label="@string/pipe_work_speed"/>
+
+                        <com.barisetech.www.workmanage.widget.LineView
+                            android:id="@+id/pw_branch"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:setText="@{pw.BranchConditions}"
+                            order:ddd_content_enable="false"
+                            order:ddd_is_bottom_line="false"
+                            order:ddd_is_indicate="false"
+                            order:ddd_label="@string/pipe_work_branch"/>
+
+                        <com.barisetech.www.workmanage.widget.LineView
+                            android:id="@+id/pw_medium"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:setText="@{pw.PipeMedium}"
+                            order:ddd_content_enable="false"
+                            order:ddd_is_bottom_line="false"
+                            order:ddd_is_indicate="false"
+                            order:ddd_label="@string/pipe_work_medium"/>
+
+                        <com.barisetech.www.workmanage.widget.LineView
+                            android:id="@+id/pw_medium_temperature"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:setText="@{pw.MediumTemperature}"
+                            order:ddd_content_enable="false"
+                            order:ddd_is_bottom_line="false"
+                            order:ddd_is_indicate="false"
+                            order:ddd_label="@string/pipe_work_medium_temperature"/>
+
+                        <com.barisetech.www.workmanage.widget.LineView
+                            android:id="@+id/pw_remark"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:setText="@{pw.Remark}"
+                            order:ddd_content_enable="false"
+                            order:ddd_is_bottom_line="false"
+                            order:ddd_is_indicate="false"
+                            order:ddd_label="@string/pipe_work_remark"/>
+
+                    </LinearLayout>
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/origin_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_15"
+                    android:layout_marginRight="@dimen/dp_15"
+                    android:layout_marginTop="@dimen/dp_30"
+                    app:cardCornerRadius="6dp"
+                    android:visibility="gone"
+                    app:cardElevation="@dimen/dp_10">
+
+                    <LinearLayout
+                        android:id="@+id/origin_setting"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingBottom="@dimen/dp_9">
+
+                        <TextView
+                            android:id="@+id/pw_origin_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/shape_title_top"
+                            android:paddingBottom="@dimen/dp_8"
+                            android:paddingLeft="@dimen/dp_15"
+                            android:paddingTop="@dimen/dp_9"
+                            android:text="@string/pipe_work_origin"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/sp_14"/>
+
+                        <com.barisetech.www.workmanage.widget.LineView
+                            android:id="@+id/pw_origin_id"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:setText="@{pw.OriginId}"
+                            order:ddd_content_enable="false"
+                            order:ddd_is_bottom_line="false"
+                            order:ddd_is_indicate="false"
+                            order:ddd_label="@string/pipe_work_site_id"/>
+
+                        <com.barisetech.www.workmanage.widget.LineView
+                            android:id="@+id/pw_origin_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:setText="@{pw.OriginName}"
+                            order:ddd_content_enable="false"
+                            order:ddd_is_bottom_line="false"
+                            order:ddd_is_indicate="false"
+                            order:ddd_label="@string/pipe_work_site_name"/>
+
+                        <com.barisetech.www.workmanage.widget.LineView
+                            android:id="@+id/pw_origin_soft_vesion"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:setText="@{pw.OriginSoftVersion}"
+                            order:ddd_content_enable="false"
+                            order:ddd_is_bottom_line="false"
+                            order:ddd_is_indicate="false"
+                            order:ddd_label="@string/pipe_work_soft_version"/>
+
+                        <com.barisetech.www.workmanage.widget.LineView
+                            android:id="@+id/pw_origin_hard_vesion"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:setText="@{pw.OriginHardVersion}"
+                            order:ddd_content_enable="false"
+                            order:ddd_is_bottom_line="false"
+                            order:ddd_is_indicate="false"
+                            order:ddd_label="@string/pipe_work_hard_version"/>
+
+                        <com.barisetech.www.workmanage.widget.LineView
+                            android:id="@+id/pw_origin_sensor_amplitude"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:setText="@{pw.OriginSensorNoiseAmplitude}"
+                            order:ddd_content_enable="false"
+                            order:ddd_is_bottom_line="false"
+                            order:ddd_is_indicate="false"
+                            order:ddd_label="@string/pipe_work_sensor_noise_amplitude"/>
+
+                        <com.barisetech.www.workmanage.widget.LineView
+                            android:id="@+id/pw_origin_sensor_level"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:setText="@{pw.OriginSensorNoiseLevel}"
+                            order:ddd_content_enable="false"
+                            order:ddd_is_bottom_line="false"
+                            order:ddd_is_indicate="false"
+                            order:ddd_label="@string/pipe_work_sensor_noise_level"/>
+
+                        <com.barisetech.www.workmanage.widget.LineView
+                            android:id="@+id/pw_origin_sensor_type"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:setText="@{pw.OriginSensorType}"
+                            order:ddd_content_enable="false"
+                            order:ddd_is_bottom_line="false"
+                            order:ddd_is_indicate="false"
+                            order:ddd_label="@string/pipe_work_sensor_type"/>
+
+                        <com.barisetech.www.workmanage.widget.LineView
+                            android:id="@+id/pw_origin_sensor_channel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:setText="@{pw.OriginAdcChannelPrimary}"
+                            order:ddd_content_enable="false"
+                            order:ddd_is_bottom_line="false"
+                            order:ddd_is_indicate="false"
+                            order:ddd_label="@string/pipe_work_sensor_channel"/>
+
+                        <com.barisetech.www.workmanage.widget.LineView
+                            android:id="@+id/pw_origin_sensor_hz"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:setText="@{pw.OriginExtFirPrimary}"
+                            order:ddd_content_enable="false"
+                            order:ddd_is_bottom_line="false"
+                            order:ddd_is_indicate="false"
+                            order:ddd_label="@string/pipe_work_sensor_hz"/>
+
+                        <com.barisetech.www.workmanage.widget.LineView
+                            android:id="@+id/pw_origin_isolator_amplitude"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:setText="@{pw.OriginIsolatorNoiseAmplitude}"
+                            order:ddd_content_enable="false"
+                            order:ddd_is_bottom_line="false"
+                            order:ddd_is_indicate="false"
+                            order:ddd_label="@string/pipe_work_isolator_noise_amplitude"/>
+
+                        <com.barisetech.www.workmanage.widget.LineView
+                            android:id="@+id/pw_origin_isolator_level"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:setText="@{pw.OriginIsolatorNoiseLevel}"
+                            order:ddd_content_enable="false"
+                            order:ddd_is_bottom_line="false"
+                            order:ddd_is_indicate="false"
+                            order:ddd_label="@string/pipe_work_isolator_noise_level"/>
+
+                        <com.barisetech.www.workmanage.widget.LineView
+                            android:id="@+id/pw_origin_isolator_type"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:setText="@{pw.OriginIsolatorType}"
+                            order:ddd_content_enable="false"
+                            order:ddd_is_bottom_line="false"
+                            order:ddd_is_indicate="false"
+                            order:ddd_label="@string/pipe_work_isolator_type"/>
+
+                        <com.barisetech.www.workmanage.widget.LineView
+                            android:id="@+id/pw_origin_isolator_channel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:setText="@{pw.OriginAdcChannelIsolator}"
+                            order:ddd_content_enable="false"
+                            order:ddd_is_bottom_line="false"
+                            order:ddd_is_indicate="false"
+                            order:ddd_label="@string/pipe_work_isolator_channel"/>
+
+                        <com.barisetech.www.workmanage.widget.LineView
+                            android:id="@+id/pw_origin_isolator_hz"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:setText="@{pw.OriginExtFirIsolator}"
+                            order:ddd_content_enable="false"
+                            order:ddd_is_bottom_line="false"
+                            order:ddd_is_indicate="false"
+                            order:ddd_label="@string/pipe_work_isolator_hz"/>
+
+                        <com.barisetech.www.workmanage.widget.LineView
+                            android:id="@+id/pw_origin_isolator_pressure"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:setText="@{pw.OriginPressure}"
+                            order:ddd_content_enable="false"
+                            order:ddd_is_bottom_line="false"
+                            order:ddd_is_indicate="false"
+                            order:ddd_label="@string/pipe_work_pressure"/>
+
+                        <com.barisetech.www.workmanage.widget.LineView
+                            android:id="@+id/pw_origin_moment_flow"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:setText="@{pw.OriginMomentFlow}"
+                            order:ddd_content_enable="false"
+                            order:ddd_is_bottom_line="false"
+                            order:ddd_is_indicate="false"
+                            order:ddd_label="@string/pipe_work_moment_flow"/>
+
+                        <com.barisetech.www.workmanage.widget.LineView
+                            android:id="@+id/pw_origin_cumulative_flow"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:setText="@{pw.OriginCumulativeFlow}"
+                            order:ddd_content_enable="false"
+                            order:ddd_is_bottom_line="false"
+                            order:ddd_is_indicate="false"
+                            order:ddd_label="@string/pipe_work_cumulative_flow"/>
+
+                    </LinearLayout>
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/slave_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_15"
+                    android:layout_marginRight="@dimen/dp_15"
+                    android:layout_marginTop="@dimen/dp_30"
+                    android:layout_marginBottom="@dimen/dp_30"
+                    app:cardCornerRadius="6dp"
+                    android:visibility="gone"
+                    app:cardElevation="@dimen/dp_10">
+
+                    <LinearLayout
+                        android:id="@+id/slave_setting"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingBottom="@dimen/dp_9">
+
+                        <TextView
+                            android:id="@+id/pw_slave_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/shape_title_top"
+                            android:paddingBottom="@dimen/dp_8"
+                            android:paddingLeft="@dimen/dp_15"
+                            android:paddingTop="@dimen/dp_9"
+                            android:text="@string/pipe_work_slave"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/sp_14"/>
+
+                        <com.barisetech.www.workmanage.widget.LineView
+                            android:id="@+id/pw_slave_id"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:setText="@{pw.SlaveId}"
+                            order:ddd_content_enable="false"
+                            order:ddd_is_bottom_line="false"
+                            order:ddd_is_indicate="false"
+                            order:ddd_label="@string/pipe_work_site_id"/>
+
+                        <com.barisetech.www.workmanage.widget.LineView
+                            android:id="@+id/pw_slave_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:setText="@{pw.SlaveName}"
+                            order:ddd_content_enable="false"
+                            order:ddd_is_bottom_line="false"
+                            order:ddd_is_indicate="false"
+                            order:ddd_label="@string/pipe_work_site_name"/>
+
+                        <com.barisetech.www.workmanage.widget.LineView
+                            android:id="@+id/pw_slave_soft_vesion"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:setText="@{pw.SlaveSoftVersion}"
+                            order:ddd_content_enable="false"
+                            order:ddd_is_bottom_line="false"
+                            order:ddd_is_indicate="false"
+                            order:ddd_label="@string/pipe_work_soft_version"/>
+
+                        <com.barisetech.www.workmanage.widget.LineView
+                            android:id="@+id/pw_slave_hard_vesion"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:setText="@{pw.SlaveHardVersion}"
+                            order:ddd_content_enable="false"
+                            order:ddd_is_bottom_line="false"
+                            order:ddd_is_indicate="false"
+                            order:ddd_label="@string/pipe_work_hard_version"/>
+
+                        <com.barisetech.www.workmanage.widget.LineView
+                            android:id="@+id/pw_slave_sensor_amplitude"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:setText="@{pw.SlaveSensorNoiseAmplitude}"
+                            order:ddd_content_enable="false"
+                            order:ddd_is_bottom_line="false"
+                            order:ddd_is_indicate="false"
+                            order:ddd_label="@string/pipe_work_sensor_noise_amplitude"/>
+
+                        <com.barisetech.www.workmanage.widget.LineView
+                            android:id="@+id/pw_slave_sensor_level"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:setText="@{pw.SlaveSensorNoiseLevel}"
+                            order:ddd_content_enable="false"
+                            order:ddd_is_bottom_line="false"
+                            order:ddd_is_indicate="false"
+                            order:ddd_label="@string/pipe_work_sensor_noise_level"/>
+
+                        <com.barisetech.www.workmanage.widget.LineView
+                            android:id="@+id/pw_slave_sensor_type"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:setText="@{pw.SlaveSensorType}"
+                            order:ddd_content_enable="false"
+                            order:ddd_is_bottom_line="false"
+                            order:ddd_is_indicate="false"
+                            order:ddd_label="@string/pipe_work_sensor_type"/>
+
+                        <com.barisetech.www.workmanage.widget.LineView
+                            android:id="@+id/pw_slave_sensor_channel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:setText="@{pw.SlaveAdcChannelPrimary}"
+                            order:ddd_content_enable="false"
+                            order:ddd_is_bottom_line="false"
+                            order:ddd_is_indicate="false"
+                            order:ddd_label="@string/pipe_work_sensor_channel"/>
+
+                        <com.barisetech.www.workmanage.widget.LineView
+                            android:id="@+id/pw_slave_sensor_hz"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:setText="@{pw.SlaveExtFirPrimary}"
+                            order:ddd_content_enable="false"
+                            order:ddd_is_bottom_line="false"
+                            order:ddd_is_indicate="false"
+                            order:ddd_label="@string/pipe_work_sensor_hz"/>
+
+                        <com.barisetech.www.workmanage.widget.LineView
+                            android:id="@+id/pw_slave_isolator_amplitude"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:setText="@{pw.SlaveIsolatorNoiseAmplitude}"
+                            order:ddd_content_enable="false"
+                            order:ddd_is_bottom_line="false"
+                            order:ddd_is_indicate="false"
+                            order:ddd_label="@string/pipe_work_isolator_noise_amplitude"/>
+
+                        <com.barisetech.www.workmanage.widget.LineView
+                            android:id="@+id/pw_slave_isolator_level"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:setText="@{pw.SlaveIsolatorNoiseLevel}"
+                            order:ddd_content_enable="false"
+                            order:ddd_is_bottom_line="false"
+                            order:ddd_is_indicate="false"
+                            order:ddd_label="@string/pipe_work_isolator_noise_level"/>
+
+                        <com.barisetech.www.workmanage.widget.LineView
+                            android:id="@+id/pw_slave_isolator_type"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:setText="@{pw.SlaveIsolatorType}"
+                            order:ddd_content_enable="false"
+                            order:ddd_is_bottom_line="false"
+                            order:ddd_is_indicate="false"
+                            order:ddd_label="@string/pipe_work_isolator_type"/>
+
+                        <com.barisetech.www.workmanage.widget.LineView
+                            android:id="@+id/pw_slave_isolator_channel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:setText="@{pw.SlaveAdcChannelIsolator}"
+                            order:ddd_content_enable="false"
+                            order:ddd_is_bottom_line="false"
+                            order:ddd_is_indicate="false"
+                            order:ddd_label="@string/pipe_work_isolator_channel"/>
+
+                        <com.barisetech.www.workmanage.widget.LineView
+                            android:id="@+id/pw_slave_isolator_hz"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:setText="@{pw.SlaveExtFirIsolator}"
+                            order:ddd_content_enable="false"
+                            order:ddd_is_bottom_line="false"
+                            order:ddd_is_indicate="false"
+                            order:ddd_label="@string/pipe_work_isolator_hz"/>
+
+                        <com.barisetech.www.workmanage.widget.LineView
+                            android:id="@+id/pw_slave_isolator_pressure"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:setText="@{pw.SlavePressure}"
+                            order:ddd_content_enable="false"
+                            order:ddd_is_bottom_line="false"
+                            order:ddd_is_indicate="false"
+                            order:ddd_label="@string/pipe_work_pressure"/>
+
+                        <com.barisetech.www.workmanage.widget.LineView
+                            android:id="@+id/pw_slave_moment_flow"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:setText="@{pw.SlaveMomentFlow}"
+                            order:ddd_content_enable="false"
+                            order:ddd_is_bottom_line="false"
+                            order:ddd_is_indicate="false"
+                            order:ddd_label="@string/pipe_work_moment_flow"/>
+
+                        <com.barisetech.www.workmanage.widget.LineView
+                            android:id="@+id/pw_slave_cumulative_flow"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:setText="@{pw.SlaveCumulativeFlow}"
+                            order:ddd_content_enable="false"
+                            order:ddd_is_bottom_line="false"
+                            order:ddd_is_indicate="false"
+                            order:ddd_label="@string/pipe_work_cumulative_flow"/>
+
+                    </LinearLayout>
+
+                </android.support.v7.widget.CardView>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
+</layout>

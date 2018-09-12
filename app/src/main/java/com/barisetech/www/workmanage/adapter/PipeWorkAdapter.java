@@ -22,9 +22,10 @@ public class PipeWorkAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private Context ctx;
     private ItemCallBack callBack;
 
-    public PipeWorkAdapter(List<PipeWork> list, Context context){
+    public PipeWorkAdapter(List<PipeWork> list, Context context, ItemCallBack itemCallBack){
         this.mList = list;
         this.ctx = context;
+        callBack = itemCallBack;
     }
     @NonNull
     @Override
@@ -39,7 +40,7 @@ public class PipeWorkAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         ViewHolder viewHolder = (ViewHolder)holder;
         PipeWork pipeWork = mList.get(position);
         viewHolder.img.setBackgroundResource(R.drawable.ic_line_status);
-        viewHolder.tv_pipe_name.setText(pipeWork.getName());
+        viewHolder.tv_pipe_name.setText(pipeWork.Name);
         viewHolder.l_item.setOnClickListener(view -> {
             if (callBack!=null){
                 callBack.onClick(mList.get(position));

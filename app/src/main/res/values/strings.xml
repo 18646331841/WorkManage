@@ -116,7 +116,20 @@
     <string name="title_pipe_modify">编辑管线</string>
     <string name="pipe_modify_confirm_modify">确认修改</string>
 
+    <string name="title_pipe_add">新增管线</string>
+    <string name="pipe_modify_confirm_add">确认新增</string>
+
     <string name="title_pipe_detail">管线详情</string>
+    <string name="pipe_detail_id_i">请输入管线ID</string>
+    <string name="pipe_detail_name_i">请输入管线名称</string>
+    <string name="pipe_detail_sort_id_i">请输入排序ID</string>
+    <string name="pipe_detail_belong_pc_i">请输入所属管线集合</string>
+    <string name="pipe_detail_length_i">请输入管道长度</string>
+    <string name="pipe_detail_material_i">请输入材质</string>
+    <string name="pipe_detail_company_i">请输入所属公司</string>
+    <string name="pipe_detail_start_site_i">请输入起始站点</string>
+    <string name="pipe_detail_speed_i">请输入声速</string>
+    <string name="pipe_detail_min_time_i">请输入最小时间间隔</string>
     <string name="pipe_detail_id">管线ID</string>
     <string name="pipe_detail_name">管线名称</string>
     <string name="pipe_detail_sort_id">排序ID</string>
@@ -137,6 +150,7 @@
     <string name="pipe_detail_build_pw">创建管线工况</string>
     <string name="pipe_detail_build_pb">创建管线盲区</string>
     <string name="pipe_detail_modify">修改</string>
+    <string name="pipe_detail_wave">波形图</string>
 
     <string name="title_pipe_collection">管线集合</string>
 
@@ -164,6 +178,82 @@
     <string name="pipe_collection_delete">删除管线集合</string>
 
     <string name="title_pipe_work">管线工况</string>
+
+    <string name="title_pipe_work_modify">编辑管线工况</string>
+
+    <string name="title_pipe_work_add">新增管线工况</string>
+
+    <string name="title_pipe_work_detail">管线工况详情</string>
+    <string name="pipe_work_id">管线工况ID</string>
+    <string name="pipe_work_name">名称</string>
+    <string name="pipe_work_mark_time">记录时间</string>
+    <string name="pipe_work_mark_user">记录人</string>
+    <string name="pipe_work_pipe_id">管线ID</string>
+    <string name="pipe_work_company">公司名称</string>
+    <string name="pipe_work_pipe_name">管线名称</string>
+    <string name="pipe_work_diameter">管道直径</string>
+    <string name="pipe_work_thickness">管道厚度</string>
+    <string name="pipe_work_material">管道材质</string>
+    <string name="pipe_work_length">管道长度</string>
+    <string name="pipe_work_speed">管道声速</string>
+    <string name="pipe_work_branch">分支情况</string>
+    <string name="pipe_work_medium">管道介质</string>
+    <string name="pipe_work_medium_temperature">介质温度</string>
+    <string name="pipe_work_remark">备注</string>
+    <string name="pipe_work_origin">首站</string>
+    <string name="pipe_work_slave">末站</string>
+    <string name="pipe_work_site_id">ID</string>
+    <string name="pipe_work_site_name">名称</string>
+    <string name="pipe_work_soft_version">软件版本</string>
+    <string name="pipe_work_hard_version">硬件版本</string>
+    <string name="pipe_work_sensor_noise_amplitude">传感器噪音幅值</string>
+    <string name="pipe_work_sensor_noise_level">传感器噪音等级</string>
+    <string name="pipe_work_sensor_type">传感器类型</string>
+    <string name="pipe_work_sensor_channel">传感器通道</string>
+    <string name="pipe_work_sensor_hz">传感器截至频率</string>
+    <string name="pipe_work_isolator_noise_amplitude">隔离器噪音幅值</string>
+    <string name="pipe_work_isolator_noise_level">隔离器噪音等级</string>
+    <string name="pipe_work_isolator_type">隔离器类型</string>
+    <string name="pipe_work_isolator_channel">隔离器通道</string>
+    <string name="pipe_work_isolator_hz">隔离器截至频率</string>
+    <string name="pipe_work_pressure">当前压力</string>
+    <string name="pipe_work_moment_flow">瞬时流量</string>
+    <string name="pipe_work_cumulative_flow">累计流量</string>
+    <string name="pipe_work_id_i">请输入管线工况ID</string>
+    <string name="pipe_work_name_i">请输入名称</string>
+    <string name="pipe_work_mark_time_i">请输入记录时间</string>
+    <string name="pipe_work_mark_user_i">请输入记录人</string>
+    <string name="pipe_work_pipe_id_i">请输入管线ID</string>
+    <string name="pipe_work_company_i">请输入公司名称</string>
+    <string name="pipe_work_pipe_name_i">请输入管线名称</string>
+    <string name="pipe_work_diameter_i">请输入管道直径</string>
+    <string name="pipe_work_thickness_i">请输入管道厚度</string>
+    <string name="pipe_work_material_i">请输入管道材质</string>
+    <string name="pipe_work_length_i">请输入管道长度</string>
+    <string name="pipe_work_speed_i">请输入管道声速</string>
+    <string name="pipe_work_branch_i">请输入分支情况</string>
+    <string name="pipe_work_medium_i">请输入管道介质</string>
+    <string name="pipe_work_medium_temperature_i">请输入介质温度</string>
+    <string name="pipe_work_remark_i">请输入备注</string>
+    <string name="pipe_work_origin_i">请输入首站</string>
+    <string name="pipe_work_slave_i">请输入末站</string>
+    <string name="pipe_work_site_id_i">请输入ID</string>
+    <string name="pipe_work_site_name_i">请输入名称</string>
+    <string name="pipe_work_soft_version_i">请输入软件版本</string>
+    <string name="pipe_work_hard_version_i">请输入硬件版本</string>
+    <string name="pipe_work_sensor_noise_amplitude_i">请输入传感器噪音幅值</string>
+    <string name="pipe_work_sensor_noise_level_i">请输入传感器噪音等级</string>
+    <string name="pipe_work_sensor_type_i">请输入传感器类型</string>
+    <string name="pipe_work_sensor_channel_i">请输入传感器通道</string>
+    <string name="pipe_work_sensor_hz_i">请输入传感器截至频率</string>
+    <string name="pipe_work_isolator_noise_amplitude_i">请输入隔离器噪音幅值</string>
+    <string name="pipe_work_isolator_noise_level_i">请输入隔离器噪音等级</string>
+    <string name="pipe_work_isolator_type_i">请输入隔离器类型</string>
+    <string name="pipe_work_isolator_channel_i">请输入隔离器通道</string>
+    <string name="pipe_work_isolator_hz_i">请输入隔离器截至频率</string>
+    <string name="pipe_work_pressure_i">请输入当前压力</string>
+    <string name="pipe_work_moment_flow_i">请输入瞬时流量</string>
+    <string name="pipe_work_cumulative_flow_i">请输入累计流量</string>
 
     <string name="popup_tip_pic">相册</string>
     <string name="popup_tip_camera">相机</string>
