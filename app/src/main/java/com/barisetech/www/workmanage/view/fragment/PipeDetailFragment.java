@@ -50,7 +50,8 @@ public class PipeDetailFragment extends BaseFragment {
         mBinding.setFragment(this);
         ToolbarInfo toolbarInfo = new ToolbarInfo();
         toolbarInfo.setTitle(getString(R.string.title_pipe_detail));
-        toolbarInfo.setTwoText(getString(R.string.pipe_detail_modify));
+        toolbarInfo.setTwoText(getString(R.string.pipe_detail_wave));
+        toolbarInfo.setOneText(getString(R.string.pipe_detail_modify));
         observableToolbar.set(toolbarInfo);
         initView();
 
@@ -60,10 +61,16 @@ public class PipeDetailFragment extends BaseFragment {
     private void initView() {
         mBinding.setPipe(pipeInfo);
 
-        mBinding.toolbar.tvTwo.setOnClickListener(view -> {
+        mBinding.toolbar.tvOne.setOnClickListener(view -> {
             EventBusMessage eventBusMessage = new EventBusMessage(PipeModifyFragment.TAG);
             eventBusMessage.setArg1(pipeInfo);
             EventBus.getDefault().post(eventBusMessage);
+        });
+
+        mBinding.toolbar.tvTwo.setOnClickListener(view -> {
+            EventBusMessage eventBusMessage = new EventBusMessage(WaveFormFragment.TAG);
+            EventBus.getDefault().post(eventBusMessage);
+
         });
     }
 

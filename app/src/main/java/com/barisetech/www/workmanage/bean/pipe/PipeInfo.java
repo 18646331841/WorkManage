@@ -1,10 +1,10 @@
 package com.barisetech.www.workmanage.bean.pipe;
 
 import android.databinding.BindingAdapter;
-import android.view.View;
 
 import com.barisetech.www.workmanage.bean.pipecollections.PipeCollections;
 import com.barisetech.www.workmanage.bean.site.SiteBean;
+import com.barisetech.www.workmanage.widget.FormView;
 import com.barisetech.www.workmanage.widget.LineView;
 
 import java.io.Serializable;
@@ -98,6 +98,21 @@ public class PipeInfo implements Serializable {
 
     @BindingAdapter("setText")
     public static void setText(LineView view, Boolean text) {
+        view.setText(text ? "是" : "否");
+    }
+
+    @BindingAdapter("setText")
+    public static void setText(FormView view, String text) {
+        view.setText(text);
+    }
+
+    @BindingAdapter("setText")
+    public static void setText(FormView view, int text) {
+        view.setText(String.valueOf(text));
+    }
+
+    @BindingAdapter("setText")
+    public static void setText(FormView view, Boolean text) {
         view.setText(text ? "是" : "否");
     }
 }

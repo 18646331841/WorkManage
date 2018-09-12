@@ -30,6 +30,7 @@ import com.barisetech.www.workmanage.view.fragment.NavigationFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsAddFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsDetailsFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsListFragment;
+import com.barisetech.www.workmanage.view.fragment.PipeAddFragment;
 import com.barisetech.www.workmanage.view.fragment.PipeCollectionAddFragment;
 import com.barisetech.www.workmanage.view.fragment.PipeCollectionDetailFragment;
 import com.barisetech.www.workmanage.view.fragment.PipeCollectionFragment;
@@ -213,6 +214,13 @@ public class MainActivity extends BaseActivity {
                     transaction
                             .replace(R.id.fragment_content, PipeDetailFragment.newInstance((PipeInfo) eventBusMessage
                                     .getArg1()), tag).commit();
+                    if (!isActivity) {
+                        transaction.addToBackStack(tag);
+                    }
+                    break;
+                case PipeAddFragment.TAG:
+                    transaction
+                            .replace(R.id.fragment_content, PipeAddFragment.newInstance(), tag).commit();
                     if (!isActivity) {
                         transaction.addToBackStack(tag);
                     }

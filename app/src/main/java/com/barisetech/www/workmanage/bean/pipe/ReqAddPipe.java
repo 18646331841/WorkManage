@@ -29,7 +29,7 @@ public class ReqAddPipe {
      */
 
     private String Operation;
-    private List<PipeInfo> PipeInfo;
+    private List<ReqPipeInfo> PipeInfo;
 
     public String getOperation() {
         return Operation;
@@ -39,11 +39,11 @@ public class ReqAddPipe {
         Operation = operation;
     }
 
-    public List<PipeInfo> getPipeInfo() {
+    public List<ReqPipeInfo> getPipeInfo() {
         return PipeInfo;
     }
 
-    public void setPipeInfo(List<PipeInfo> pipeInfo) {
+    public void setPipeInfo(List<ReqPipeInfo> pipeInfo) {
         PipeInfo = pipeInfo;
     }
 }
