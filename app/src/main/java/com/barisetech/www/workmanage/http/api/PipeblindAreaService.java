@@ -15,6 +15,7 @@ import io.reactivex.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -34,7 +35,7 @@ public interface PipeblindAreaService {
 
 
     /**
-     * 获取全部管线
+     * 获取全部管线盲区
      *
      * @param reqAllPipelindArea
      * @return
@@ -44,7 +45,7 @@ public interface PipeblindAreaService {
 
 
     /**
-     * 添加或修改管线
+     * 添加或修改管线盲区
      *
      * @param token
      * @param reqAddPipelindAreaInfo
@@ -56,12 +57,12 @@ public interface PipeblindAreaService {
 
 
     /**
-     * 删除管线
+     * 删除管线盲区
      * @param token
      * @param reqDeletePipeLindArea
      * @return
      */
-    @DELETE("/api/Pipes/{token}")
+    @HTTP(method = "DELETE",path = "/api/PipeblindArea/{token}",hasBody = true)
     Observable<BaseResponse<Boolean>> deletePipeLindArea(@Path("token") String token, @Body ReqDeletePipeLindArea reqDeletePipeLindArea);
 
 

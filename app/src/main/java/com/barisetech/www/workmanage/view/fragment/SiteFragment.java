@@ -14,6 +14,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.adapter.ItemCallBack;
@@ -163,6 +164,10 @@ public class SiteFragment extends BaseFragment implements View.OnClickListener{
         });
     }
 
+    @Override
+    public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
+        return super.onCreateAnimation(transit, enter, nextAnim);
+    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void PointEventBus(Point point) {

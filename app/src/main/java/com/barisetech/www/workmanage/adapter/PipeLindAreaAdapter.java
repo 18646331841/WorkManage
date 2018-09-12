@@ -47,7 +47,7 @@ public class PipeLindAreaAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         ViewHolder viewHolder = (ViewHolder)holder;
         PipeLindAreaInfo pipeinfo = mList.get(position);
         viewHolder.img.setBackgroundResource(R.drawable.ic_line);
-        viewHolder.tv_pipelindarea_name.setText(String.valueOf(pipeinfo.getId()));
+        viewHolder.tv_pipelindarea_name.setText("管线"+String.valueOf(pipeinfo.getPipeId()));
         viewHolder.img.setBackgroundResource(R.drawable.ic_blind_area);
         viewHolder.l_item.setOnClickListener(view -> {
             if (callBack!=null){
