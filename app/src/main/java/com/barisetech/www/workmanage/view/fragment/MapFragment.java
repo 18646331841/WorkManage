@@ -23,21 +23,19 @@ import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.bean.map.LineStation;
 import com.barisetech.www.workmanage.bean.map.MapPosition;
 import com.barisetech.www.workmanage.bean.map.MarkerStation;
-import com.barisetech.www.workmanage.bean.EventBusMessage;
-import com.barisetech.www.workmanage.bean.map.PipeTrackInfo;
-import com.barisetech.www.workmanage.bean.map.ReqPipeTrack;
+import com.barisetech.www.workmanage.bean.map.pipe.PipeTrackInfo;
 import com.barisetech.www.workmanage.bean.pipe.PipeInfo;
 import com.barisetech.www.workmanage.bean.pipe.ReqAllPipe;
 import com.barisetech.www.workmanage.databinding.FragmentMapBinding;
 import com.barisetech.www.workmanage.utils.LogUtil;
+import com.barisetech.www.workmanage.utils.MapUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.viewmodel.MapViewModel;
 import com.barisetech.www.workmanage.viewmodel.PipeViewModel;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -52,8 +50,8 @@ public class MapFragment extends BaseFragment {
     private PipeViewModel pipeViewModel;
     FragmentMapBinding mBinding;
 
-    private List<PipeInfo> pipeInfoList;
-    private List<PipeTrackInfo> curPipeTrack;
+    private List<PipeInfo> pipeInfoList = new ArrayList<>();
+    private Map<String, List<PipeTrackInfo>> curPipeTracks;
 
     public static MapFragment newInstance() {
         MapFragment fragment = new MapFragment();
@@ -118,7 +116,8 @@ public class MapFragment extends BaseFragment {
         //设置定位蓝点的Style
         mAMap.setMyLocationStyle(myLocationStyle);
         //aMap.getUiSettings().setMyLocationButtonEnabled(true);设置默认定位按钮是否显示，非必需设置。
-        mAMap.setMyLocationEnabled(true);// 设置为true表示启动显示定位蓝点，false表示隐藏定位蓝点并不进行定位，默认是false。
+        // 设置为true表示启动显示定位蓝点，false表示隐藏定位蓝点并不进行定位，默认是false。
+        mAMap.setMyLocationEnabled(true);
 
         MarkerStation markerStation = new MarkerStation();
         markerStation.title = "test";
@@ -130,7 +129,7 @@ public class MapFragment extends BaseFragment {
 
     AMap.OnMarkerClickListener markerClickListener = marker -> {
         LogUtil.d("marker", marker.getTitle());
-        EventBus.getDefault().post(new EventBusMessage(FingerprintManagerFragment.TAG));
+
         return false;
     };
 
@@ -144,6 +143,10 @@ public class MapFragment extends BaseFragment {
         mAMap.addMarker(markerOptions);
     }
 
+    /**
+     * 在地图上画管线
+     * @param lineStation
+     */
     private void addStationLine(@NonNull LineStation lineStation) {
         List<LatLng> latLngs = new ArrayList<>();
         if (null == lineStation.mapPositionList) {
@@ -153,10 +156,8 @@ public class MapFragment extends BaseFragment {
             MapPosition mapPosition = lineStation.mapPositionList.get(i);
             latLngs.add(new LatLng(mapPosition.latitude, mapPosition.longitude));
         }
-        PolylineOptions polylineOptions = new PolylineOptions();
-        polylineOptions.addAll(latLngs)
-                .color(lineStation.color)
-                .width(lineStation.width);
+        PolylineOptions polylineOptions = MapUtil.GetPolylineOptions();
+        polylineOptions.addAll(latLngs);
         mAMap.addPolyline(polylineOptions);
     }
 
@@ -180,6 +181,7 @@ public class MapFragment extends BaseFragment {
             pipeViewModel.getmObservablePipeNum().observe(this, integer -> {
                 if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
                     if (null != integer && integer > 0) {
+                        pipeInfoList.clear();
                         getPipeInfo(0, integer);
                     } else {
                         ToastUtil.showToast("未找到管线");
@@ -196,9 +198,8 @@ public class MapFragment extends BaseFragment {
 
                             //接口方不给提供获取多个管线路径的接口，这里只能循环调用每个
                             //管线的路径接口
-                            for (int i = 0; i < pipeInfos.size(); i++) {
-                                ReqPipeTrack reqPipeTrack = new ReqPipeTrack();
-                            }
+                            curPipeTracks.clear();
+                            mapViewModel.reqAllPipeTrack(pipeInfos);
 
                         } else {
                             ToastUtil.showToast("获取管线失败");
@@ -214,7 +215,11 @@ public class MapFragment extends BaseFragment {
             mapViewModel.getmObservableTrack().observe(this, pipeTrackInfos -> {
                 if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
                     if (null != pipeTrackInfos && pipeTrackInfos.size() > 0) {
+                        curPipeTracks.putAll(pipeTrackInfos);
+                        List<MapPosition> mapPositions = new ArrayList<>();
+                        for (Map.Entry<String, List<PipeTrackInfo>> entry : pipeTrackInfos.entrySet()) {
 
+                        }
                     }
                 }
             });

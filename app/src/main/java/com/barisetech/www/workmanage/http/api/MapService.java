@@ -1,8 +1,8 @@
 package com.barisetech.www.workmanage.http.api;
 
 import com.barisetech.www.workmanage.base.BaseResponse;
-import com.barisetech.www.workmanage.bean.map.PipeTrackInfo;
-import com.barisetech.www.workmanage.bean.map.ReqPipeTrack;
+import com.barisetech.www.workmanage.bean.map.pipe.PipeTrackInfo;
+import com.barisetech.www.workmanage.bean.map.pipe.ReqPipeTrack;
 
 import java.util.List;
 

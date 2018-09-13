@@ -7,14 +7,14 @@ public class MapPosition {
     /**
      * 纬度
      */
-    public float latitude;
+    public double latitude;
 
     /**
      * 经度
      */
-    public float longitude;
+    public double longitude;
 
-    public MapPosition(float latitude, float longitude) {
+    public MapPosition(double latitude, double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }

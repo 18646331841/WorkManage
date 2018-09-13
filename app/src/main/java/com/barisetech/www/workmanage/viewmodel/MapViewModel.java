@@ -11,8 +11,9 @@ import com.barisetech.www.workmanage.base.BaseViewModel;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.FailResponse;
 import com.barisetech.www.workmanage.bean.TypeResponse;
-import com.barisetech.www.workmanage.bean.map.PipeTrackInfo;
-import com.barisetech.www.workmanage.bean.map.ReqPipeTrack;
+import com.barisetech.www.workmanage.bean.map.pipe.PipeTrackInfo;
+import com.barisetech.www.workmanage.bean.map.pipe.ReqPipeTrack;
+import com.barisetech.www.workmanage.bean.pipe.PipeInfo;
 import com.barisetech.www.workmanage.callback.ModelCallBack;
 import com.barisetech.www.workmanage.http.Config;
 import com.barisetech.www.workmanage.model.MapModel;
@@ -21,6 +22,7 @@ import com.barisetech.www.workmanage.view.LoginActivity;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.disposables.Disposable;
 
@@ -32,18 +34,30 @@ public class MapViewModel extends BaseViewModel implements ModelCallBack {
 
     private MapModel mapModel;
     private Handler mDelivery;
-    private MutableLiveData<List<PipeTrackInfo>> mObservableTrack;
+    private MutableLiveData<Map<String, List<PipeTrackInfo>>> mObservableTrack;
 
     public MapViewModel(@NonNull Application application) {
         super(application);
 
         mapModel = new MapModel(this);
         mDelivery = new android.os.Handler(Looper.getMainLooper());
+
+        mObservableTrack = new MutableLiveData<>();
+        mObservableTrack.setValue(null);
     }
 
     public Disposable reqPipeTrack(ReqPipeTrack reqPipeTrack) {
         if (null != reqPipeTrack) {
             Disposable disposable = mapModel.pipeTrack(reqPipeTrack);
+            addDisposable(disposable);
+            return disposable;
+        }
+        return null;
+    }
+
+    public Disposable reqAllPipeTrack(List<PipeInfo> pipeInfos) {
+        if (pipeInfos != null && pipeInfos.size() > 0) {
+            Disposable disposable = mapModel.allPipeTrack(pipeInfos);
             addDisposable(disposable);
             return disposable;
         }
@@ -58,7 +72,7 @@ public class MapViewModel extends BaseViewModel implements ModelCallBack {
             mDelivery.post(() -> {
                 switch (typeResponse.type) {
                     case MapModel.TYPE_TRACK:
-                        mObservableTrack.setValue((List<PipeTrackInfo>) typeResponse.data);
+                        mObservableTrack.setValue((Map<String, List<PipeTrackInfo>>) typeResponse.data);
                         break;
                 }
             });
@@ -84,7 +98,7 @@ public class MapViewModel extends BaseViewModel implements ModelCallBack {
         }
     }
 
-    public MutableLiveData<List<PipeTrackInfo>> getmObservableTrack() {
+    public MutableLiveData<Map<String, List<PipeTrackInfo>>> getmObservableTrack() {
         return mObservableTrack;
     }
 }
