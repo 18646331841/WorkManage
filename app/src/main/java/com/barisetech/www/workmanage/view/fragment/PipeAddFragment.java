@@ -21,11 +21,15 @@ import com.barisetech.www.workmanage.bean.pipe.PipeInfo;
 import com.barisetech.www.workmanage.bean.pipe.ReqAddPipe;
 import com.barisetech.www.workmanage.bean.pipe.ReqPipeInfo;
 import com.barisetech.www.workmanage.bean.pipecollections.PipeCollections;
+import com.barisetech.www.workmanage.bean.site.ReqSiteInfos;
+import com.barisetech.www.workmanage.bean.site.SiteBean;
 import com.barisetech.www.workmanage.databinding.FragmentPipeAddBinding;
+import com.barisetech.www.workmanage.utils.LogUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.view.dialog.CommonDialogFragment;
 import com.barisetech.www.workmanage.view.dialog.DialogFragmentHelper;
 import com.barisetech.www.workmanage.viewmodel.PipeViewModel;
+import com.barisetech.www.workmanage.viewmodel.SiteViewModel;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -43,6 +47,8 @@ public class PipeAddFragment extends BaseFragment {
     private Disposable curDisposable;
     FragmentPipeAddBinding mBinding;
     private ReqPipeInfo reqPipeInfo = new ReqPipeInfo();
+    private List<SiteBean> siteList;
+    private SiteViewModel siteViewModel;
 
     public static PipeAddFragment newInstance() {
         PipeAddFragment fragment = new PipeAddFragment();
@@ -79,7 +85,7 @@ public class PipeAddFragment extends BaseFragment {
     }
 
     private void initView() {
-        
+
         mBinding.pipeAlgorithm.setOnItemClickListener(() -> {
             showDialog(getString(R.string.pipe_detail_is_algorithm), Boolean.valueOf(reqPipeInfo.Algorithm), (radioGroup, i) -> {
                 closeDialog();
@@ -157,7 +163,7 @@ public class PipeAddFragment extends BaseFragment {
             String length = mBinding.pipeLength.getText();
             String materail = mBinding.pipeMaterial.getText();
             String company = mBinding.pipeCompany.getText();
-            String startSite = mBinding.pipeStartSite.getText();
+//            String startSite = mBinding.pipeStartSite.getText();
             String speed = mBinding.pipeSpeed.getText();
             String minTime = mBinding.pipeMinTime.getText();
 
@@ -172,7 +178,7 @@ public class PipeAddFragment extends BaseFragment {
             reqPipeInfo.Length = length;
             reqPipeInfo.PipeMaterial = materail;
             reqPipeInfo.Company = company;
-            reqPipeInfo.StartSiteId = startSite;
+//            reqPipeInfo.StartSiteId = startSite;
             reqPipeInfo.Speed = speed;
             reqPipeInfo.LeakCheckGap = minTime;
 
@@ -228,5 +234,41 @@ public class PipeAddFragment extends BaseFragment {
                 }
             });
         }
+
+        if (!siteViewModel.getmObservableSiteInfos().hasObservers()) {
+            siteViewModel.getmObservableSiteInfos().observe(this, siteBeans -> {
+                if (null != siteBeans) {
+                    if (siteBeans.size() > 0) {
+                        siteList.addAll(siteBeans);
+                    }
+                }
+            });
+        }
+
+        if (!siteViewModel.getmObservableSiteNum().hasObservers()) {
+            siteViewModel.getmObservableSiteNum().observe(this, integer -> {
+                if (null != integer) {
+                    getDatas(0, integer);
+                }
+            });
+        }
+
+        if (null == siteList || siteList.size() <= 0) {
+            siteViewModel.reqSiteNum();
+        }
     }
+
+
+    private void getDatas(int formIndex, int toIndex) {
+        if (toIndex <= 0) {
+            return;
+        }
+        ReqSiteInfos reqSiteInfos = new ReqSiteInfos();
+        reqSiteInfos.setSiteId("0");
+        reqSiteInfos.setStartIndex(String.valueOf(formIndex));
+        reqSiteInfos.setNumberOfRecords(String.valueOf(toIndex));
+
+        curDisposable = siteViewModel.reqAllSite(reqSiteInfos);
+    }
+
 }
