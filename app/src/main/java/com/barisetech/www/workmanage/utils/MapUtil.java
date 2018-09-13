@@ -21,23 +21,23 @@ public class MapUtil {
         List<BitmapDescriptor> textureList = new ArrayList<>();
         BitmapDescriptor mRedTexture = BitmapDescriptorFactory
                 .fromAsset("map_line_red.png");
-        BitmapDescriptor mBlueTexture = BitmapDescriptorFactory
-                .fromAsset("map_line_blue.png");
-        BitmapDescriptor mGreenTexture = BitmapDescriptorFactory
-                .fromAsset("map_line_green.png");
+//        BitmapDescriptor mBlueTexture = BitmapDescriptorFactory
+//                .fromAsset("map_line_blue.png");
+//        BitmapDescriptor mGreenTexture = BitmapDescriptorFactory
+//                .fromAsset("map_line_green.png");
         textureList.add(mRedTexture);
-        textureList.add(mBlueTexture);
-        textureList.add(mGreenTexture);
+//        textureList.add(mBlueTexture);
+//        textureList.add(mGreenTexture);
         // 添加纹理图片对应的顺序
         List<Integer> textureIndexs = new ArrayList<>();
         textureIndexs.add(0);
-        textureIndexs.add(1);
-        textureIndexs.add(2);
+//        textureIndexs.add(1);
+//        textureIndexs.add(2);
         PolylineOptions polylienOptions=new PolylineOptions();
         polylienOptions.setCustomTextureList(textureList);
         polylienOptions.setCustomTextureIndex(textureIndexs);
         polylienOptions.setUseTexture(true);
-        polylienOptions.width(7.0f);
+        polylienOptions.width(40.0f);
         return polylienOptions;
     }
 
