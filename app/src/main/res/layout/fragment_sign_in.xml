@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="fragment"
+            type="com.barisetech.www.workmanage.base.BaseFragment" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/layout_toolbar"
+            app:toolbar="@{fragment.observableToolbar}" />
+
+        <TextView
+            android:id="@+id/sign_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_30"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="2018.09.10" />
+
+
+        <TextClock
+            android:id="@+id/timeView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:format12Hour="hh:mm"
+            android:format24Hour="HH:mm"
+            android:layout_marginTop="@dimen/dp_10"
+            android:textColor="@color/blue_text"
+            android:textSize="@dimen/dp_30"/>
+
+        <TextView
+            android:gravity="center"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="dddddddddddddddddddddddd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+        <TextView
+            android:textSize="@dimen/dp_30"
+            android:text="打卡"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/dp_10"
+            android:textColor="@color/white"
+            android:background="@drawable/shape_cricle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_marginTop="@dimen/dp_10"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:text="是否异常"
+                android:layout_marginLeft="@dimen/dp_30"
+                android:textSize="13sp"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <RadioGroup
+                android:layout_gravity="center"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_70">
+                <RadioButton
+                    android:id="@+id/radio_yes"
+                    android:text="@string/dialog_yes"
+                    android:textSize="@dimen/dp_13"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_10"/>
+                <RadioButton
+                    android:id="@+id/radio_no"
+                    android:text="@string/dialog_no"
+                    android:textSize="13sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_50"/>
+            </RadioGroup>
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+</layout>

@@ -7,9 +7,11 @@ import android.databinding.ObservableField;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.RadioGroup;
 
 import com.barisetech.www.workmanage.R;
@@ -48,7 +50,10 @@ public class PipeAddFragment extends BaseFragment {
     FragmentPipeAddBinding mBinding;
     private ReqPipeInfo reqPipeInfo = new ReqPipeInfo();
     private List<SiteBean> siteList = new ArrayList<>();
+    private List<String> siteName = new ArrayList<>();
+    private SiteBean siteInfo;
     private SiteViewModel siteViewModel;
+    private String name;
 
     public static PipeAddFragment newInstance() {
         PipeAddFragment fragment = new PipeAddFragment();
@@ -168,7 +173,12 @@ public class PipeAddFragment extends BaseFragment {
 //            String startSite = mBinding.pipeStartSite.getText();
             String speed = mBinding.pipeSpeed.getText();
             String minTime = mBinding.pipeMinTime.getText();
+            //TODO:设置属性
+            for (SiteBean bean:siteList){
+                if (bean.Name.equals(mBinding.spSelectSite.getText().toString())){
 
+                }
+            }
             reqPipeInfo.PipeId = id;
             reqPipeInfo.Name = name;
             reqPipeInfo.SortID = sortId;
@@ -193,7 +203,6 @@ public class PipeAddFragment extends BaseFragment {
             EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_SHOW));
             curDisposable = pipeViewModel.reqAddOrModifyPipe(reqAddPipe);
         });
-
     }
 
     private void showDialog(String title, boolean defaultV, RadioGroup.OnCheckedChangeListener
@@ -245,7 +254,6 @@ public class PipeAddFragment extends BaseFragment {
                 if (null != siteBeans) {
                     if (siteBeans.size() > 0) {
                         siteList.addAll(siteBeans);
-                        List<String> siteName = new ArrayList<>();
                         for (SiteBean siteBean:siteList){
                             siteName.add(siteBean.Name);
                         }

@@ -108,17 +108,14 @@
                     android:orientation="vertical"
                     android:paddingLeft="28dp">
 
-                    <LinearLayout
-                        android:orientation="horizontal"
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
-                        android:gravity="center_vertical"
-                        android:weightSum="2">
+                        android:gravity="center_vertical">
 
                         <TextView
                             android:id="@+id/tv_label"
-                            android:layout_width="match_parent"
-                            android:layout_weight="1.5"
+                            android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_marginRight="24dp"
                             android:gravity="center_vertical"
@@ -129,12 +126,11 @@
                         <org.angmarch.views.NiceSpinner
                             android:id="@+id/sp_select_site"
                             android:layout_alignParentRight="true"
-                            android:layout_width="match_parent"
-                            android:layout_weight="0.5"
+                            android:layout_width="180dp"
                             android:layout_height="wrap_content"
                             app:dropDownListPaddingBottom="@dimen/dp_50"/>
 
-                    </LinearLayout>
+                    </RelativeLayout>
 
                 </LinearLayout>
 
