@@ -6,6 +6,8 @@
     <string name="title_myself">我</string>
     <string name="new_message">新消息</string>
 
+    <string name="no_data">没有找到数据</string>
+
     <string name="dialog_yes">是</string>
     <string name="dialog_no">否</string>
 

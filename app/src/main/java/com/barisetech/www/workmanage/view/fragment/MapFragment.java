@@ -71,6 +71,7 @@ import com.barisetech.www.workmanage.utils.MapUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.viewmodel.MapViewModel;
 import com.barisetech.www.workmanage.viewmodel.PipeViewModel;
+import com.barisetech.www.workmanage.widget.twomenu.ChildView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -113,6 +114,8 @@ public class MapFragment extends BaseFragment {
     private AMapNavi mAMapNavi;
     private Marker curClickMarker;
 
+    private ArrayList<View> mViewArray = new ArrayList<>();
+
     public static MapFragment newInstance() {
         MapFragment fragment = new MapFragment();
         return fragment;
@@ -126,7 +129,10 @@ public class MapFragment extends BaseFragment {
         mBinding.setFragment(this);
         ToolbarInfo toolbarInfo = new ToolbarInfo();
         toolbarInfo.setTitle(getString(R.string.title_map));
+        toolbarInfo.setBackText("菜单");
         observableToolbar.set(toolbarInfo);
+
+        initMenu();
         initView(savedInstanceState);
 
         return mBinding.getRoot();
@@ -182,6 +188,34 @@ public class MapFragment extends BaseFragment {
         mAMapNaviView.onCreate(savedInstanceState);
         setAmapNaviViewOptions();
         initMap();
+    }
+
+    private void initMenu() {
+        ChildView childView = new ChildView(getContext());
+        childView.setOnSelectListener(showText -> onRefresh(childView,showText));
+        mViewArray.add(childView);
+        mBinding.menuView.setValue(null, mViewArray);
+
+        mBinding.toolbar.tvBack.setOnClickListener(view -> {
+            mBinding.menuView.startAnimation();
+        });
+    }
+
+    //视图被点击后刷新数据
+    private void onRefresh(View view, String showText) {
+        LogUtil.d(TAG, "menu click = " + showText);
+        mBinding.menuView.onPressBack();
+        int position = getPositon(view);
+    }
+
+    //获取当前的view位置
+    private int getPositon(View tView) {
+        for (int i = 0; i < mViewArray.size(); i++) {
+            if (mViewArray.get(i) == tView) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     private void initMap() {
@@ -644,7 +678,7 @@ public class MapFragment extends BaseFragment {
              */
             int strategy = 0;
             try {
-                strategy = mAMapNavi.strategyConvert(true, false, false, true, true);
+                strategy = mAMapNavi.strategyConvert(true, false, false, true, false);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -653,7 +687,7 @@ public class MapFragment extends BaseFragment {
             } else if(naviWay == WAY_RIDE) {
                 mAMapNavi.calculateRideRoute(startList.get(0), endList.get(0));// 骑车导航
             } else if(naviWay == WAY_DRIVE) {
-                mAMapNavi.calculateDriveRoute(startList, endList, null, strategy);// 驾车导航
+                mAMapNavi.calculateDriveRoute(startList, endList, new ArrayList<>(), strategy);// 驾车导航
             }
         }
 

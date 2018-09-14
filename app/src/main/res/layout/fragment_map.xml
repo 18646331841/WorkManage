@@ -19,16 +19,29 @@
             layout="@layout/layout_toolbar"
             app:toolbar="@{fragment.observableToolbar}"/>
 
-        <com.amap.api.maps.MapView
-            android:id="@+id/map"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
 
-        <com.amap.api.navi.AMapNaviView
-            android:id="@+id/map_navi"
+        <RelativeLayout
+            android:id="@+id/map_content_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone"/>
+            android:layout_height="match_parent">
+
+            <com.barisetech.www.workmanage.widget.twomenu.ExpandTabView
+                android:id="@+id/menu_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"/>
+
+            <com.amap.api.maps.MapView
+                android:id="@+id/map"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+            <com.amap.api.navi.AMapNaviView
+                android:id="@+id/map_navi"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"/>
+        </RelativeLayout>
 
     </LinearLayout>
 </layout>

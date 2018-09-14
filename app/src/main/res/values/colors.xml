@@ -20,6 +20,9 @@
     <color name="edit_bg">#f7f6f6</color>
     <color name="line_label_text_color">#cf666666</color>
 
+    <color name="popup_main_background">#b0000000</color>
+    <color name="divide_line">#f7f7f7</color>
+    <color name="choose_eara_item_press_color">#f4f4f4</color>
 
     <drawable name="button_text_white">#FFFFFF</drawable>
     <drawable name="button_text_blue">#30a0ff</drawable>
