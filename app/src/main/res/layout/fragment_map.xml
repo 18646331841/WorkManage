@@ -24,5 +24,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
+        <com.amap.api.navi.AMapNaviView
+            android:id="@+id/map_navi"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
+
     </LinearLayout>
 </layout>

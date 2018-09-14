@@ -6,14 +6,21 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.text.TextPaint;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
@@ -23,7 +30,31 @@ import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.maps.model.Polyline;
 import com.amap.api.maps.model.PolylineOptions;
+import com.amap.api.maps.model.Text;
+import com.amap.api.maps.model.TextOptions;
+import com.amap.api.navi.AMapNavi;
+import com.amap.api.navi.AMapNaviListener;
+import com.amap.api.navi.AMapNaviView;
+import com.amap.api.navi.AMapNaviViewListener;
+import com.amap.api.navi.AMapNaviViewOptions;
+import com.amap.api.navi.enums.NaviType;
+import com.amap.api.navi.model.AMapCalcRouteResult;
+import com.amap.api.navi.model.AMapLaneInfo;
+import com.amap.api.navi.model.AMapModelCross;
+import com.amap.api.navi.model.AMapNaviCameraInfo;
+import com.amap.api.navi.model.AMapNaviCross;
+import com.amap.api.navi.model.AMapNaviInfo;
+import com.amap.api.navi.model.AMapNaviLocation;
+import com.amap.api.navi.model.AMapNaviRouteNotifyData;
+import com.amap.api.navi.model.AMapNaviTrafficFacilityInfo;
+import com.amap.api.navi.model.AMapServiceAreaInfo;
+import com.amap.api.navi.model.AimLessModeCongestionInfo;
+import com.amap.api.navi.model.AimLessModeStat;
+import com.amap.api.navi.model.NaviInfo;
+import com.amap.api.navi.model.NaviLatLng;
+import com.autonavi.tbt.TrafficFacilityInfo;
 import com.barisetech.www.workmanage.R;
+import com.barisetech.www.workmanage.adapter.MyMapInfoWindow;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.bean.map.LineStation;
@@ -54,6 +85,21 @@ public class MapFragment extends BaseFragment {
     public static final String TAG = "MapFragment";
     private MapView mMapView;
     private AMap mAMap;
+
+
+    private AMapNaviView mAMapNaviView;
+    private AMapLocationClient mlocationClient;
+    /** 起点坐标 */
+    private final List<NaviLatLng> startList = new ArrayList<>();
+
+    /** 终点坐标 */
+    private final List<NaviLatLng> endList = new ArrayList<>();
+    /** 导航方式 */
+    private int naviWay = WAY_DRIVE;
+    public static final int WAY_DRIVE = 1;
+    public static final int WAY_WALK = 2;
+    public static final int WAY_RIDE = 3;
+
     private MyLocationStyle myLocationStyle;
     private MapViewModel mapViewModel;
     private PipeViewModel pipeViewModel;
@@ -62,7 +108,10 @@ public class MapFragment extends BaseFragment {
     private List<PipeInfo> pipeInfoList = new ArrayList<>();
     private Map<String, List<PipeTrackInfo>> curPipeTracks = new HashMap<>();
     private List<PipeLine> curPipeLines;
-    private Marker curMarker;
+    private Marker curStartMarker;
+    private Marker curEndMarker;
+    private AMapNavi mAMapNavi;
+    private Marker curClickMarker;
 
     public static MapFragment newInstance() {
         MapFragment fragment = new MapFragment();
@@ -87,6 +136,9 @@ public class MapFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         mMapView.onResume();
+        if (mAMapNaviView.getVisibility() == View.VISIBLE) {
+            mAMapNaviView.onResume();
+        }
     }
 
     @Override
@@ -99,17 +151,36 @@ public class MapFragment extends BaseFragment {
     public void onPause() {
         super.onPause();
         mMapView.onPause();
+        if (mAMapNaviView.getVisibility() == View.VISIBLE) {
+            mAMapNaviView.onPause();
+        }
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onDestroy() {
+        super.onDestroy();
         mMapView.onDestroy();
+        if (mAMapNavi != null) {
+            mAMapNavi.stopNavi();
+            mAMapNavi.destroy();
+        }
+        if (mAMapNaviView != null) {
+            mAMapNaviView.onDestroy();
+        }
+        if (null != mlocationClient) {
+            mlocationClient.onDestroy();
+            mlocationClient = null;
+        }
     }
 
     private void initView(Bundle savedInstanceState) {
         mMapView = mBinding.map;
         mMapView.onCreate(savedInstanceState);
+
+        mAMapNaviView = mBinding.mapNavi;
+        mAMapNaviView.setAMapNaviViewListener(aMapNaviViewListener);
+        mAMapNaviView.onCreate(savedInstanceState);
+        setAmapNaviViewOptions();
         initMap();
     }
 
@@ -126,21 +197,23 @@ public class MapFragment extends BaseFragment {
         myLocationStyle.interval(2000);
         //设置定位蓝点的Style
         mAMap.setMyLocationStyle(myLocationStyle);
+        mAMap.setInfoWindowAdapter(new MyMapInfoWindow(getActivity(), onClickToHere));
         //aMap.getUiSettings().setMyLocationButtonEnabled(true);设置默认定位按钮是否显示，非必需设置。
         // 设置为true表示启动显示定位蓝点，false表示隐藏定位蓝点并不进行定位，默认是false。
 //        mAMap.setMyLocationEnabled(true);
 
-//        MarkerStation markerStation = new MarkerStation();
-//        markerStation.title = "test";
-//        MapPosition position = new MapPosition(39.906901f, 116.397972f);
-//        markerStation.position = position;
-//        addStationMarker(markerStation);
-
+        mAMap.setOnMapTouchListener(motionEvent -> {
+            if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                if (curClickMarker != null && curClickMarker.isInfoWindowShown()) {
+                    curClickMarker.hideInfoWindow();
+                }
+            }
+        });
     }
 
     AMap.OnMarkerClickListener markerClickListener = marker -> {
         LogUtil.d("marker", marker.getTitle());
-
+        curClickMarker = marker;
         onClickPipeLine(marker);
         return false;
     };
@@ -150,11 +223,23 @@ public class MapFragment extends BaseFragment {
         LatLng latLng = new LatLng(markerStation.position.latitude, markerStation.position.longitude);
         markerOptions.position(latLng);
         markerOptions.draggable(false);
-        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(getMyBitmap(markerStation.title)));
+//        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(getMyBitmap(markerStation.title)));
         markerOptions.title(markerStation.title);
+        markerOptions.snippet(markerStation.snippet);
         Marker marker = mAMap.addMarker(markerOptions);
         marker.setInfoWindowEnable(showWindow);
         return marker;
+    }
+
+    private Text addStationText(@NonNull MarkerStation markerStation) {
+        TextOptions textOptions = new TextOptions();
+        textOptions.backgroundColor(Color.TRANSPARENT);
+        textOptions.fontSize(30);
+        LatLng latLng = new LatLng(markerStation.position.latitude, markerStation.position.longitude);
+        textOptions.position(latLng);
+        textOptions.text(markerStation.title);
+
+        return mAMap.addText(textOptions);
     }
 
     /**
@@ -190,24 +275,51 @@ public class MapFragment extends BaseFragment {
         pipeViewModel = ViewModelProviders.of(this).get(PipeViewModel.class);
     }
 
+    private MyMapInfoWindow.OnClickToHere onClickToHere = marker -> {
+        LogUtil.d(TAG, "toHere = " + marker.getTitle());
+        for(int i = 0; i < curPipeLines.size(); i++) {
+            PipeLine pipeLine = curPipeLines.get(i);
+            if (pipeLine.startSiteMarker.getSnippet().equals(marker.getSnippet()) || pipeLine.endSiteMarker
+                    .getSnippet().equals(marker.getSnippet())) {
+
+                endList.add(new NaviLatLng(marker.getPosition().latitude, marker.getPosition().longitude));
+                initLocation();
+                marker.hideInfoWindow();
+                mlocationClient.startLocation();
+            }
+        }
+    };
+
     private void onClickPipeLine(Marker marker) {
         if (marker == null || curPipeLines == null) {
             return;
         }
 
-        if (curMarker != null && marker.getTitle().equals(curMarker.getTitle())) {
+        if (curStartMarker != null && marker.getSnippet().equals(curStartMarker.getSnippet())) {
+            //已经点击过的marker不再执行此操作
+            return;
+        }
+        if (curEndMarker != null && marker.getSnippet().equals(curEndMarker.getSnippet())) {
+            //已经点击过的marker不再执行此操作
             return;
         }
 
-        String title = marker.getTitle();
+        String snippet = marker.getSnippet();
         for(int i = 0; i < curPipeLines.size(); i++) {
             PipeLine pipeLine = curPipeLines.get(i);
-            if (pipeLine.startSiteMarker.getTitle().equals(title) || pipeLine.endSiteMarker.getTitle().equals(title)) {
-                mAMap.clear();
-                curMarker = marker;
-                addStationLine(pipeLine.lineStation);
-                addSiteMarker(pipeLine);
-                return;
+            if (pipeLine.startSiteMarker.getSnippet().equals(snippet) || pipeLine.endSiteMarker.getSnippet().equals(snippet)) {
+                curStartMarker = pipeLine.startSiteMarker;
+                curEndMarker = pipeLine.endSiteMarker;
+                curStartMarker.setInfoWindowEnable(true);
+                curEndMarker.setInfoWindowEnable(true);
+//                addStationLine(pipeLine.lineStation);
+//                addSiteMarker(pipeLine, true);
+            } else {
+                pipeLine.polyline.setVisible(false);
+                pipeLine.startSiteMarker.setVisible(false);
+                pipeLine.endSiteMarker.setVisible(false);
+                pipeLine.startSiteText.setVisible(false);
+                pipeLine.endSiteText.setVisible(false);
             }
         }
     }
@@ -260,7 +372,7 @@ public class MapFragment extends BaseFragment {
      * 增加站点marker
      * @param pipeLine
      */
-    private void addSiteMarker(PipeLine pipeLine) {
+    private void addSiteMarker(PipeLine pipeLine, boolean showWindow) {
         List<MapPosition> mapPositionList = pipeLine.lineStation.mapPositionList;
         if (mapPositionList != null && mapPositionList.size() > 0) {
 
@@ -269,14 +381,18 @@ public class MapFragment extends BaseFragment {
                 MarkerStation markerStation = new MarkerStation();
                 markerStation.position = mapPositionList.get(0);
                 markerStation.title = pipeLine.startSite.Name;
-                pipeLine.startSiteMarker = addStationMarker(markerStation, false);
+                markerStation.snippet = String.valueOf(pipeLine.startSite.SiteId);
+                pipeLine.startSiteMarker = addStationMarker(markerStation, showWindow);
+                pipeLine.startSiteText = addStationText(markerStation);
             }
             //末站不为空，增加首站标记
             if (pipeLine.endSite != null) {
                 MarkerStation markerStation = new MarkerStation();
                 markerStation.position = mapPositionList.get(mapPositionList.size() - 1);
                 markerStation.title = pipeLine.endSite.Name;
-                pipeLine.endSiteMarker = addStationMarker(markerStation, false);
+                markerStation.snippet = String.valueOf(pipeLine.endSite.SiteId);
+                pipeLine.endSiteMarker = addStationMarker(markerStation, showWindow);
+                pipeLine.endSiteText = addStationText(markerStation);
             }
         }
     }
@@ -342,7 +458,7 @@ public class MapFragment extends BaseFragment {
                                 PipeLine pipeLine = curPipeLines.get(i);
                                 pipeLine.polyline = addStationLine(pipeLine.lineStation);
 
-                                addSiteMarker(pipeLine);
+                                addSiteMarker(pipeLine, false);
 
                             }
                         }
@@ -355,4 +471,374 @@ public class MapFragment extends BaseFragment {
             pipeViewModel.reqPipeNum();
         }
     }
+
+    private void showMap() {
+        mAMapNaviView.setVisibility(View.GONE);
+        mMapView.setVisibility(View.VISIBLE);
+    }
+
+    private void showNavi() {
+        mAMapNaviView.setVisibility(View.VISIBLE);
+        mMapView.setVisibility(View.GONE);
+    }
+
+    /**
+     * 初始化导航
+     */
+    private void initNavi() {
+        mAMapNavi = AMapNavi.getInstance(getActivity());
+        mAMapNavi.setUseInnerVoice(true);
+        mAMapNavi.addAMapNaviListener(aMapNaviListener);
+
+    }
+
+    /**
+     * 设置导航参数
+     */
+    private void setAmapNaviViewOptions() {
+        if (mAMapNaviView == null) {
+            return;
+        }
+        AMapNaviViewOptions viewOptions = new AMapNaviViewOptions();
+        viewOptions.setSettingMenuEnabled(false);//设置菜单按钮是否在导航界面显示
+        viewOptions.setNaviNight(false);//设置导航界面是否显示黑夜模式
+        viewOptions.setTrafficInfoUpdateEnabled(true);//设置交通播报是否打开
+        viewOptions.setScreenAlwaysBright(true);//设置导航状态下屏幕是否一直开启。
+        viewOptions.setTrafficBarEnabled(false);  //设置 返回路况光柱条是否显示（只适用于驾车导航，需要联网）
+        // viewOptions.setLayoutVisible(false);  //设置导航界面UI是否显示
+        //viewOptions.setNaviViewTopic(mThemeStle);//设置导航界面的主题
+        //viewOptions.setZoom(16);
+        viewOptions.setTilt(0);  //2D显示
+        mAMapNaviView.setViewOptions(viewOptions);
+    }
+
+    /**
+     * 获取定位坐标
+     */
+    public void initLocation() {
+        if (mlocationClient != null) {
+            return;
+        }
+        mlocationClient = new AMapLocationClient(getActivity());
+        //初始化定位参数
+        AMapLocationClientOption mLocationOption = new AMapLocationClientOption();
+        //设置定位监听
+        mlocationClient.setLocationListener(aMapLocationListener);
+        //设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
+        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+        //设置是否只定位一次,默认为false
+        mLocationOption.setOnceLocation(true);
+        //设置setOnceLocationLatest(boolean b)接口为true，启动定位时SDK会返回最近3s内精度最高的一次定位结果。
+        //如果设置其为true，setOnceLocation(boolean b)接口也会被设置为true，反之不会。
+        mLocationOption.setOnceLocationLatest(true);
+        //设置定位间隔,单位毫秒,默认为2000ms
+        mLocationOption.setInterval(2000);
+        //设置定位参数
+        mlocationClient.setLocationOption(mLocationOption);
+        // 此方法为每隔固定时间会发起一次定位请求，为了减少电量消耗或网络流量消耗，
+        // 注意设置合适的定位时间的间隔（最小间隔支持为2000ms），并且在合适时间调用stopLocation()方法来取消定位请求
+        // 在定位结束后，在合适的生命周期调用onDestroy()方法
+        // 在单次定位情况下，定位无论成功与否，都无需调用stopLocation()方法移除请求，定位sdk内部会移除
+        //启动定位
+    }
+
+    private AMapLocationListener aMapLocationListener = new AMapLocationListener() {
+        @Override
+        public void onLocationChanged(AMapLocation aMapLocation) {
+            if (aMapLocation != null) {
+                if (aMapLocation.getErrorCode() == 0) {
+                    //定位成功回调信息，设置相关消息
+                    startList.add(new NaviLatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude()));
+                    initNavi();
+                    aMapNaviListener.onInitNaviSuccess();
+                } else {
+                    //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
+                    LogUtil.e("AmapError","location Error, ErrCode:" + aMapLocation.getErrorCode() +
+                            ", errInfo:" + aMapLocation.getErrorInfo());
+                    ToastUtil.showToast("定位失败，请重新导航");
+                }
+            }
+        }
+    };
+
+    private AMapNaviViewListener aMapNaviViewListener = new AMapNaviViewListener() {
+        @Override
+        public void onNaviSetting() {
+
+        }
+
+        @Override
+        public void onNaviCancel() {
+            LogUtil.d(TAG, "导航结束");
+            showMap();
+        }
+
+        @Override
+        public boolean onNaviBackClick() {
+            return false;
+        }
+
+        @Override
+        public void onNaviMapMode(int i) {
+
+        }
+
+        @Override
+        public void onNaviTurnClick() {
+
+        }
+
+        @Override
+        public void onNextRoadClick() {
+
+        }
+
+        @Override
+        public void onScanViewButtonClick() {
+
+        }
+
+        @Override
+        public void onLockMap(boolean b) {
+
+        }
+
+        @Override
+        public void onNaviViewLoaded() {
+
+        }
+
+        @Override
+        public void onMapTypeChanged(int i) {
+
+        }
+
+        @Override
+        public void onNaviViewShowMode(int i) {
+
+        }
+    };
+
+    private AMapNaviListener aMapNaviListener = new AMapNaviListener() {
+        @Override
+        public void onInitNaviFailure() {
+            LogUtil.e(TAG, "导航创建失败");
+            ToastUtil.showToast("导航创建失败");
+        }
+
+        @Override
+        public void onInitNaviSuccess() {
+            /**
+             * 方法: int strategy=mAMapNavi.strategyConvert(congestion,
+             * avoidhightspeed, cost, hightspeed, multipleroute); 参数:
+             *
+             * @congestion 躲避拥堵
+             * @avoidhightspeed 不走高速
+             * @cost 避免收费
+             * @hightspeed 高速优先
+             * @multipleroute 多路径
+             *
+             *  说明:
+             *      以上参数都是boolean类型，其中multipleroute参数表示是否多条路线，如果为true则此策略会算出多条路线。
+             *      注意: 不走高速与高速优先不能同时为true 高速优先与避免收费不能同时为true
+             */
+            int strategy = 0;
+            try {
+                strategy = mAMapNavi.strategyConvert(true, false, false, true, true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if(naviWay == WAY_WALK) {
+                mAMapNavi.calculateWalkRoute(startList.get(0), endList.get(0)); // 步行导航
+            } else if(naviWay == WAY_RIDE) {
+                mAMapNavi.calculateRideRoute(startList.get(0), endList.get(0));// 骑车导航
+            } else if(naviWay == WAY_DRIVE) {
+                mAMapNavi.calculateDriveRoute(startList, endList, null, strategy);// 驾车导航
+            }
+        }
+
+        /**
+         * 开始导航回调
+         * i - 导航类型，1 ： 实时导航，2 ：模拟导航
+         * @param i
+         */
+        @Override
+        public void onStartNavi(int i) {
+            LogUtil.d(TAG, "启动导航后回调函数=" + i );
+        }
+
+        @Override
+        public void onTrafficStatusUpdate() {
+
+        }
+
+        @Override
+        public void onLocationChange(AMapNaviLocation aMapNaviLocation) {
+
+        }
+
+        @Override
+        public void onGetNavigationText(int i, String s) {
+
+        }
+
+        @Override
+        public void onGetNavigationText(String s) {
+
+        }
+
+        @Override
+        public void onEndEmulatorNavi() {
+
+        }
+
+        @Override
+        public void onArriveDestination() {
+            LogUtil.e(TAG, "到达目的地");
+        }
+
+        @Override
+        public void onCalculateRouteFailure(int i) {
+            ToastUtil.showToast("路径规划失败=" + i + ",失败原因查看官方错误码对照表");
+            LogUtil.e(TAG, "路径规划失败=" + i );
+        }
+
+        @Override
+        public void onReCalculateRouteForYaw() {
+
+        }
+
+        @Override
+        public void onReCalculateRouteForTrafficJam() {
+
+        }
+
+        @Override
+        public void onArrivedWayPoint(int i) {
+
+        }
+
+        @Override
+        public void onGpsOpenStatus(boolean b) {
+
+        }
+
+        @Override
+        public void onNaviInfoUpdate(NaviInfo naviInfo) {
+
+        }
+
+        @Override
+        public void onNaviInfoUpdated(AMapNaviInfo aMapNaviInfo) {
+
+        }
+
+        @Override
+        public void updateCameraInfo(AMapNaviCameraInfo[] aMapNaviCameraInfos) {
+
+        }
+
+        @Override
+        public void updateIntervalCameraInfo(AMapNaviCameraInfo aMapNaviCameraInfo, AMapNaviCameraInfo
+                aMapNaviCameraInfo1, int i) {
+
+        }
+
+        @Override
+        public void onServiceAreaUpdate(AMapServiceAreaInfo[] aMapServiceAreaInfos) {
+
+        }
+
+        @Override
+        public void showCross(AMapNaviCross aMapNaviCross) {
+
+        }
+
+        @Override
+        public void hideCross() {
+
+        }
+
+        @Override
+        public void showModeCross(AMapModelCross aMapModelCross) {
+
+        }
+
+        @Override
+        public void hideModeCross() {
+
+        }
+
+        @Override
+        public void showLaneInfo(AMapLaneInfo[] aMapLaneInfos, byte[] bytes, byte[] bytes1) {
+
+        }
+
+        @Override
+        public void showLaneInfo(AMapLaneInfo aMapLaneInfo) {
+
+        }
+
+        @Override
+        public void hideLaneInfo() {
+
+        }
+
+        @Override
+        public void onCalculateRouteSuccess(int[] ints) {
+            LogUtil.d(TAG, "路径规划完毕，开始导航");
+            showNavi();
+            mAMapNavi.startNavi(NaviType.GPS);
+        }
+
+        @Override
+        public void notifyParallelRoad(int i) {
+
+        }
+
+        @Override
+        public void OnUpdateTrafficFacility(AMapNaviTrafficFacilityInfo aMapNaviTrafficFacilityInfo) {
+
+        }
+
+        @Override
+        public void OnUpdateTrafficFacility(AMapNaviTrafficFacilityInfo[] aMapNaviTrafficFacilityInfos) {
+
+        }
+
+        @Override
+        public void OnUpdateTrafficFacility(TrafficFacilityInfo trafficFacilityInfo) {
+
+        }
+
+        @Override
+        public void updateAimlessModeStatistics(AimLessModeStat aimLessModeStat) {
+
+        }
+
+        @Override
+        public void updateAimlessModeCongestionInfo(AimLessModeCongestionInfo aimLessModeCongestionInfo) {
+
+        }
+
+        @Override
+        public void onPlayRing(int i) {
+
+        }
+
+        @Override
+        public void onCalculateRouteSuccess(AMapCalcRouteResult aMapCalcRouteResult) {
+
+        }
+
+        @Override
+        public void onCalculateRouteFailure(AMapCalcRouteResult aMapCalcRouteResult) {
+
+        }
+
+        @Override
+        public void onNaviRouteNotify(AMapNaviRouteNotifyData aMapNaviRouteNotifyData) {
+
+        }
+    };
 }

@@ -12,4 +12,9 @@ public class MarkerStation {
      * 标题
      */
     public String title;
+
+    /**
+     * 描述
+     */
+    public String snippet;
 }

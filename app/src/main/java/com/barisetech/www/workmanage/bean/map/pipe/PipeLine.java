@@ -2,6 +2,7 @@ package com.barisetech.www.workmanage.bean.map.pipe;
 
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.Polyline;
+import com.amap.api.maps.model.Text;
 import com.barisetech.www.workmanage.bean.map.LineStation;
 import com.barisetech.www.workmanage.bean.site.SiteBean;
 
@@ -33,6 +34,16 @@ public class PipeLine {
      * 首站站点标记
      */
     public Marker startSiteMarker;
+
+    /**
+     * 首站站点文字
+     */
+    public Text startSiteText;
+
+    /**
+     * 末站站点文字
+     */
+    public Text endSiteText;
 
     /**
      * 末站站点标记
