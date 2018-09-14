@@ -47,7 +47,7 @@ public class PipeAddFragment extends BaseFragment {
     private Disposable curDisposable;
     FragmentPipeAddBinding mBinding;
     private ReqPipeInfo reqPipeInfo = new ReqPipeInfo();
-    private List<SiteBean> siteList;
+    private List<SiteBean> siteList = new ArrayList<>();
     private SiteViewModel siteViewModel;
 
     public static PipeAddFragment newInstance() {
@@ -66,6 +66,7 @@ public class PipeAddFragment extends BaseFragment {
         toolbarInfo.setTitle(getString(R.string.title_pipe_add));
         observableToolbar.set(toolbarInfo);
         initView();
+
 
         return mBinding.getRoot();
     }
@@ -101,6 +102,7 @@ public class PipeAddFragment extends BaseFragment {
                 }
             });
         });
+
         mBinding.pipeTest.setOnItemClickListener(() -> {
             showDialog(getString(R.string.pipe_detail_is_test), Boolean.valueOf(reqPipeInfo.IsTestMode), (radioGroup, i) -> {
                 closeDialog();
@@ -191,6 +193,7 @@ public class PipeAddFragment extends BaseFragment {
             EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_SHOW));
             curDisposable = pipeViewModel.reqAddOrModifyPipe(reqAddPipe);
         });
+
     }
 
     private void showDialog(String title, boolean defaultV, RadioGroup.OnCheckedChangeListener
@@ -214,6 +217,8 @@ public class PipeAddFragment extends BaseFragment {
     @Override
     public void bindViewModel() {
         pipeViewModel = ViewModelProviders.of(this).get(PipeViewModel.class);
+        siteViewModel = ViewModelProviders.of(this).get(SiteViewModel.class);
+
     }
 
     @Override
@@ -240,6 +245,11 @@ public class PipeAddFragment extends BaseFragment {
                 if (null != siteBeans) {
                     if (siteBeans.size() > 0) {
                         siteList.addAll(siteBeans);
+                        List<String> siteName = new ArrayList<>();
+                        for (SiteBean siteBean:siteList){
+                            siteName.add(siteBean.Name);
+                        }
+                        mBinding.spSelectSite.attachDataSource(siteName);
                     }
                 }
             });
