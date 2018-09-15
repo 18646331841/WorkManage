@@ -20,81 +20,145 @@
             layout="@layout/layout_toolbar"
             app:toolbar="@{fragment.observableToolbar}" />
 
-        <TextView
-            android:id="@+id/sign_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_30"
-            android:layout_marginTop="@dimen/dp_10"
-            android:text="2018.09.10" />
-
-
-        <TextClock
-            android:id="@+id/timeView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:format12Hour="hh:mm"
-            android:format24Hour="HH:mm"
-            android:layout_marginTop="@dimen/dp_10"
-            android:textColor="@color/blue_text"
-            android:textSize="@dimen/dp_30"/>
-
-        <TextView
-            android:gravity="center"
-            android:layout_marginTop="@dimen/dp_10"
-            android:text="dddddddddddddddddddddddd"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-
-        <TextView
-            android:textSize="@dimen/dp_30"
-            android:text="打卡"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/dp_10"
-            android:textColor="@color/white"
-            android:background="@drawable/shape_cricle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <LinearLayout
-            android:layout_marginTop="@dimen/dp_10"
-            android:orientation="horizontal"
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <TextView
-                android:text="是否异常"
-                android:layout_marginLeft="@dimen/dp_30"
-                android:textSize="13sp"
-                android:layout_gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <RadioGroup
-                android:layout_gravity="center"
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_70">
-                <RadioButton
-                    android:id="@+id/radio_yes"
-                    android:text="@string/dialog_yes"
-                    android:textSize="@dimen/dp_13"
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <TextView
+                    android:id="@+id/sign_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_30"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:text="2018.09.10" />
+
+
+                <TextClock
+                    android:id="@+id/timeView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dp_10"/>
-                <RadioButton
-                    android:id="@+id/radio_no"
-                    android:text="@string/dialog_no"
-                    android:textSize="13sp"
+                    android:layout_gravity="center"
+                    android:format12Hour="hh:mm:ss"
+                    android:format24Hour="HH:mm:ss"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:textColor="@color/blue_text"
+                    android:textSize="@dimen/dp_30"/>
+
+                <TextView
+                    android:gravity="center"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:text="dddddddddddddddddddddddd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+
+                <TextView
+                    android:textSize="@dimen/dp_30"
+                    android:text="打卡"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:textColor="@color/white"
+                    android:background="@drawable/shape_cricle"
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <View
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/line_gray"/>
+                <LinearLayout
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:text="是否异常"
+                        android:layout_marginLeft="@dimen/dp_30"
+                        android:textSize="13sp"
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <RadioGroup
+                        android:layout_gravity="center"
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_70">
+                        <RadioButton
+                            android:id="@+id/radio_yes"
+                            android:text="@string/dialog_yes"
+                            android:textSize="@dimen/dp_13"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/dp_10"/>
+                        <RadioButton
+                            android:id="@+id/radio_no"
+                            android:text="@string/dialog_no"
+                            android:textSize="13sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/dp_50"/>
+                    </RadioGroup>
+                </LinearLayout>
+
+
+                <EditText
+                    android:id="@+id/et_feedback"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dp_50"/>
-            </RadioGroup>
-        </LinearLayout>
+                    android:inputType="textMultiLine"
+                    android:gravity="left|top"
+                    android:minLines="3"
+                    android:hint="请输入备注信息"
+                    android:padding="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/layout_corners"/>
+                <View
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/line_gray"/>
+
+                <TextView
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:layout_marginLeft="@dimen/dp_30"
+                    android:textSize="16sp"
+                    android:text="@string/upload_photo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <com.barisetech.www.workmanage.widget.MyCustomHeightGridView
+                    android:id="@+id/sign_in_gv"
+                    android:layout_margin="@dimen/dp_10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:horizontalSpacing="@dimen/dp_5"
+                    android:numColumns="3"
+                    android:verticalSpacing="@dimen/dp_5">
+                </com.barisetech.www.workmanage.widget.MyCustomHeightGridView>
 
 
-
+                <Button
+                    android:id="@+id/add_lind_area"
+                    android:layout_width="@dimen/dp_315"
+                    android:layout_height="@dimen/dp_50"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:background="@drawable/shane_button_corners"
+                    android:text="@string/complete_sign_in"
+                    android:textColor="@color/white"
+                    android:layout_marginBottom="@dimen/dp_30"
+                    android:textSize="@dimen/sp_18"/>
+            </LinearLayout>
+        </ScrollView>
     </LinearLayout>
 </layout>

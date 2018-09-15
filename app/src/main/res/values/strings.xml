@@ -336,6 +336,9 @@
     <string name="lind_pipe_id">管线ID</string>
     <string name="modify_lind_area">修改管线盲区</string>
     <string name="del_lind_area">删除管线盲区</string>
+    <string name="upload_photo">上传照片</string>
+    <string name="complete_sign_in">打卡完成</string>
+    <string name="tv_sign_in">签到</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->
