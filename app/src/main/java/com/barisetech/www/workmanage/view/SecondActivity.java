@@ -157,6 +157,7 @@ public class SecondActivity extends BaseActivity {
             case MapFragment.TAG:
                 Bundle bundle = new Bundle();
                 bundle.putString("tag", MapFragment.TAG);
+                bundle.putString("arg1", (String) eventBusMessage.getArg1());
                 intent2Activity(bundle, MainActivity.class);
                 break;
             case NewsListFragment.TAG:

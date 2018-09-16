@@ -24,7 +24,7 @@ public class TextAdapter extends ArrayAdapter<String> {
 	private String selectedText = "";
 	private int normalDrawbleId;
 	private Drawable selectedDrawble;
-	private float textSize = 28;//14sp 720x1280
+	private float textSize;
 	private OnClickListener onClickListener;
 	private OnItemClickListener mOnItemClickListener;
 
@@ -135,17 +135,18 @@ public class TextAdapter extends ArrayAdapter<String> {
 				mString = mArrayData[position];
 			}
 		}
-		
-		view.setText(mString);
-		view.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize);
 
-		if (selectedText != null && selectedText.equals(mString)) {
+		view.setText(mString);
+		if (textSize > 0) {
+			view.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize);
+		}
+
+		if (position == selectedPos) {
 			view.setBackgroundDrawable(selectedDrawble);// 设置选中的背景图片
 		} else {
 			view.setBackgroundDrawable(mContext.getResources().getDrawable(
 					normalDrawbleId));// 设置未选中状态背景图片
 		}
-		view.setPadding(20, 0, 0, 0);
 		view.setOnClickListener(onClickListener);
 		return view;
 	}

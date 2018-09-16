@@ -7,6 +7,7 @@ import android.databinding.ObservableField;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -103,9 +104,13 @@ public class AlarmDetailsFragment extends BaseFragment implements View.OnClickLi
 
     @Override
     public void onClick(View view) {
+        EventBusMessage eventBusMessage;
         switch (view.getId()) {
             case R.id.to_map_bt:
-                EventBus.getDefault().post(new EventBusMessage(MapFragment.TAG));
+                eventBusMessage = new EventBusMessage(MapFragment.TAG);
+                Log.d(TAG, "pipeId = " + curAlarmInfo.getPipeId());
+                eventBusMessage.setArg1(String.valueOf(curAlarmInfo.getPipeId()));
+                EventBus.getDefault().post(eventBusMessage);
                 break;
             case R.id.lift_alarm_bt:
 
@@ -118,7 +123,7 @@ public class AlarmDetailsFragment extends BaseFragment implements View.OnClickLi
 
                 break;
             case R.id.build_alarm_analysis_bt:
-                EventBusMessage eventBusMessage = new EventBusMessage(AlarmAnalysisFragment.TAG);
+                eventBusMessage = new EventBusMessage(AlarmAnalysisFragment.TAG);
                 eventBusMessage.setArg1(curAlarmInfo);
                 EventBus.getDefault().post(eventBusMessage);
                 break;

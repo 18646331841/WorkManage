@@ -13,6 +13,8 @@ public class PipeLine {
 
     public String pipeId;
 
+    public String pipeName;
+
     /**
      * 首站
      */
@@ -53,5 +55,13 @@ public class PipeLine {
     public PipeLine(String pipeId, LineStation lineStation) {
         this.pipeId = pipeId;
         this.lineStation = lineStation;
+    }
+
+    public void show(boolean isShow) {
+        startSiteMarker.setVisible(isShow);
+        endSiteMarker.setVisible(isShow);
+        startSiteText.setVisible(isShow);
+        endSiteText.setVisible(isShow);
+        polyline.setVisible(isShow);
     }
 }

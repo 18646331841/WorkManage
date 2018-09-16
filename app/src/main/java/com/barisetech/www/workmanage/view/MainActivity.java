@@ -32,6 +32,7 @@ import com.barisetech.www.workmanage.view.fragment.FingerprintManagerFragment;
 import com.barisetech.www.workmanage.view.fragment.IncidentDetailsFragment;
 import com.barisetech.www.workmanage.view.fragment.IncidentListFragment;
 import com.barisetech.www.workmanage.view.fragment.MapFragment;
+import com.barisetech.www.workmanage.view.fragment.Messagefragment;
 import com.barisetech.www.workmanage.view.fragment.ModifySiteFragment;
 import com.barisetech.www.workmanage.view.fragment.NavigationFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsAddFragment;
@@ -83,9 +84,14 @@ public class MainActivity extends BaseActivity {
         }
 
         Bundle bundle = getIntent().getExtras();
-        String tag = null;
+        String tag = Messagefragment.TAG;
+        String arg1 = null;
         if (null != bundle) {
-            tag = bundle.getString("tag");
+            String tag1 = bundle.getString("tag");
+            if (!TextUtils.isEmpty(tag1)) {
+                tag = tag1;
+            }
+            arg1 = bundle.getString("arg1");
         }
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -94,7 +100,9 @@ public class MainActivity extends BaseActivity {
 //            transaction.add(R.id.fragment_navigation, NavigationFragment.newInstance(), NavigationFragment.TAG).commit();
 //        } else {
 //            //大屏设备界面，左右两个fragment
-        transaction.add(R.id.fragment_navigation, NavigationFragment.newInstance(tag), NavigationFragment.TAG);
+        EventBusMessage eventBusMessage = new EventBusMessage(tag);
+        eventBusMessage.setArg1(arg1);
+        transaction.add(R.id.fragment_navigation, NavigationFragment.newInstance(eventBusMessage), NavigationFragment.TAG);
         transaction.commit();
 //        }
     }
@@ -133,7 +141,7 @@ public class MainActivity extends BaseActivity {
                     finish();
                     break;
                 case MapFragment.TAG:
-                    transaction.add(R.id.fragment_navigation, NavigationFragment.newInstance(tag), NavigationFragment
+                    transaction.add(R.id.fragment_navigation, NavigationFragment.newInstance(eventBusMessage), NavigationFragment
                             .TAG).commit();
                     break;
                 default:
@@ -152,12 +160,12 @@ public class MainActivity extends BaseActivity {
                     break;
                 case IncidentListFragment.TAG:
                     transaction
-                            .replace(R.id.second_framelayout, IncidentListFragment.newInstance(), tag)
+                            .replace(R.id.fragment_content, IncidentListFragment.newInstance(), tag)
                             .commit();
                     break;
                 case IncidentDetailsFragment.TAG:
                     transaction
-                            .replace(R.id.second_framelayout, IncidentDetailsFragment.newInstance((IncidentInfo)
+                            .replace(R.id.fragment_content, IncidentDetailsFragment.newInstance((IncidentInfo)
                                     eventBusMessage.getArg1()), tag).commit();
                     if (!isActivity) {
                         transaction.addToBackStack(tag);
@@ -165,16 +173,16 @@ public class MainActivity extends BaseActivity {
                     break;
                 case AlarmListFragment.TAG:
                     transaction
-                            .replace(R.id.second_framelayout, AlarmListFragment.newInstance(), tag)
+                            .replace(R.id.fragment_content, AlarmListFragment.newInstance(), tag)
                             .commit();
                     break;
                 case FingerprintManagerFragment.TAG:
                     transaction
-                            .replace(R.id.second_framelayout, FingerprintManagerFragment.newInstance(), tag).commit();
+                            .replace(R.id.fragment_content, FingerprintManagerFragment.newInstance(), tag).commit();
                     break;
                 case AlarmDetailsFragment.TAG:
                     transaction
-                            .replace(R.id.second_framelayout, AlarmDetailsFragment.newInstance((AlarmInfo)
+                            .replace(R.id.fragment_content, AlarmDetailsFragment.newInstance((AlarmInfo)
                                     eventBusMessage.getArg1()), tag).commit();
                     if (!isActivity) {
                         transaction.addToBackStack(tag);
@@ -182,7 +190,7 @@ public class MainActivity extends BaseActivity {
                     break;
                 case AlarmAnalysisFragment.TAG:
                     transaction
-                            .replace(R.id.second_framelayout, AlarmAnalysisFragment.newInstance((AlarmInfo)
+                            .replace(R.id.fragment_content, AlarmAnalysisFragment.newInstance((AlarmInfo)
                                     eventBusMessage.getArg1()), tag).commit();
                     if (!isActivity) {
                         transaction.addToBackStack(tag);
@@ -190,28 +198,28 @@ public class MainActivity extends BaseActivity {
                     break;
                 case AlarmAnalysisListFragment.TAG:
                     transaction
-                            .replace(R.id.second_framelayout, AlarmAnalysisListFragment.newInstance(), tag).commit();
+                            .replace(R.id.fragment_content, AlarmAnalysisListFragment.newInstance(), tag).commit();
                     break;
                 case AlarmAnalysisDetailFragment.TAG:
                     transaction
-                            .replace(R.id.second_framelayout, AlarmAnalysisDetailFragment.newInstance((AlarmAnalysis)
+                            .replace(R.id.fragment_content, AlarmAnalysisDetailFragment.newInstance((AlarmAnalysis)
                                     eventBusMessage.getArg1()), tag).commit();
                     if (!isActivity) {
                         transaction.addToBackStack(tag);
                     }
                     break;
-                case MapFragment.TAG:
-                    Bundle bundle = new Bundle();
-                    bundle.putString("tag", MapFragment.TAG);
-                    intent2Activity(bundle, MainActivity.class);
-                    break;
+//                case MapFragment.TAG:
+//                    Bundle bundle = new Bundle();
+//                    bundle.putString("tag", MapFragment.TAG);
+//                    intent2Activity(bundle, MainActivity.class);
+//                    break;
                 case NewsListFragment.TAG:
                     transaction
-                            .replace(R.id.second_framelayout, NewsListFragment.newInstance(), tag).commit();
+                            .replace(R.id.fragment_content, NewsListFragment.newInstance(), tag).commit();
                     break;
                 case NewsDetailsFragment.TAG:
                     transaction
-                            .replace(R.id.second_framelayout, NewsDetailsFragment.newInstance((String) eventBusMessage
+                            .replace(R.id.fragment_content, NewsDetailsFragment.newInstance((String) eventBusMessage
                                     .getArg1()), tag).commit();
                     if (!isActivity) {
                         transaction.addToBackStack(tag);
@@ -219,42 +227,42 @@ public class MainActivity extends BaseActivity {
                     break;
                 case NewsAddFragment.TAG:
                     transaction
-                            .replace(R.id.second_framelayout, NewsAddFragment.newInstance(), tag).commit();
+                            .replace(R.id.fragment_content, NewsAddFragment.newInstance(), tag).commit();
                     if (!isActivity) {
                         transaction.addToBackStack(tag);
                     }
                     break;
                 case SiteFragment.TAG:
                     transaction
-                            .replace(R.id.second_framelayout, SiteFragment.newInstance(), tag)
+                            .replace(R.id.fragment_content, SiteFragment.newInstance(), tag)
                             .commit();
                     break;
                 case AddSiteFragment.TAG:
                     transaction
-                            .replace(R.id.second_framelayout, AddSiteFragment.newInstance(), tag).commit();
+                            .replace(R.id.fragment_content, AddSiteFragment.newInstance(), tag).commit();
                     if (!isActivity) {
                         transaction.addToBackStack(tag);
                     }
                     break;
                 case DigitizingFragment.TAG:
                     transaction
-                            .replace(R.id.second_framelayout, DigitizingFragment.newInstance(), tag)
+                            .replace(R.id.fragment_content, DigitizingFragment.newInstance(), tag)
                             .commit();
                     break;
                 case DigitizingDetailFragment.TAG:
                     transaction
-                            .replace(R.id.second_framelayout, DigitizingDetailFragment.newInstance(), tag).commit();
+                            .replace(R.id.fragment_content, DigitizingDetailFragment.newInstance(), tag).commit();
                     if (!isActivity) {
                         transaction.addToBackStack(tag);
                     }
                     break;
                 case PipeFragment.TAG:
                     transaction
-                            .replace(R.id.second_framelayout, PipeFragment.newInstance(), tag).commit();
+                            .replace(R.id.fragment_content, PipeFragment.newInstance(), tag).commit();
                     break;
                 case PipeDetailFragment.TAG:
                     transaction
-                            .replace(R.id.second_framelayout, PipeDetailFragment.newInstance((PipeInfo) eventBusMessage
+                            .replace(R.id.fragment_content, PipeDetailFragment.newInstance((PipeInfo) eventBusMessage
                                     .getArg1()), tag).commit();
                     if (!isActivity) {
                         transaction.addToBackStack(tag);
@@ -262,14 +270,14 @@ public class MainActivity extends BaseActivity {
                     break;
                 case PipeAddFragment.TAG:
                     transaction
-                            .replace(R.id.second_framelayout, PipeAddFragment.newInstance(), tag).commit();
+                            .replace(R.id.fragment_content, PipeAddFragment.newInstance(), tag).commit();
                     if (!isActivity) {
                         transaction.addToBackStack(tag);
                     }
                     break;
                 case PipeModifyFragment.TAG:
                     transaction
-                            .replace(R.id.second_framelayout, PipeModifyFragment.newInstance((PipeInfo) eventBusMessage
+                            .replace(R.id.fragment_content, PipeModifyFragment.newInstance((PipeInfo) eventBusMessage
                                     .getArg1()), tag).commit();
                     if (!isActivity) {
                         transaction.addToBackStack(tag);
@@ -277,11 +285,11 @@ public class MainActivity extends BaseActivity {
                     break;
                 case PipeCollectionFragment.TAG:
                     transaction
-                            .replace(R.id.second_framelayout, PipeCollectionFragment.newInstance(), tag).commit();
+                            .replace(R.id.fragment_content, PipeCollectionFragment.newInstance(), tag).commit();
                     break;
                 case PipeCollectionDetailFragment.TAG:
                     transaction
-                            .replace(R.id.second_framelayout, PipeCollectionDetailFragment.newInstance((PipeCollections)
+                            .replace(R.id.fragment_content, PipeCollectionDetailFragment.newInstance((PipeCollections)
                                     eventBusMessage.getArg1()), tag).commit();
                     if (!isActivity) {
                         transaction.addToBackStack(tag);
@@ -289,26 +297,23 @@ public class MainActivity extends BaseActivity {
                     break;
                 case PipeCollectionModifyFragment.TAG:
                     transaction
-                            .replace(R.id.second_framelayout, PipeCollectionModifyFragment.newInstance(
+                            .replace(R.id.fragment_content, PipeCollectionModifyFragment.newInstance(
                                     (PipeCollections) eventBusMessage.getArg1()), tag).commit();
-                    if (!isActivity) {
-                        transaction.addToBackStack(tag);
-                    }
                     break;
                 case PipeCollectionAddFragment.TAG:
                     transaction
-                            .replace(R.id.second_framelayout, PipeCollectionAddFragment.newInstance(), tag).commit();
+                            .replace(R.id.fragment_content, PipeCollectionAddFragment.newInstance(), tag).commit();
                     if (!isActivity) {
                         transaction.addToBackStack(tag);
                     }
                     break;
                 case PipeWorkFragment.TAG:
                     transaction
-                            .replace(R.id.second_framelayout, PipeWorkFragment.newInstance(), tag).commit();
+                            .replace(R.id.fragment_content, PipeWorkFragment.newInstance(), tag).commit();
                     break;
                 case PipeWorkDetailFragment.TAG:
                     transaction
-                            .replace(R.id.second_framelayout, PipeWorkDetailFragment.newInstance((PipeWork)
+                            .replace(R.id.fragment_content, PipeWorkDetailFragment.newInstance((PipeWork)
                                     eventBusMessage.getArg1()), tag).commit();
                     if (!isActivity) {
                         transaction.addToBackStack(tag);
@@ -316,7 +321,7 @@ public class MainActivity extends BaseActivity {
                     break;
                 case PipeWorkModifyFragment.TAG:
                     transaction
-                            .replace(R.id.second_framelayout, PipeWorkModifyFragment.newInstance((PipeWork)
+                            .replace(R.id.fragment_content, PipeWorkModifyFragment.newInstance((PipeWork)
                                     eventBusMessage.getArg1()), tag).commit();
                     if (!isActivity) {
                         transaction.addToBackStack(tag);
@@ -324,21 +329,21 @@ public class MainActivity extends BaseActivity {
                     break;
                 case PipeWorkAddFragment.TAG:
                     transaction
-                            .replace(R.id.second_framelayout, PipeWorkAddFragment.newInstance(), tag).commit();
+                            .replace(R.id.fragment_content, PipeWorkAddFragment.newInstance(), tag).commit();
                     if (!isActivity) {
                         transaction.addToBackStack(tag);
                     }
                     break;
                 case WaveFormFragment.TAG:
                     transaction
-                            .replace(R.id.second_framelayout, WaveFormFragment.newInstance(), tag).commit();
+                            .replace(R.id.fragment_content, WaveFormFragment.newInstance(), tag).commit();
                     if (!isActivity) {
                         transaction.addToBackStack(tag);
                     }
                     break;
                 case SiteDetailFragment.TAG:
                     transaction
-                            .replace(R.id.second_framelayout, SiteDetailFragment.newInstance((SiteBean)
+                            .replace(R.id.fragment_content, SiteDetailFragment.newInstance((SiteBean)
                                     eventBusMessage.getArg1()), tag).commit();
                     if (!isActivity) {
                         transaction.addToBackStack(tag);
@@ -347,7 +352,7 @@ public class MainActivity extends BaseActivity {
 
                 case ModifySiteFragment.TAG:
                     transaction
-                            .replace(R.id.second_framelayout, ModifySiteFragment.newInstance((SiteBean)
+                            .replace(R.id.fragment_content, ModifySiteFragment.newInstance((SiteBean)
                                     eventBusMessage.getArg1()), tag).commit();
                     if (!isActivity) {
                         transaction.addToBackStack(tag);
@@ -355,19 +360,19 @@ public class MainActivity extends BaseActivity {
                     break;
                 case PipeLindAreaFragment.TAG:
                     transaction
-                            .replace(R.id.second_framelayout, PipeLindAreaFragment.newInstance(), tag).commit();
+                            .replace(R.id.fragment_content, PipeLindAreaFragment.newInstance(), tag).commit();
                     break;
 
                 case PipeLindAreaAddFragment.TAG:
                     transaction
-                            .replace(R.id.second_framelayout, PipeLindAreaAddFragment.newInstance(), tag).commit();
+                            .replace(R.id.fragment_content, PipeLindAreaAddFragment.newInstance(), tag).commit();
                     if (!isActivity) {
                         transaction.addToBackStack(tag);
                     }
                     break;
                 case PipeLindAreaDetailFragment.TAG:
                     transaction
-                            .replace(R.id.second_framelayout, PipeLindAreaDetailFragment.newInstance((PipeLindAreaInfo)
+                            .replace(R.id.fragment_content, PipeLindAreaDetailFragment.newInstance((PipeLindAreaInfo)
                                     eventBusMessage.getArg1()), tag).commit();
                     if (!isActivity) {
                         transaction.addToBackStack(tag);
@@ -376,7 +381,7 @@ public class MainActivity extends BaseActivity {
 
                 case PipeLindAreaModifyFragment.TAG:
                     transaction
-                            .replace(R.id.second_framelayout, PipeLindAreaModifyFragment.newInstance((PipeLindAreaInfo)
+                            .replace(R.id.fragment_content, PipeLindAreaModifyFragment.newInstance((PipeLindAreaInfo)
                                     eventBusMessage.getArg1()), tag).commit();
                     if (!isActivity) {
                         transaction.addToBackStack(tag);

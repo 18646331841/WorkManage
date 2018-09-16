@@ -49,17 +49,26 @@ public class ChildView extends LinearLayout {
     private int tBlockPosition = 0;       //用于保存当前子ListView被点击的Item对应的Position.
 
     private String showString = "";
+    private Context context;
 
     public ChildView(Context context) {
         super(context);
-        init(context);
+        this.context = context;
     }
 
     public ChildView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(context);
     }
 
+    public void setDatas(ArrayList<String> oneList, SparseArray<LinkedList<String>> sparseArray) {
+        if (oneList == null || sparseArray == null) {
+            return;
+        }
+        groups = oneList;
+        children = sparseArray;
+
+        init(context);
+    }
 
     private void init(Context context) {
         LayoutInflater inflater = (LayoutInflater) context
@@ -71,22 +80,21 @@ public class ChildView extends LinearLayout {
         plateListView = findViewById(R.id.listView2);
 
         //初始化ListView中每一个item对应的text
-        for (int i = 0; i < 10; i++) {
-            groups.add(LeftFaString[i]);
-            LinkedList<String> tItem = new LinkedList<>();
-            for (int j = 0; j < LeftCh1String[i].length; j++) {
-
-                tItem.add(LeftCh1String[i][j]);
-
-            }
-            children.put(i, tItem);
-        }
+//        for (int i = 0; i < 10; i++) {
+//            groups.add(LeftFaString[i]);
+//            LinkedList<String> tItem = new LinkedList<>();
+//            for (int j = 0; j < LeftCh1String[i].length; j++) {
+//
+//                tItem.add(LeftCh1String[i][j]);
+//
+//            }
+//            children.put(i, tItem);
+//        }
 
         //主ListView列表项的适配器
         earaListViewAdapter = new TextAdapter(context, groups,
                 R.drawable.choose,
                 R.drawable.choose_eara_item_selector);
-        earaListViewAdapter.setTextSize(12);
         earaListViewAdapter.setSelectedPositionNoNotify(tEaraPosition);
 
         regionListView.setAdapter(earaListViewAdapter);
@@ -109,7 +117,6 @@ public class ChildView extends LinearLayout {
         plateListViewAdapter = new TextAdapter(context, childrenItem,
                 R.drawable.choose_item_right,
                 R.drawable.choose_plate_item_selector);
-        plateListViewAdapter.setTextSize(12);
         plateListViewAdapter.setSelectedPositionNoNotify(tBlockPosition);
         plateListView.setAdapter(plateListViewAdapter);
         //设置当Item被点击后触发的监听.

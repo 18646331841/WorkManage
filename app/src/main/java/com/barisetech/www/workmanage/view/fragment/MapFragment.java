@@ -9,21 +9,28 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextPaint;
+import android.text.TextUtils;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps.AMap;
+import com.amap.api.maps.AMapOptions;
+import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
+import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
@@ -64,17 +71,21 @@ import com.barisetech.www.workmanage.bean.map.pipe.PipeLine;
 import com.barisetech.www.workmanage.bean.map.pipe.PipeTrackInfo;
 import com.barisetech.www.workmanage.bean.pipe.PipeInfo;
 import com.barisetech.www.workmanage.bean.pipe.ReqAllPipe;
+import com.barisetech.www.workmanage.bean.pipecollections.PipeCollections;
+import com.barisetech.www.workmanage.bean.pipecollections.ReqAllPc;
 import com.barisetech.www.workmanage.bean.site.SiteBean;
 import com.barisetech.www.workmanage.databinding.FragmentMapBinding;
 import com.barisetech.www.workmanage.utils.LogUtil;
 import com.barisetech.www.workmanage.utils.MapUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.viewmodel.MapViewModel;
+import com.barisetech.www.workmanage.viewmodel.PipeCollectionsViewModel;
 import com.barisetech.www.workmanage.viewmodel.PipeViewModel;
 import com.barisetech.www.workmanage.widget.twomenu.ChildView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -87,24 +98,32 @@ public class MapFragment extends BaseFragment {
     private MapView mMapView;
     private AMap mAMap;
 
-
     private AMapNaviView mAMapNaviView;
     private AMapLocationClient mlocationClient;
-    /** 起点坐标 */
+    /**
+     * 起点坐标
+     */
     private final List<NaviLatLng> startList = new ArrayList<>();
 
-    /** 终点坐标 */
+    /**
+     * 终点坐标
+     */
     private final List<NaviLatLng> endList = new ArrayList<>();
-    /** 导航方式 */
+    /**
+     * 导航方式
+     */
     private int naviWay = WAY_DRIVE;
     public static final int WAY_DRIVE = 1;
     public static final int WAY_WALK = 2;
     public static final int WAY_RIDE = 3;
+    FragmentMapBinding mBinding;
 
     private MyLocationStyle myLocationStyle;
     private MapViewModel mapViewModel;
     private PipeViewModel pipeViewModel;
-    FragmentMapBinding mBinding;
+    private PipeCollectionsViewModel pipeCollectionsViewModel;
+
+    private List<PipeCollections> pipeCollectionsList = new ArrayList<>();
 
     private List<PipeInfo> pipeInfoList = new ArrayList<>();
     private Map<String, List<PipeTrackInfo>> curPipeTracks = new HashMap<>();
@@ -114,11 +133,29 @@ public class MapFragment extends BaseFragment {
     private AMapNavi mAMapNavi;
     private Marker curClickMarker;
 
+    private boolean popIsShow = false;
+
     private ArrayList<View> mViewArray = new ArrayList<>();
 
-    public static MapFragment newInstance() {
+    private static final String ALARM_ID = "alarmId";
+    private String curPipeId;
+
+    public static MapFragment newInstance(String pipeId) {
         MapFragment fragment = new MapFragment();
+        if (!TextUtils.isEmpty(pipeId)) {
+            Bundle bundle = new Bundle();
+            bundle.putString(ALARM_ID, pipeId);
+            fragment.setArguments(bundle);
+        }
         return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            curPipeId = getArguments().getString(ALARM_ID, "");
+        }
     }
 
     @Override
@@ -132,7 +169,7 @@ public class MapFragment extends BaseFragment {
         toolbarInfo.setBackText("菜单");
         observableToolbar.set(toolbarInfo);
 
-        initMenu();
+//        initMenu();
         initView(savedInstanceState);
 
         return mBinding.getRoot();
@@ -165,6 +202,7 @@ public class MapFragment extends BaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        mBinding.menuView.close();
         mMapView.onDestroy();
         if (mAMapNavi != null) {
             mAMapNavi.stopNavi();
@@ -190,14 +228,28 @@ public class MapFragment extends BaseFragment {
         initMap();
     }
 
-    private void initMenu() {
+    /**
+     * 初始化菜单
+     *
+     * @param oneList
+     * @param sparseArray
+     */
+    private void initMenu(ArrayList<String> oneList, SparseArray<LinkedList<String>> sparseArray) {
         ChildView childView = new ChildView(getContext());
-        childView.setOnSelectListener(showText -> onRefresh(childView,showText));
+        childView.setDatas(oneList, sparseArray);
+        childView.setOnSelectListener(showText -> onRefresh(childView, showText));
         mViewArray.add(childView);
         mBinding.menuView.setValue(null, mViewArray);
+        mBinding.menuView.initPopupWindow();
 
         mBinding.toolbar.tvBack.setOnClickListener(view -> {
-            mBinding.menuView.startAnimation();
+//            if (popIsShow) {
+//                mBinding.menuView.close();
+//                popIsShow = false;
+//            } else {
+                mBinding.menuView.show();
+//                popIsShow = true;
+//            }
         });
     }
 
@@ -205,7 +257,22 @@ public class MapFragment extends BaseFragment {
     private void onRefresh(View view, String showText) {
         LogUtil.d(TAG, "menu click = " + showText);
         mBinding.menuView.onPressBack();
-        int position = getPositon(view);
+        if (curPipeLines == null || curPipeLines.size() <= 0) {
+            return;
+        }
+        for (int i = 0; i < curPipeLines.size(); i++) {
+            PipeLine pipeLine = curPipeLines.get(i);
+            if (pipeLine.pipeName.equals(showText)) {
+                pipeLine.show(true);
+                curStartMarker = pipeLine.startSiteMarker;
+                curEndMarker = pipeLine.endSiteMarker;
+                curStartMarker.setInfoWindowEnable(true);
+                curEndMarker.setInfoWindowEnable(true);
+            } else {
+                pipeLine.show(false);
+            }
+        }
+//        int position = getPositon(view);
     }
 
     //获取当前的view位置
@@ -222,6 +289,7 @@ public class MapFragment extends BaseFragment {
         if (null == mAMap) {
             mAMap = mMapView.getMap();
         }
+        mAMap.moveCamera(CameraUpdateFactory.zoomTo(5));
         mAMap.setOnMarkerClickListener(markerClickListener);
         //初始化定位蓝点样式类myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE);
         // 连续定位、且将视角移动到地图中心点，定位点依照设备方向旋转，并且会跟随设备移动。（
@@ -278,6 +346,7 @@ public class MapFragment extends BaseFragment {
 
     /**
      * 在地图上画管线
+     *
      * @param lineStation
      */
     private Polyline addStationLine(@NonNull LineStation lineStation) {
@@ -292,7 +361,8 @@ public class MapFragment extends BaseFragment {
         }
         PolylineOptions polylineOptions = MapUtil.GetPolylineOptions();
         polylineOptions.addAll(latLngs);
-        return mAMap.addPolyline(polylineOptions);
+        Polyline polyline = mAMap.addPolyline(polylineOptions);
+        return polyline;
     }
 
     private void getPipeInfo(int fromIndex, int toIndex) {
@@ -307,11 +377,12 @@ public class MapFragment extends BaseFragment {
     public void bindViewModel() {
         mapViewModel = ViewModelProviders.of(this).get(MapViewModel.class);
         pipeViewModel = ViewModelProviders.of(this).get(PipeViewModel.class);
+        pipeCollectionsViewModel = ViewModelProviders.of(this).get(PipeCollectionsViewModel.class);
     }
 
     private MyMapInfoWindow.OnClickToHere onClickToHere = marker -> {
         LogUtil.d(TAG, "toHere = " + marker.getTitle());
-        for(int i = 0; i < curPipeLines.size(); i++) {
+        for (int i = 0; i < curPipeLines.size(); i++) {
             PipeLine pipeLine = curPipeLines.get(i);
             if (pipeLine.startSiteMarker.getSnippet().equals(marker.getSnippet()) || pipeLine.endSiteMarker
                     .getSnippet().equals(marker.getSnippet())) {
@@ -339,9 +410,10 @@ public class MapFragment extends BaseFragment {
         }
 
         String snippet = marker.getSnippet();
-        for(int i = 0; i < curPipeLines.size(); i++) {
+        for (int i = 0; i < curPipeLines.size(); i++) {
             PipeLine pipeLine = curPipeLines.get(i);
-            if (pipeLine.startSiteMarker.getSnippet().equals(snippet) || pipeLine.endSiteMarker.getSnippet().equals(snippet)) {
+            if (pipeLine.startSiteMarker.getSnippet().equals(snippet) || pipeLine.endSiteMarker.getSnippet().equals
+                    (snippet)) {
                 curStartMarker = pipeLine.startSiteMarker;
                 curEndMarker = pipeLine.endSiteMarker;
                 curStartMarker.setInfoWindowEnable(true);
@@ -349,17 +421,14 @@ public class MapFragment extends BaseFragment {
 //                addStationLine(pipeLine.lineStation);
 //                addSiteMarker(pipeLine, true);
             } else {
-                pipeLine.polyline.setVisible(false);
-                pipeLine.startSiteMarker.setVisible(false);
-                pipeLine.endSiteMarker.setVisible(false);
-                pipeLine.startSiteText.setVisible(false);
-                pipeLine.endSiteText.setVisible(false);
+                pipeLine.show(false);
             }
         }
     }
 
     /**
      * 接口数据装换成地图使用数据
+     *
      * @param pipeTrackInfos
      * @return
      */
@@ -372,7 +441,7 @@ public class MapFragment extends BaseFragment {
                 continue;
             }
             List<MapPosition> mapPositions = new ArrayList<>();
-            for(int i = 0; i < value.size(); i++) {
+            for (int i = 0; i < value.size(); i++) {
                 PipeTrackInfo pipeTrackInfo = value.get(i);
                 MapPosition mapPosition = new MapPosition(pipeTrackInfo.getLatitude(), pipeTrackInfo
                         .getLongitude());
@@ -382,12 +451,13 @@ public class MapFragment extends BaseFragment {
             lineStation.mapPositionList = mapPositions;
             PipeLine pipeLine = new PipeLine(entry.getKey(), lineStation);
             //增加首站、末站信息
-            for(int i = 0; i < pipeInfoList.size(); i++) {
+            for (int i = 0; i < pipeInfoList.size(); i++) {
                 PipeInfo pipeInfo = pipeInfoList.get(i);
                 if (pipeInfo.PipeId == Integer.valueOf(entry.getKey())) {
+                    pipeLine.pipeName = pipeInfo.Name;
                     int startSiteId = pipeInfo.StartSiteId;
                     List<SiteBean> siteBeans = pipeInfo.Sites;
-                    for(int j = 0; j < siteBeans.size(); j++) {
+                    for (int j = 0; j < siteBeans.size(); j++) {
                         SiteBean siteBean = siteBeans.get(j);
                         if (siteBean.SiteId == startSiteId) {
                             pipeLine.startSite = siteBean;
@@ -404,6 +474,7 @@ public class MapFragment extends BaseFragment {
 
     /**
      * 增加站点marker
+     *
      * @param pipeLine
      */
     private void addSiteMarker(PipeLine pipeLine, boolean showWindow) {
@@ -434,19 +505,71 @@ public class MapFragment extends BaseFragment {
     protected Bitmap getMyBitmap(String pm_val) {
         Bitmap bitmap = BitmapDescriptorFactory.fromResource(
                 R.drawable.icon_news).getBitmap().copy(Bitmap.Config.ARGB_8888, true);
-        bitmap = Bitmap.createBitmap(bitmap, 0 ,0, bitmap.getWidth(),
+        bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),
                 bitmap.getHeight());
         Canvas canvas = new Canvas(bitmap);
         TextPaint textPaint = new TextPaint();
         textPaint.setAntiAlias(true);
         textPaint.setTextSize(25f);
         textPaint.setColor(getResources().getColor(R.color.text_black));
-        canvas.drawText(pm_val, 17, 35 ,textPaint);// 设置bitmap上面的文字位置
+        canvas.drawText(pm_val, 17, 35, textPaint);// 设置bitmap上面的文字位置
         return bitmap;
     }
 
     @Override
     public void subscribeToModel() {
+        if (!pipeCollectionsViewModel.getmObservableAllPC().hasObservers()) {
+            pipeCollectionsViewModel.getmObservableAllPC().observe(this, pipeCollections -> {
+                if (this.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+
+                    if (null != pipeCollections && pipeCollections.size() > 0) {
+                        pipeCollectionsList.addAll(pipeCollections);
+
+                        ArrayList<String> oneList = new ArrayList<>();
+                        SparseArray<LinkedList<String>> sparseArray = new SparseArray<>();
+
+                        for (int i = 0; i < pipeCollections.size(); i++) {
+                            PipeCollections pipeCollections1 = pipeCollections.get(i);
+                            oneList.add(i, pipeCollections1.getName());
+                            List<PipeInfo> pipeInfos = pipeCollections1.getPipeCollects();
+                            LinkedList<String> twoList = new LinkedList<>();
+                            if (pipeInfos != null && pipeInfos.size() > 0) {
+                                for (int j = 0; j < pipeInfos.size(); j++) {
+                                    twoList.add(pipeInfos.get(j).Name);
+                                }
+                            }
+                            sparseArray.put(i, twoList);
+                        }
+
+                        initMenu(oneList, sparseArray);
+                    } else {
+                        ToastUtil.showToast("获取管线集合失败");
+                    }
+                }
+            });
+        }
+
+        if (!pipeCollectionsViewModel.getmObservableNum().hasObservers()) {
+            pipeCollectionsViewModel.getmObservableNum().observe(this, integer -> {
+                if (this.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                    if (null != integer && integer > 0) {
+                        ReqAllPc reqAllPc = new ReqAllPc();
+                        reqAllPc.setStartIndex(String.valueOf(0));
+                        reqAllPc.setNumberOfRecords(String.valueOf(integer));
+                        reqAllPc.setPipeCollectionId("0");
+
+                        pipeCollectionsViewModel.reqAllPc(reqAllPc);
+                    } else {
+                        ToastUtil.showToast("未找到管线集合");
+                    }
+                }
+            });
+        }
+
+        if (null == pipeCollectionsList || pipeCollectionsList.size() <= 0) {
+            pipeCollectionsViewModel.reqPcNum();
+        }
+
         if (!pipeViewModel.getmObservablePipeNum().hasObservers()) {
             pipeViewModel.getmObservablePipeNum().observe(this, integer -> {
                 if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
@@ -488,11 +611,17 @@ public class MapFragment extends BaseFragment {
                         curPipeTracks.putAll(pipeTrackInfos);
                         curPipeLines = toData(curPipeTracks);
                         if (curPipeLines.size() > 0) {
-                            for(int i = 0; i < curPipeLines.size(); i++) {
+                            for (int i = 0; i < curPipeLines.size(); i++) {
                                 PipeLine pipeLine = curPipeLines.get(i);
                                 pipeLine.polyline = addStationLine(pipeLine.lineStation);
-
                                 addSiteMarker(pipeLine, false);
+                                //如果curPipeid 不为空，只显示这条管线
+                                if (!TextUtils.isEmpty(curPipeId)) {
+                                    LogUtil.d(TAG, "curPipeId = " + curPipeId);
+                                    if (!pipeLine.pipeId.equals(curPipeId)) {
+                                        pipeLine.show(false);
+                                    }
+                                }
 
                             }
                         }
@@ -520,10 +649,10 @@ public class MapFragment extends BaseFragment {
      * 初始化导航
      */
     private void initNavi() {
-        mAMapNavi = AMapNavi.getInstance(getActivity());
+        mAMapNavi = AMapNavi.getInstance(getActivity().getApplicationContext());
         mAMapNavi.setUseInnerVoice(true);
         mAMapNavi.addAMapNaviListener(aMapNaviListener);
-
+        LogUtil.d(TAG, "initNavi");
     }
 
     /**
@@ -542,7 +671,7 @@ public class MapFragment extends BaseFragment {
         // viewOptions.setLayoutVisible(false);  //设置导航界面UI是否显示
         //viewOptions.setNaviViewTopic(mThemeStle);//设置导航界面的主题
         //viewOptions.setZoom(16);
-        viewOptions.setTilt(0);  //2D显示
+//        viewOptions.setTilt(0);  //2D显示
         mAMapNaviView.setViewOptions(viewOptions);
     }
 
@@ -587,7 +716,7 @@ public class MapFragment extends BaseFragment {
                     aMapNaviListener.onInitNaviSuccess();
                 } else {
                     //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
-                    LogUtil.e("AmapError","location Error, ErrCode:" + aMapLocation.getErrorCode() +
+                    LogUtil.e("AmapError", "location Error, ErrCode:" + aMapLocation.getErrorCode() +
                             ", errInfo:" + aMapLocation.getErrorInfo());
                     ToastUtil.showToast("定位失败，请重新导航");
                 }
@@ -662,6 +791,8 @@ public class MapFragment extends BaseFragment {
 
         @Override
         public void onInitNaviSuccess() {
+            LogUtil.e(TAG, "导航创建成功");
+
             /**
              * 方法: int strategy=mAMapNavi.strategyConvert(congestion,
              * avoidhightspeed, cost, hightspeed, multipleroute); 参数:
@@ -682,12 +813,12 @@ public class MapFragment extends BaseFragment {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            if(naviWay == WAY_WALK) {
+            if (naviWay == WAY_WALK) {
                 mAMapNavi.calculateWalkRoute(startList.get(0), endList.get(0)); // 步行导航
-            } else if(naviWay == WAY_RIDE) {
+            } else if (naviWay == WAY_RIDE) {
                 mAMapNavi.calculateRideRoute(startList.get(0), endList.get(0));// 骑车导航
-            } else if(naviWay == WAY_DRIVE) {
-                mAMapNavi.calculateDriveRoute(startList, endList, new ArrayList<>(), strategy);// 驾车导航
+            } else if (naviWay == WAY_DRIVE) {
+                mAMapNavi.calculateDriveRoute(startList, endList, null, strategy);// 驾车导航
             }
         }
 
@@ -698,7 +829,7 @@ public class MapFragment extends BaseFragment {
          */
         @Override
         public void onStartNavi(int i) {
-            LogUtil.d(TAG, "启动导航后回调函数=" + i );
+            LogUtil.d(TAG, "启动导航后回调函数=" + i);
         }
 
         @Override
@@ -708,7 +839,8 @@ public class MapFragment extends BaseFragment {
 
         @Override
         public void onLocationChange(AMapNaviLocation aMapNaviLocation) {
-
+            LogUtil.d(TAG, "accuracy = " + aMapNaviLocation.getAccuracy() + " beering = " + aMapNaviLocation
+                    .getBearing());
         }
 
         @Override
@@ -734,7 +866,7 @@ public class MapFragment extends BaseFragment {
         @Override
         public void onCalculateRouteFailure(int i) {
             ToastUtil.showToast("路径规划失败=" + i + ",失败原因查看官方错误码对照表");
-            LogUtil.e(TAG, "路径规划失败=" + i );
+            LogUtil.e(TAG, "路径规划失败=" + i);
         }
 
         @Override
@@ -754,12 +886,15 @@ public class MapFragment extends BaseFragment {
 
         @Override
         public void onGpsOpenStatus(boolean b) {
-
+            if (!b) {
+                ToastUtil.showToast("请打开GPS开关");
+            }
         }
 
         @Override
         public void onNaviInfoUpdate(NaviInfo naviInfo) {
-
+            LogUtil.d(TAG, "Navi latitude = " + naviInfo.m_Latitude + " longitude = " + naviInfo.m_Longitude);
+            ToastUtil.showToast("latitude = " + naviInfo.m_Latitude + " longitude = " + naviInfo.m_Longitude);
         }
 
         @Override

@@ -132,7 +132,7 @@ public class ExpandTabView extends LinearLayout implements OnDismissListener {
 //					selectedButton = tButton;
 //					selectPosition = (Integer) selectedButton.getTag();
 //					/** 按钮被点击后,需要触发对应的监听事件.*/
-//					startAnimation();
+//					initPopupWindow();
 //					if (mOnButtonClickListener != null && tButton.isChecked()) {
 //						mOnButtonClickListener.onClick(selectPosition);
 //					}
@@ -141,22 +141,33 @@ public class ExpandTabView extends LinearLayout implements OnDismissListener {
         }
     }
 
-    //开启动画效果
-    public void startAnimation() {
-
-        if (popupWindow == null) {
-            popupWindow = new PopupWindow(mViewList.get(selectPosition), displayWidth, displayHeight);
-            popupWindow.setAnimationStyle(R.style.Animation_top_left);
-            popupWindow.setFocusable(false);
-            popupWindow.setOutsideTouchable(true);
+    public void show() {
+        if (popupWindow != null) {
+            if (!popupWindow.isShowing()) {
+                showPopup(selectPosition);
+            } else {
+                popupWindow.dismiss();
+            }
         }
+    }
 
-        if (!popupWindow.isShowing()) {
-            showPopup(selectPosition);
-        } else {
-            popupWindow.setOnDismissListener(this);
+    public void close() {
+        if (popupWindow != null && popupWindow.isShowing()) {
             popupWindow.dismiss();
         }
+    }
+
+    //开启动画效果
+    public void initPopupWindow() {
+
+        if (popupWindow == null) {
+            popupWindow = new PopupWindow(mViewList.get(selectPosition), displayWidth, (int) (displayHeight * 0.5));
+            popupWindow.setAnimationStyle(R.style.Animation_top_left);
+            popupWindow.setFocusable(false);
+//            popupWindow.setOutsideTouchable(true);
+            popupWindow.setOnDismissListener(this);
+        }
+
         //当popWindow 没有显示..并且按钮被点击时需要显示popup窗口
 //        if (selectedButton.isChecked()) {
 //            if (!popupWindow.isShowing()) {
@@ -211,8 +222,8 @@ public class ExpandTabView extends LinearLayout implements OnDismissListener {
 
     @Override
     public void onDismiss() {
-        showPopup(selectPosition);
-        popupWindow.setOnDismissListener(null);
+//        showPopup(selectPosition);
+//        popupWindow.setOnDismissListener(null);
     }
 
 //    private OnButtonClickListener mOnButtonClickListener;

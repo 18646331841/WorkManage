@@ -113,7 +113,9 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
                 floatMenu.setOnItemClickListener((v, position1) -> {
                     switch (position1) {
                         case 0:
+                            curAlarmInfo = alarmInfo;
                             EventBusMessage mapMessage = new EventBusMessage(MapFragment.TAG);
+                            mapMessage.setArg1(String.valueOf(curAlarmInfo.getPipeId()));
                             EventBus.getDefault().post(mapMessage);
                             break;
                         case 1:
