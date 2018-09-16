@@ -18,75 +18,83 @@
             android:id="@+id/toolbar"
             layout="@layout/layout_toolbar"
             app:toolbar="@{fragment.observableToolbar}" />
-
-
-        <RadioGroup
-            android:id="@+id/wave_form_radioGroup"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_10"
-            android:layout_marginRight="@dimen/dp_10"
-            android:layout_marginTop="@dimen/dp_15"
-            android:orientation="horizontal"
-            android:weightSum="3"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <RadioButton
-                android:id="@+id/infrasound_wave"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dp_8"
-                android:layout_weight="1"
-                android:background="@drawable/radio_button_style"
-                android:button="@null"
-                android:gravity="center"
-                android:text="@string/infrasound_wave"
-                android:textColor="@drawable/font_white_black_selector"
-                android:textSize="@dimen/sp_16" />
+                android:layout_height="wrap_content">
 
-            <RadioButton
-                android:id="@+id/pressure"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dp_8"
-                android:layout_weight="1"
-                android:background="@drawable/radio_button_style"
-                android:button="@null"
-                android:checked="true"
-                android:gravity="center"
-                android:text="@string/pressure"
-                android:textColor="@drawable/font_white_black_selector"
-                android:textSize="@dimen/sp_16" />
+                <RadioGroup
+                    android:id="@+id/wave_form_radioGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_marginRight="@dimen/dp_10"
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:orientation="horizontal"
+                    android:weightSum="3"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-            <RadioButton
-                android:id="@+id/flow"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dp_8"
-                android:layout_weight="1"
-                android:background="@drawable/radio_button_style"
-                android:button="@null"
-                android:gravity="center"
-                android:text="@string/flow"
-                android:textColor="@drawable/font_white_black_selector"
-                android:textSize="@dimen/sp_16" />
-        </RadioGroup>
+                    <RadioButton
+                        android:id="@+id/infrasound_wave"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/dp_8"
+                        android:layout_weight="1"
+                        android:background="@drawable/radio_button_style"
+                        android:button="@null"
+                        android:gravity="center"
+                        android:text="@string/infrasound_wave"
+                        android:textColor="@drawable/font_white_black_selector"
+                        android:textSize="@dimen/sp_16" />
+
+                    <RadioButton
+                        android:id="@+id/pressure"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/dp_8"
+                        android:layout_weight="1"
+                        android:background="@drawable/radio_button_style"
+                        android:button="@null"
+                        android:checked="true"
+                        android:gravity="center"
+                        android:text="@string/pressure"
+                        android:textColor="@drawable/font_white_black_selector"
+                        android:textSize="@dimen/sp_16" />
+
+                    <RadioButton
+                        android:id="@+id/flow"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/dp_8"
+                        android:layout_weight="1"
+                        android:background="@drawable/radio_button_style"
+                        android:button="@null"
+                        android:gravity="center"
+                        android:text="@string/flow"
+                        android:textColor="@drawable/font_white_black_selector"
+                        android:textSize="@dimen/sp_16" />
+                </RadioGroup>
 
 
-        <TextView
-            android:id="@+id/wave_form_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_10"
-            android:gravity="center"
-            android:textSize="@dimen/sp_14" />
+                <TextView
+                    android:id="@+id/wave_form_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:gravity="center"
+                    android:textSize="@dimen/sp_14" />
 
 
-        <lecho.lib.hellocharts.view.LineChartView
-            android:id="@+id/chart"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:layout_margin="30dp" />
+                <lecho.lib.hellocharts.view.LineChartView
+                    android:id="@+id/chart"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_margin="30dp" />
+            </LinearLayout>
+        </ScrollView>
     </LinearLayout>
 </layout>

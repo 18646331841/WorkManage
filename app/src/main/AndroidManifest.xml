@@ -37,17 +37,19 @@
 
         <activity
             android:name=".view.MainActivity"
+            android:configChanges="screenSize|keyboardHidden|orientation"
             android:launchMode="singleTop"
-            android:windowSoftInputMode="adjustPan|stateHidden"
-            android:configChanges="screenSize|keyboardHidden|orientation">
+            android:windowSoftInputMode="adjustPan|stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.SecondActivity"
-                  android:windowSoftInputMode="adjustPan|stateHidden">
+        <activity
+            android:name=".view.SecondActivity"
+            android:configChanges="screenSize|keyboardHidden|orientation"
+            android:windowSoftInputMode="adjustPan|stateHidden">
 
         </activity>
 
@@ -55,14 +57,13 @@
 
         <activity
             android:name=".view.LoginActivity"
+            android:configChanges="screenSize|keyboardHidden|orientation"
             android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustPan|stateHidden"
-            android:configChanges="screenSize|keyboardHidden|orientation">
-        </activity>
+            android:windowSoftInputMode="adjustPan|stateHidden"></activity>
 
         <activity
-            android:configChanges="orientation|screenSize"
-            android:name="me.nereo.multi_image_selector.MultiImageSelectorActivity" />
+            android:name="me.nereo.multi_image_selector.MultiImageSelectorActivity"
+            android:configChanges="orientation|screenSize" />
     </application>
 
 </manifest>
