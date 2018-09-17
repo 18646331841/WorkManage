@@ -41,7 +41,7 @@
 
                     <ImageView
                         android:id="@+id/img_info"
-                        android:src="@drawable/ic_site"
+                        android:src="@drawable/icon_me"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:layout_constraintBottom_toBottomOf="@id/item_info"
@@ -78,7 +78,7 @@
 
                     <ImageView
                         android:id="@+id/img_finger"
-                        android:src="@drawable/ic_digitizing"
+                        android:src="@drawable/icon_fingerprint"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:layout_constraintBottom_toBottomOf="@id/item_finger"
@@ -127,7 +127,7 @@
                     android:layout_marginRight="15dp">
 
                     <ImageView
-                        android:src="@drawable/ic_line"
+                        android:src="@drawable/icon_voice"
                         android:id="@+id/img_sound"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -165,7 +165,7 @@
                     android:layout_marginRight="15dp">
 
                     <ImageView
-                        android:src="@drawable/ic_line_collection"
+                        android:src="@drawable/icon_notify"
                         android:id="@+id/img_event_type"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -206,7 +206,7 @@
                     android:layout_marginRight="15dp">
 
                     <ImageView
-                        android:src="@drawable/ic_contacts"
+                        android:src="@drawable/icon_authorization"
                         android:id="@+id/img_authorization_manage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -262,7 +262,7 @@
                     android:layout_marginRight="15dp">
 
                     <ImageView
-                        android:src="@drawable/ic_statistics"
+                        android:src="@drawable/icon_disturb"
                         android:id="@+id/img_not_disturb"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -311,7 +311,7 @@
                     android:layout_marginRight="15dp">
 
                     <ImageView
-                        android:src="@drawable/ic_disk"
+                        android:src="@drawable/icon_clean"
                         android:id="@+id/img_clear_cache"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -404,7 +404,7 @@
                     android:layout_marginRight="15dp">
 
                     <ImageView
-                        android:src="@drawable/ic_blind_area"
+                        android:src="@drawable/icon_about"
                         android:id="@+id/img_about"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

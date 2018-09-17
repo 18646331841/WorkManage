@@ -10,40 +10,36 @@ import android.view.ViewGroup;
 
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.base.BaseFragment;
-import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
-import com.barisetech.www.workmanage.databinding.FragmentMyInfoBinding;
+import com.barisetech.www.workmanage.databinding.FragmentPassWordBinding;
 
-import org.greenrobot.eventbus.EventBus;
-
-public class MyInfoFragment extends BaseFragment{
+public class PassWordFragment extends BaseFragment {
 
 
-    public static final String TAG = "MyInfoFragment";
-    FragmentMyInfoBinding mBinding;
+    public static final String TAG ="PassWordFragment";
+    FragmentPassWordBinding mBinding;
 
-    public static MyInfoFragment newInstance() {
-        MyInfoFragment fragment = new MyInfoFragment();
+    public static PassWordFragment newInstance() {
+        PassWordFragment fragment = new PassWordFragment();
         return fragment;
     }
+
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_my_info, container, false);
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_pass_word, container, false);
         setToolBarHeight(mBinding.toolbar.getRoot());
         mBinding.setFragment(this);
         ToolbarInfo toolbarInfo = new ToolbarInfo();
-        toolbarInfo.setTitle(getString(R.string.personal_info));
+        toolbarInfo.setTitle(getString(R.string.change_pwd));
         observableToolbar.set(toolbarInfo);
         initView();
         return mBinding.getRoot();
     }
 
     private void initView() {
-        mBinding.itemPwd.setOnClickListener(v -> {
-            EventBus.getDefault().post(new EventBusMessage(PassWordFragment.TAG));
-        });
     }
 
     @Override

@@ -35,6 +35,7 @@ import com.barisetech.www.workmanage.view.fragment.IncidentListFragment;
 import com.barisetech.www.workmanage.view.fragment.MapFragment;
 import com.barisetech.www.workmanage.view.fragment.Messagefragment;
 import com.barisetech.www.workmanage.view.fragment.ModifySiteFragment;
+import com.barisetech.www.workmanage.view.fragment.MyInfoFragment;
 import com.barisetech.www.workmanage.view.fragment.NavigationFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsAddFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsDetailsFragment;
@@ -42,6 +43,7 @@ import com.barisetech.www.workmanage.view.fragment.NewsListFragment;
 import com.barisetech.www.workmanage.view.fragment.NullFragment;
 import com.barisetech.www.workmanage.view.fragment.PadMapFragment;
 import com.barisetech.www.workmanage.view.fragment.PadMapListFragment;
+import com.barisetech.www.workmanage.view.fragment.PassWordFragment;
 import com.barisetech.www.workmanage.view.fragment.PipeAddFragment;
 import com.barisetech.www.workmanage.view.fragment.PipeCollectionAddFragment;
 import com.barisetech.www.workmanage.view.fragment.PipeCollectionDetailFragment;
@@ -407,6 +409,16 @@ public class MainActivity extends BaseActivity {
                     if (!isActivity) {
                         transaction.addToBackStack(tag);
                     }
+                    break;
+
+                case MyInfoFragment.TAG:
+                    transaction
+                            .replace(R.id.second_framelayout, MyInfoFragment.newInstance(), tag).commit();
+                    break;
+
+                case PassWordFragment.TAG:
+                    transaction
+                            .replace(R.id.second_framelayout, PassWordFragment.newInstance(), tag).commit();
                     break;
             }
         }

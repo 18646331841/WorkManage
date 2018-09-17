@@ -46,6 +46,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="15dp"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="@id/item_account"
                 app:layout_constraintRight_toRightOf="@id/item_account"
                 app:layout_constraintTop_toTopOf="@id/item_account" />
@@ -93,7 +94,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="15dp"
                 android:textSize="18sp"
-                android:textColor="@color/text_black"
                 app:layout_constraintBottom_toBottomOf="@id/item_email"
                 app:layout_constraintRight_toLeftOf="@id/v_email"
                 app:layout_constraintTop_toTopOf="@id/item_email" />
@@ -139,6 +139,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="15dp"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="@id/item_phone"
                 app:layout_constraintRight_toLeftOf="@id/v_phone"
                 app:layout_constraintTop_toTopOf="@id/item_phone" />
@@ -185,6 +186,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="15dp"
                 android:text="@string/change_pwd"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="@id/item_pwd"
                 app:layout_constraintRight_toLeftOf="@id/v_pwd"
                 app:layout_constraintTop_toTopOf="@id/item_pwd" />

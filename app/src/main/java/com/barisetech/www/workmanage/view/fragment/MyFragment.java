@@ -65,13 +65,13 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
 
         switch (view.getId()) {
             case R.id.item_info:
-//                EventBus.getDefault().post(new EventBusMessage(SiteFragment.TAG));
+                EventBus.getDefault().post(new EventBusMessage(MyInfoFragment.TAG));
                 break;
             case R.id.item_finger:
 //                EventBus.getDefault().post(new EventBusMessage(DigitizingFragment.TAG));
                 break;
             case R.id.item_sound:
-//                EventBus.getDefault().post(new EventBusMessage(PipeFragment.TAG));
+                EventBus.getDefault().post(new EventBusMessage(SoundFragment.TAG));
                 break;
             case R.id.item_event_type:
 //                EventBus.getDefault().post(new EventBusMessage(PipeCollectionFragment.TAG));
