@@ -106,6 +106,7 @@ public class LoginModel {
                             //登录成功，保存用户account到SP中
                             SharedPreferencesUtil.getInstance().setString(BaseConstant.SP_ACCOUNT, name);
                             SharedPreferencesUtil.getInstance().setString(BaseConstant.SP_ROLE, tokenInfo.getRole().trim());
+                            SharedPreferencesUtil.getInstance().setString(BaseConstant.SP_COMPANY, tokenInfo.getCompany().trim());
                         } else {
                             modelCallBack.fail(Config.ERROR_LOGIN_FAILED);
                             LogUtil.d(TAG, "网络获取token失败---" + tokenInfo.toString());

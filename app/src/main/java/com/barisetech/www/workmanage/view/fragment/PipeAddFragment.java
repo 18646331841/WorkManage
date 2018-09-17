@@ -7,6 +7,7 @@ import android.databinding.ObservableField;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,8 @@ import com.barisetech.www.workmanage.bean.pipe.PipeInfo;
 import com.barisetech.www.workmanage.bean.pipe.ReqAddPipe;
 import com.barisetech.www.workmanage.bean.pipe.ReqPipeInfo;
 import com.barisetech.www.workmanage.bean.pipecollections.PipeCollections;
+import com.barisetech.www.workmanage.bean.plugin.PluginInfo;
+import com.barisetech.www.workmanage.bean.plugin.ReqAllPlugin;
 import com.barisetech.www.workmanage.bean.site.ReqSiteBean;
 import com.barisetech.www.workmanage.bean.site.ReqSiteInfos;
 import com.barisetech.www.workmanage.bean.site.SiteBean;
@@ -32,6 +35,7 @@ import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.view.dialog.CommonDialogFragment;
 import com.barisetech.www.workmanage.view.dialog.DialogFragmentHelper;
 import com.barisetech.www.workmanage.viewmodel.PipeViewModel;
+import com.barisetech.www.workmanage.viewmodel.PluginViewModel;
 import com.barisetech.www.workmanage.viewmodel.SiteViewModel;
 
 import org.greenrobot.eventbus.EventBus;
@@ -53,6 +57,10 @@ public class PipeAddFragment extends BaseFragment {
     private List<SiteBean> siteList = new ArrayList<>();
     private List<String> siteName = new ArrayList<>();
     private SiteViewModel siteViewModel;
+
+    private PluginViewModel pluginViewModel;
+    private List<PluginInfo> pluginInfoList = new ArrayList<>();
+    private List<String> pluginName = new ArrayList<>();
 
     public static PipeAddFragment newInstance() {
         PipeAddFragment fragment = new PipeAddFragment();
@@ -189,12 +197,23 @@ public class PipeAddFragment extends BaseFragment {
             reqPipeInfo.LeakCheckGap = minTime;
             List<ReqSiteBean> reqSiteBeans = new ArrayList<>();
             for (SiteBean bean:siteList){
-                if (bean.Name.equals(mBinding.spSelectSite.getText().toString())){
+                if (bean.Name.equals(mBinding.spSelectStartSite.getText().toString())){
                     reqPipeInfo.StartSiteId = String.valueOf(bean.SiteId);
                     ReqSiteBean reqSiteBean = new ReqSiteBean();
                     reqSiteBean.toSiteBean(bean);
                     reqSiteBeans.add(reqSiteBean);
-                    reqPipeInfo.Sites = reqSiteBeans;
+                } else if (bean.Name.equals(mBinding.spSelectEndSite.getText().toString())) {
+                    ReqSiteBean reqSiteBean = new ReqSiteBean();
+                    reqSiteBean.toSiteBean(bean);
+                    reqSiteBeans.add(reqSiteBean);
+                }
+            }
+            reqPipeInfo.Sites = reqSiteBeans;
+
+            for (PluginInfo pluginInfo : pluginInfoList) {
+                if (pluginInfo.getName().equals(mBinding.spSelectPlugin.getText().toString())) {
+                    reqPipeInfo.LlPluginId = pluginInfo.getId();
+                    reqPipeInfo.LlPluginName = pluginInfo.getName();
                     break;
                 }
             }
@@ -232,7 +251,7 @@ public class PipeAddFragment extends BaseFragment {
     public void bindViewModel() {
         pipeViewModel = ViewModelProviders.of(this).get(PipeViewModel.class);
         siteViewModel = ViewModelProviders.of(this).get(SiteViewModel.class);
-
+        pluginViewModel = ViewModelProviders.of(this).get(PluginViewModel.class);
     }
 
     @Override
@@ -262,7 +281,8 @@ public class PipeAddFragment extends BaseFragment {
                         for (SiteBean siteBean:siteList){
                             siteName.add(siteBean.Name);
                         }
-                        mBinding.spSelectSite.attachDataSource(siteName);
+                        mBinding.spSelectStartSite.attachDataSource(siteName);
+                        mBinding.spSelectEndSite.attachDataSource(siteName);
                     }
                 }
             });
@@ -278,6 +298,29 @@ public class PipeAddFragment extends BaseFragment {
 
         if (null == siteList || siteList.size() <= 0) {
             siteViewModel.reqSiteNum();
+        }
+
+        if (!pluginViewModel.getmObservableAllPlugin().hasObservers()) {
+            pluginViewModel.getmObservableAllPlugin().observe(this, pluginInfos -> {
+                if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                    if (null != pluginInfos) {
+                        if (pluginInfos.size() > 0) {
+                            pluginInfoList.addAll(pluginInfos);
+                            for (int i = 0; i < pluginInfos.size(); i++) {
+                                PluginInfo pluginInfo = pluginInfos.get(i);
+                                pluginName.add(pluginInfo.getName());
+                            }
+                            mBinding.spSelectPlugin.attachDataSource(pluginName);
+                        }
+                    }
+                }
+            });
+        }
+
+        if (null == pluginInfoList || pluginInfoList.size() <= 0) {
+            ReqAllPlugin reqAllPlugin = new ReqAllPlugin();
+            reqAllPlugin.setDataSource("pipe");
+            pluginViewModel.reqAllPipe(reqAllPlugin);
         }
     }
 

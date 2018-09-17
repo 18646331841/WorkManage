@@ -49,6 +49,8 @@ public class BaseConstant {
     public static final String SP_ACCOUNT = "account";
     //登录用户权限
     public static final String SP_ROLE = "role";
+    //账户所属公司
+    public static final String SP_COMPANY = "company";
     //用户token
     public static final String SP_TOKEN = "token";
     //Ip port, value = ip_port

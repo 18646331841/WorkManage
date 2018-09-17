@@ -103,14 +103,38 @@
                     order:ddd_is_bottom_line="true"
                     order:ddd_is_indicate="true"
                     order:ddd_label="@string/double_filter"/>
-                <com.barisetech.www.workmanage.widget.FormView
-                    android:id="@+id/site_leak_plugin"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    order:ddd_content_hint=""
-                    order:ddd_is_bottom_line="true"
-                    order:ddd_is_indicate="true"
-                    order:ddd_label="@string/leak_plugin"/>
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/dp_28">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_45"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="@dimen/dp_24"
+                            android:gravity="center_vertical"
+                            android:text="@string/pipe_detail_plugin_name"
+                            android:textColor="#262626"
+                            android:textSize="@dimen/dp_16" />
+
+                        <org.angmarch.views.NiceSpinner
+                            android:id="@+id/sp_select_plugin"
+                            android:layout_alignParentRight="true"
+                            android:layout_width="@dimen/dp_200"
+                            android:layout_height="wrap_content"
+                            app:dropDownListPaddingBottom="1dp"/>
+
+                    </RelativeLayout>
+
+                </LinearLayout>
 
                 <Button
                     android:id="@+id/sumbit_modify"

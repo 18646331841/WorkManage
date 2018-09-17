@@ -87,7 +87,7 @@ public class SiteFragment extends BaseFragment implements View.OnClickListener{
         mBinding.setFragment(this);
         ToolbarInfo toolbarInfo = new ToolbarInfo();
         toolbarInfo.setTitle(getString(R.string.tv_site));
-        toolbarInfo.setTwoText(getString(R.string.message_mission));
+        toolbarInfo.setOneText(getString(R.string.add_site));
         observableToolbar.set(toolbarInfo);
         if (!EventBus.getDefault().isRegistered(this)){
             EventBus.getDefault().register(this);
@@ -97,7 +97,7 @@ public class SiteFragment extends BaseFragment implements View.OnClickListener{
     }
 
     private void initView() {
-        mBinding.toolbar.tvTwo.setOnClickListener(view -> {
+        mBinding.toolbar.tvOne.setOnClickListener(view -> {
             EventBus.getDefault().post(new EventBusMessage(AddSiteFragment.TAG));
         });
         mBinding.selectAll.setOnClickListener(this);

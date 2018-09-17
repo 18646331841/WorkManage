@@ -1,10 +1,12 @@
 package com.barisetech.www.workmanage.view.fragment;
 
+import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +15,15 @@ import android.widget.RadioGroup;
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
+import com.barisetech.www.workmanage.bean.plugin.PluginInfo;
+import com.barisetech.www.workmanage.bean.plugin.ReqAllPlugin;
 import com.barisetech.www.workmanage.bean.site.ReqAddSite;
 import com.barisetech.www.workmanage.bean.site.SiteBean;
 import com.barisetech.www.workmanage.databinding.FragmentAddSiteBinding;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.view.dialog.CommonDialogFragment;
 import com.barisetech.www.workmanage.view.dialog.DialogFragmentHelper;
+import com.barisetech.www.workmanage.viewmodel.PluginViewModel;
 import com.barisetech.www.workmanage.viewmodel.SiteViewModel;
 
 import java.util.ArrayList;
@@ -32,7 +37,9 @@ public class AddSiteFragment extends BaseFragment{
     private CommonDialogFragment commonDialogFragment;
     private  SiteBean siteBean = new SiteBean();
 
-
+    private PluginViewModel pluginViewModel;
+    private List<PluginInfo> pluginInfoList = new ArrayList<>();
+    private List<String> pluginName = new ArrayList<>();
 
     public static AddSiteFragment newInstance() {
         AddSiteFragment fragment = new AddSiteFragment();
@@ -65,12 +72,16 @@ public class AddSiteFragment extends BaseFragment{
                 siteBean.IsOnLine = (mBinding.siteLineWhether.getText().equals("是")?true:false);
                 siteBean.IsDualSensor = (mBinding.siteDoubleSensor.getText().equals("是")?true:false);
                 siteBean.IsDirFilterEnabled = (mBinding.siteDoubleFilter.getText().equals("是")?true:false);
-                siteBean.LdPluginName = mBinding.siteLeakPlugin.getText().toString();
                 siteBean.Name = mBinding.siteName.getText().toString();
                 //TODO：设置参数
                 siteBean.SensorCode1 = null;
                 siteBean.SensorCode2 = null;
-                siteBean.LdPluginId="c0f607c5-fe14-4655-a125-c8fcb5dc1f4c";
+                for (PluginInfo pluginInfo : pluginInfoList) {
+                    if (pluginInfo.getName().equals(mBinding.spSelectPlugin.getText().toString())) {
+                        siteBean.LdPluginId = pluginInfo.getId();
+                        siteBean.LdPluginName = pluginInfo.getName();
+                    }
+                }
                 ReqAddSite reqAddSite = new ReqAddSite();
                 reqAddSite.setOperation("1");
                 List<SiteBean> list = new ArrayList<>();
@@ -135,7 +146,7 @@ public class AddSiteFragment extends BaseFragment{
     @Override
     public void bindViewModel() {
         siteViewModel = ViewModelProviders.of(this).get(SiteViewModel.class);
-
+        pluginViewModel = ViewModelProviders.of(this).get(PluginViewModel.class);
     }
 
     @Override
@@ -151,6 +162,29 @@ public class AddSiteFragment extends BaseFragment{
             }
         });
 
+        if (!pluginViewModel.getmObservableAllPlugin().hasObservers()) {
+            pluginViewModel.getmObservableAllPlugin().observe(this, pluginInfos -> {
+                if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                    if (null != pluginInfos) {
+                        if (pluginInfos.size() > 0) {
+                            pluginInfoList.addAll(pluginInfos);
+                            for (int i = 0; i < pluginInfos.size(); i++) {
+                                PluginInfo pluginInfo = pluginInfos.get(i);
+                                pluginName.add(pluginInfo.getName());
+                            }
+
+                            mBinding.spSelectPlugin.attachDataSource(pluginName);
+                        }
+                    }
+                }
+            });
+        }
+
+        if (null == pluginInfoList || pluginInfoList.size() <= 0) {
+            ReqAllPlugin reqAllPlugin = new ReqAllPlugin();
+            reqAllPlugin.setDataSource("site");
+            pluginViewModel.reqAllPipe(reqAllPlugin);
+        }
     }
 
     private void showDialog(String title, boolean defaultV, RadioGroup.OnCheckedChangeListener

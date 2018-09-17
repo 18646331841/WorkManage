@@ -51,7 +51,7 @@ public class SiteDetailFragment extends BaseFragment {
         mBinding.setFragment(this);
         ToolbarInfo toolbarInfo = new ToolbarInfo();
         toolbarInfo.setTitle(getString(R.string.site_detail));
-        toolbarInfo.setTwoText(getString(R.string.modify_site));
+        toolbarInfo.setOneText(getString(R.string.modify_site));
 
         observableToolbar.set(toolbarInfo);
         initView();
@@ -70,7 +70,7 @@ public class SiteDetailFragment extends BaseFragment {
         mBinding.tvDoubleSnesor.setText(siteBean.IsDualSensor?"是":"否");
         mBinding.tvDoubleFilter.setText(siteBean.IsDirFilterEnabled?"是":"否");
         mBinding.tvLeakPlugin.setText(siteBean.LdPluginName);
-        mBinding.toolbar.tvTwo.setOnClickListener(view -> {
+        mBinding.toolbar.tvOne.setOnClickListener(view -> {
             EventBusMessage eventBusMessage = new EventBusMessage(ModifySiteFragment.TAG);
             eventBusMessage.setArg1(siteBean);
             EventBus.getDefault().post(eventBusMessage);

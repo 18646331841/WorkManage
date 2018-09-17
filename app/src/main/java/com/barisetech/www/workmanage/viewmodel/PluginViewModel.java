@@ -33,7 +33,6 @@ public class PluginViewModel extends BaseViewModel implements ModelCallBack {
     private PluginModel pluginModel;
     private MutableLiveData<List<PluginInfo>> mObservableAllPlugin;
 
-
     public PluginViewModel(@NonNull Application application) {
         super(application);
         mDelivery = new Handler(Looper.getMainLooper());
@@ -52,7 +51,6 @@ public class PluginViewModel extends BaseViewModel implements ModelCallBack {
 
     @Override
     public void netResult(Object object) {
-
         EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_CLOSE));
         if (object instanceof TypeResponse) {
             TypeResponse typeResponse = (TypeResponse) object;

@@ -121,13 +121,36 @@
                             android:gravity="center_vertical"
                             android:text="@string/pipe_detail_start_site"
                             android:textColor="#262626"
-                            android:textSize="@dimen/dp_16" />
+                            android:textSize="@dimen/dp_16"/>
 
                         <org.angmarch.views.NiceSpinner
-                            android:id="@+id/sp_select_site"
-                            android:layout_alignParentRight="true"
+                            android:id="@+id/sp_select_start_site"
                             android:layout_width="180dp"
                             android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            app:dropDownListPaddingBottom="@dimen/dp_50"/>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_45"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="@dimen/dp_24"
+                            android:gravity="center_vertical"
+                            android:text="@string/pipe_detail_end_site"
+                            android:textColor="#262626"
+                            android:textSize="@dimen/dp_16"/>
+
+                        <org.angmarch.views.NiceSpinner
+                            android:id="@+id/sp_select_end_site"
+                            android:layout_width="@dimen/dp_180"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
                             app:dropDownListPaddingBottom="@dimen/dp_50"/>
 
                     </RelativeLayout>
@@ -190,21 +213,45 @@
                     order:ddd_is_indicate="true"
                     order:ddd_label="@string/pipe_detail_leak_age"/>
 
-                <com.barisetech.www.workmanage.widget.FormView
-                    android:id="@+id/pipe_plugin"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    order:ddd_content="default"
-                    order:ddd_content_enable="false"
-                    order:ddd_is_bottom_line="false"
-                    order:ddd_is_indicate="false"
-                    order:ddd_label="@string/pipe_detail_plugin_name"/>
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/dp_28">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_45"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="@dimen/dp_24"
+                            android:gravity="center_vertical"
+                            android:text="@string/pipe_detail_plugin_name"
+                            android:textColor="#262626"
+                            android:textSize="@dimen/dp_16"/>
+
+                        <org.angmarch.views.NiceSpinner
+                            android:id="@+id/sp_select_plugin"
+                            android:layout_width="@dimen/dp_200"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            app:dropDownListPaddingBottom="@dimen/dp_1"/>
+
+                    </RelativeLayout>
+
+                </LinearLayout>
 
                 <Button
                     android:id="@+id/modify_pipe"
                     android:layout_width="@dimen/dp_315"
                     android:layout_height="@dimen/dp_50"
                     android:layout_gravity="center"
+                    android:layout_marginBottom="@dimen/dp_40"
                     android:layout_marginTop="@dimen/dp_30"
                     android:background="@drawable/shane_button_corners"
                     android:text="@string/pipe_modify_confirm_add"

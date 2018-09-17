@@ -485,6 +485,7 @@ public class MapFragment extends BaseFragment {
             //首站不为空，增加首站标记
             if (pipeLine.startSite != null) {
                 MarkerStation markerStation = new MarkerStation();
+//                markerStation.position = new MapPosition(pipeLine.startSite.Latitude, pipeLine.startSite.Longitude);
                 markerStation.position = mapPositionList.get(0);
                 markerStation.title = pipeLine.startSite.Name;
                 markerStation.snippet = String.valueOf(pipeLine.startSite.SiteId);
@@ -494,6 +495,7 @@ public class MapFragment extends BaseFragment {
             //末站不为空，增加首站标记
             if (pipeLine.endSite != null) {
                 MarkerStation markerStation = new MarkerStation();
+//                markerStation.position = new MapPosition(pipeLine.endSite.Latitude, pipeLine.endSite.Longitude);
                 markerStation.position = mapPositionList.get(mapPositionList.size() - 1);
                 markerStation.title = pipeLine.endSite.Name;
                 markerStation.snippet = String.valueOf(pipeLine.endSite.SiteId);

@@ -1,10 +1,12 @@
 package com.barisetech.www.workmanage.view.fragment;
 
+import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,8 @@ import android.widget.RadioGroup;
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
+import com.barisetech.www.workmanage.bean.plugin.PluginInfo;
+import com.barisetech.www.workmanage.bean.plugin.ReqAllPlugin;
 import com.barisetech.www.workmanage.bean.site.ReqAddSite;
 import com.barisetech.www.workmanage.bean.site.ReqDelSiteInfo;
 import com.barisetech.www.workmanage.bean.site.SiteBean;
@@ -20,6 +24,7 @@ import com.barisetech.www.workmanage.databinding.FragmentModifySiteBinding;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.view.dialog.CommonDialogFragment;
 import com.barisetech.www.workmanage.view.dialog.DialogFragmentHelper;
+import com.barisetech.www.workmanage.viewmodel.PluginViewModel;
 import com.barisetech.www.workmanage.viewmodel.SiteViewModel;
 
 import java.util.ArrayList;
@@ -36,6 +41,9 @@ public class ModifySiteFragment extends BaseFragment implements View.OnClickList
     private SiteViewModel siteViewModel;
     private CommonDialogFragment commonDialogFragment;
 
+    private PluginViewModel pluginViewModel;
+    private List<PluginInfo> pluginInfoList = new ArrayList<>();
+    private List<String> pluginName = new ArrayList<>();
 
     public static ModifySiteFragment newInstance(SiteBean siteBean) {
         ModifySiteFragment fragment = new ModifySiteFragment();
@@ -49,7 +57,6 @@ public class ModifySiteFragment extends BaseFragment implements View.OnClickList
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (null != getArguments()) {
-            siteBean = new SiteBean();
             siteBean = (SiteBean) getArguments().getSerializable(SITE_ID);
         }
     }
@@ -80,7 +87,6 @@ public class ModifySiteFragment extends BaseFragment implements View.OnClickList
         mBinding.siteLineWhether.setText(siteBean.IsOnLine?"是":"否");
         mBinding.siteDoubleSensor.setText(siteBean.IsDualSensor?"是":"否");
         mBinding.siteDoubleFilter.setText(siteBean.IsDirFilterEnabled?"是":"否");
-        mBinding.siteLeakPlugin.setText(siteBean.LdPluginName);
         mBinding.siteLineWhether.setOnItemClickListener(()->{
             showDialog(getString(R.string.line_whether), Boolean.valueOf(siteBean.IsOnLine), (radioGroup, i) -> {
                 closeDialog();
@@ -134,6 +140,7 @@ public class ModifySiteFragment extends BaseFragment implements View.OnClickList
     @Override
     public void bindViewModel() {
         siteViewModel = ViewModelProviders.of(this).get(SiteViewModel.class);
+        pluginViewModel = ViewModelProviders.of(this).get(PluginViewModel.class);
     }
 
     @Override
@@ -160,6 +167,36 @@ public class ModifySiteFragment extends BaseFragment implements View.OnClickList
            }
        });
 
+        if (!pluginViewModel.getmObservableAllPlugin().hasObservers()) {
+            pluginViewModel.getmObservableAllPlugin().observe(this, pluginInfos -> {
+                if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                    if (null != pluginInfos) {
+                        if (pluginInfos.size() > 0) {
+                            pluginInfoList.addAll(pluginInfos);
+                            int selectIndex = 0;
+                            for (int i = 0; i < pluginInfos.size(); i++) {
+                                PluginInfo pluginInfo = pluginInfos.get(i);
+                                pluginName.add(pluginInfo.getName());
+                                if (siteBean != null && !TextUtils.isEmpty(siteBean.LdPluginId)) {
+                                    if (siteBean.LdPluginId.equals(pluginInfo.getId())) {
+                                        selectIndex = i;
+                                    }
+                                }
+                            }
+
+                            mBinding.spSelectPlugin.attachDataSource(pluginName);
+                            mBinding.spSelectPlugin.setSelectedIndex(selectIndex);
+                        }
+                    }
+                }
+            });
+        }
+
+        if (null == pluginInfoList || pluginInfoList.size() <= 0) {
+            ReqAllPlugin reqAllPlugin = new ReqAllPlugin();
+            reqAllPlugin.setDataSource("site");
+            pluginViewModel.reqAllPipe(reqAllPlugin);
+        }
     }
 
     @Override
@@ -174,8 +211,13 @@ public class ModifySiteFragment extends BaseFragment implements View.OnClickList
                 siteBean.Manager = mBinding.sitePrincipal.getText().toString();
                 siteBean.IsOnLine = (mBinding.siteLineWhether.getText().equals("是")?true:false);
                 siteBean.IsDualSensor = (mBinding.siteDoubleSensor.getText().equals("是")?true:false);
-                siteBean.IsDirFilterEnabled = (mBinding.siteDoubleFilter.getText().equals("是")?true:false);
-                siteBean.LdPluginName = mBinding.siteLeakPlugin.toString();
+                siteBean.IsDirFilterEnabled = (mBinding.siteDoubleFilter.getText().equals("是") ? true : false);
+                for (PluginInfo pluginInfo : pluginInfoList) {
+                    if (pluginInfo.getName().equals(mBinding.spSelectPlugin.getText().toString())) {
+                        siteBean.LdPluginId = pluginInfo.getId();
+                        siteBean.LdPluginName = pluginInfo.getName();
+                    }
+                }
                 ReqAddSite reqAddSite = new ReqAddSite();
                 reqAddSite.setOperation("0");
                 List<SiteBean> list = new ArrayList<>();

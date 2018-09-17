@@ -151,7 +151,7 @@
     <string name="pipe_detail_is_test">测试模式</string>
     <string name="pipe_detail_ball">收发球卡堵定位</string>
     <string name="pipe_detail_leak_age">泄露量评估</string>
-    <string name="pipe_detail_plugin_name">泄露查件</string>
+    <string name="pipe_detail_plugin_name">泄露插件</string>
     <string name="pipe_detail_to_pw">转到管线工况</string>
     <string name="pipe_detail_to_pb">转到管线盲区</string>
     <string name="pipe_detail_build_pw">创建管线工况</string>

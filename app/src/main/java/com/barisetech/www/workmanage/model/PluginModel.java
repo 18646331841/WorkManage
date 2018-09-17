@@ -1,5 +1,8 @@
 package com.barisetech.www.workmanage.model;
 
+import android.text.TextUtils;
+
+import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseModel;
 import com.barisetech.www.workmanage.base.BaseResponse;
 import com.barisetech.www.workmanage.bean.FailResponse;
@@ -12,6 +15,7 @@ import com.barisetech.www.workmanage.http.HttpService;
 import com.barisetech.www.workmanage.http.ObserverCallBack;
 import com.barisetech.www.workmanage.http.api.PlugService;
 import com.barisetech.www.workmanage.utils.LogUtil;
+import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
 
 import java.util.List;
 
@@ -38,7 +42,12 @@ public class PluginModel extends BaseModel {
         if (null == reqAllPlugin) {
             return null;
         }
+        String company = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_COMPANY, "");
+        if (TextUtils.isEmpty(company)) {
+            return null;
+        }
         reqAllPlugin.setMachineCode(mToken);
+        reqAllPlugin.setCompanyName(company);
         Disposable disposable = plugService.getAllPlugin(reqAllPlugin)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())

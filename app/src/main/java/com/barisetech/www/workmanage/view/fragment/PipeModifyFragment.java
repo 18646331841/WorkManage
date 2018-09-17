@@ -7,6 +7,7 @@ import android.databinding.ObservableField;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,14 +22,18 @@ import com.barisetech.www.workmanage.bean.pipe.PipeInfo;
 import com.barisetech.www.workmanage.bean.pipe.ReqAddPipe;
 import com.barisetech.www.workmanage.bean.pipe.ReqPipeInfo;
 import com.barisetech.www.workmanage.bean.pipecollections.PipeCollections;
+import com.barisetech.www.workmanage.bean.plugin.PluginInfo;
+import com.barisetech.www.workmanage.bean.plugin.ReqAllPlugin;
 import com.barisetech.www.workmanage.bean.site.ReqSiteBean;
 import com.barisetech.www.workmanage.bean.site.ReqSiteInfos;
 import com.barisetech.www.workmanage.bean.site.SiteBean;
 import com.barisetech.www.workmanage.databinding.FragmentPipeModifyBinding;
+import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.view.dialog.CommonDialogFragment;
 import com.barisetech.www.workmanage.view.dialog.DialogFragmentHelper;
 import com.barisetech.www.workmanage.viewmodel.PipeViewModel;
+import com.barisetech.www.workmanage.viewmodel.PluginViewModel;
 import com.barisetech.www.workmanage.viewmodel.SiteViewModel;
 
 import org.greenrobot.eventbus.EventBus;
@@ -53,6 +58,10 @@ public class PipeModifyFragment extends BaseFragment {
     private SiteViewModel siteViewModel;
     private List<SiteBean> siteList = new ArrayList<>();
     private List<String> siteName = new ArrayList<>();
+
+    private PluginViewModel pluginViewModel;
+    private List<PluginInfo> pluginInfoList = new ArrayList<>();
+    private List<String> pluginName = new ArrayList<>();
 
     public static PipeModifyFragment newInstance(PipeInfo pipeInfo) {
         PipeModifyFragment fragment = new PipeModifyFragment();
@@ -203,6 +212,13 @@ public class PipeModifyFragment extends BaseFragment {
                 }
             }
             curPipeInfo.Sites = siteBeans;
+            for (PluginInfo pluginInfo : pluginInfoList) {
+                if (pluginInfo.getName().equals(mBinding.spSelectPlugin.getText().toString())) {
+                    curPipeInfo.LlPluginId = pluginInfo.getId();
+                    curPipeInfo.LlPluginName = pluginInfo.getName();
+                    break;
+                }
+            }
 
             ReqPipeInfo reqPipeInfo = new ReqPipeInfo();
             reqPipeInfo.toPipe(curPipeInfo);
@@ -240,6 +256,7 @@ public class PipeModifyFragment extends BaseFragment {
     public void bindViewModel() {
         pipeViewModel = ViewModelProviders.of(this).get(PipeViewModel.class);
         siteViewModel = ViewModelProviders.of(this).get(SiteViewModel.class);
+        pluginViewModel = ViewModelProviders.of(this).get(PluginViewModel.class);
     }
 
     @Override
@@ -271,15 +288,18 @@ public class PipeModifyFragment extends BaseFragment {
                         for (int i = 0; i < siteBeans.size(); i++) {
                             SiteBean siteBean = siteBeans.get(i);
                             siteName.add(siteBean.Name);
-                            if (curPipeInfo != null && curPipeInfo.StartSiteId == siteBean.SiteId) {
-                                selectStartIndex = i;
-                                //查找末站的索引位置
-                                List<SiteBean> sites = curPipeInfo.Sites;
-                                if (sites != null && sites.size() > 0) {
-                                    for (int j = 0; j < sites.size(); j++) {
-                                        SiteBean siteBean1 = sites.get(j);
-                                        if (siteBean1.SiteId == siteBean.SiteId && siteBean1.SiteId != selectStartIndex) {
-                                            selectEndIndex = i;
+                            if (curPipeInfo != null) {
+                                if(curPipeInfo.StartSiteId == siteBean.SiteId){
+                                    selectStartIndex = i;
+                                } else{
+                                    //查找末站的索引位置
+                                    List<SiteBean> sites = curPipeInfo.Sites;
+                                    if (sites != null && sites.size() > 0) {
+                                        for (int j = 0; j < sites.size(); j++) {
+                                            SiteBean siteBean1 = sites.get(j);
+                                            if (siteBean1.SiteId == siteBean.SiteId && siteBean1.SiteId != selectStartIndex) {
+                                                selectEndIndex = i;
+                                            }
                                         }
                                     }
                                 }
@@ -304,6 +324,37 @@ public class PipeModifyFragment extends BaseFragment {
 
         if (null == siteList || siteList.size() <= 0) {
             siteViewModel.reqSiteNum();
+        }
+
+        if (!pluginViewModel.getmObservableAllPlugin().hasObservers()) {
+            pluginViewModel.getmObservableAllPlugin().observe(this, pluginInfos -> {
+                if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                    if (null != pluginInfos) {
+                        if (pluginInfos.size() > 0) {
+                            pluginInfoList.addAll(pluginInfos);
+                            int selectIndex = 0;
+                            for (int i = 0; i < pluginInfos.size(); i++) {
+                                PluginInfo pluginInfo = pluginInfos.get(i);
+                                pluginName.add(pluginInfo.getName());
+                                if (curPipeInfo != null && !TextUtils.isEmpty(curPipeInfo.LlPluginId)) {
+                                    if (curPipeInfo.LlPluginId.equals(pluginInfo.getId())) {
+                                        selectIndex = i;
+                                    }
+                                }
+                            }
+
+                            mBinding.spSelectPlugin.attachDataSource(pluginName);
+                            mBinding.spSelectPlugin.setSelectedIndex(selectIndex);
+                        }
+                    }
+                }
+            });
+        }
+
+        if (null == pluginInfoList || pluginInfoList.size() <= 0) {
+            ReqAllPlugin reqAllPlugin = new ReqAllPlugin();
+            reqAllPlugin.setDataSource("pipe");
+            pluginViewModel.reqAllPipe(reqAllPlugin);
         }
     }
 
