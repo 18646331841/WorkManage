@@ -16,9 +16,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.barisetech.www.workmanage.R;
+import com.barisetech.www.workmanage.base.BaseApplication;
 import com.barisetech.www.workmanage.base.BottomNavigationViewHelper;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.utils.LogUtil;
+
+import org.greenrobot.eventbus.EventBus;
 
 public class NavigationFragment extends Fragment {
     public static final String TAG = "NavigationFragment";
@@ -26,12 +29,10 @@ public class NavigationFragment extends Fragment {
     private FragmentManager fm;
     private static final String CUR_TAG = "curTag";
     private BottomNavigationView navigation;
-    private BottomNavigationItemView message;
-    private BottomNavigationItemView map;
     private BottomNavigationItemView manage;
-    private BottomNavigationItemView my;
 
     private boolean fromOtherView = false;
+    private String curFragment = "";
 
     public NavigationFragment() {
         // Required empty public constructor
@@ -81,10 +82,7 @@ public class NavigationFragment extends Fragment {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         BottomNavigationMenuView menuView = (BottomNavigationMenuView) navigation.getChildAt(0);
-        message = (BottomNavigationItemView) menuView.getChildAt(0);
-        map = (BottomNavigationItemView) menuView.getChildAt(1);
         manage = (BottomNavigationItemView) menuView.getChildAt(2);
-        my = (BottomNavigationItemView) menuView.getChildAt(3);
 
         View badge = LayoutInflater.from(getActivity()).inflate(R.layout.menu_badge, menuView, false);
         manage.addView(badge);
@@ -105,7 +103,11 @@ public class NavigationFragment extends Fragment {
                         showNavContentFragment(new EventBusMessage(Messagefragment.TAG));
                         return true;
                     case R.id.navigation_map:
-                        showNavContentFragment(new EventBusMessage(MapFragment.TAG));
+                        if (BaseApplication.getInstance().isTwoPanel) {
+                            showNavContentFragment(new EventBusMessage(PadMapListFragment.TAG));
+                        } else {
+                            showNavContentFragment(new EventBusMessage(MapFragment.TAG));
+                        }
                         return true;
                     case R.id.navigation_manage:
                         showNavContentFragment(new EventBusMessage(ManageFragment.TAG));
@@ -144,10 +146,10 @@ public class NavigationFragment extends Fragment {
      * @param eventBusMessage
      */
     @SuppressLint("RestrictedApi")
-    private void showNavContentFragment(EventBusMessage eventBusMessage) {
+    public void showNavContentFragment(EventBusMessage eventBusMessage) {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         String tag = eventBusMessage.message;
-        if (TextUtils.isEmpty(tag)) {
+        if (TextUtils.isEmpty(tag) || curFragment.equals(tag)) {
             return;
         }
         LogUtil.d(TAG, "show = " + tag);
@@ -157,10 +159,8 @@ public class NavigationFragment extends Fragment {
                 transaction.replace(R.id.navigation_content, Messagefragment.newInstance(), tag)
                         .commit();
                 break;
-
             case MapFragment.TAG:
                 showItem(R.id.navigation_map);
-
                 if (eventBusMessage.getArg1() != null) {
                     transaction.replace(R.id.navigation_content, MapFragment.newInstance((String) eventBusMessage
                             .getArg1()), tag)
@@ -170,11 +170,27 @@ public class NavigationFragment extends Fragment {
                             .commit();
                 }
                 break;
+            case PadMapListFragment.TAG:
+                showItem(R.id.navigation_map);
+                if (eventBusMessage.getArg1() != null) {
+                    transaction.replace(R.id.navigation_content, PadMapListFragment.newInstance((String) eventBusMessage
+                            .getArg1()), tag)
+                            .commit();
+                } else {
+                    transaction.replace(R.id.navigation_content, PadMapListFragment.newInstance(null), tag)
+                            .commit();
+                }
+                break;
             case ManageFragment.TAG:
                 showItem(R.id.navigation_manage);
                 transaction.replace(R.id.navigation_content, ManageFragment.newInstance(), tag)
                         .commit();
                 break;
+        }
+        curFragment = tag;
+        if (BaseApplication.getInstance().isTwoPanel) {
+            EventBusMessage eventBusMessage1 = new EventBusMessage(NullFragment.TAG);
+            EventBus.getDefault().post(eventBusMessage1);
         }
     }
 }

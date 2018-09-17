@@ -110,16 +110,61 @@
                     order:ddd_is_indicate="false"
                     order:ddd_label="@string/pipe_detail_company"/>
 
-                <com.barisetech.www.workmanage.widget.FormView
-                    android:id="@+id/pipe_start_site"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:setText="@{myFragment.pipeInfoField.StartSiteId}"
-                    order:ddd_content_enable="true"
-                    order:ddd_content_hint="@string/pipe_detail_start_site_i"
-                    order:ddd_is_bottom_line="false"
-                    order:ddd_is_indicate="false"
-                    order:ddd_label="@string/pipe_detail_start_site"/>
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/dp_28">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_45"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="@dimen/dp_24"
+                            android:gravity="center_vertical"
+                            android:text="@string/pipe_detail_start_site"
+                            android:textColor="#262626"
+                            android:textSize="@dimen/dp_16" />
+
+                        <org.angmarch.views.NiceSpinner
+                            android:id="@+id/sp_select_start_site"
+                            android:layout_alignParentRight="true"
+                            android:layout_width="@dimen/dp_180"
+                            android:layout_height="wrap_content"
+                            app:dropDownListPaddingBottom="@dimen/dp_50"/>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_45"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="@dimen/dp_24"
+                            android:gravity="center_vertical"
+                            android:text="@string/pipe_detail_end_site"
+                            android:textColor="#262626"
+                            android:textSize="@dimen/dp_16" />
+
+                        <org.angmarch.views.NiceSpinner
+                            android:id="@+id/sp_select_end_site"
+                            android:layout_alignParentRight="true"
+                            android:layout_width="@dimen/dp_180"
+                            android:layout_height="wrap_content"
+                            app:dropDownListPaddingBottom="@dimen/dp_50"/>
+
+                    </RelativeLayout>
+
+                </LinearLayout>
 
                 <com.barisetech.www.workmanage.widget.FormView
                     android:id="@+id/pipe_speed"

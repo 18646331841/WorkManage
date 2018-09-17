@@ -21,11 +21,15 @@ import com.barisetech.www.workmanage.bean.pipe.PipeInfo;
 import com.barisetech.www.workmanage.bean.pipe.ReqAddPipe;
 import com.barisetech.www.workmanage.bean.pipe.ReqPipeInfo;
 import com.barisetech.www.workmanage.bean.pipecollections.PipeCollections;
+import com.barisetech.www.workmanage.bean.site.ReqSiteBean;
+import com.barisetech.www.workmanage.bean.site.ReqSiteInfos;
+import com.barisetech.www.workmanage.bean.site.SiteBean;
 import com.barisetech.www.workmanage.databinding.FragmentPipeModifyBinding;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.view.dialog.CommonDialogFragment;
 import com.barisetech.www.workmanage.view.dialog.DialogFragmentHelper;
 import com.barisetech.www.workmanage.viewmodel.PipeViewModel;
+import com.barisetech.www.workmanage.viewmodel.SiteViewModel;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -45,6 +49,10 @@ public class PipeModifyFragment extends BaseFragment {
     private CommonDialogFragment commonDialogFragment;
     private Disposable curDisposable;
     public static ObservableField<PipeInfo> pipeInfoField;
+
+    private SiteViewModel siteViewModel;
+    private List<SiteBean> siteList = new ArrayList<>();
+    private List<String> siteName = new ArrayList<>();
 
     public static PipeModifyFragment newInstance(PipeInfo pipeInfo) {
         PipeModifyFragment fragment = new PipeModifyFragment();
@@ -171,7 +179,6 @@ public class PipeModifyFragment extends BaseFragment {
             String length = mBinding.pipeLength.getText();
             String materail = mBinding.pipeMaterial.getText();
             String company = mBinding.pipeCompany.getText();
-            String startSite = mBinding.pipeStartSite.getText();
             String speed = mBinding.pipeSpeed.getText();
             String minTime = mBinding.pipeMinTime.getText();
 
@@ -184,9 +191,18 @@ public class PipeModifyFragment extends BaseFragment {
             curPipeInfo.Length = Integer.valueOf(length);
             curPipeInfo.PipeMaterial = materail;
             curPipeInfo.Company = company;
-            curPipeInfo.StartSiteId = Integer.valueOf(startSite);
             curPipeInfo.Speed = Integer.valueOf(speed);
             curPipeInfo.LeakCheckGap = Integer.valueOf(minTime);
+            List<SiteBean> siteBeans = new ArrayList<>();
+            for (SiteBean bean:siteList){
+                if (bean.Name.equals(mBinding.spSelectStartSite.getText().toString())) {
+                    curPipeInfo.StartSiteId = bean.SiteId;
+                    siteBeans.add(bean);
+                } else if(bean.Name.equals(mBinding.spSelectEndSite.getText().toString())){
+                    siteBeans.add(bean);
+                }
+            }
+            curPipeInfo.Sites = siteBeans;
 
             ReqPipeInfo reqPipeInfo = new ReqPipeInfo();
             reqPipeInfo.toPipe(curPipeInfo);
@@ -223,6 +239,7 @@ public class PipeModifyFragment extends BaseFragment {
     @Override
     public void bindViewModel() {
         pipeViewModel = ViewModelProviders.of(this).get(PipeViewModel.class);
+        siteViewModel = ViewModelProviders.of(this).get(SiteViewModel.class);
     }
 
     @Override
@@ -243,5 +260,62 @@ public class PipeModifyFragment extends BaseFragment {
                 }
             });
         }
+
+        if (!siteViewModel.getmObservableSiteInfos().hasObservers()) {
+            siteViewModel.getmObservableSiteInfos().observe(this, siteBeans -> {
+                if (null != siteBeans) {
+                    if (siteBeans.size() > 0) {
+                        siteList.addAll(siteBeans);
+                        int selectStartIndex = 0;
+                        int selectEndIndex = 0;
+                        for (int i = 0; i < siteBeans.size(); i++) {
+                            SiteBean siteBean = siteBeans.get(i);
+                            siteName.add(siteBean.Name);
+                            if (curPipeInfo != null && curPipeInfo.StartSiteId == siteBean.SiteId) {
+                                selectStartIndex = i;
+                                //查找末站的索引位置
+                                List<SiteBean> sites = curPipeInfo.Sites;
+                                if (sites != null && sites.size() > 0) {
+                                    for (int j = 0; j < sites.size(); j++) {
+                                        SiteBean siteBean1 = sites.get(j);
+                                        if (siteBean1.SiteId == siteBean.SiteId && siteBean1.SiteId != selectStartIndex) {
+                                            selectEndIndex = i;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        mBinding.spSelectStartSite.attachDataSource(siteName);
+                        mBinding.spSelectStartSite.setSelectedIndex(selectStartIndex);
+                        mBinding.spSelectEndSite.attachDataSource(siteName);
+                        mBinding.spSelectEndSite.setSelectedIndex(selectEndIndex);
+                    }
+                }
+            });
+        }
+
+        if (!siteViewModel.getmObservableSiteNum().hasObservers()) {
+            siteViewModel.getmObservableSiteNum().observe(this, integer -> {
+                if (null != integer) {
+                    getDatas(0, integer);
+                }
+            });
+        }
+
+        if (null == siteList || siteList.size() <= 0) {
+            siteViewModel.reqSiteNum();
+        }
+    }
+
+    private void getDatas(int formIndex, int toIndex) {
+        if (toIndex <= 0) {
+            return;
+        }
+        ReqSiteInfos reqSiteInfos = new ReqSiteInfos();
+        reqSiteInfos.setSiteId("0");
+        reqSiteInfos.setStartIndex(String.valueOf(formIndex));
+        reqSiteInfos.setNumberOfRecords(String.valueOf(toIndex));
+
+        curDisposable = siteViewModel.reqAllSite(reqSiteInfos);
     }
 }

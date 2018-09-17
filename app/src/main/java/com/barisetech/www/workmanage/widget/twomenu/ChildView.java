@@ -3,6 +3,7 @@ package com.barisetech.www.workmanage.widget.twomenu;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.SparseArray;
@@ -50,6 +51,7 @@ public class ChildView extends LinearLayout {
 
     private String showString = "";
     private Context context;
+    private Activity activity;
 
     public ChildView(Context context) {
         super(context);
@@ -58,6 +60,11 @@ public class ChildView extends LinearLayout {
 
     public ChildView(Context context, AttributeSet attrs) {
         super(context, attrs);
+    }
+
+    public void setActivity(Activity activity) {
+        this.activity = activity;
+        this.context = getContext();
     }
 
     public void setDatas(ArrayList<String> oneList, SparseArray<LinkedList<String>> sparseArray) {
@@ -71,8 +78,12 @@ public class ChildView extends LinearLayout {
     }
 
     private void init(Context context) {
-        LayoutInflater inflater = (LayoutInflater) context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        if (activity == null) {
+            return;
+        }
+        LayoutInflater inflater = activity.getLayoutInflater();
+//        LayoutInflater inflater = (LayoutInflater) context
+//                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         //加载布局,绑定ID.
         inflater.inflate(R.layout.view_region, this, true);

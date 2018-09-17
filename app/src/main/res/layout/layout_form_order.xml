@@ -5,12 +5,12 @@
     android:background="@color/white"
     android:gravity="center_vertical"
     android:orientation="vertical"
-    android:paddingLeft="28dp">
+    android:paddingLeft="@dimen/dp_28">
 
     <RelativeLayout
         android:id="@+id/rl_item"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="@dimen/dp_45"
         android:gravity="center_vertical">
 
         <TextView

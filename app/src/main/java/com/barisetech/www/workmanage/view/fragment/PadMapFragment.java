@@ -18,19 +18,15 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.PopupWindow;
-import android.widget.TextView;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps.AMap;
-import com.amap.api.maps.AMapOptions;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
-import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
@@ -63,6 +59,7 @@ import com.autonavi.tbt.TrafficFacilityInfo;
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.adapter.MyMapInfoWindow;
 import com.barisetech.www.workmanage.base.BaseFragment;
+import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.bean.map.LineStation;
 import com.barisetech.www.workmanage.bean.map.MapPosition;
@@ -83,6 +80,10 @@ import com.barisetech.www.workmanage.viewmodel.PipeCollectionsViewModel;
 import com.barisetech.www.workmanage.viewmodel.PipeViewModel;
 import com.barisetech.www.workmanage.widget.twomenu.ChildView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -92,9 +93,9 @@ import java.util.Map;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MapFragment extends BaseFragment {
+public class PadMapFragment extends BaseFragment {
 
-    public static final String TAG = "MapFragment";
+    public static final String TAG = "PadMapFragment";
     private MapView mMapView;
     private AMap mAMap;
 
@@ -121,9 +122,6 @@ public class MapFragment extends BaseFragment {
     private MyLocationStyle myLocationStyle;
     private MapViewModel mapViewModel;
     private PipeViewModel pipeViewModel;
-    private PipeCollectionsViewModel pipeCollectionsViewModel;
-
-    private List<PipeCollections> pipeCollectionsList = new ArrayList<>();
 
     private List<PipeInfo> pipeInfoList = new ArrayList<>();
     private Map<String, List<PipeTrackInfo>> curPipeTracks = new HashMap<>();
@@ -133,15 +131,11 @@ public class MapFragment extends BaseFragment {
     private AMapNavi mAMapNavi;
     private Marker curClickMarker;
 
-    private boolean popIsShow = false;
-
-    private ArrayList<View> mViewArray = new ArrayList<>();
-
     private static final String ALARM_ID = "alarmId";
     private String curPipeId;
 
-    public static MapFragment newInstance(String pipeId) {
-        MapFragment fragment = new MapFragment();
+    public static PadMapFragment newInstance(String pipeId) {
+        PadMapFragment fragment = new PadMapFragment();
         if (!TextUtils.isEmpty(pipeId)) {
             Bundle bundle = new Bundle();
             bundle.putString(ALARM_ID, pipeId);
@@ -153,6 +147,7 @@ public class MapFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         if (getArguments() != null) {
             curPipeId = getArguments().getString(ALARM_ID, "");
         }
@@ -166,10 +161,8 @@ public class MapFragment extends BaseFragment {
         mBinding.setFragment(this);
         ToolbarInfo toolbarInfo = new ToolbarInfo();
         toolbarInfo.setTitle(getString(R.string.title_map));
-        toolbarInfo.setBackText("菜单");
         observableToolbar.set(toolbarInfo);
 
-//        initMenu();
         initView(savedInstanceState);
 
         return mBinding.getRoot();
@@ -202,6 +195,8 @@ public class MapFragment extends BaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
+
         mBinding.menuView.close();
         mMapView.onDestroy();
         if (mAMapNavi != null) {
@@ -226,64 +221,6 @@ public class MapFragment extends BaseFragment {
         mAMapNaviView.onCreate(savedInstanceState);
         setAmapNaviViewOptions();
         initMap();
-    }
-
-    /**
-     * 初始化菜单
-     *
-     * @param oneList
-     * @param sparseArray
-     */
-    private void initMenu(ArrayList<String> oneList, SparseArray<LinkedList<String>> sparseArray) {
-        ChildView childView = new ChildView(getContext());
-        childView.setActivity(getActivity());
-        childView.setDatas(oneList, sparseArray);
-        childView.setOnSelectListener(showText -> onRefresh(childView, showText));
-        mViewArray.add(childView);
-        mBinding.menuView.setValue(null, mViewArray);
-        mBinding.menuView.initPopupWindow();
-
-        mBinding.toolbar.tvBack.setOnClickListener(view -> {
-//            if (popIsShow) {
-//                mBinding.menuView.close();
-//                popIsShow = false;
-//            } else {
-                mBinding.menuView.show();
-//                popIsShow = true;
-//            }
-        });
-    }
-
-    //视图被点击后刷新数据
-    private void onRefresh(View view, String showText) {
-        LogUtil.d(TAG, "menu click = " + showText);
-        mBinding.menuView.onPressBack();
-        if (curPipeLines == null || curPipeLines.size() <= 0) {
-            return;
-        }
-        for (int i = 0; i < curPipeLines.size(); i++) {
-            PipeLine pipeLine = curPipeLines.get(i);
-            if (pipeLine.pipeName.equals(showText)) {
-                pipeLine.show(true);
-                curStartMarker = pipeLine.startSiteMarker;
-                curEndMarker = pipeLine.endSiteMarker;
-                curStartMarker.setInfoWindowEnable(true);
-                curEndMarker.setInfoWindowEnable(true);
-            } else {
-                pipeLine.show(false);
-            }
-        }
-//        int position = getPositon(view);
-    }
-
-    //获取当前的view位置
-    private int getPositon(View tView) {
-        for (int i = 0; i < mViewArray.size(); i++) {
-            if (mViewArray.get(i) == tView) {
-                return i;
-            }
-        }
-        return -1;
     }
 
     private void initMap() {
@@ -312,6 +249,24 @@ public class MapFragment extends BaseFragment {
                 }
             }
         });
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void event(String pipeName) {
+        if (!TextUtils.isEmpty(pipeName)) {
+            for (int i = 0; i < curPipeLines.size(); i++) {
+                PipeLine pipeLine = curPipeLines.get(i);
+                if (pipeLine.pipeName.equals(pipeName)) {
+                    pipeLine.show(true);
+                    curStartMarker = pipeLine.startSiteMarker;
+                    curEndMarker = pipeLine.endSiteMarker;
+                    curStartMarker.setInfoWindowEnable(true);
+                    curEndMarker.setInfoWindowEnable(true);
+                } else {
+                    pipeLine.show(false);
+                }
+            }
+        }
     }
 
     AMap.OnMarkerClickListener markerClickListener = marker -> {
@@ -378,7 +333,6 @@ public class MapFragment extends BaseFragment {
     public void bindViewModel() {
         mapViewModel = ViewModelProviders.of(this).get(MapViewModel.class);
         pipeViewModel = ViewModelProviders.of(this).get(PipeViewModel.class);
-        pipeCollectionsViewModel = ViewModelProviders.of(this).get(PipeCollectionsViewModel.class);
     }
 
     private MyMapInfoWindow.OnClickToHere onClickToHere = marker -> {
@@ -503,74 +457,8 @@ public class MapFragment extends BaseFragment {
         }
     }
 
-    protected Bitmap getMyBitmap(String pm_val) {
-        Bitmap bitmap = BitmapDescriptorFactory.fromResource(
-                R.drawable.icon_news).getBitmap().copy(Bitmap.Config.ARGB_8888, true);
-        bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),
-                bitmap.getHeight());
-        Canvas canvas = new Canvas(bitmap);
-        TextPaint textPaint = new TextPaint();
-        textPaint.setAntiAlias(true);
-        textPaint.setTextSize(25f);
-        textPaint.setColor(getResources().getColor(R.color.text_black));
-        canvas.drawText(pm_val, 17, 35, textPaint);// 设置bitmap上面的文字位置
-        return bitmap;
-    }
-
     @Override
     public void subscribeToModel() {
-        if (!pipeCollectionsViewModel.getmObservableAllPC().hasObservers()) {
-            pipeCollectionsViewModel.getmObservableAllPC().observe(this, pipeCollections -> {
-                if (this.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
-
-                    if (null != pipeCollections && pipeCollections.size() > 0) {
-                        pipeCollectionsList.addAll(pipeCollections);
-
-                        ArrayList<String> oneList = new ArrayList<>();
-                        SparseArray<LinkedList<String>> sparseArray = new SparseArray<>();
-
-                        for (int i = 0; i < pipeCollections.size(); i++) {
-                            PipeCollections pipeCollections1 = pipeCollections.get(i);
-                            oneList.add(i, pipeCollections1.getName());
-                            List<PipeInfo> pipeInfos = pipeCollections1.getPipeCollects();
-                            LinkedList<String> twoList = new LinkedList<>();
-                            if (pipeInfos != null && pipeInfos.size() > 0) {
-                                for (int j = 0; j < pipeInfos.size(); j++) {
-                                    twoList.add(pipeInfos.get(j).Name);
-                                }
-                            }
-                            sparseArray.put(i, twoList);
-                        }
-
-                        initMenu(oneList, sparseArray);
-                    } else {
-                        ToastUtil.showToast("获取管线集合失败");
-                    }
-                }
-            });
-        }
-
-        if (!pipeCollectionsViewModel.getmObservableNum().hasObservers()) {
-            pipeCollectionsViewModel.getmObservableNum().observe(this, integer -> {
-                if (this.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
-                    if (null != integer && integer > 0) {
-                        ReqAllPc reqAllPc = new ReqAllPc();
-                        reqAllPc.setStartIndex(String.valueOf(0));
-                        reqAllPc.setNumberOfRecords(String.valueOf(integer));
-                        reqAllPc.setPipeCollectionId("0");
-
-                        pipeCollectionsViewModel.reqAllPc(reqAllPc);
-                    } else {
-                        ToastUtil.showToast("未找到管线集合");
-                    }
-                }
-            });
-        }
-
-        if (null == pipeCollectionsList || pipeCollectionsList.size() <= 0) {
-            pipeCollectionsViewModel.reqPcNum();
-        }
-
         if (!pipeViewModel.getmObservablePipeNum().hasObservers()) {
             pipeViewModel.getmObservablePipeNum().observe(this, integer -> {
                 if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
@@ -672,7 +560,7 @@ public class MapFragment extends BaseFragment {
         // viewOptions.setLayoutVisible(false);  //设置导航界面UI是否显示
         //viewOptions.setNaviViewTopic(mThemeStle);//设置导航界面的主题
         //viewOptions.setZoom(16);
-//        viewOptions.setTilt(0);  //2D显示
+        //viewOptions.setTilt(0);  //2D显示
         mAMapNaviView.setViewOptions(viewOptions);
     }
 

@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.barisetech.www.workmanage.R;
+import com.barisetech.www.workmanage.base.BaseApplication;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.bean.DataRateBean;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
@@ -19,7 +20,7 @@ import com.barisetech.www.workmanage.utils.ChartUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WaveFormFragment extends BaseFragment{
+public class WaveFormFragment extends BaseFragment {
 
     public static final String TAG = "WaveFormFragment";
     FragmentWaveFormBinding mBinding;
@@ -32,11 +33,13 @@ public class WaveFormFragment extends BaseFragment{
     }
 
 
-
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
+            savedInstanceState) {
+        if (!BaseApplication.getInstance().isTwoPanel) {
+            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_wave_form, container, false);
 
         setToolBarHeight(mBinding.toolbar.getRoot());
@@ -49,10 +52,10 @@ public class WaveFormFragment extends BaseFragment{
     }
 
     private void initView() {
-        for (int i= 0; i <600; i++){
-            list.add(new DataRateBean((float)(100*Math.random()),i +""));
+        for (int i = 0; i < 600; i++) {
+            list.add(new DataRateBean((float) (100 * Math.random()), i + ""));
         }
-        ChartUtil.setChartViewData(list,mBinding.chart);
+        ChartUtil.setChartViewData(list, mBinding.chart);
 
     }
 
@@ -69,6 +72,8 @@ public class WaveFormFragment extends BaseFragment{
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        if (!BaseApplication.getInstance().isTwoPanel) {
+            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
     }
 }

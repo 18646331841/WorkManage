@@ -24,6 +24,10 @@ public class BaseApplication extends MultiDexApplication {
     private static BaseApplication Instance;
     public static String dataDir;
     public static String appDir = "/WorkManage";
+    /**
+     * 是否为大屏左右显示，true表示是
+     */
+    public boolean isTwoPanel = false;
 
     @Override
     public void onCreate() {

@@ -119,7 +119,7 @@ public class TextAdapter extends ArrayAdapter<String> {
 		// 这里的View就是一个简单的TextView..
 		TextView view;
 		if (convertView == null) {
-			view = (TextView) LayoutInflater.from(mContext).inflate(
+			view = (TextView) LayoutInflater.from(parent.getContext()).inflate(
 					R.layout.choose_item, parent, false);
 		} else {
 			view = (TextView) convertView;

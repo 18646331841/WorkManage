@@ -23,6 +23,7 @@ import com.barisetech.www.workmanage.bean.pipe.PipeInfo;
 import com.barisetech.www.workmanage.bean.pipe.ReqAddPipe;
 import com.barisetech.www.workmanage.bean.pipe.ReqPipeInfo;
 import com.barisetech.www.workmanage.bean.pipecollections.PipeCollections;
+import com.barisetech.www.workmanage.bean.site.ReqSiteBean;
 import com.barisetech.www.workmanage.bean.site.ReqSiteInfos;
 import com.barisetech.www.workmanage.bean.site.SiteBean;
 import com.barisetech.www.workmanage.databinding.FragmentPipeAddBinding;
@@ -51,9 +52,7 @@ public class PipeAddFragment extends BaseFragment {
     private ReqPipeInfo reqPipeInfo = new ReqPipeInfo();
     private List<SiteBean> siteList = new ArrayList<>();
     private List<String> siteName = new ArrayList<>();
-    private SiteBean siteInfo;
     private SiteViewModel siteViewModel;
-    private String name;
 
     public static PipeAddFragment newInstance() {
         PipeAddFragment fragment = new PipeAddFragment();
@@ -173,12 +172,7 @@ public class PipeAddFragment extends BaseFragment {
 //            String startSite = mBinding.pipeStartSite.getText();
             String speed = mBinding.pipeSpeed.getText();
             String minTime = mBinding.pipeMinTime.getText();
-            //TODO:设置属性
-            for (SiteBean bean:siteList){
-                if (bean.Name.equals(mBinding.spSelectSite.getText().toString())){
 
-                }
-            }
             reqPipeInfo.PipeId = id;
             reqPipeInfo.Name = name;
             reqPipeInfo.SortID = sortId;
@@ -193,6 +187,17 @@ public class PipeAddFragment extends BaseFragment {
 //            reqPipeInfo.StartSiteId = startSite;
             reqPipeInfo.Speed = speed;
             reqPipeInfo.LeakCheckGap = minTime;
+            List<ReqSiteBean> reqSiteBeans = new ArrayList<>();
+            for (SiteBean bean:siteList){
+                if (bean.Name.equals(mBinding.spSelectSite.getText().toString())){
+                    reqPipeInfo.StartSiteId = String.valueOf(bean.SiteId);
+                    ReqSiteBean reqSiteBean = new ReqSiteBean();
+                    reqSiteBean.toSiteBean(bean);
+                    reqSiteBeans.add(reqSiteBean);
+                    reqPipeInfo.Sites = reqSiteBeans;
+                    break;
+                }
+            }
 
             ReqAddPipe reqAddPipe = new ReqAddPipe();
             reqAddPipe.setOperation("1");

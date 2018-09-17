@@ -104,7 +104,6 @@ public class NewsViewModel extends BaseViewModel implements ModelCallBack {
     @Override
     public void fail(Object object) {
         EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_CLOSE));
-        ToastUtil.showToast("请求失败");
         if (object instanceof FailResponse) {
             FailResponse failResponse = (FailResponse) object;
             mDelivery.post(() -> {

@@ -16,11 +16,12 @@ public abstract class BaseFragment extends Fragment {
 
     public ObservableField<ToolbarInfo> observableToolbar = new ObservableField<>();
 
-    public void setToolBarHeight(View view){
+    public void setToolBarHeight(View view) {
         ViewGroup.LayoutParams linearParams = view.getLayoutParams();
-        linearParams.height = linearParams.height+BaseApplication.getInstance().getheight(getActivity());
+        linearParams.height = linearParams.height + BaseApplication.getInstance().getheight(getActivity());
         view.setLayoutParams(linearParams);
-        view.setPadding(view.getPaddingLeft(),BaseApplication.getInstance().getheight(getActivity()),view.getPaddingRight(),view.getPaddingBottom());
+        view.setPadding(view.getPaddingLeft(), BaseApplication.getInstance().getheight(getActivity()), view
+                .getPaddingRight(), view.getPaddingBottom());
     }
 
     public abstract void bindViewModel();
@@ -33,7 +34,6 @@ public abstract class BaseFragment extends Fragment {
         bindViewModel();
         subscribeToModel();
     }
-
 
 
 }

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">管线安全助手</string>
     <string name="title_message">消息</string>
-    <string name="message_mission">巡线任务</string>
+    <string name="message_mission">巡线计划</string>
     <string name="title_manage">管理</string>
     <string name="title_myself">我</string>
     <string name="new_message">新消息</string>
@@ -10,6 +10,8 @@
 
     <string name="dialog_yes">是</string>
     <string name="dialog_no">否</string>
+
+    <string name="title_map_pipe_list">管线列表</string>
 
     <string name="title_map">地图</string>
     <string name="map_to_here">导航去这里</string>
@@ -142,6 +144,7 @@
     <string name="pipe_detail_material">材质</string>
     <string name="pipe_detail_company">所属公司</string>
     <string name="pipe_detail_start_site">起始站点</string>
+    <string name="pipe_detail_end_site">末站站点</string>
     <string name="pipe_detail_speed">声速</string>
     <string name="pipe_detail_min_time">最小时间间隔</string>
     <string name="pipe_detail_is_algorithm">算法</string>

@@ -111,7 +111,7 @@ public class NewsListFragment extends BaseFragment {
         mBinding.newsListAll.setOnClickListener(view -> {
             RadioButton radioButton = (RadioButton) view;
             if (radioButton.isChecked()) {
-                curDisposable.dispose();
+                closeDisposable();
                 curList.clear();
 
                 curNewsType = "";//全部类型
@@ -121,7 +121,7 @@ public class NewsListFragment extends BaseFragment {
         mBinding.newsListDefault.setOnClickListener(view -> {
             RadioButton radioButton = (RadioButton) view;
             if (radioButton.isChecked()) {
-                curDisposable.dispose();
+                closeDisposable();
                 curList.clear();
 
                 curNewsType = "1";//全部类型
@@ -131,7 +131,7 @@ public class NewsListFragment extends BaseFragment {
         mBinding.newsListCompany.setOnClickListener(view -> {
             RadioButton radioButton = (RadioButton) view;
             if (radioButton.isChecked()) {
-                curDisposable.dispose();
+                closeDisposable();
                 curList.clear();
 
                 curNewsType = "2";//全部类型
@@ -141,7 +141,7 @@ public class NewsListFragment extends BaseFragment {
         mBinding.newsListIndustry.setOnClickListener(view -> {
             RadioButton radioButton = (RadioButton) view;
             if (radioButton.isChecked()) {
-                curDisposable.dispose();
+                closeDisposable();
                 curList.clear();
 
                 curNewsType = "3";//全部类型
@@ -163,6 +163,12 @@ public class NewsListFragment extends BaseFragment {
                 EventBus.getDefault().post(eventBusMessage);
             }
         });
+    }
+
+    private void closeDisposable() {
+        if (null != curDisposable) {
+            curDisposable.dispose();
+        }
     }
 
     private void initRecyclerView() {

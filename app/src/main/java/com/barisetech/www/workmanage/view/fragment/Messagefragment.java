@@ -83,7 +83,7 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
         mBinding.setFragment(this);
         ToolbarInfo toolbarInfo = new ToolbarInfo();
         toolbarInfo.setTitle(getString(R.string.title_message));
-        toolbarInfo.setTwoText(getString(R.string.message_mission));
+        toolbarInfo.setOneText(getString(R.string.message_mission));
         observableToolbar.set(toolbarInfo);
 
         EventBus.getDefault().register(this);

@@ -119,7 +119,6 @@ public class ReqPipeInfo implements Serializable {
         }
         Sites = reqSiteBeans;
 
-
         PipeCollectID = new ArrayList<>();
         PipeCollectID.add(pipeInfo.PipeCollectID);
     }

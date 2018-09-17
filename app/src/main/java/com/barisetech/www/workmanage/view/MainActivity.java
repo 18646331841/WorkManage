@@ -19,6 +19,7 @@ import com.barisetech.www.workmanage.bean.pipecollections.PipeCollections;
 import com.barisetech.www.workmanage.bean.pipelindarea.PipeLindAreaInfo;
 import com.barisetech.www.workmanage.bean.pipework.PipeWork;
 import com.barisetech.www.workmanage.bean.site.SiteBean;
+import com.barisetech.www.workmanage.utils.LogUtil;
 import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
 import com.barisetech.www.workmanage.view.fragment.AddSiteFragment;
 import com.barisetech.www.workmanage.view.fragment.AlarmAnalysisDetailFragment;
@@ -38,6 +39,9 @@ import com.barisetech.www.workmanage.view.fragment.NavigationFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsAddFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsDetailsFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsListFragment;
+import com.barisetech.www.workmanage.view.fragment.NullFragment;
+import com.barisetech.www.workmanage.view.fragment.PadMapFragment;
+import com.barisetech.www.workmanage.view.fragment.PadMapListFragment;
 import com.barisetech.www.workmanage.view.fragment.PipeAddFragment;
 import com.barisetech.www.workmanage.view.fragment.PipeCollectionAddFragment;
 import com.barisetech.www.workmanage.view.fragment.PipeCollectionDetailFragment;
@@ -61,12 +65,14 @@ import com.barisetech.www.workmanage.view.fragment.WaveFormFragment;
 import org.greenrobot.eventbus.EventBus;
 
 public class MainActivity extends BaseActivity {
+    public static final String TAG = "MainActivity";
 
     /**
      * 是否为大屏左右显示，true表示是
      */
     private boolean isTwoPanel = false;
     public Point point = new Point();
+    private NavigationFragment navigationFragment;
 
     @Override
     protected void loadViewLayout() {
@@ -80,6 +86,7 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         BaseApplication.getInstance().requestPermissions(this);
         if (null != get(R.id.fragment_content)) {
+            BaseApplication.getInstance().isTwoPanel = true;
             isTwoPanel = true;
         }
 
@@ -102,7 +109,9 @@ public class MainActivity extends BaseActivity {
 //            //大屏设备界面，左右两个fragment
         EventBusMessage eventBusMessage = new EventBusMessage(tag);
         eventBusMessage.setArg1(arg1);
-        transaction.add(R.id.fragment_navigation, NavigationFragment.newInstance(eventBusMessage), NavigationFragment.TAG);
+        LogUtil.d(TAG, "tag = " + tag + " arg1 = " + arg1);
+        navigationFragment = NavigationFragment.newInstance(eventBusMessage);
+        transaction.add(R.id.fragment_navigation, navigationFragment, NavigationFragment.TAG);
         transaction.commit();
 //        }
     }
@@ -208,11 +217,23 @@ public class MainActivity extends BaseActivity {
                         transaction.addToBackStack(tag);
                     }
                     break;
-//                case MapFragment.TAG:
-//                    Bundle bundle = new Bundle();
-//                    bundle.putString("tag", MapFragment.TAG);
-//                    intent2Activity(bundle, MainActivity.class);
-//                    break;
+                case MapFragment.TAG:
+                    EventBusMessage eventBusMessage1 = new EventBusMessage(PadMapListFragment.TAG);
+                    eventBusMessage1.setArg1(eventBusMessage.getArg1());
+                    transaction.replace(R.id.fragment_navigation, NavigationFragment.newInstance(eventBusMessage1), NavigationFragment
+                            .TAG).commit();
+                    break;
+                case PadMapFragment.TAG:
+                    transaction
+                            .replace(R.id.fragment_content, PadMapFragment.newInstance((String) eventBusMessage
+                                    .getArg1()), tag).commit();
+                    if (!isActivity) {
+                        transaction.addToBackStack(tag);
+                    }
+                    break;
+                case NullFragment.TAG:
+                    transaction.replace(R.id.fragment_content, NullFragment.newInstance(), tag).commit();
+                    break;
                 case NewsListFragment.TAG:
                     transaction
                             .replace(R.id.fragment_content, NewsListFragment.newInstance(), tag).commit();
