@@ -343,6 +343,18 @@
     <string name="complete_sign_in">打卡完成</string>
     <string name="tv_sign_in">签到</string>
 
+    
+    <string name="personal_info">个人信息</string>
+    <string name="finger_open">启用指纹登录</string>
+    <string name="sound_shock">声音/震动</string>
+    <string name="event_type">事件通知类型</string>
+    <string name="authorization_manage">授权管理</string>
+    <string name="not_disturb">免打扰</string>
+    <string name="clear_cache">清理缓存</string>
+    <string name="about">关于</string>
+
+    <string name="phone">电话</string>
+    <string name="change_pwd">修改密码</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

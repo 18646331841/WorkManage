@@ -113,6 +113,7 @@ public class NavigationFragment extends Fragment {
                         showNavContentFragment(new EventBusMessage(ManageFragment.TAG));
                         return true;
                     case R.id.navigation_myself:
+                        showNavContentFragment(new EventBusMessage(MyFragment.TAG));
                         return true;
                 }
                 return false;
@@ -184,6 +185,13 @@ public class NavigationFragment extends Fragment {
             case ManageFragment.TAG:
                 showItem(R.id.navigation_manage);
                 transaction.replace(R.id.navigation_content, ManageFragment.newInstance(), tag)
+                        .commit();
+                break;
+
+
+            case MyFragment.TAG:
+                showItem(R.id.navigation_manage);
+                transaction.replace(R.id.navigation_content, MyFragment.newInstance(), tag)
                         .commit();
                 break;
         }

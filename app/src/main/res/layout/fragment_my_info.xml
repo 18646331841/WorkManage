@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="fragment"
+            type="com.barisetech.www.workmanage.base.BaseFragment" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/layout_toolbar"
+            app:toolbar="@{fragment.observableToolbar}" />
+
+
+
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/item_account"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginLeft="22dp"
+            android:layout_marginRight="15dp">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:text="@string/tv_count"
+                android:textSize="18sp"
+                android:textColor="@color/text_black"
+                app:layout_constraintBottom_toBottomOf="@id/item_account"
+                app:layout_constraintLeft_toLeftOf="@id/item_account"
+                app:layout_constraintTop_toTopOf="@id/item_account" />
+
+            <TextView
+                android:id="@+id/tv_account"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                app:layout_constraintBottom_toBottomOf="@id/item_account"
+                app:layout_constraintRight_toRightOf="@id/item_account"
+                app:layout_constraintTop_toTopOf="@id/item_account" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line_gray"
+                app:layout_constraintBottom_toBottomOf="@id/item_account" />
+        </android.support.constraint.ConstraintLayout>
+
+
+
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/item_email"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginLeft="22dp"
+            android:layout_marginRight="15dp">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:text="@string/pc_detail_email"
+                android:textSize="18sp"
+                android:textColor="@color/text_black"
+                app:layout_constraintBottom_toBottomOf="@id/item_email"
+                app:layout_constraintLeft_toLeftOf="@id/item_email"
+                app:layout_constraintTop_toTopOf="@id/item_email" />
+
+            <View
+                android:id="@+id/v_email"
+                style="@style/LineArrowRight"
+                app:layout_constraintBottom_toBottomOf="@id/item_email"
+                app:layout_constraintRight_toRightOf="@id/item_email"
+                app:layout_constraintTop_toTopOf="@id/item_email"/>
+
+
+            <TextView
+                android:id="@+id/tv_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:textSize="18sp"
+                android:textColor="@color/text_black"
+                app:layout_constraintBottom_toBottomOf="@id/item_email"
+                app:layout_constraintRight_toLeftOf="@id/v_email"
+                app:layout_constraintTop_toTopOf="@id/item_email" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line_gray"
+                app:layout_constraintBottom_toBottomOf="@id/item_email" />
+        </android.support.constraint.ConstraintLayout>
+
+
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/item_phone"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginLeft="22dp"
+            android:layout_marginRight="15dp">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:text="@string/phone"
+                android:textSize="18sp"
+                android:textColor="@color/text_black"
+                app:layout_constraintBottom_toBottomOf="@id/item_phone"
+                app:layout_constraintLeft_toLeftOf="@id/item_phone"
+                app:layout_constraintTop_toTopOf="@id/item_phone" />
+
+            <View
+                android:id="@+id/v_phone"
+                style="@style/LineArrowRight"
+                app:layout_constraintBottom_toBottomOf="@id/item_phone"
+                app:layout_constraintRight_toRightOf="@id/item_phone"
+                app:layout_constraintTop_toTopOf="@id/item_phone"/>
+
+
+            <TextView
+                android:id="@+id/tv_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                app:layout_constraintBottom_toBottomOf="@id/item_phone"
+                app:layout_constraintRight_toLeftOf="@id/v_phone"
+                app:layout_constraintTop_toTopOf="@id/item_phone" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line_gray"
+                app:layout_constraintBottom_toBottomOf="@id/item_phone" />
+        </android.support.constraint.ConstraintLayout>
+
+
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/item_pwd"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginLeft="22dp"
+            android:layout_marginRight="15dp">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:text="@string/phone"
+                android:textSize="18sp"
+                android:textColor="@color/text_black"
+                app:layout_constraintBottom_toBottomOf="@id/item_pwd"
+                app:layout_constraintLeft_toLeftOf="@id/item_pwd"
+                app:layout_constraintTop_toTopOf="@id/item_pwd" />
+
+            <View
+                android:id="@+id/v_pwd"
+                style="@style/LineArrowRight"
+                app:layout_constraintBottom_toBottomOf="@id/item_pwd"
+                app:layout_constraintRight_toRightOf="@id/item_pwd"
+                app:layout_constraintTop_toTopOf="@id/item_pwd"/>
+
+
+            <TextView
+                android:id="@+id/tv_pwd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:text="@string/change_pwd"
+                app:layout_constraintBottom_toBottomOf="@id/item_pwd"
+                app:layout_constraintRight_toLeftOf="@id/v_pwd"
+                app:layout_constraintTop_toTopOf="@id/item_pwd" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line_gray"
+                app:layout_constraintBottom_toBottomOf="@id/item_pwd" />
+        </android.support.constraint.ConstraintLayout>
+
+
+
+
+
+
+    </LinearLayout>
+</layout>
