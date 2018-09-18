@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="messageinfo"
+            type="com.barisetech.www.workmanage.bean.MessageInfo"/>
+
+        <variable
+            name="callback"
+            type="com.barisetech.www.workmanage.adapter.ItemCallBack"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="@{() -> callback.onClick(messageinfo)}"
+        android:orientation="vertical">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_16"
+                android:textColor="@color/plan_list_item_title"
+                android:textSize="@dimen/sp_14"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <ImageView
+                android:id="@+id/plan_list_item_exception"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintRight_toLeftOf="@id/plan_list_detail"/>
+
+            <TextView
+                android:id="@+id/plan_list_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dp_15"
+                android:text="@string/plan_list_item_to_detail"
+                android:textColor="@color/plan_list_item_to_detail"
+                android:textSize="@dimen/sp_14"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        </android.support.constraint.ConstraintLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_1"
+            android:layout_marginTop="@dimen/dp_7"
+            android:background="@color/line_gray"/>
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/dp_31"
+            android:paddingTop="@dimen/dp_16">
+
+            <TextView
+                android:id="@+id/plan_list_item_total"
+                android:layout_width="@dimen/dp_60"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/sp_15"
+                android:text="@string/plan_list_item_total"
+                android:textColor="@color/gray_alarm_details_text"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/sp_15"
+                android:layout_marginLeft="@dimen/dp_17"
+                android:layout_marginRight="@dimen/dp_31"
+
+                app:layout_constraintTop_toTopOf="@id/plan_list_item_total"
+                app:layout_constraintLeft_toRightOf="@id/plan_list_item_total"/>
+
+        </android.support.constraint.ConstraintLayout>
+
+    </LinearLayout>
+
+
+</layout>

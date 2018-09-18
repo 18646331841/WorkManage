@@ -28,5 +28,5 @@ public class ReqAllPlan {
     public String PesonChecked;
     public String State;
     public String Publisher;
-    public String PersonLiable;
+    public String PersonLiable = "";
 }

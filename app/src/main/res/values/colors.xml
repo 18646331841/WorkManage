@@ -19,6 +19,8 @@
     <color name="text_black">#333333</color>
     <color name="edit_bg">#f7f6f6</color>
     <color name="line_label_text_color">#cf666666</color>
+    <color name="plan_list_item_title">#2a5082</color>
+    <color name="plan_list_item_to_detail">#8ba6bd</color>
 
     <color name="popup_main_background">#b0000000</color>
     <color name="divide_line">#f7f7f7</color>

@@ -27,10 +27,14 @@ import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.bean.incident.IncidentInfo;
 import com.barisetech.www.workmanage.bean.incident.ReqAllIncident;
 import com.barisetech.www.workmanage.bean.incident.ReqIncidentSelectItem;
+import com.barisetech.www.workmanage.bean.pipe.ReqAllPipe;
 import com.barisetech.www.workmanage.bean.workplan.PlanBean;
+import com.barisetech.www.workmanage.bean.workplan.ReqAllPlan;
+import com.barisetech.www.workmanage.bean.workplan.ReqPlanNum;
 import com.barisetech.www.workmanage.databinding.FragmentPlanListBinding;
 import com.barisetech.www.workmanage.utils.DisplayUtil;
 import com.barisetech.www.workmanage.utils.LogUtil;
+import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
 import com.barisetech.www.workmanage.utils.TimeUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.viewmodel.PlanViewModel;
@@ -65,6 +69,8 @@ public class PlanListFragment extends BaseFragment {
     private PlanListAdapter planListAdapter;
     private BaseLoadMoreWrapper loadMoreWrapper;
     private PlanViewModel planViewModel;
+    private String role;
+    private Disposable numDisposable;
 
 
     public PlanListFragment() {
@@ -80,6 +86,7 @@ public class PlanListFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         planBeanList = new ArrayList<>();
+        role = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_ROLE, "");
     }
 
     @Override
@@ -163,17 +170,21 @@ public class PlanListFragment extends BaseFragment {
             transFilterLayout();
             curType = selectType;
             planBeanList.clear();
-            if (maxNum >= PAGE_COUNT) {
-                getDatas(0, PAGE_COUNT);
-            } else {
-                getDatas(0, maxNum);
-            }
+//            if (maxNum >= PAGE_COUNT) {
+//                getDatas(0, PAGE_COUNT);
+//            } else {
+//                getDatas(0, maxNum);
+//            }
+            getListNums();
         });
     }
 
     private void closeDisposable() {
         if (curDisposable != null) {
             curDisposable.dispose();
+        }
+        if (numDisposable != null) {
+            numDisposable.dispose();
         }
     }
 
@@ -326,44 +337,85 @@ public class PlanListFragment extends BaseFragment {
         }
         loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING);
 
-        ReqAllIncident reqAllIncident = new ReqAllIncident();
-        reqAllIncident.setStartIndex(String.valueOf(formIndex));
-        reqAllIncident.setNumberOfRecord(String.valueOf(toIndex));
-
-        ReqIncidentSelectItem reqIncidentSelectItem = new ReqIncidentSelectItem();
-        reqIncidentSelectItem.setSiteIdQueryChecked("false");
-        reqIncidentSelectItem.setSiteID("0");
-        reqIncidentSelectItem.setMIncidentType(String.valueOf(curType));
-        reqIncidentSelectItem.setTimeQueryChecked("true");
+        ReqAllPlan reqAllPlan = new ReqAllPlan();
+        if (curType == BaseConstant.TYPE_PLAN_ALL) {
+            reqAllPlan.isGetAll = "true";
+        } else {
+            reqAllPlan.State = String.valueOf(curType);
+            reqAllPlan.isGetAll = "false";
+        }
+        reqAllPlan.startIndex = String.valueOf(formIndex);
+        reqAllPlan.numberOfRecords = String.valueOf(toIndex);
+        reqAllPlan.TimeQueryChecked = "true";
         if (TextUtils.isEmpty(startTime)) {
             //接口设计原因，默认使用最小时间
-            reqIncidentSelectItem.setMStartTime("1970-01-01 00:00:00");
+            reqAllPlan.mStartTime = "1970-01-01 00:00:00";
         } else {
-            reqIncidentSelectItem.setMStartTime(startTime);
+            reqAllPlan.mStartTime = startTime;
         }
         if (TextUtils.isEmpty(endTime)) {
             //默认使用当前时间
-            reqIncidentSelectItem.setMEndTime(TimeUtil.ms2Date(System.currentTimeMillis()));
+            reqAllPlan.mStartTime = TimeUtil.ms2Date(System.currentTimeMillis());
         } else {
-            reqIncidentSelectItem.setMEndTime(endTime);
+            reqAllPlan.mStartTime = endTime;
         }
-        reqAllIncident.setIncidentSelectItem(reqIncidentSelectItem);
+        reqAllPlan.PesonChecked = "true";
+        reqAllPlan.Publisher = "admin";
+        if (!TextUtils.isEmpty(role)) {
+            if (!role.equals(BaseConstant.ROLE_SUPER_ADMINS) && !role.equals(BaseConstant.ROLE_ADMINS)) {
+                reqAllPlan.PersonLiable = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_ACCOUNT, "");
+            }
+        }
 
-//        curDisposable = incidentViewModel.reqAllIncident(reqAllIncident);
+        curDisposable = planViewModel.reqAll(reqAllPlan);
     }
 
     private void getListNums() {
         loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING);
 
-        ReqIncidentSelectItem reqIncidentSelectItem = new ReqIncidentSelectItem();
-        reqIncidentSelectItem.setSiteIdQueryChecked("false");
-        reqIncidentSelectItem.setSiteID("0");
-        reqIncidentSelectItem.setMIncidentType(String.valueOf(curType));
-        reqIncidentSelectItem.setTimeQueryChecked("true");
-        reqIncidentSelectItem.setMStartTime("1970-01-01 00:00:00");
-        reqIncidentSelectItem.setMEndTime(TimeUtil.ms2Date(System.currentTimeMillis()));
-
-//        incidentViewModel.reqIncidentNum(reqIncidentSelectItem);
+        ReqPlanNum reqPlanNum = new ReqPlanNum();
+        reqPlanNum.status = String.valueOf(curType);
+        reqPlanNum.isTime = 1;
+        if (TextUtils.isEmpty(startTime)) {
+            //接口设计原因，默认使用最小时间
+            reqPlanNum.startTime = "19700101";
+        } else {
+            String[] date1 = startTime.split(" ");
+            StringBuilder sb = new StringBuilder();
+            if (date1.length == 2) {
+                String[] date2 = date1[0].split("-");
+                if (date2.length == 3) {
+                    sb.append(date2[0])
+                            .append(date2[1])
+                            .append(date2[2]);
+                }
+            }
+            reqPlanNum.startTime = sb.toString();
+        }
+        if (TextUtils.isEmpty(endTime)) {
+            //默认使用当前时间
+            reqPlanNum.endTime = TimeUtil.ms2Date(System.currentTimeMillis());
+        } else {
+            String[] date1 = endTime.split(" ");
+            StringBuilder sb = new StringBuilder();
+            if (date1.length == 2) {
+                String[] date2 = date1[0].split("-");
+                if (date2.length == 3) {
+                    sb.append(date2[0])
+                            .append(date2[1])
+                            .append(date2[2]);
+                }
+            }
+            reqPlanNum.endTime = sb.toString();
+        }
+        reqPlanNum.isUser = 1;
+        if (!TextUtils.isEmpty(role)) {
+            if (!role.equals(BaseConstant.ROLE_SUPER_ADMINS) && !role.equals(BaseConstant.ROLE_ADMINS)) {
+                reqPlanNum.isPersonliable = 1;
+            }
+        }
+        reqPlanNum.personliable = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_ACCOUNT, "");
+        numDisposable = planViewModel.reqNum(reqPlanNum);
     }
 
     private ItemCallBack itemCallBack = item -> {
