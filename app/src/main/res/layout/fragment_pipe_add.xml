@@ -110,7 +110,7 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="45dp"
+                        android:layout_height="@dimen/dp_45"
                         android:gravity="center_vertical">
 
                         <TextView
@@ -125,7 +125,7 @@
 
                         <org.angmarch.views.NiceSpinner
                             android:id="@+id/sp_select_start_site"
-                            android:layout_width="180dp"
+                            android:layout_width="@dimen/dp_200"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             app:dropDownListPaddingBottom="@dimen/dp_50"/>
@@ -148,7 +148,7 @@
 
                         <org.angmarch.views.NiceSpinner
                             android:id="@+id/sp_select_end_site"
-                            android:layout_width="@dimen/dp_180"
+                            android:layout_width="@dimen/dp_200"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             app:dropDownListPaddingBottom="@dimen/dp_50"/>

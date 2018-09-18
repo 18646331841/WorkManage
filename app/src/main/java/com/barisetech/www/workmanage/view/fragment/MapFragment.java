@@ -10,7 +10,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.SparseArray;
@@ -18,19 +17,15 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.PopupWindow;
-import android.widget.TextView;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps.AMap;
-import com.amap.api.maps.AMapOptions;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
-import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
@@ -89,9 +84,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class MapFragment extends BaseFragment {
 
     public static final String TAG = "MapFragment";
@@ -263,6 +255,12 @@ public class MapFragment extends BaseFragment {
         }
         for (int i = 0; i < curPipeLines.size(); i++) {
             PipeLine pipeLine = curPipeLines.get(i);
+            if (pipeLine.startSiteMarker == null || pipeLine.endSiteMarker == null) {
+                if (pipeLine.polyline != null) {
+                    pipeLine.polyline.setVisible(false);
+                }
+                continue;
+            }
             if (pipeLine.pipeName.equals(showText)) {
                 pipeLine.show(true);
                 curStartMarker = pipeLine.startSiteMarker;
@@ -316,8 +314,8 @@ public class MapFragment extends BaseFragment {
 
     AMap.OnMarkerClickListener markerClickListener = marker -> {
         LogUtil.d("marker", marker.getTitle());
-        curClickMarker = marker;
         onClickPipeLine(marker);
+        curClickMarker = marker;
         return false;
     };
 
@@ -385,6 +383,9 @@ public class MapFragment extends BaseFragment {
         LogUtil.d(TAG, "toHere = " + marker.getTitle());
         for (int i = 0; i < curPipeLines.size(); i++) {
             PipeLine pipeLine = curPipeLines.get(i);
+            if (pipeLine.startSiteMarker == null || pipeLine.endSiteMarker == null) {
+                continue;
+            }
             if (pipeLine.startSiteMarker.getSnippet().equals(marker.getSnippet()) || pipeLine.endSiteMarker
                     .getSnippet().equals(marker.getSnippet())) {
 
@@ -413,6 +414,13 @@ public class MapFragment extends BaseFragment {
         String snippet = marker.getSnippet();
         for (int i = 0; i < curPipeLines.size(); i++) {
             PipeLine pipeLine = curPipeLines.get(i);
+            if (pipeLine.startSiteMarker == null || pipeLine.endSiteMarker == null) {
+                if (pipeLine.polyline != null) {
+                    pipeLine.polyline.setVisible(false);
+                }
+                continue;
+            }
+
             if (pipeLine.startSiteMarker.getSnippet().equals(snippet) || pipeLine.endSiteMarker.getSnippet().equals
                     (snippet)) {
                 curStartMarker = pipeLine.startSiteMarker;
@@ -482,25 +490,27 @@ public class MapFragment extends BaseFragment {
         List<MapPosition> mapPositionList = pipeLine.lineStation.mapPositionList;
         if (mapPositionList != null && mapPositionList.size() > 0) {
 
-            //首站不为空，增加首站标记
-            if (pipeLine.startSite != null) {
+            //增加首站标记和末站标记
+            if (pipeLine.startSite != null && pipeLine.endSite != null) {
+                LogUtil.d(TAG, "siteId = " + pipeLine.startSite.Name + " startMarker");
                 MarkerStation markerStation = new MarkerStation();
 //                markerStation.position = new MapPosition(pipeLine.startSite.Latitude, pipeLine.startSite.Longitude);
                 markerStation.position = mapPositionList.get(0);
                 markerStation.title = pipeLine.startSite.Name;
-                markerStation.snippet = String.valueOf(pipeLine.startSite.SiteId);
+//                markerStation.snippet = String.valueOf(pipeLine.startSite.SiteId);
+                markerStation.snippet = String.valueOf(pipeLine.startSite.SiteId + "_" + pipeLine.endSite.SiteId);
                 pipeLine.startSiteMarker = addStationMarker(markerStation, showWindow);
                 pipeLine.startSiteText = addStationText(markerStation);
-            }
-            //末站不为空，增加首站标记
-            if (pipeLine.endSite != null) {
-                MarkerStation markerStation = new MarkerStation();
+
+                LogUtil.d(TAG, "siteId = " + pipeLine.endSite.Name + " endMarker");
+                MarkerStation markerStation2 = new MarkerStation();
 //                markerStation.position = new MapPosition(pipeLine.endSite.Latitude, pipeLine.endSite.Longitude);
-                markerStation.position = mapPositionList.get(mapPositionList.size() - 1);
-                markerStation.title = pipeLine.endSite.Name;
-                markerStation.snippet = String.valueOf(pipeLine.endSite.SiteId);
-                pipeLine.endSiteMarker = addStationMarker(markerStation, showWindow);
-                pipeLine.endSiteText = addStationText(markerStation);
+                markerStation2.position = mapPositionList.get(mapPositionList.size() - 1);
+                markerStation2.title = pipeLine.endSite.Name;
+//                markerStation.snippet = String.valueOf(pipeLine.endSite.SiteId);
+                markerStation2.snippet = String.valueOf(pipeLine.startSite.SiteId + "_" + pipeLine.endSite.SiteId);
+                pipeLine.endSiteMarker = addStationMarker(markerStation2, showWindow);
+                pipeLine.endSiteText = addStationText(markerStation2);
             }
         }
     }

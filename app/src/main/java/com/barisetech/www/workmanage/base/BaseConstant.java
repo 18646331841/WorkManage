@@ -41,6 +41,15 @@ public class BaseConstant {
     public static final int TYPE_INCIDENT_UNKNOWN = 7;
 
     /**
+     * 巡线计划类型
+     */
+    public static final int TYPE_PLAN_ALL = 0;
+    public static final int TYPE_PLAN_UNCOMPLETED = 1;
+    public static final int TYPE_PLAN_COMPLETED = 2;
+    public static final int TYPE_PLAN_TIMEOUT = 3;
+    public static final int TYPE_PLAN_EXCESS = 4;
+
+    /**
      * SharedPreferences keys
      */
     //指纹登录

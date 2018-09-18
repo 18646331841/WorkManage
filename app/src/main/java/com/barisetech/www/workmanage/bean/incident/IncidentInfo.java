@@ -17,7 +17,7 @@ public class IncidentInfo extends MessageInfo implements Serializable {
 
     @Ignore
     private String[] typeToString = new String[]{"全部", "数字化仪上线", "数字化仪下线", "数字化仪时间不同步", "传感器不在线", "隔离器不在线",
-            "一个查不到数据的标志"};
+            "查无数据"};
     /**
      * Id : 1
      * SiteId : 1

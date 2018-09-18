@@ -45,7 +45,8 @@ public class BaseApplication extends MultiDexApplication {
         String tag = activity.getLocalClassName();
         RxPermissions rxPermission = new RxPermissions(activity);
         Disposable disposable = rxPermission
-                .requestEach(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .requestEach(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_PHONE_STATE)
                 .subscribe(permission -> {
                     if (permission.granted) {
                         // 用户已经同意该权限

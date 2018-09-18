@@ -1,18 +1,6 @@
 package com.barisetech.www.workmanage.http.api;
 
-import com.barisetech.www.workmanage.adapter.SiteAdapter;
 import com.barisetech.www.workmanage.base.BaseResponse;
-import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
-import com.barisetech.www.workmanage.bean.alarm.AlarmInfoNewest;
-import com.barisetech.www.workmanage.bean.alarm.ReqAllAlarm;
-import com.barisetech.www.workmanage.bean.alarm.ReqLiftAlarm;
-import com.barisetech.www.workmanage.bean.news.NewsInfo;
-import com.barisetech.www.workmanage.bean.news.ReqNewsInfos;
-import com.barisetech.www.workmanage.bean.pipe.ReqDeletePipe;
-import com.barisetech.www.workmanage.bean.pipecollections.PipeCollections;
-import com.barisetech.www.workmanage.bean.pipecollections.ReqAddPC;
-import com.barisetech.www.workmanage.bean.pipecollections.ReqAllPc;
-import com.barisetech.www.workmanage.bean.pipecollections.ReqDeletePc;
 import com.barisetech.www.workmanage.bean.site.ReqAddSite;
 import com.barisetech.www.workmanage.bean.site.ReqDelSiteInfo;
 import com.barisetech.www.workmanage.bean.site.ReqSiteInfos;

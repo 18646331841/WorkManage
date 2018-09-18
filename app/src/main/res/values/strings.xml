@@ -13,6 +13,14 @@
 
     <string name="title_map_pipe_list">管线列表</string>
 
+    <string name="title_plan_list">巡线计划</string>
+    <string name="plan_list_publish">发布计划</string>
+    <string name="plan_list_uncompleted">未完成</string>
+    <string name="plan_list_completed">已完成</string>
+    <string name="plan_list_timeout">超时</string>
+    <string name="plan_list_excess">超额</string>
+    <string name="plan_list_all">全部</string>
+
     <string name="title_map">地图</string>
     <string name="map_to_here">导航去这里</string>
 
@@ -22,7 +30,7 @@
     <string name="incident_list_digitizer_time_off">数字化仪时间不同步</string>
     <string name="incident_list_sensor_offline">传感器不在线</string>
     <string name="incident_list_isolator_offline">隔离器不在线</string>
-    <string name="incident_list_unknown">一个查不到数据的标志</string>
+    <string name="incident_list_unknown">查无数据</string>
 
     <string name="title_incident_detail">事件详情</string>
     <string name="incident_detail_to_site">转到站点</string>
@@ -69,8 +77,8 @@
     <string name="alarm_analysis_upload">上传</string>
     <string name="alarm_analysis_upload_success">上传成功</string>
     <string name="alarm_analysis_upload_fail">上传失败</string>
-    <string name="alarm_analysis_start_time">请选择开始时间</string>
-    <string name="alarm_analysis_end_time">请选择结束时间</string>
+    <string name="alarm_analysis_start_time">选择开始时间</string>
+    <string name="alarm_analysis_end_time">选择结束时间</string>
 
     <string name="title_analysis_detail">警报分析详情</string>
     <string name="analysis_detail_time">时间</string>
