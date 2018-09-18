@@ -1,4 +1,4 @@
-package com.barisetech.www.workmanage.view.fragment;
+package com.barisetech.www.workmanage.view.fragment.my;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -68,25 +68,26 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
                 EventBus.getDefault().post(new EventBusMessage(MyInfoFragment.TAG));
                 break;
             case R.id.item_finger:
-//                EventBus.getDefault().post(new EventBusMessage(DigitizingFragment.TAG));
+                EventBus.getDefault().post(new EventBusMessage(FingerOpenFragment.TAG));
                 break;
             case R.id.item_sound:
                 EventBus.getDefault().post(new EventBusMessage(SoundFragment.TAG));
                 break;
             case R.id.item_event_type:
-//                EventBus.getDefault().post(new EventBusMessage(PipeCollectionFragment.TAG));
+                EventBus.getDefault().post(new EventBusMessage(EventTypeFragment.TAG));
                 break;
             case R.id.item_authorization_manage:
 //                EventBus.getDefault().post(new EventBusMessage(PipeWorkFragment.TAG));
                 break;
             case R.id.item_not_disturb:
-//                EventBus.getDefault().post(new EventBusMessage(PipeLindAreaFragment.TAG));
+                EventBus.getDefault().post(new EventBusMessage(NotDisturbFragment.TAG));
                 break;
             case R.id.item_clear_cache:
                 break;
             case R.id.item_contacts:
                 break;
             case R.id.item_about:
+                EventBus.getDefault().post(new EventBusMessage(AboutFragment.TAG));
                 break;
 
         }

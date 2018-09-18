@@ -1,4 +1,4 @@
-package com.barisetech.www.workmanage.view.fragment;
+package com.barisetech.www.workmanage.view.fragment.my;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -10,40 +10,35 @@ import android.view.ViewGroup;
 
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.base.BaseFragment;
-import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
-import com.barisetech.www.workmanage.databinding.FragmentMyInfoBinding;
+import com.barisetech.www.workmanage.databinding.FragmentSoundBinding;
 
-import org.greenrobot.eventbus.EventBus;
+public class SoundFragment extends BaseFragment {
 
-public class MyInfoFragment extends BaseFragment{
+    public static final String TAG ="SoundFragment";
+    FragmentSoundBinding mBinding;
 
 
-    public static final String TAG = "MyInfoFragment";
-    FragmentMyInfoBinding mBinding;
-
-    public static MyInfoFragment newInstance() {
-        MyInfoFragment fragment = new MyInfoFragment();
+    public static SoundFragment newInstance() {
+        SoundFragment fragment = new SoundFragment();
         return fragment;
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_my_info, container, false);
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_sound, container, false);
         setToolBarHeight(mBinding.toolbar.getRoot());
         mBinding.setFragment(this);
         ToolbarInfo toolbarInfo = new ToolbarInfo();
-        toolbarInfo.setTitle(getString(R.string.personal_info));
+        toolbarInfo.setTitle(getString(R.string.sound_shock));
         observableToolbar.set(toolbarInfo);
         initView();
         return mBinding.getRoot();
     }
 
     private void initView() {
-        mBinding.itemPwd.setOnClickListener(v -> {
-            EventBus.getDefault().post(new EventBusMessage(PassWordFragment.TAG));
-        });
+
     }
 
     @Override

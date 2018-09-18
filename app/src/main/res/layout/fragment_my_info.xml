@@ -25,15 +25,14 @@
         <android.support.constraint.ConstraintLayout
             android:id="@+id/item_account"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginLeft="22dp"
-            android:layout_marginRight="15dp">
+            android:background="@color/white"
+            android:layout_height="50dp">
 
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="42dp"
                 android:text="@string/tv_count"
                 android:textSize="18sp"
                 android:textColor="@color/text_black"
@@ -45,7 +44,7 @@
                 android:id="@+id/tv_account"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="15dp"
+                android:layout_marginRight="38dp"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="@id/item_account"
                 app:layout_constraintRight_toRightOf="@id/item_account"
@@ -64,15 +63,14 @@
         <android.support.constraint.ConstraintLayout
             android:id="@+id/item_email"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginLeft="22dp"
-            android:layout_marginRight="15dp">
+            android:background="@color/white"
+            android:layout_height="50dp">
 
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="42dp"
                 android:text="@string/pc_detail_email"
                 android:textSize="18sp"
                 android:textColor="@color/text_black"
@@ -83,6 +81,7 @@
             <View
                 android:id="@+id/v_email"
                 style="@style/LineArrowRight"
+                android:layout_marginRight="@dimen/dp_15"
                 app:layout_constraintBottom_toBottomOf="@id/item_email"
                 app:layout_constraintRight_toRightOf="@id/item_email"
                 app:layout_constraintTop_toTopOf="@id/item_email"/>
@@ -110,15 +109,14 @@
         <android.support.constraint.ConstraintLayout
             android:id="@+id/item_phone"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginLeft="22dp"
-            android:layout_marginRight="15dp">
+            android:background="@color/white"
+            android:layout_height="50dp">
 
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="42dp"
                 android:text="@string/phone"
                 android:textSize="18sp"
                 android:textColor="@color/text_black"
@@ -129,6 +127,7 @@
             <View
                 android:id="@+id/v_phone"
                 style="@style/LineArrowRight"
+                android:layout_marginRight="@dimen/dp_15"
                 app:layout_constraintBottom_toBottomOf="@id/item_phone"
                 app:layout_constraintRight_toRightOf="@id/item_phone"
                 app:layout_constraintTop_toTopOf="@id/item_phone"/>
@@ -156,16 +155,15 @@
         <android.support.constraint.ConstraintLayout
             android:id="@+id/item_pwd"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginLeft="22dp"
-            android:layout_marginRight="15dp">
+            android:background="@color/white"
+            android:layout_height="50dp">
 
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:text="@string/phone"
+                android:layout_marginLeft="42dp"
+                android:text="@string/tv_password"
                 android:textSize="18sp"
                 android:textColor="@color/text_black"
                 app:layout_constraintBottom_toBottomOf="@id/item_pwd"
@@ -175,6 +173,7 @@
             <View
                 android:id="@+id/v_pwd"
                 style="@style/LineArrowRight"
+                android:layout_marginRight="@dimen/dp_15"
                 app:layout_constraintBottom_toBottomOf="@id/item_pwd"
                 app:layout_constraintRight_toRightOf="@id/item_pwd"
                 app:layout_constraintTop_toTopOf="@id/item_pwd"/>

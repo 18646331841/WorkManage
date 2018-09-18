@@ -70,6 +70,7 @@
                     android:background="@drawable/shane_button_corners"
                     android:text="@string/save"
                     android:textColor="@color/white"
+                    android:layout_marginBottom="@dimen/dp_50"
                     android:textSize="@dimen/sp_18"/>
             </LinearLayout>
 

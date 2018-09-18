@@ -21,7 +21,7 @@ import com.barisetech.www.workmanage.R;
 
 public class SwitchView extends View {
     //d23819
-    private final int DEFAULT_COLOR_PRIMARY = 0xFFf5231b;
+    private final int DEFAULT_COLOR_PRIMARY = 0xFF30a0ff;
     private final int DEFAULT_COLOR_PRIMARY_DARK = 0xFFffffff;
     private final float RATIO_ASPECT = 0.68f;
     private final float ANIMATION_SPEED = 0.1f; // (0,1]

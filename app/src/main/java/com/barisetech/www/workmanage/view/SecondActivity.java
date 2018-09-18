@@ -8,7 +8,6 @@ import android.view.MotionEvent;
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.base.BaseActivity;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
-import com.barisetech.www.workmanage.bean.RawBean;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.bean.alarmanalysis.AlarmAnalysis;
 import com.barisetech.www.workmanage.bean.incident.IncidentInfo;
@@ -17,6 +16,7 @@ import com.barisetech.www.workmanage.bean.pipecollections.PipeCollections;
 import com.barisetech.www.workmanage.bean.pipelindarea.PipeLindAreaInfo;
 import com.barisetech.www.workmanage.bean.pipework.PipeWork;
 import com.barisetech.www.workmanage.bean.site.SiteBean;
+import com.barisetech.www.workmanage.view.fragment.my.AboutFragment;
 import com.barisetech.www.workmanage.view.fragment.AddSiteFragment;
 import com.barisetech.www.workmanage.view.fragment.AlarmAnalysisDetailFragment;
 import com.barisetech.www.workmanage.view.fragment.AlarmAnalysisFragment;
@@ -25,16 +25,19 @@ import com.barisetech.www.workmanage.view.fragment.AlarmDetailsFragment;
 import com.barisetech.www.workmanage.view.fragment.AlarmListFragment;
 import com.barisetech.www.workmanage.view.fragment.DigitizingDetailFragment;
 import com.barisetech.www.workmanage.view.fragment.DigitizingFragment;
+import com.barisetech.www.workmanage.view.fragment.my.EventTypeFragment;
 import com.barisetech.www.workmanage.view.fragment.FingerprintManagerFragment;
 import com.barisetech.www.workmanage.view.fragment.IncidentDetailsFragment;
 import com.barisetech.www.workmanage.view.fragment.IncidentListFragment;
 import com.barisetech.www.workmanage.view.fragment.MapFragment;
 import com.barisetech.www.workmanage.view.fragment.ModifySiteFragment;
-import com.barisetech.www.workmanage.view.fragment.MyInfoFragment;
+import com.barisetech.www.workmanage.view.fragment.my.FingerOpenFragment;
+import com.barisetech.www.workmanage.view.fragment.my.MyInfoFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsAddFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsDetailsFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsListFragment;
-import com.barisetech.www.workmanage.view.fragment.PassWordFragment;
+import com.barisetech.www.workmanage.view.fragment.my.NotDisturbFragment;
+import com.barisetech.www.workmanage.view.fragment.my.PassWordFragment;
 import com.barisetech.www.workmanage.view.fragment.PipeAddFragment;
 import com.barisetech.www.workmanage.view.fragment.PipeCollectionAddFragment;
 import com.barisetech.www.workmanage.view.fragment.PipeCollectionDetailFragment;
@@ -53,7 +56,7 @@ import com.barisetech.www.workmanage.view.fragment.PipeWorkFragment;
 import com.barisetech.www.workmanage.view.fragment.PipeWorkModifyFragment;
 import com.barisetech.www.workmanage.view.fragment.SiteDetailFragment;
 import com.barisetech.www.workmanage.view.fragment.SiteFragment;
-import com.barisetech.www.workmanage.view.fragment.SoundFragment;
+import com.barisetech.www.workmanage.view.fragment.my.SoundFragment;
 import com.barisetech.www.workmanage.view.fragment.WaveFormFragment;
 
 import org.greenrobot.eventbus.EventBus;
@@ -349,12 +352,36 @@ public class SecondActivity extends BaseActivity {
             case PassWordFragment.TAG:
                 transaction
                         .replace(R.id.second_framelayout, PassWordFragment.newInstance(), tag).commit();
+                if (!isActivity) {
+                    transaction.addToBackStack(tag);
+                }
                 break;
 
             case SoundFragment.TAG:
                 transaction
                         .replace(R.id.second_framelayout, SoundFragment.newInstance(), tag).commit();
                 break;
+
+            case AboutFragment.TAG:
+                transaction
+                        .replace(R.id.second_framelayout, AboutFragment.newInstance(), tag).commit();
+                break;
+            case EventTypeFragment.TAG:
+                transaction
+                        .replace(R.id.second_framelayout, EventTypeFragment.newInstance(), tag).commit();
+                break;
+
+            case FingerOpenFragment.TAG:
+                transaction
+                        .replace(R.id.second_framelayout, FingerOpenFragment.newInstance(), tag).commit();
+                break;
+
+
+            case NotDisturbFragment.TAG:
+                transaction
+                        .replace(R.id.second_framelayout, NotDisturbFragment.newInstance(), tag).commit();
+                break;
+
 
         }
     }
