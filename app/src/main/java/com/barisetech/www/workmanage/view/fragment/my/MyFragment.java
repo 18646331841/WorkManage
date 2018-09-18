@@ -13,6 +13,8 @@ import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.databinding.FragmentMyBinding;
+import com.barisetech.www.workmanage.utils.DataCleanManagerUtil;
+import com.barisetech.www.workmanage.widget.CustomDialog;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -21,6 +23,9 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
 
     public static final String TAG = "MyFragment";
     FragmentMyBinding mBinding;
+
+    private CustomDialog.Builder builder;
+    private CustomDialog mDialog;
 
 
     public static MyFragment newInstance() {
@@ -37,6 +42,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
         ToolbarInfo toolbarInfo = new ToolbarInfo();
         toolbarInfo.setTitle(getString(R.string.title_myself));
         observableToolbar.set(toolbarInfo);
+        builder = new CustomDialog.Builder(getContext());
         mBinding.itemAbout.setOnClickListener(this);
         mBinding.itemAuthorizationManage.setOnClickListener(this);
         mBinding.itemClearCache.setOnClickListener(this);
@@ -83,8 +89,21 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
                 EventBus.getDefault().post(new EventBusMessage(NotDisturbFragment.TAG));
                 break;
             case R.id.item_clear_cache:
+                showTwoButtonDialog("是否清除缓存", 0, null, "确定", "取消", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        DataCleanManagerUtil.clearAllCache(getContext());
+                        mDialog.dismiss();
+                    }
+                }, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mDialog.dismiss();
+                    }
+                });
                 break;
             case R.id.item_contacts:
+
                 break;
             case R.id.item_about:
                 EventBus.getDefault().post(new EventBusMessage(AboutFragment.TAG));
@@ -92,5 +111,15 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
 
         }
 
+    }
+
+    private void showTwoButtonDialog(String alertText, int ImgId,String title,String confirmText, String cancelText, View.OnClickListener conFirmListener, View.OnClickListener cancelListener) {
+        mDialog = builder.setMessage(alertText)
+                .setImagView(ImgId)
+                .setTitle(title)
+                .setPositiveButton(confirmText, conFirmListener)
+                .setNegativeButton(cancelText, cancelListener)
+                .createTwoButtonDialog();
+        mDialog.show();
     }
 }
