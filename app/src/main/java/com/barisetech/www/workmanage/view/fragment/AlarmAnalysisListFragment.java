@@ -194,8 +194,10 @@ public class AlarmAnalysisListFragment extends BaseFragment {
     private void showDateRadio() {
         if (mBinding.analysisListDateLayout.getVisibility() == View.GONE) {
             mBinding.analysisListDateLayout.setVisibility(View.VISIBLE);
-            mBinding.analysisListStartTime.setText("1970-01-01 00:00:00");
-            mBinding.analysisListEndTime.setText(TimeUtil.ms2Date(System.currentTimeMillis()));
+            startTime = "1970-01-01 00:00:00";
+            endTime = TimeUtil.ms2Date(System.currentTimeMillis());
+            mBinding.analysisListStartTime.setText(startTime);
+            mBinding.analysisListEndTime.setText(endTime);
         }
     }
 

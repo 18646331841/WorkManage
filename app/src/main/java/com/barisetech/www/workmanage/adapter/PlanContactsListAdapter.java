@@ -8,20 +8,20 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.barisetech.www.workmanage.R;
-import com.barisetech.www.workmanage.bean.incident.IncidentInfo;
+import com.barisetech.www.workmanage.bean.contacts.ContactsBean;
 import com.barisetech.www.workmanage.bean.workplan.PlanBean;
-import com.barisetech.www.workmanage.databinding.ItemIncidentBinding;
+import com.barisetech.www.workmanage.databinding.ItemPlanContactsListBinding;
 import com.barisetech.www.workmanage.databinding.ItemPlanListBinding;
 
 import java.util.List;
 
-public class PlanListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+public class PlanContactsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
-    private List<PlanBean> mList;
+    private List<ContactsBean> mList;
     private Context ctx;
     private ItemCallBack itemCallBack;
 
-    public PlanListAdapter(List<PlanBean> list, Context context, @NonNull ItemCallBack itemCallBack) {
+    public PlanContactsListAdapter(List<ContactsBean> list, Context context, @NonNull ItemCallBack itemCallBack) {
         this.mList = list;
         this.ctx = context;
         this.itemCallBack = itemCallBack;
@@ -29,8 +29,8 @@ public class PlanListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemPlanListBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout
-                .item_plan_list, parent, false);
+        ItemPlanContactsListBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout
+                .item_plan_contacts_list, parent, false);
         binding.setCallback(itemCallBack);
         return new MyHolder(binding);
     }
@@ -39,9 +39,9 @@ public class PlanListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof MyHolder) {
             MyHolder myHolder = (MyHolder) holder;
-            PlanBean planBean = mList.get(position);
+            ContactsBean contactsBean = mList.get(position);
 
-            myHolder.binding.setPlanbean(planBean);
+            myHolder.binding.setContacts(contactsBean);
         }
     }
 
@@ -51,8 +51,8 @@ public class PlanListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     class MyHolder extends RecyclerView.ViewHolder{
-        final ItemPlanListBinding binding;
-        public MyHolder(ItemPlanListBinding binding) {
+        final ItemPlanContactsListBinding binding;
+        public MyHolder(ItemPlanContactsListBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }

@@ -37,6 +37,7 @@ import com.barisetech.www.workmanage.utils.LogUtil;
 import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
 import com.barisetech.www.workmanage.utils.TimeUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
+import com.barisetech.www.workmanage.view.fragment.workplan.FirstPublishFragment;
 import com.barisetech.www.workmanage.viewmodel.PlanViewModel;
 
 import org.greenrobot.eventbus.EventBus;
@@ -97,7 +98,9 @@ public class PlanListFragment extends BaseFragment {
         mBinding.setFragment(this);
         ToolbarInfo toolbarInfo = new ToolbarInfo();
         toolbarInfo.setTitle(getString(R.string.title_plan_list));
-        toolbarInfo.setOneText(getString(R.string.plan_list_publish));
+        if (role.equals(BaseConstant.ROLE_ADMINS) || role.equals(BaseConstant.ROLE_SUPER_ADMINS)) {
+            toolbarInfo.setOneText(getString(R.string.plan_list_publish));
+        }
         observableToolbar.set(toolbarInfo);
 
         initView();
@@ -105,6 +108,16 @@ public class PlanListFragment extends BaseFragment {
     }
 
     private void initView() {
+        if (role.equals(BaseConstant.ROLE_ADMINS) || role.equals(BaseConstant.ROLE_SUPER_ADMINS)) {
+            mBinding.toolbar.tvOne.setOnClickListener(view -> {
+                EventBus.getDefault().post(new EventBusMessage(FirstPublishFragment.TAG));
+            });
+        }
+
+        mBinding.tvFilter.setOnClickListener(view -> {
+            transFilterLayout();
+        });
+
         startDatePicker = TimeUtil.getDatePicker(getActivity(), onStartDateSetListener);
         endDatePicker = TimeUtil.getDatePicker(getActivity(), onEndDateSetListener);
         startTimePicker = TimeUtil.getTimePicker(getActivity(), onStartTimeSetListener);
@@ -272,8 +285,10 @@ public class PlanListFragment extends BaseFragment {
      * 显示日期选择按钮
      */
     private void setDateTime() {
-        mBinding.planListStartTime.setText("1970-01-01 00:00:00");
-        mBinding.planListEndTime.setText(TimeUtil.ms2Date(System.currentTimeMillis()));
+        startTime = "1970-01-01 00:00:00";
+        endTime = TimeUtil.ms2Date(System.currentTimeMillis());
+        mBinding.planListStartTime.setText(startTime);
+        mBinding.planListEndTime.setText(endTime);
 
     }
 
@@ -341,9 +356,9 @@ public class PlanListFragment extends BaseFragment {
         if (curType == BaseConstant.TYPE_PLAN_ALL) {
             reqAllPlan.isGetAll = "true";
         } else {
-            reqAllPlan.State = String.valueOf(curType);
             reqAllPlan.isGetAll = "false";
         }
+        reqAllPlan.State = String.valueOf(curType);
         reqAllPlan.startIndex = String.valueOf(formIndex);
         reqAllPlan.numberOfRecords = String.valueOf(toIndex);
         reqAllPlan.TimeQueryChecked = "true";
@@ -355,9 +370,9 @@ public class PlanListFragment extends BaseFragment {
         }
         if (TextUtils.isEmpty(endTime)) {
             //默认使用当前时间
-            reqAllPlan.mStartTime = TimeUtil.ms2Date(System.currentTimeMillis());
+            reqAllPlan.mEndTime = TimeUtil.ms2Date(System.currentTimeMillis());
         } else {
-            reqAllPlan.mStartTime = endTime;
+            reqAllPlan.mEndTime = endTime;
         }
         reqAllPlan.PesonChecked = "true";
         reqAllPlan.Publisher = "admin";
@@ -394,7 +409,18 @@ public class PlanListFragment extends BaseFragment {
         }
         if (TextUtils.isEmpty(endTime)) {
             //默认使用当前时间
-            reqPlanNum.endTime = TimeUtil.ms2Date(System.currentTimeMillis());
+            String time = TimeUtil.ms2Date(System.currentTimeMillis());
+            String[] date1 = time.split(" ");
+            StringBuilder sb = new StringBuilder();
+            if (date1.length == 2) {
+                String[] date2 = date1[0].split("-");
+                if (date2.length == 3) {
+                    sb.append(date2[0])
+                            .append(date2[1])
+                            .append(date2[2]);
+                }
+            }
+            reqPlanNum.endTime = sb.toString();
         } else {
             String[] date1 = endTime.split(" ");
             StringBuilder sb = new StringBuilder();

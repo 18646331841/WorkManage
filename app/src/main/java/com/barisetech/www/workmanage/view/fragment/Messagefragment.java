@@ -86,6 +86,11 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
         toolbarInfo.setOneText(getString(R.string.message_mission));
         observableToolbar.set(toolbarInfo);
 
+        mBinding.toolbar.tvOne.setOnClickListener(view -> {
+            EventBusMessage mapMessage = new EventBusMessage(PlanListFragment.TAG);
+            EventBus.getDefault().post(mapMessage);
+        });
+
         EventBus.getDefault().register(this);
 
         messageAdapter = new MessageAdapter(itemCallBack, curMessageList);

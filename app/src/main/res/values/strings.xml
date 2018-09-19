@@ -27,6 +27,22 @@
     <string name="plan_list_item_person_liable">责任人</string>
     <string name="plan_list_item_site">站点</string>
 
+    <string name="title_plan_publish_plan">发布计划</string>
+    <string name="plan_publish_next_step">下一步</string>
+    <string name="plan_publish_first">1</string>
+    <string name="plan_publish_second">2</string>
+    <string name="plan_publish_third">3</string>
+    <string name="plan_publish_first_contacts">/3 请选择任务责任人</string>
+    <string name="plan_publish_second_title">请输入计划标题</string>
+    <string name="plan_publish_second_please_deadline">请选择任务截止时间</string>
+    <string name="plan_publish_second_deadline">选择截止日期</string>
+    <string name="plan_publish_second_or">或 选择常用周期</string>
+    <string name="plan_publish_second_one_month">1个月</string>
+    <string name="plan_publish_second_one_quarter">1季度</string>
+    <string name="plan_publish_second_one_year">一年</string>
+    <string name="plan_publish_second_num">巡线次数</string>
+    <string name="plan_publish_second_please_num">请输入数字</string>
+
     <string name="title_map">地图</string>
     <string name="map_to_here">导航去这里</string>
 

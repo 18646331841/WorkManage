@@ -276,8 +276,10 @@ public class IncidentListFragment extends BaseFragment {
     private void showDateRadio() {
         if (mBinding.incidentListDateLayout.getVisibility() == View.GONE) {
             mBinding.incidentListDateLayout.setVisibility(View.VISIBLE);
-            mBinding.incidentListStartTime.setText("1970-01-01 00:00:00");
-            mBinding.incidentListEndTime.setText(TimeUtil.ms2Date(System.currentTimeMillis()));
+            startTime = "1970-01-01 00:00:00";
+            endTime = TimeUtil.ms2Date(System.currentTimeMillis());
+            mBinding.incidentListStartTime.setText(startTime);
+            mBinding.incidentListEndTime.setText(endTime);
         }
     }
 

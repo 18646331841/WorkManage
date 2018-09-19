@@ -16,6 +16,7 @@ import com.barisetech.www.workmanage.bean.pipecollections.PipeCollections;
 import com.barisetech.www.workmanage.bean.pipelindarea.PipeLindAreaInfo;
 import com.barisetech.www.workmanage.bean.pipework.PipeWork;
 import com.barisetech.www.workmanage.bean.site.SiteBean;
+import com.barisetech.www.workmanage.view.fragment.PlanListFragment;
 import com.barisetech.www.workmanage.view.fragment.my.AboutFragment;
 import com.barisetech.www.workmanage.view.fragment.AddSiteFragment;
 import com.barisetech.www.workmanage.view.fragment.AlarmAnalysisDetailFragment;
@@ -59,6 +60,7 @@ import com.barisetech.www.workmanage.view.fragment.SiteDetailFragment;
 import com.barisetech.www.workmanage.view.fragment.SiteFragment;
 import com.barisetech.www.workmanage.view.fragment.my.SoundFragment;
 import com.barisetech.www.workmanage.view.fragment.WaveFormFragment;
+import com.barisetech.www.workmanage.view.fragment.workplan.FirstPublishFragment;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -86,8 +88,8 @@ public class SecondActivity extends BaseActivity {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        point.x= (int) ev.getRawX();
-        point.y= (int) ev.getRawY();
+        point.x = (int) ev.getRawX();
+        point.y = (int) ev.getRawY();
         EventBus.getDefault().post(point);
         return super.dispatchTouchEvent(ev);
     }
@@ -345,6 +347,19 @@ public class SecondActivity extends BaseActivity {
                 }
                 break;
 
+            case PlanListFragment.TAG:
+                transaction
+                        .replace(R.id.second_framelayout, PlanListFragment.newInstance(), tag).commit();
+                break;
+
+            case FirstPublishFragment.TAG:
+                transaction
+                        .replace(R.id.second_framelayout, FirstPublishFragment.newInstance(), tag).commit();
+                if (!isActivity) {
+                    transaction.addToBackStack(tag);
+                }
+                break;
+
             case MyInfoFragment.TAG:
                 transaction
                         .replace(R.id.second_framelayout, MyInfoFragment.newInstance(), tag).commit();
@@ -377,13 +392,10 @@ public class SecondActivity extends BaseActivity {
                         .replace(R.id.second_framelayout, FingerOpenFragment.newInstance(), tag).commit();
                 break;
 
-
             case NotDisturbFragment.TAG:
                 transaction
                         .replace(R.id.second_framelayout, NotDisturbFragment.newInstance(), tag).commit();
                 break;
-
-
             case ContactsFragment.TAG:
                 transaction
                         .replace(R.id.second_framelayout, ContactsFragment.newInstance(), tag).commit();

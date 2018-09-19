@@ -21,6 +21,7 @@ import com.barisetech.www.workmanage.bean.pipework.PipeWork;
 import com.barisetech.www.workmanage.bean.site.SiteBean;
 import com.barisetech.www.workmanage.utils.LogUtil;
 import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
+import com.barisetech.www.workmanage.view.fragment.PlanListFragment;
 import com.barisetech.www.workmanage.view.fragment.my.AboutFragment;
 import com.barisetech.www.workmanage.view.fragment.AddSiteFragment;
 import com.barisetech.www.workmanage.view.fragment.AlarmAnalysisDetailFragment;
@@ -65,6 +66,7 @@ import com.barisetech.www.workmanage.view.fragment.SiteDetailFragment;
 import com.barisetech.www.workmanage.view.fragment.SiteFragment;
 import com.barisetech.www.workmanage.view.fragment.my.SoundFragment;
 import com.barisetech.www.workmanage.view.fragment.WaveFormFragment;
+import com.barisetech.www.workmanage.view.fragment.workplan.FirstPublishFragment;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -408,6 +410,21 @@ public class MainActivity extends BaseActivity {
                     transaction
                             .replace(R.id.fragment_content, PipeLindAreaModifyFragment.newInstance((PipeLindAreaInfo)
                                     eventBusMessage.getArg1()), tag).commit();
+                    if (!isActivity) {
+                        transaction.addToBackStack(tag);
+                    }
+                    break;
+
+                case PlanListFragment.TAG:
+                    transaction
+                            .replace(R.id.fragment_content, PlanListFragment.newInstance(), tag).commit();
+                    if (!isActivity) {
+                        transaction.addToBackStack(tag);
+                    }
+                    break;
+                case FirstPublishFragment.TAG:
+                    transaction
+                            .replace(R.id.fragment_content, FirstPublishFragment.newInstance(), tag).commit();
                     if (!isActivity) {
                         transaction.addToBackStack(tag);
                     }
