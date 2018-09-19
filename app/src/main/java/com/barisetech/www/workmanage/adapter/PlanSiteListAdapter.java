@@ -40,8 +40,7 @@ public class PlanSiteListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (holder instanceof MyHolder) {
             MyHolder myHolder = (MyHolder) holder;
             SiteBean siteBean = mList.get(position);
-
-            myHolder.binding.setSite(siteBean);
+//            myHolder.binding.planPublishThirdSite.setT
         }
     }
 
