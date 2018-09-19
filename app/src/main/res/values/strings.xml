@@ -28,11 +28,15 @@
     <string name="plan_list_item_site">站点</string>
 
     <string name="title_plan_publish_plan">发布计划</string>
+    <string name="title_plan_publish">发布</string>
     <string name="plan_publish_next_step">下一步</string>
     <string name="plan_publish_first">1</string>
     <string name="plan_publish_second">2</string>
     <string name="plan_publish_third">3</string>
     <string name="plan_publish_first_contacts">/3 请选择任务责任人</string>
+    <string name="plan_publish_second_info">/3 请填写任务信息</string>
+    <string name="plan_publish_third_site">/3 请选择站点</string>
+    <string name="plan_publish_third_past_site">请选择一个历史站点</string>
     <string name="plan_publish_second_title">请输入计划标题</string>
     <string name="plan_publish_second_please_deadline">请选择任务截止时间</string>
     <string name="plan_publish_second_deadline">选择截止日期</string>

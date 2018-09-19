@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="site"
+            type="com.barisetech.www.workmanage.bean.site.SiteBean"/>
+
+        <variable
+            name="callback"
+            type="com.barisetech.www.workmanage.adapter.ItemCallBack"/>
+    </data>
+
+
+</layout>

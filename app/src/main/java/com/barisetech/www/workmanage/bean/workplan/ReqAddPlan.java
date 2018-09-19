@@ -1,11 +1,12 @@
 package com.barisetech.www.workmanage.bean.workplan;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by LJH on 2018/9/18.
  */
-public class ReqAddPlan {
+public class ReqAddPlan implements Serializable{
     /**
      * Id : 2
      * Name : ss

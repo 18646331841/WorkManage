@@ -17,6 +17,7 @@ import com.barisetech.www.workmanage.bean.pipecollections.PipeCollections;
 import com.barisetech.www.workmanage.bean.pipelindarea.PipeLindAreaInfo;
 import com.barisetech.www.workmanage.bean.pipework.PipeWork;
 import com.barisetech.www.workmanage.bean.site.SiteBean;
+import com.barisetech.www.workmanage.bean.workplan.ReqAddPlan;
 import com.barisetech.www.workmanage.view.fragment.PlanListFragment;
 import com.barisetech.www.workmanage.view.fragment.my.AboutFragment;
 import com.barisetech.www.workmanage.view.fragment.AddSiteFragment;
@@ -63,6 +64,7 @@ import com.barisetech.www.workmanage.view.fragment.SiteFragment;
 import com.barisetech.www.workmanage.view.fragment.my.SoundFragment;
 import com.barisetech.www.workmanage.view.fragment.WaveFormFragment;
 import com.barisetech.www.workmanage.view.fragment.workplan.FirstPublishFragment;
+import com.barisetech.www.workmanage.view.fragment.workplan.SecondPublishFragment;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -357,6 +359,15 @@ public class SecondActivity extends BaseActivity {
             case FirstPublishFragment.TAG:
                 transaction
                         .replace(R.id.second_framelayout, FirstPublishFragment.newInstance(), tag).commit();
+                if (!isActivity) {
+                    transaction.addToBackStack(tag);
+                }
+                break;
+
+            case SecondPublishFragment.TAG:
+                transaction
+                        .replace(R.id.second_framelayout, SecondPublishFragment.newInstance((ReqAddPlan)
+                                eventBusMessage.getArg1()), tag).commit();
                 if (!isActivity) {
                     transaction.addToBackStack(tag);
                 }

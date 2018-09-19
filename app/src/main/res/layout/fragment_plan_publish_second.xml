@@ -38,7 +38,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_25"
-                android:text="@string/plan_publish_first_contacts"
+                android:text="@string/plan_publish_second_info"
                 android:textColor="@color/message_item_gray"
                 android:textSize="@dimen/sp_18"
                 app:layout_constraintBottom_toTopOf="@id/view_search"
@@ -132,11 +132,11 @@
                     android:layout_width="@dimen/dp_95"
                     android:layout_height="@dimen/dp_30"
                     android:layout_marginLeft="@dimen/dp_11"
-                    android:background="@drawable/shape_button_corners_line_blue"
+                    android:background="@drawable/filter_button_style"
                     android:button="@null"
                     android:gravity="center"
                     android:text="@string/plan_publish_second_one_quarter"
-                    android:textColor="@color/filter_blue"
+                    android:textColor="@drawable/font_gray_blue_selector"
                     android:textSize="@dimen/sp_16"/>
 
                 <CheckBox
@@ -144,11 +144,11 @@
                     android:layout_width="@dimen/dp_95"
                     android:layout_height="@dimen/dp_30"
                     android:layout_marginLeft="@dimen/dp_11"
-                    android:background="@drawable/shape_button_corners_line_blue"
+                    android:background="@drawable/filter_button_style"
                     android:button="@null"
                     android:gravity="center"
                     android:text="@string/plan_publish_second_one_year"
-                    android:textColor="@color/filter_blue"
+                    android:textColor="@drawable/font_gray_blue_selector"
                     android:textSize="@dimen/sp_16"/>
 
 

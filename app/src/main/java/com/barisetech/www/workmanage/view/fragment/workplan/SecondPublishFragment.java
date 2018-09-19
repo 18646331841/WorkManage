@@ -9,19 +9,15 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
-import android.widget.RadioButton;
 
 import com.barisetech.www.workmanage.R;
-import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
+import com.barisetech.www.workmanage.bean.contacts.ContactsBean;
+import com.barisetech.www.workmanage.bean.workplan.ReqAddPlan;
 import com.barisetech.www.workmanage.databinding.FragmentPlanPublishSecondBinding;
 import com.barisetech.www.workmanage.utils.TimeUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
-
-import java.time.LocalDateTime;
-import java.util.Calendar;
 
 public class SecondPublishFragment extends BaseFragment {
     public static final String TAG = "SecondPublishFragment";
@@ -35,18 +31,29 @@ public class SecondPublishFragment extends BaseFragment {
     private static final int TIME_ONE_QUARTER = 2;
     private static final int TIME_ONE_YEAR = 3;
 
+    private static final String PLAN_ADD = "plan";
+    private ReqAddPlan curPlanAdd;
+
     public SecondPublishFragment() {
         // Required empty public constructor
     }
 
-    public static SecondPublishFragment newInstance() {
+    public static SecondPublishFragment newInstance(ReqAddPlan reqAddPlan) {
         SecondPublishFragment fragment = new SecondPublishFragment();
+        if (reqAddPlan != null) {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(PLAN_ADD, reqAddPlan);
+            fragment.setArguments(bundle);
+        }
         return fragment;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            curPlanAdd = (ReqAddPlan) getArguments().getSerializable(PLAN_ADD);
+        }
     }
 
     @Override
@@ -67,6 +74,10 @@ public class SecondPublishFragment extends BaseFragment {
     private void initView() {
         endDatePicker = TimeUtil.getDatePicker(getActivity(), onEndDateSetListener);
         endTimePicker = TimeUtil.getTimePicker(getActivity(), onEndTimeSetListener);
+
+        mBinding.planListStartTime.setOnClickListener(view -> {
+            endDatePicker.show();
+        });
 
         mBinding.planPublishSecondOneMonth.setOnCheckedChangeListener((compoundButton, b) -> {
             if (b) {
@@ -132,6 +143,13 @@ public class SecondPublishFragment extends BaseFragment {
                 return;
             }
 
+            if (curPlanAdd != null) {
+                curPlanAdd.Name = title;
+                curPlanAdd.EndTime = date;
+                curPlanAdd.TotalNumberOfTimes = num;
+                curPlanAdd.TimesOfCompletion = "0";
+                //TODO
+            }
         });
     }
 
