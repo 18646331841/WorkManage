@@ -30,7 +30,7 @@
                 android:orientation="vertical">
 
                 <com.barisetech.www.workmanage.widget.FormView
-                    android:id="@+id/pipe_id"
+                    android:id="@+id/old_pwd"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_20"
@@ -41,7 +41,7 @@
                     order:ddd_label="@string/old_pwd"/>
 
                 <com.barisetech.www.workmanage.widget.FormView
-                    android:id="@+id/pipe_name"
+                    android:id="@+id/new_pwd"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     order:ddd_content_enable="true"
@@ -51,7 +51,7 @@
                     order:ddd_label="@string/new_pwd"/>
 
                 <com.barisetech.www.workmanage.widget.FormView
-                    android:id="@+id/pipe_sort_id"
+                    android:id="@+id/submit_pwd"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     order:ddd_content_enable="true"

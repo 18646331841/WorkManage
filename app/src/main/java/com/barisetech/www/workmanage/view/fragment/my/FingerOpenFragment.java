@@ -1,19 +1,31 @@
 package com.barisetech.www.workmanage.view.fragment.my;
 
+import android.app.KeyguardManager;
 import android.databinding.DataBindingUtil;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
+import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.barisetech.www.workmanage.R;
+import com.barisetech.www.workmanage.base.BaseApplication;
+import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.databinding.FragmentFingerOpenBinding;
+import com.barisetech.www.workmanage.utils.FingerprintUtil;
+import com.barisetech.www.workmanage.utils.LogUtil;
+import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
+import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.widget.CustomDialog;
 import com.barisetech.www.workmanage.widget.SwitchView;
+
+import static com.barisetech.www.workmanage.utils.ToastUtil.showToast;
 
 public class FingerOpenFragment extends BaseFragment {
 
@@ -30,6 +42,7 @@ public class FingerOpenFragment extends BaseFragment {
         return fragment;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -40,6 +53,7 @@ public class FingerOpenFragment extends BaseFragment {
         toolbarInfo.setTitle(getString(R.string.finger_open));
         observableToolbar.set(toolbarInfo);
         initView();
+        checkFingerPrint();
         return mBinding.getRoot();
     }
 
@@ -48,6 +62,7 @@ public class FingerOpenFragment extends BaseFragment {
         mBinding.fingerSwitch.setOnStateChangedListener(new SwitchView.OnStateChangedListener() {
             @Override
             public void toggleToOn(SwitchView view) {
+                FingerprintUtil.getInstance().callFingerprint(onCallBackListenr);
                 showTwoButtonDialog("确认关闭指纹登录", 0, null, "确定", "取消", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -89,4 +104,70 @@ public class FingerOpenFragment extends BaseFragment {
     public void subscribeToModel() {
 
     }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    private void checkFingerPrint(){
+        FingerprintManagerCompat managerCompat = FingerprintManagerCompat.from(BaseApplication.getInstance()
+                .getApplicationContext());
+
+        if (!managerCompat.isHardwareDetected()){
+            LogUtil.d(TAG, "设备不支持指纹");
+            ToastUtil.showToast("设备不支持指纹");
+            mBinding.fingerSwitch.setClickable(false);
+            return;
+        }
+        KeyguardManager keyguardManager = (KeyguardManager) BaseApplication.getInstance().getApplicationContext()
+                .getSystemService(BaseApplication.KEYGUARD_SERVICE);
+        if (null == keyguardManager || !keyguardManager.isKeyguardSecure()) {
+            LogUtil.d(TAG, "设备没处于安全保护中");
+            ToastUtil.showToast("设备没处于安全保护中");
+            mBinding.fingerSwitch.setClickable(false);
+            return;
+        }
+        if (!managerCompat.hasEnrolledFingerprints()){
+            LogUtil.d(TAG, "设备未设置指纹");
+            ToastUtil.showToast("设备未设置指纹");
+            mBinding.fingerSwitch.setClickable(false);
+            return;
+        }
+    }
+
+
+    private FingerprintUtil.OnCallBackListenr onCallBackListenr = new FingerprintUtil.OnCallBackListenr() {
+        @Override
+        public void onSupportFailed(String msg) {
+            showToast(msg);
+        }
+
+        @Override
+        public void onAuthenticationStart() {
+            showToast("开始指纹识别");
+        }
+
+        @Override
+        public void onAuthenticationError(int errMsgId, CharSequence errString) {
+            showToast(errString);
+        }
+
+        @Override
+        public void onAuthenticationFailed() {
+            showToast("指纹识别失败");
+        }
+
+        @Override
+        public void onAuthenticationHelp(int helpMsgId, CharSequence helpString) {
+            showToast(helpString);
+        }
+
+        @Override
+        public void onAuthenticationSucceeded(FingerprintManagerCompat.AuthenticationResult result) {
+            showToast("指纹识别成功");
+            SharedPreferencesUtil.getInstance().setBoolean(BaseConstant.SP_LOGIN_FP, true);
+            if (null != mDialog) {
+                mDialog.dismiss();
+
+            }
+        }
+    };
 }

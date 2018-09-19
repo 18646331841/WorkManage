@@ -25,6 +25,7 @@ import com.barisetech.www.workmanage.view.fragment.AlarmDetailsFragment;
 import com.barisetech.www.workmanage.view.fragment.AlarmListFragment;
 import com.barisetech.www.workmanage.view.fragment.DigitizingDetailFragment;
 import com.barisetech.www.workmanage.view.fragment.DigitizingFragment;
+import com.barisetech.www.workmanage.view.fragment.my.ContactsFragment;
 import com.barisetech.www.workmanage.view.fragment.my.EventTypeFragment;
 import com.barisetech.www.workmanage.view.fragment.FingerprintManagerFragment;
 import com.barisetech.www.workmanage.view.fragment.IncidentDetailsFragment;
@@ -380,6 +381,12 @@ public class SecondActivity extends BaseActivity {
             case NotDisturbFragment.TAG:
                 transaction
                         .replace(R.id.second_framelayout, NotDisturbFragment.newInstance(), tag).commit();
+                break;
+
+
+            case ContactsFragment.TAG:
+                transaction
+                        .replace(R.id.second_framelayout, ContactsFragment.newInstance(), tag).commit();
                 break;
 
 

@@ -103,7 +103,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
                 });
                 break;
             case R.id.item_contacts:
-
+                EventBus.getDefault().post(new EventBusMessage(ContactsFragment.TAG));
                 break;
             case R.id.item_about:
                 EventBus.getDefault().post(new EventBusMessage(AboutFragment.TAG));
