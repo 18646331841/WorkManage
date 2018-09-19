@@ -22,6 +22,7 @@ import com.barisetech.www.workmanage.base.BaseLoadMoreWrapper;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.bean.contacts.ContactsBean;
+import com.barisetech.www.workmanage.bean.site.ReqSiteInfos;
 import com.barisetech.www.workmanage.bean.site.SiteBean;
 import com.barisetech.www.workmanage.bean.workplan.ReqAddPlan;
 import com.barisetech.www.workmanage.databinding.FragmentPlanThirdListBinding;
@@ -53,6 +54,7 @@ public class ThirdPublishFragment extends BaseFragment {
 
     private static final String PLAN_ADD = "plan";
     private ReqAddPlan curPlanAdd;
+    private String curSiteId = "0";
 
     public ThirdPublishFragment() {
         // Required empty public constructor
@@ -95,10 +97,10 @@ public class ThirdPublishFragment extends BaseFragment {
     private void initView() {
         mBinding.planPublicSearch.setOnEditorActionListener((textView, i, keyEvent) -> {
             if (i == EditorInfo.IME_ACTION_SEARCH) {
-//                closeDisposable();
-//                contactsBeanList.clear();
-//                curSearch = textView.getText().toString();
-//                getListNums();
+                curSiteId = textView.getText().toString();
+                closeDisposable();
+                siteBeanList.clear();
+                getDatas(0, maxNum);
             }
             return false;
         });
@@ -156,23 +158,18 @@ public class ThirdPublishFragment extends BaseFragment {
         }
         loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING);
 
-//        ReqAllContacts reqAllContacts = new ReqAllContacts();
-//        reqAllContacts.setStartIndex(String.valueOf(formIndex));
-//        reqAllContacts.setNumberOfRecords(String.valueOf(toIndex));
-//        reqAllContacts.setSelectItem("0");
-//        reqAllContacts.setSearchString(curSearch);
-//
-//        curDisposable = contactsViewModel.reqAll(reqAllContacts);
+        ReqSiteInfos reqSiteInfos = new ReqSiteInfos();
+        reqSiteInfos.setSiteId(curSiteId);
+        reqSiteInfos.setStartIndex(String.valueOf(formIndex));
+        reqSiteInfos.setNumberOfRecords(String.valueOf(toIndex));
+
+        curDisposable = siteViewModel.reqAllSite(reqSiteInfos);
     }
 
     private void getListNums() {
         loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING);
 
-//        ReqContactsNum reqContactsNum = new ReqContactsNum();
-//        reqContactsNum.setSearchString(curSearch);
-//        reqContactsNum.setSelectItem("0");
-//
-//        numDisposable = contactsViewModel.reqNum(reqContactsNum);
+        numDisposable = siteViewModel.reqSiteNum();
     }
 
     private ItemCallBack itemCallBack = item -> {
