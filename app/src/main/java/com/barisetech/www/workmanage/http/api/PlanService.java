@@ -49,7 +49,7 @@ public interface PlanService {
      * @param
      * @return
      */
-    @PUT("/api/PipeWorkPlan/${token}")
+    @PUT("/api/PipeWorkPlan/{token}")
     Observable<BaseResponse<String>> addPlan(@Path("token") String token, @Body ReqAddPlan reqAddPlan);
 
     /**
@@ -59,6 +59,6 @@ public interface PlanService {
      * @param
      * @return
      */
-    @HTTP(method = "DELETE", path = "/api/PipeWorkPlan/${token}", hasBody = true)
+    @HTTP(method = "DELETE", path = "/api/PipeWorkPlan/{token}", hasBody = true)
     Observable<BaseResponse<Boolean>> deletePlan(@Path("token") String token, @Body ReqDeletePlan reqDeletePlan);
 }

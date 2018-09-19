@@ -12,12 +12,15 @@ import android.view.ViewGroup;
 
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.base.BaseFragment;
+import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.bean.contacts.ContactsBean;
 import com.barisetech.www.workmanage.bean.workplan.ReqAddPlan;
 import com.barisetech.www.workmanage.databinding.FragmentPlanPublishSecondBinding;
 import com.barisetech.www.workmanage.utils.TimeUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
+
+import org.greenrobot.eventbus.EventBus;
 
 public class SecondPublishFragment extends BaseFragment {
     public static final String TAG = "SecondPublishFragment";
@@ -113,13 +116,13 @@ public class SecondPublishFragment extends BaseFragment {
             if (curTime > 0) {
                 switch (curTime) {
                     case TIME_ONE_MONTH:
-                        date = TimeUtil.ms2Date(System.currentTimeMillis() + 1296000000L);
+                        date = TimeUtil.ms2Date(System.currentTimeMillis() + 2592000000L);
                         break;
                     case TIME_ONE_QUARTER:
-                        date = TimeUtil.ms2Date(System.currentTimeMillis() + 3888000000L);
+                        date = TimeUtil.ms2Date(System.currentTimeMillis() + 7776000000L);
                         break;
                     case TIME_ONE_YEAR:
-                        date = TimeUtil.ms2Date(System.currentTimeMillis() + 15552000000L);
+                        date = TimeUtil.ms2Date(System.currentTimeMillis() + 31536000000L);
                         break;
                 }
             } else {
@@ -148,7 +151,10 @@ public class SecondPublishFragment extends BaseFragment {
                 curPlanAdd.EndTime = date;
                 curPlanAdd.TotalNumberOfTimes = num;
                 curPlanAdd.TimesOfCompletion = "0";
-                //TODO
+
+                EventBusMessage eventBusMessage = new EventBusMessage(ThirdPublishFragment.TAG);
+                eventBusMessage.setArg1(curPlanAdd);
+                EventBus.getDefault().post(eventBusMessage);
             }
         });
     }

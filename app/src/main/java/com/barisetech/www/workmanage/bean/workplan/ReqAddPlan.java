@@ -14,7 +14,7 @@ public class ReqAddPlan implements Serializable{
      * TimesOfCompletion : 0
      * Publisher : a
      * PersonLiable : b
-     * State : 1
+     * State : 1   1已完成2未完成3超时4超额
      * BeginTime : 2013-03-03 12:12:12
      * EndTime : 2018-03-02 12:12:12
      * PlanSiteList : [{"SiteId":"2","Name":"55","Longitude":"0","Latitude":"0"},{"SiteId":"2","Name":"55",

@@ -65,6 +65,7 @@ import com.barisetech.www.workmanage.view.fragment.my.SoundFragment;
 import com.barisetech.www.workmanage.view.fragment.WaveFormFragment;
 import com.barisetech.www.workmanage.view.fragment.workplan.FirstPublishFragment;
 import com.barisetech.www.workmanage.view.fragment.workplan.SecondPublishFragment;
+import com.barisetech.www.workmanage.view.fragment.workplan.ThirdPublishFragment;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -367,6 +368,15 @@ public class SecondActivity extends BaseActivity {
             case SecondPublishFragment.TAG:
                 transaction
                         .replace(R.id.second_framelayout, SecondPublishFragment.newInstance((ReqAddPlan)
+                                eventBusMessage.getArg1()), tag).commit();
+                if (!isActivity) {
+                    transaction.addToBackStack(tag);
+                }
+                break;
+
+            case ThirdPublishFragment.TAG:
+                transaction
+                        .replace(R.id.second_framelayout, ThirdPublishFragment.newInstance((ReqAddPlan)
                                 eventBusMessage.getArg1()), tag).commit();
                 if (!isActivity) {
                     transaction.addToBackStack(tag);
