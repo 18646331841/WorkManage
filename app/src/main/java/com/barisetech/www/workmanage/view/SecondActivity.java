@@ -10,6 +10,7 @@ import com.barisetech.www.workmanage.base.BaseActivity;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.bean.alarmanalysis.AlarmAnalysis;
+import com.barisetech.www.workmanage.bean.contacts.ContactsBean;
 import com.barisetech.www.workmanage.bean.incident.IncidentInfo;
 import com.barisetech.www.workmanage.bean.pipe.PipeInfo;
 import com.barisetech.www.workmanage.bean.pipecollections.PipeCollections;
@@ -26,6 +27,7 @@ import com.barisetech.www.workmanage.view.fragment.AlarmDetailsFragment;
 import com.barisetech.www.workmanage.view.fragment.AlarmListFragment;
 import com.barisetech.www.workmanage.view.fragment.DigitizingDetailFragment;
 import com.barisetech.www.workmanage.view.fragment.DigitizingFragment;
+import com.barisetech.www.workmanage.view.fragment.my.ContactDetailFragment;
 import com.barisetech.www.workmanage.view.fragment.my.ContactsFragment;
 import com.barisetech.www.workmanage.view.fragment.my.EventTypeFragment;
 import com.barisetech.www.workmanage.view.fragment.FingerprintManagerFragment;
@@ -399,6 +401,16 @@ public class SecondActivity extends BaseActivity {
             case ContactsFragment.TAG:
                 transaction
                         .replace(R.id.second_framelayout, ContactsFragment.newInstance(), tag).commit();
+                break;
+
+
+            case ContactDetailFragment.TAG:
+                transaction
+                        .replace(R.id.second_framelayout, ContactDetailFragment.newInstance((ContactsBean)
+                                eventBusMessage.getArg1()), tag).commit();
+                if (!isActivity) {
+                    transaction.addToBackStack(tag);
+                }
                 break;
 
 

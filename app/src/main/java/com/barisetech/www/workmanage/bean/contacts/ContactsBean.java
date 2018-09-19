@@ -1,9 +1,11 @@
 package com.barisetech.www.workmanage.bean.contacts;
 
+import java.io.Serializable;
+
 /**
  * Created by LJH on 2018/9/19.
  */
-public class ContactsBean {
+public class ContactsBean implements Serializable{
     /**
      * Name : 王五
      * Telephone : 15244441234

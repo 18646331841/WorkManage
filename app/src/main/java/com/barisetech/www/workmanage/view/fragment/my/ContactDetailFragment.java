@@ -16,12 +16,36 @@ import android.widget.Toast;
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
+import com.barisetech.www.workmanage.bean.contacts.ContactsBean;
 import com.barisetech.www.workmanage.databinding.FragmentContactDetailBinding;
 
 public class ContactDetailFragment extends BaseFragment {
 
 
+    public static final String TAG = "ContactDetailFragment";
+    private static String CONTACT = "ContactsBean";
+    private ContactsBean contactsBean;
+
+
     FragmentContactDetailBinding mBinding;
+
+    public static ContactDetailFragment newInstance(ContactsBean contactsBean) {
+        ContactDetailFragment fragment = new ContactDetailFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(CONTACT, contactsBean);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (null != getArguments()) {
+            contactsBean = (ContactsBean) getArguments().getSerializable(CONTACT);
+        }
+    }
+
 
 
     @Nullable
@@ -31,13 +55,19 @@ public class ContactDetailFragment extends BaseFragment {
         setToolBarHeight(mBinding.toolbar.getRoot());
         mBinding.setFragment(this);
         ToolbarInfo toolbarInfo = new ToolbarInfo();
-        toolbarInfo.setTitle(getString(R.string.tv_contacts));
+        toolbarInfo.setTitle(getString(R.string.tv_contact_detail));
         observableToolbar.set(toolbarInfo);
         initView();
         return mBinding.getRoot();
     }
 
     private void initView() {
+
+        mBinding.tvName.setText(contactsBean.getName());
+        mBinding.phone.setText(contactsBean.getTelephone());
+        mBinding.email.setText(contactsBean.getEmail());
+        mBinding.source.setText(contactsBean.getSource());
+
         mBinding.copyEmail.setOnClickListener(view -> {
            onClickCopy();
         });

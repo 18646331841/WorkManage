@@ -10,17 +10,19 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.barisetech.www.workmanage.R;
+import com.barisetech.www.workmanage.bean.contacts.ContactsBean;
 
 import java.util.List;
 
-public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Holder> {
+public class ContactsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<String> mList;
+    private List<ContactsBean> mList;
     private Context context;
 
     private ItemCallBack callBack;
 
-    public ContactsAdapter(Context context,List<String> list){
+
+    public ContactsAdapter(Context context,List<ContactsBean> list){
         this.context = context;
         this.mList = list;
     }
@@ -38,15 +40,19 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Holder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull Holder holder, int position) {
-        Holder viewholder = holder;
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        Holder viewholder = (Holder) holder;
+        ContactsBean contactsBean = mList.get(position);
+        viewholder.tv_name.setText(contactsBean.getName());
         viewholder.layout.setOnClickListener(view -> {
             if (callBack!=null){
                 callBack.onClick(mList.get(position));
             }
 
         });
+
     }
+
 
     @Override
     public int getItemCount() {
@@ -61,7 +67,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Holder
         public Holder(View itemView) {
             super(itemView);
             tv_name = itemView.findViewById(R.id.tv_name);
-            layout = itemView.findViewById(R.id.l_item);
+            layout = itemView.findViewById(R.id.l_contact);
         }
     }
 }
