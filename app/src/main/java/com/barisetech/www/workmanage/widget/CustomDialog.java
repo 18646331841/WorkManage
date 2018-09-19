@@ -126,13 +126,6 @@ public class CustomDialog extends Dialog {
          * 单按钮对话框和双按钮对话框的公共部分在这里设置
          */
         private void create() {
-            if (message != null) {      //设置提示内容
-                ((TextView) layout.findViewById(R.id.message)).setText(message);
-            } else if (contentView != null) {       //如果使用Builder的setContentview()方法传入了布局，则使用传入的布局
-                ((LinearLayout) layout.findViewById(R.id.content)).removeAllViews();
-                ((LinearLayout) layout.findViewById(R.id.content))
-                        .addView(contentView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-            }
 
             if (ImgId!=0){
                 ImageView img = layout.findViewById(R.id.dialog_img);
@@ -144,7 +137,19 @@ public class CustomDialog extends Dialog {
                 TextView textView = layout.findViewById(R.id.dialog_title);
                 textView.setText(title);
                 textView.setVisibility(View.VISIBLE);
+            }else {
+                (layout.findViewById(R.id.dialog_title)).setVisibility(View.INVISIBLE);
             }
+
+
+            if (message != null) {      //设置提示内容
+                ((TextView) layout.findViewById(R.id.message)).setText(message);
+            } else if (contentView != null) {       //如果使用Builder的setContentview()方法传入了布局，则使用传入的布局
+                ((LinearLayout) layout.findViewById(R.id.content)).removeAllViews();
+                ((LinearLayout) layout.findViewById(R.id.content))
+                        .addView(contentView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            }
+
             dialog.setContentView(layout);
             dialog.setCancelable(true);     //用户可以点击手机Back键取消对话框显示
             dialog.setCanceledOnTouchOutside(false);        //用户不能通过点击对话框之外的地方取消对话框显示
