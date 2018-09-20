@@ -1,11 +1,15 @@
 package com.barisetech.www.workmanage.view.fragment;
 
 import android.annotation.TargetApi;
+import android.arch.lifecycle.Lifecycle;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,19 +34,29 @@ import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.adapter.ImgSelectAdapter;
 import com.barisetech.www.workmanage.adapter.ItemCallBack;
 import com.barisetech.www.workmanage.base.BaseApplication;
+import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseFragment;
+import com.barisetech.www.workmanage.bean.EventBusMessage;
+import com.barisetech.www.workmanage.bean.ImageInfo;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
+import com.barisetech.www.workmanage.bean.signin.ReqSignIn;
 import com.barisetech.www.workmanage.bean.worktask.TaskSiteBean;
 import com.barisetech.www.workmanage.databinding.FragmentSignInBinding;
+import com.barisetech.www.workmanage.utils.BitmapUtil;
 import com.barisetech.www.workmanage.utils.LogUtil;
+import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
 import com.barisetech.www.workmanage.utils.TimeUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
+import com.barisetech.www.workmanage.viewmodel.SignInViewModel;
 import com.barisetech.www.workmanage.widget.CustomPopupWindow;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.disposables.Disposable;
 import me.nereo.multi_image_selector.MultiImageSelector;
 import me.nereo.multi_image_selector.MultiImageSelectorActivity;
 
@@ -51,11 +65,14 @@ public class SignInFragment extends BaseFragment {
     public static final String TAG = "SignInFragment";
 
     FragmentSignInBinding mBinding;
-    public AMapLocationClient mLocationClient = null;
-    public AMapLocationClientOption mLocationOption = null;
+    public AMapLocationClient mLocationClient;
+    public AMapLocationClientOption mLocationOption;
+    private SignInViewModel signInViewModel;
 
     private double longitude;
     private double latitude;
+    private double confirmLongitude;
+    private double confirmLatitude;
 
     //相册选择图片请求码
     private final int CODE_GALLERY_REQUEST = 100;
@@ -78,6 +95,10 @@ public class SignInFragment extends BaseFragment {
 
     private static final String SITE = "site";
     private TaskSiteBean curSiteBean;
+    private static final int NORMAL = 1;
+    private static final int EXCEPTION = 2;
+    private int curSiteState = NORMAL;
+    private Disposable curDisposable;
 
     public static SignInFragment newInstance(TaskSiteBean taskSiteBean) {
         SignInFragment fragment = new SignInFragment();
@@ -125,9 +146,16 @@ public class SignInFragment extends BaseFragment {
                 if (inArea) {
                     mBinding.planSignInArea.setText(getString(R.string.plan_sign_in_in_area));
                     mBinding.planSignInArea.setTextColor(getResources().getColor(R.color.text_black));
+                    mBinding.planSignInSite.setText(curSiteBean.Name);
+                    mBinding.planSignInSite.setVisibility(View.VISIBLE);
+                    mBinding.planSignInCheckIn.setVisibility(View.VISIBLE);
+                    mBinding.planSignInWriteLocation.setVisibility(View.GONE);
                 } else {
+                    mBinding.planSignInCheckIn.setVisibility(View.GONE);
+                    mBinding.planSignInWriteLocation.setVisibility(View.VISIBLE);
                     mBinding.planSignInArea.setText(getString(R.string.plan_sign_in_out_area));
                     mBinding.planSignInArea.setTextColor(getResources().getColor(R.color.plan_sign_in_red_color));
+                    mBinding.planSignInSite.setVisibility(View.GONE);
                 }
 
                 Log.d(TAG, "longtude:" + longitude + ",latitude:" + latitude);
@@ -165,8 +193,40 @@ public class SignInFragment extends BaseFragment {
         mLocationClient.setLocationOption(mLocationOption);
         mLocationClient.startLocation();
 
+        mBinding.planSignInCheckIn.setOnClickListener(view -> {
+            confirmLatitude = latitude;
+            confirmLongitude = longitude;
+            ToastUtil.showToast("记录位置成功");
+        });
+
+        mBinding.planSignInWriteLocation.setOnClickListener(view -> {
+            confirmLatitude = latitude;
+            confirmLongitude = longitude;
+            if (confirmLongitude > 0 && confirmLatitude > 0) {
+                ToastUtil.showToast("记录位置成功");
+            } else {
+                ToastUtil.showToast("记录位置失败，经纬度为0");
+            }
+        });
+
         String date = TimeUtil.ms2YMD(System.currentTimeMillis());
         mBinding.signDate.setText(date);
+
+        mBinding.radioNo.setChecked(true);//默认否
+        mBinding.radioNo.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b) {
+                curSiteState = NORMAL;
+            }
+        });
+        mBinding.radioYes.setOnCheckedChangeListener(((compoundButton, b) -> {
+            if (b) {
+                curSiteState = EXCEPTION;
+            }
+        }));
+
+        mBinding.planSignInSubmit.setOnClickListener(view -> {
+            signIn();
+        });
 
         customPopupWindow = new CustomPopupWindow.Builder()
                 .setContext(getContext())
@@ -197,7 +257,41 @@ public class SignInFragment extends BaseFragment {
         alarmImgAdapter.setItemCallBack(itemCallBack);
         alarmImgAdapter.setOnDeleteClick(onDeleteClick);
         mBinding.signInGv.setAdapter(alarmImgAdapter);
+    }
 
+    private void signIn() {
+        String date = TimeUtil.ms2Date(System.currentTimeMillis());
+        String remark = mBinding.planSignInRemark.getText().toString();
+
+        String account = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_ACCOUNT, "default");
+        List<ImageInfo> imageInfos = new ArrayList<>();
+        if (null != curImgPaths && curImgPaths.size() > 0) {
+            for (int i = 0; i < curImgPaths.size(); i++) {
+                String path = curImgPaths.get(i);
+
+                Bitmap imgB = BitmapUtil.compressImage(BitmapFactory.decodeFile(path), 300);
+                String imgS = BitmapUtil.bitmapToBase64(imgB);
+
+                ImageInfo imageInfo = new ImageInfo();
+                imageInfo.setCreatUser(account);
+                imageInfo.setData(imgS);
+                imageInfos.add(imageInfo);
+            }
+        }
+
+        curSiteBean.DateTime = date;
+        curSiteBean.Remark = remark;
+        curSiteBean.State = 1;
+        curSiteBean.SiteState = curSiteState;
+        curSiteBean.UserLatitude = confirmLatitude;
+        curSiteBean.UserLongitude = confirmLongitude;
+        curSiteBean.WorkImageList = imageInfos;
+
+        ReqSignIn reqSignIn = new ReqSignIn();
+        reqSignIn.toTaskSite(curSiteBean);
+
+        EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_SHOW));
+        curDisposable = signInViewModel.reqSignIn(reqSignIn);
     }
 
     private ItemCallBack itemCallBack = item -> {
@@ -241,12 +335,23 @@ public class SignInFragment extends BaseFragment {
 
     @Override
     public void bindViewModel() {
-
+        signInViewModel = ViewModelProviders.of(this).get(SignInViewModel.class);
     }
 
     @Override
     public void subscribeToModel() {
-
+        if (!signInViewModel.getmObservableSignIn().hasObservers()) {
+            signInViewModel.getmObservableSignIn().observe(this, siteBean -> {
+                if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                    if (null != siteBean) {
+                        ToastUtil.showToast("打卡成功");
+                        //TODO
+                    } else {
+                        ToastUtil.showToast("打卡失败");
+                    }
+                }
+            });
+        }
     }
 
 

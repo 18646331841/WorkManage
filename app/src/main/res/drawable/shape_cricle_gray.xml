@@ -3,11 +3,11 @@
 android:shape="oval"
 android:useLevel="false">
 
-<solid android:color="@color/blue_text" />
+<solid android:color="@color/plan_sign_in_gray_circle" />
 <stroke
     android:width="1dp"
-    android:color="@color/blue_text" />
+    android:color="@color/plan_sign_in_gray_circle" />
 <size
     android:width="120dp"
-    android:height="120dp"/>
+    android:height="120dp" />
 </shape>
