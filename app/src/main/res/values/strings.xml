@@ -56,6 +56,8 @@
     <string name="title_plan_sign_in">签到</string>
     <string name="plan_sign_in_in_area">可打卡范围，打卡站点为 </string>
     <string name="plan_sign_in_out_area">网络较差或当前位置不在可打卡范围</string>
+    <string name="plan_sign_in_circle_text">打卡</string>
+    <string name="plan_sign_in_write_location">记录当前位置\n网络恢复后补打卡</string>
 
     <string name="title_map">地图</string>
     <string name="map_to_here">导航去这里</string>
