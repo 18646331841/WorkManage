@@ -38,6 +38,7 @@ import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
 import com.barisetech.www.workmanage.utils.TimeUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.view.fragment.workplan.FirstPublishFragment;
+import com.barisetech.www.workmanage.view.fragment.worktask.TaskListFragment;
 import com.barisetech.www.workmanage.viewmodel.PlanViewModel;
 
 import org.greenrobot.eventbus.EventBus;
@@ -65,14 +66,13 @@ public class PlanListFragment extends BaseFragment {
     //每次加载个数
     private static final int PAGE_COUNT = 10;
     private int maxNum;
-    private int curType = BaseConstant.TYPE_INCIDENT_ALL;
+    private int curType = BaseConstant.TYPE_PLAN_ALL;
     private int selectType;//选择的类型
     private PlanListAdapter planListAdapter;
     private BaseLoadMoreWrapper loadMoreWrapper;
     private PlanViewModel planViewModel;
     private String role;
     private Disposable numDisposable;
-
 
     public PlanListFragment() {
         // Required empty public constructor
@@ -445,10 +445,10 @@ public class PlanListFragment extends BaseFragment {
     }
 
     private ItemCallBack itemCallBack = item -> {
-        if (item instanceof IncidentInfo) {
-            IncidentInfo incidentInfo = (IncidentInfo) item;
-            EventBusMessage eventBusMessage = new EventBusMessage(IncidentDetailsFragment.TAG);
-            eventBusMessage.setArg1(incidentInfo);
+        if (item instanceof PlanBean) {
+            PlanBean planBean = (PlanBean) item;
+            EventBusMessage eventBusMessage = new EventBusMessage(TaskListFragment.TAG);
+            eventBusMessage.setArg1(planBean);
             EventBus.getDefault().post(eventBusMessage);
         }
     };

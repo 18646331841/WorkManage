@@ -25,6 +25,17 @@ public class TimeUtil {
         return format.format(date);
     }
 
+    /**
+     * 将毫秒转换为标准年月日
+     * @param _ms
+     * @return
+     */
+    public static String ms2YMD(long _ms){
+        Date date = new Date(_ms);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        return format.format(date);
+    }
+
     public static long Date2ms(String _data){
         SimpleDateFormat format =   new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         try {

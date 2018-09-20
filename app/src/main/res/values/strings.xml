@@ -47,6 +47,16 @@
     <string name="plan_publish_second_num">巡线次数</string>
     <string name="plan_publish_second_please_num">请输入数字</string>
 
+    <string name="title_plan_task">巡线任务</string>
+    <string name="title_plan_task_item_site">站点</string>
+    <string name="title_plan_task_item_time">时间</string>
+    <string name="title_plan_task_item_person">巡线人</string>
+    <string name="title_plan_task_item_status">进度</string>
+
+    <string name="title_plan_sign_in">签到</string>
+    <string name="plan_sign_in_in_area">可打卡范围，打卡站点为 </string>
+    <string name="plan_sign_in_out_area">网络较差或当前位置不在可打卡范围</string>
+
     <string name="title_map">地图</string>
     <string name="map_to_here">导航去这里</string>
 
@@ -375,8 +385,6 @@
     <string name="del_lind_area">删除管线盲区</string>
     <string name="upload_photo">上传照片</string>
     <string name="complete_sign_in">打卡完成</string>
-    <string name="tv_sign_in">签到</string>
-
     
     <string name="personal_info">个人信息</string>
     <string name="finger_open">启用指纹登录</string>

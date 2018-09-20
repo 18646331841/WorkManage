@@ -49,7 +49,7 @@ public interface TaskService {
      * @param
      * @return
      */
-    @PUT("/api/PipeWorkTask/${token}")
+    @PUT("/api/PipeWorkTask/{token}")
     Observable<BaseResponse<String>> addTask(@Path("token") String token, @Body ReqAddTask reqAddTask);
 
     /**
@@ -59,6 +59,6 @@ public interface TaskService {
      * @param
      * @return
      */
-    @HTTP(method = "DELETE", path = "/api/PipeWorkTask/${token}", hasBody = true)
+    @HTTP(method = "DELETE", path = "/api/PipeWorkTask/{token}", hasBody = true)
     Observable<BaseResponse<Boolean>> deleteTask(@Path("token") String token, @Body ReqDeleteTask reqDeleteTask);
 }

@@ -1,9 +1,11 @@
 package com.barisetech.www.workmanage.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by LJH on 2018/9/3.
  */
-public class ImageInfo {
+public class ImageInfo implements Serializable{
     /**
      * Data : 图片string编码对象
      * CreatUser : account

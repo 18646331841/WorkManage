@@ -139,6 +139,8 @@ public class ThirdPublishFragment extends BaseFragment {
             curPlanAdd.Publisher = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_ACCOUNT, "");
             curPlanAdd.State = "2";//未完成状态
             curPlanAdd.PlanSiteList = siteBeans;
+            //TODO 界面没有给设置的地方，默认使用50米
+            curPlanAdd.Range = "50";
 
             planViewModel.reqAdd(curPlanAdd);
         });
@@ -226,12 +228,12 @@ public class ThirdPublishFragment extends BaseFragment {
         if (!planViewModel.getObservableAdd().hasObservers()) {
             planViewModel.getObservableAdd().observe(this, s -> {
                 if (this.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
-                    if (null != s){
-                        if (s.equals("成功添加")){
+                    if (null != s) {
+                        if (s.equals("成功添加")) {
                             ToastUtil.showToast("成功添加");
                             getFragmentManager().popBackStackImmediate(FirstPublishFragment.TAG, FragmentManager
                                     .POP_BACK_STACK_INCLUSIVE);
-                        }else if (s.equals("失败添加")){
+                        } else if (s.equals("失败添加")) {
                             ToastUtil.showToast("失败添加");
                         }
                     }

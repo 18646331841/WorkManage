@@ -24,6 +24,7 @@ public class ReqAddPlan implements Serializable{
 
     public String Id;
     public String Name;
+    public String Range;
     public String TotalNumberOfTimes;
     public String TimesOfCompletion;
     public String Publisher;

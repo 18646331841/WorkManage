@@ -49,6 +49,15 @@ public class BaseConstant {
     public static final int TYPE_PLAN_TIMEOUT = 3;
     public static final int TYPE_PLAN_EXCESS = 4;
 
+
+    /**
+     * 巡线任务打卡状态
+     */
+    public static final String[] STATUS_TASK = new String[]{"打卡", "补卡", "未打卡", "已打卡"};
+    public static final int STATUS_COMPLETED = 1;
+    public static final int STATUS_OFFLINE = 2;
+    public static final int STATUS_UNCOMPLETED = 3;
+    public static final int STATUS_FAIL = 4;
     /**
      * SharedPreferences keys
      */

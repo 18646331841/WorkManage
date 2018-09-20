@@ -17,7 +17,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_20"
-        android:onClick="@{() -> callback.onClick(planbean)}"
         android:orientation="vertical">
 
         <android.support.constraint.ConstraintLayout
@@ -43,6 +42,7 @@
                 android:id="@+id/plan_list_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="@{() -> callback.onClick(planbean)}"
                 android:layout_marginRight="@dimen/dp_15"
                 android:text="@string/plan_list_item_to_detail"
                 android:textColor="@color/plan_list_item_to_detail"

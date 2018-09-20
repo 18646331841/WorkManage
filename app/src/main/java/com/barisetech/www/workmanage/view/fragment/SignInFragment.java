@@ -21,18 +21,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
+import com.amap.api.location.CoordinateConverter;
+import com.amap.api.location.DPoint;
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.adapter.ImgSelectAdapter;
 import com.barisetech.www.workmanage.adapter.ItemCallBack;
 import com.barisetech.www.workmanage.base.BaseApplication;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
+import com.barisetech.www.workmanage.bean.worktask.TaskSiteBean;
 import com.barisetech.www.workmanage.databinding.FragmentSignInBinding;
 import com.barisetech.www.workmanage.utils.LogUtil;
+import com.barisetech.www.workmanage.utils.TimeUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.widget.CustomPopupWindow;
 
@@ -45,17 +48,14 @@ import me.nereo.multi_image_selector.MultiImageSelectorActivity;
 
 public class SignInFragment extends BaseFragment {
 
-    public static final String TAG="SignInFragment";
+    public static final String TAG = "SignInFragment";
 
     FragmentSignInBinding mBinding;
-
     public AMapLocationClient mLocationClient = null;
-
     public AMapLocationClientOption mLocationOption = null;
 
     private double longitude;
     private double latitude;
-
 
     //相册选择图片请求码
     private final int CODE_GALLERY_REQUEST = 100;
@@ -65,7 +65,6 @@ public class SignInFragment extends BaseFragment {
     private final int CODE_CAMERA_REQUEST = 102;
 
     private int curReason;
-
     private int curReadLv;
 
     private CustomPopupWindow customPopupWindow;
@@ -77,36 +76,64 @@ public class SignInFragment extends BaseFragment {
     private List<String> curImgPaths = new ArrayList<>();
     private ImgSelectAdapter alarmImgAdapter;
 
+    private static final String SITE = "site";
+    private TaskSiteBean curSiteBean;
 
-    public static SignInFragment newInstance() {
-        SignInFragment fragment = new  SignInFragment();
+    public static SignInFragment newInstance(TaskSiteBean taskSiteBean) {
+        SignInFragment fragment = new SignInFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(SITE, taskSiteBean);
+        fragment.setArguments(bundle);
         return fragment;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            curSiteBean = (TaskSiteBean) getArguments().getSerializable(SITE);
+        }
+    }
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
+            savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_sign_in, container, false);
 
         setToolBarHeight(mBinding.toolbar.getRoot());
         mBinding.setFragment(this);
         ToolbarInfo toolbarInfo = new ToolbarInfo();
-        toolbarInfo.setTitle(getString(R.string.tv_sign_in));
+        toolbarInfo.setTitle(getString(R.string.title_plan_sign_in));
         observableToolbar.set(toolbarInfo);
         initView();
         return mBinding.getRoot();
     }
 
     public AMapLocationListener mLocationListener = aMapLocation -> {
-        if (aMapLocation!=null){
-            if (aMapLocation.getErrorCode()==0){
+        if (aMapLocation != null) {
+            if (aMapLocation.getErrorCode() == 0) {
                 latitude = aMapLocation.getLatitude();
                 longitude = aMapLocation.getLongitude();
-                Log.e("qqq","longtude:"+longitude+",latitude:"+latitude);
-            }else {
+
+                //TODO
+                curSiteBean.Latitude = 39.889871;
+                curSiteBean.Longitude = 116.355843;
+                curSiteBean.range = 50;
+
+                boolean inArea = isInArea(latitude, longitude, curSiteBean.Latitude, curSiteBean.Longitude);
+                if (inArea) {
+                    mBinding.planSignInArea.setText(getString(R.string.plan_sign_in_in_area));
+                    mBinding.planSignInArea.setTextColor(getResources().getColor(R.color.text_black));
+                } else {
+                    mBinding.planSignInArea.setText(getString(R.string.plan_sign_in_out_area));
+                    mBinding.planSignInArea.setTextColor(getResources().getColor(R.color.plan_sign_in_red_color));
+                }
+
+                Log.d(TAG, "longtude:" + longitude + ",latitude:" + latitude);
+            } else {
                 ToastUtil.showToast("定位失败");
-                Log.e("AmapError","location Error, ErrCode:"
+                Log.d(TAG, "location Error, ErrCode:"
                         + aMapLocation.getErrorCode() + ", errInfo:"
                         + aMapLocation.getErrorInfo());
 
@@ -115,15 +142,31 @@ public class SignInFragment extends BaseFragment {
 
     };
 
+    private boolean isInArea(double startLatitude, double startLongitude, double endLatitude, double endLongitude) {
+        if (curSiteBean.range <= 0) {
+            return false;
+        }
+        DPoint start = new DPoint(startLatitude, startLongitude);
+        DPoint end = new DPoint(endLatitude, endLongitude);
+        float dis = CoordinateConverter.calculateLineDistance(start, end);
+        if (dis < curSiteBean.range) {
+            return true;
+        }
+        return false;
+    }
+
     private void initView() {
         mLocationClient = new AMapLocationClient(getContext());
         mLocationClient.setLocationListener(mLocationListener);
         mLocationOption = new AMapLocationClientOption();
 
         mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+        mLocationOption.setInterval(3000);
         mLocationClient.setLocationOption(mLocationOption);
         mLocationClient.startLocation();
-        mLocationOption.setInterval(3000);
+
+        String date = TimeUtil.ms2YMD(System.currentTimeMillis());
+        mBinding.signDate.setText(date);
 
         customPopupWindow = new CustomPopupWindow.Builder()
                 .setContext(getContext())

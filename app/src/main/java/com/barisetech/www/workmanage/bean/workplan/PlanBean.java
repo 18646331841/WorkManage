@@ -5,16 +5,17 @@ import android.widget.TextView;
 
 import com.barisetech.www.workmanage.bean.worktask.TaskSiteBean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by LJH on 2018/9/18.
  */
-public class PlanBean {
+public class PlanBean implements Serializable{
     /**
      * Id : 1
      * Name : ss
-     * Range : 0.0
+     * Range : 0.0 单位米
      * TotalNumberOfTimes : 0
      * TimesOfCompletion : 0
      * Publisher : k

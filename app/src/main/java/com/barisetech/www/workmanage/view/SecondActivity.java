@@ -18,8 +18,11 @@ import com.barisetech.www.workmanage.bean.pipecollections.PipeCollections;
 import com.barisetech.www.workmanage.bean.pipelindarea.PipeLindAreaInfo;
 import com.barisetech.www.workmanage.bean.pipework.PipeWork;
 import com.barisetech.www.workmanage.bean.site.SiteBean;
+import com.barisetech.www.workmanage.bean.workplan.PlanBean;
 import com.barisetech.www.workmanage.bean.workplan.ReqAddPlan;
+import com.barisetech.www.workmanage.bean.worktask.TaskSiteBean;
 import com.barisetech.www.workmanage.view.fragment.PlanListFragment;
+import com.barisetech.www.workmanage.view.fragment.SignInFragment;
 import com.barisetech.www.workmanage.view.fragment.my.AboutFragment;
 import com.barisetech.www.workmanage.view.fragment.AddSiteFragment;
 import com.barisetech.www.workmanage.view.fragment.AlarmAnalysisDetailFragment;
@@ -69,6 +72,7 @@ import com.barisetech.www.workmanage.view.fragment.WaveFormFragment;
 import com.barisetech.www.workmanage.view.fragment.workplan.FirstPublishFragment;
 import com.barisetech.www.workmanage.view.fragment.workplan.SecondPublishFragment;
 import com.barisetech.www.workmanage.view.fragment.workplan.ThirdPublishFragment;
+import com.barisetech.www.workmanage.view.fragment.worktask.TaskListFragment;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -380,6 +384,22 @@ public class SecondActivity extends BaseActivity {
             case ThirdPublishFragment.TAG:
                 transaction
                         .replace(R.id.second_framelayout, ThirdPublishFragment.newInstance((ReqAddPlan)
+                                eventBusMessage.getArg1()), tag).commit();
+                if (!isActivity) {
+                    transaction.addToBackStack(tag);
+                }
+                break;
+            case TaskListFragment.TAG:
+                transaction
+                        .replace(R.id.second_framelayout, TaskListFragment.newInstance((PlanBean)
+                                eventBusMessage.getArg1()), tag).commit();
+                if (!isActivity) {
+                    transaction.addToBackStack(tag);
+                }
+                break;
+            case SignInFragment.TAG:
+                transaction
+                        .replace(R.id.second_framelayout, SignInFragment.newInstance((TaskSiteBean)
                                 eventBusMessage.getArg1()), tag).commit();
                 if (!isActivity) {
                     transaction.addToBackStack(tag);
