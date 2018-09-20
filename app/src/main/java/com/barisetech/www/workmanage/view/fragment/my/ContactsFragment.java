@@ -8,9 +8,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.adapter.ContactsAdapter;
@@ -48,6 +52,8 @@ public class ContactsFragment extends BaseFragment {
 
     private static final int PAGE_COUNT = 10;
     private int maxNum;
+    private boolean flag = false;
+    private String selectItem;
 
 
     public static ContactsFragment newInstance() {
@@ -77,6 +83,69 @@ public class ContactsFragment extends BaseFragment {
 
     private void initView() {
         initRecyclerView();
+        mBinding.searchLayout.etSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    contactsBeanList.clear();
+                    if (flag){
+                        loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING);
+                        ReqContactsNum reqContactsNum = new ReqContactsNum();
+                        reqContactsNum.setSelectItem(selectItem);
+                        reqContactsNum.setSearchString(mBinding.searchLayout.etSearch.getText().toString());
+                        contactsViewModel.reqNum(reqContactsNum);
+
+                    }else {
+                        loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING);
+                        ReqContactsNum reqContactsNum = new ReqContactsNum();
+                        reqContactsNum.setSelectItem("0");
+                        reqContactsNum.setSearchString(mBinding.searchLayout.etSearch.getText().toString());
+                        contactsViewModel.reqNum(reqContactsNum);
+                    }
+                }
+                return false;
+            }
+        });
+
+        mBinding.typeGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (group.getId()){
+                    case R.id.pipe_collection:
+                        selectItem = "1";
+                        break;
+                    case R.id.site:
+                        selectItem = "2";
+                        break;
+                    case R.id.user:
+                        selectItem = "3";
+                        break;
+                }
+            }
+        });
+
+        mBinding.searchLayout.tvFilter.setOnClickListener(v -> {
+            if (flag){
+                mBinding.searchLayout.tvFilter.setTextColor(getResources().getColor(R.color.text_black));
+                mBinding.lSelect.setVisibility(View.GONE);
+                flag = false;
+            }else {
+                mBinding.pipeCollection.setChecked(true);
+                mBinding.searchLayout.tvFilter.setTextColor(getResources().getColor(R.color.blue_text));
+                mBinding.lSelect.setVisibility(View.VISIBLE);
+                flag = true;
+            }
+        });
+
+        mBinding.typeScreach.setOnClickListener(v -> {
+            loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING);
+            ReqContactsNum reqContactsNum = new ReqContactsNum();
+            reqContactsNum.setSelectItem(selectItem);
+            reqContactsNum.setSearchString(mBinding.searchLayout.etSearch.getText().toString());
+            contactsViewModel.reqNum(reqContactsNum);
+        });
+
+
     }
 
     private void initRecyclerView() {
@@ -126,7 +195,7 @@ public class ContactsFragment extends BaseFragment {
         }
         loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING);
         ReqAllContacts reqAllContacts = new ReqAllContacts();
-        reqAllContacts.setSelectItem("3");
+        reqAllContacts.setSelectItem("0");
         reqAllContacts.setSearchString("");
         reqAllContacts.setStartIndex(String.valueOf(fromIndex));
         reqAllContacts.setNumberOfRecords(String.valueOf(toIndex));
@@ -138,7 +207,7 @@ public class ContactsFragment extends BaseFragment {
     private void getContactsNum(){
         loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING);
         ReqContactsNum reqContactsNum = new ReqContactsNum();
-        reqContactsNum.setSelectItem("3");
+        reqContactsNum.setSelectItem("0");
         reqContactsNum.setSearchString("");
         contactsViewModel.reqNum(reqContactsNum);
     }

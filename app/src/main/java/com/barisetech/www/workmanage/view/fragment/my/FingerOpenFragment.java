@@ -35,6 +35,8 @@ public class FingerOpenFragment extends BaseFragment {
 
     private CustomDialog.Builder builder;
     private CustomDialog mDialog;
+    private boolean flag = true;
+
 
 
     public static FingerOpenFragment newInstance() {
@@ -53,16 +55,49 @@ public class FingerOpenFragment extends BaseFragment {
         toolbarInfo.setTitle(getString(R.string.finger_open));
         observableToolbar.set(toolbarInfo);
         initView();
-//        checkFingerPrint();
+        checkFingerPrint();
         return mBinding.getRoot();
     }
 
     private void initView() {
+
         builder = new CustomDialog.Builder(getContext());
+
+        mBinding.fingerSwitch.setOnClickListener(v -> {
+            if (flag){
+                FingerprintUtil.getInstance().callFingerprint(onCallBackListenr);
+                showSingleButtonDialog("请验证你的指纹", R.mipmap.ic_launcher_round, null, "取消", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mDialog.dismiss();
+                        FingerprintUtil.getInstance().cancel();
+                    }
+                });
+
+            }else {
+
+                showTwoButtonDialog("确认关闭指纹登录", 0, "管线管理助手", "确定", "取消", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mDialog.dismiss();
+                        mBinding.fingerSwitch.setBackgroundResource(R.drawable.item_shape);
+                        flag = true;
+                    }
+                }, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mDialog.dismiss();
+                    }
+                });
+
+
+
+            }
+        });
+
 //        mBinding.fingerSwitch.setOnStateChangedListener(new SwitchView.OnStateChangedListener() {
-//            @Override
-//            public void toggleToOn(SwitchView view) {
-//                FingerprintUtil.getInstance().callFingerprint(onCallBackListenr);
+////            @Override
+////            public void toggleToOn(SwitchView view) {
 //                showSingleButtonDialog("请验证你的指纹", R.mipmap.ic_launcher_round, null, "取消", new View.OnClickListener() {
 //                    @Override
 //                    public void onClick(View view) {
@@ -132,6 +167,7 @@ public class FingerOpenFragment extends BaseFragment {
         if (!managerCompat.isHardwareDetected()){
             LogUtil.d(TAG, "设备不支持指纹");
             ToastUtil.showToast("设备不支持指纹");
+            mBinding.fingerSwitch.setEnabled(false);
             return;
         }
         KeyguardManager keyguardManager = (KeyguardManager) BaseApplication.getInstance().getApplicationContext()
@@ -139,12 +175,13 @@ public class FingerOpenFragment extends BaseFragment {
         if (null == keyguardManager || !keyguardManager.isKeyguardSecure()) {
             LogUtil.d(TAG, "设备没处于安全保护中");
             ToastUtil.showToast("设备没处于安全保护中");
+            mBinding.fingerSwitch.setEnabled(false);
             return;
         }
         if (!managerCompat.hasEnrolledFingerprints()){
             LogUtil.d(TAG, "设备未设置指纹");
             ToastUtil.showToast("设备未设置指纹");
-
+            mBinding.fingerSwitch.setEnabled(false);
             return;
         }
     }
@@ -169,6 +206,7 @@ public class FingerOpenFragment extends BaseFragment {
         @Override
         public void onAuthenticationFailed() {
             showToast("指纹识别失败");
+
         }
 
         @Override
@@ -182,6 +220,9 @@ public class FingerOpenFragment extends BaseFragment {
             SharedPreferencesUtil.getInstance().setBoolean(BaseConstant.SP_LOGIN_FP, true);
             if (null != mDialog) {
                 mDialog.dismiss();
+                FingerprintUtil.getInstance().cancel();
+                mBinding.fingerSwitch.setBackgroundResource(R.drawable.shape_button_corners);
+                flag = false;
             }
         }
     };

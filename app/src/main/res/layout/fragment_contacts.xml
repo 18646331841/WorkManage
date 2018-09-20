@@ -20,7 +20,80 @@
             app:toolbar="@{fragment.observableToolbar}" />
 
         <include
+            android:id="@+id/searchLayout"
             layout="@layout/layout_search_view"/>
+
+        <LinearLayout
+            android:id="@+id/l_select"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <RadioGroup
+                android:orientation="horizontal"
+                android:weightSum="3"
+                android:id="@+id/type_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dp_10"
+                android:layout_marginBottom="@dimen/dp_10">
+
+
+                <RadioButton
+                    android:id="@+id/pipe_collection"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:layout_height="@dimen/dp_30"
+                    android:background="@drawable/filter_button_style"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="@string/tv_pipeline_collection"
+                    android:textColor="@drawable/font_gray_blue_selector"
+                    android:textSize="14sp"/>
+
+
+                <RadioButton
+                    android:id="@+id/site"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:layout_height="@dimen/dp_30"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:background="@drawable/filter_button_style"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="@string/tv_site"
+                    android:textColor="@drawable/font_gray_blue_selector"
+                    android:textSize="14sp"/>
+
+
+                <RadioButton
+                    android:id="@+id/user"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:layout_height="@dimen/dp_30"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:background="@drawable/filter_button_style"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="@string/alarm_analysis_user"
+                    android:textColor="@drawable/font_gray_blue_selector"
+                    android:textSize="14sp"/>
+            </RadioGroup>
+
+            <Button
+                android:id="@+id/type_screach"
+                android:layout_width="120dp"
+                android:layout_height="@dimen/dp_30"
+                android:background="@drawable/shane_button_corners"
+                android:layout_marginTop="@dimen/dp_13"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:text="@string/time_picker_confirm"
+                android:textColor="@color/white"
+                android:layout_marginBottom="@dimen/dp_10"
+                android:textSize="14sp"/>
+        </LinearLayout>
+
+
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/contacts_list"
