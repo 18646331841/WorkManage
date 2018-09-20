@@ -12,6 +12,7 @@ import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
+import com.barisetech.www.workmanage.bean.UserInfo;
 import com.barisetech.www.workmanage.databinding.FragmentMyInfoBinding;
 
 import org.greenrobot.eventbus.EventBus;
@@ -21,6 +22,8 @@ public class MyInfoFragment extends BaseFragment{
 
     public static final String TAG = "MyInfoFragment";
     FragmentMyInfoBinding mBinding;
+
+    private UserInfo userInfo;
 
     public static MyInfoFragment newInstance() {
         MyInfoFragment fragment = new MyInfoFragment();
@@ -33,6 +36,7 @@ public class MyInfoFragment extends BaseFragment{
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_my_info, container, false);
         setToolBarHeight(mBinding.toolbar.getRoot());
         mBinding.setFragment(this);
+        userInfo = new UserInfo();
         ToolbarInfo toolbarInfo = new ToolbarInfo();
         toolbarInfo.setTitle(getString(R.string.personal_info));
         observableToolbar.set(toolbarInfo);
@@ -41,6 +45,21 @@ public class MyInfoFragment extends BaseFragment{
     }
 
     private void initView() {
+
+        mBinding.itemPhone.setOnClickListener(view -> {
+            EventBusMessage eventBusMessage = new EventBusMessage(ModifyPhoneFragment.TAG);
+            eventBusMessage.setArg1(userInfo);
+            EventBus.getDefault().post(eventBusMessage);
+        });
+
+
+        mBinding.itemEmail.setOnClickListener(view -> {
+            EventBusMessage eventBusMessage = new EventBusMessage(ModifyEmailFragment.TAG);
+            eventBusMessage.setArg1(userInfo);
+            EventBus.getDefault().post(eventBusMessage);
+        });
+
+
         mBinding.itemPwd.setOnClickListener(v -> {
             EventBus.getDefault().post(new EventBusMessage(PassWordFragment.TAG));
         });

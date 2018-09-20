@@ -406,6 +406,9 @@
     <string name="send_sms">发送短信</string>
     <string name="copy">复制</string>
     <string name="tv_contact_detail">联系人详情</string>
+    <string name="modify_phone">修改电话</string>
+    <string name="modify_email">修改邮箱</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

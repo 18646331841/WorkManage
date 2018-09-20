@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.base.BaseActivity;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
+import com.barisetech.www.workmanage.bean.UserInfo;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.bean.alarmanalysis.AlarmAnalysis;
 import com.barisetech.www.workmanage.bean.contacts.ContactsBean;
@@ -37,6 +38,8 @@ import com.barisetech.www.workmanage.view.fragment.IncidentListFragment;
 import com.barisetech.www.workmanage.view.fragment.MapFragment;
 import com.barisetech.www.workmanage.view.fragment.ModifySiteFragment;
 import com.barisetech.www.workmanage.view.fragment.my.FingerOpenFragment;
+import com.barisetech.www.workmanage.view.fragment.my.ModifyEmailFragment;
+import com.barisetech.www.workmanage.view.fragment.my.ModifyPhoneFragment;
 import com.barisetech.www.workmanage.view.fragment.my.MyInfoFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsAddFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsDetailsFragment;
@@ -428,6 +431,27 @@ public class SecondActivity extends BaseActivity {
             case ContactDetailFragment.TAG:
                 transaction
                         .replace(R.id.second_framelayout, ContactDetailFragment.newInstance((ContactsBean)
+                                eventBusMessage.getArg1()), tag).commit();
+                if (!isActivity) {
+                    transaction.addToBackStack(tag);
+                }
+                break;
+
+
+            case ModifyPhoneFragment.TAG:
+                transaction
+                        .replace(R.id.second_framelayout, ModifyPhoneFragment.newInstance((UserInfo)
+                                eventBusMessage.getArg1()), tag).commit();
+                if (!isActivity) {
+                    transaction.addToBackStack(tag);
+                }
+                break;
+
+
+
+            case ModifyEmailFragment.TAG:
+                transaction
+                        .replace(R.id.second_framelayout, ModifyEmailFragment.newInstance((UserInfo)
                                 eventBusMessage.getArg1()), tag).commit();
                 if (!isActivity) {
                     transaction.addToBackStack(tag);

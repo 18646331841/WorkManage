@@ -59,37 +59,37 @@ public class FingerOpenFragment extends BaseFragment {
 
     private void initView() {
         builder = new CustomDialog.Builder(getContext());
-        mBinding.fingerSwitch.setOnStateChangedListener(new SwitchView.OnStateChangedListener() {
-            @Override
-            public void toggleToOn(SwitchView view) {
-                FingerprintUtil.getInstance().callFingerprint(onCallBackListenr);
-                showSingleButtonDialog("请验证你的指纹", R.mipmap.ic_launcher_round, null, "取消", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        mDialog.dismiss();
-                    }
-                });
-            }
-
-            @Override
-            public void toggleToOff(SwitchView view) {
-
-                showTwoButtonDialog("确认关闭指纹登录", 0, "管线管理助手", "确定", "取消", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        mDialog.dismiss();
-                        mBinding.fingerSwitch.setOpened(false);
-                    }
-                }, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        mDialog.dismiss();
-                    }
-                });
-
-
-            }
-        });
+//        mBinding.fingerSwitch.setOnStateChangedListener(new SwitchView.OnStateChangedListener() {
+//            @Override
+//            public void toggleToOn(SwitchView view) {
+//                FingerprintUtil.getInstance().callFingerprint(onCallBackListenr);
+//                showSingleButtonDialog("请验证你的指纹", R.mipmap.ic_launcher_round, null, "取消", new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        mDialog.dismiss();
+//                    }
+//                });
+//            }
+//
+//            @Override
+//            public void toggleToOff(SwitchView view) {
+//
+//                showTwoButtonDialog("确认关闭指纹登录", 0, "管线管理助手", "确定", "取消", new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        mDialog.dismiss();
+//                        mBinding.fingerSwitch.setOpened(false);
+//                    }
+//                }, new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        mDialog.dismiss();
+//                    }
+//                });
+//
+//
+//            }
+//        });
     }
 
 
@@ -182,8 +182,6 @@ public class FingerOpenFragment extends BaseFragment {
             SharedPreferencesUtil.getInstance().setBoolean(BaseConstant.SP_LOGIN_FP, true);
             if (null != mDialog) {
                 mDialog.dismiss();
-                mBinding.fingerSwitch.setOpened(true);
-
             }
         }
     };

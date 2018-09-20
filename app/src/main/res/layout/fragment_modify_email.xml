@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:order="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="fragment"
+            type="com.barisetech.www.workmanage.base.BaseFragment"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/layout_toolbar"
+            app:toolbar="@{fragment.observableToolbar}"/>
+
+
+                <com.barisetech.www.workmanage.widget.FormView
+                    android:id="@+id/modify_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_20"
+                    order:ddd_content_enable="true"
+                    order:ddd_content_hint="@string/hint_pc_email"
+                    order:ddd_is_bottom_line="false"
+                    order:ddd_is_indicate="false"
+                    order:ddd_label="@string/pc_detail_email"/>
+
+
+                <Button
+                    android:id="@+id/email_save"
+                    android:layout_width="@dimen/dp_315"
+                    android:layout_height="@dimen/dp_50"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/dp_30"
+                    android:background="@drawable/shane_button_corners"
+                    android:text="@string/save"
+                    android:textColor="@color/white"
+                    android:layout_marginBottom="@dimen/dp_50"
+                    android:textSize="@dimen/sp_18"/>
+
+    </LinearLayout>
+</layout>
