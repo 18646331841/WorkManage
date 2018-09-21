@@ -27,7 +27,8 @@
             android:id="@+id/l_select"
             android:layout_width="match_parent"
             android:orientation="vertical"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:visibility="gone">
             <RadioGroup
                 android:orientation="horizontal"
                 android:weightSum="3"
@@ -78,19 +79,6 @@
                     android:textColor="@drawable/font_gray_blue_selector"
                     android:textSize="14sp"/>
             </RadioGroup>
-
-            <Button
-                android:id="@+id/type_screach"
-                android:layout_width="120dp"
-                android:layout_height="@dimen/dp_30"
-                android:background="@drawable/shane_button_corners"
-                android:layout_marginTop="@dimen/dp_13"
-                android:gravity="center"
-                android:layout_gravity="center"
-                android:text="@string/time_picker_confirm"
-                android:textColor="@color/white"
-                android:layout_marginBottom="@dimen/dp_10"
-                android:textSize="14sp"/>
         </LinearLayout>
 
 
