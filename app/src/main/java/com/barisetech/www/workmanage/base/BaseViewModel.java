@@ -19,7 +19,9 @@ public class BaseViewModel extends AndroidViewModel {
     }
 
     protected void addDisposable(Disposable disposable) {
-        mDisposable.add(disposable);
+        if (disposable != null) {
+            mDisposable.add(disposable);
+        }
     }
 
     /**

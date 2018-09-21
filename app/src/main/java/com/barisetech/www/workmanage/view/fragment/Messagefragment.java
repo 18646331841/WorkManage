@@ -31,6 +31,7 @@ import com.barisetech.www.workmanage.utils.TimeUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.viewmodel.AlarmViewModel;
 import com.barisetech.www.workmanage.viewmodel.IncidentViewModel;
+import com.barisetech.www.workmanage.viewmodel.SignInViewModel;
 import com.barisetech.www.workmanage.widget.popumenu.FloatMenu;
 
 import org.greenrobot.eventbus.EventBus;
@@ -55,6 +56,8 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
     private MessageAdapter messageAdapter;
     private IncidentViewModel incidentViewModel;
     private Point mpoint = new Point();
+
+    private SignInViewModel signInViewModel;
 
     private boolean flag = false;
     private AlarmInfo curAlarmInfo;
@@ -258,6 +261,8 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
     public void bindViewModel() {
         alarmViewModel = ViewModelProviders.of(this).get(AlarmViewModel.class);
         incidentViewModel = ViewModelProviders.of(this).get(IncidentViewModel.class);
+        signInViewModel = ViewModelProviders.of(this).get(SignInViewModel.class);
+        signInViewModel.reqReSignIn();
     }
 
     @Override

@@ -3,13 +3,19 @@ package com.barisetech.www.workmanage.bean.worktask;
 import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.bean.ImageInfo;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OptionalDataException;
 import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by LJH on 2018/9/18.
  */
-public class TaskSiteBean implements Serializable{
+public class TaskSiteBean implements Serializable {
 
     /**
      * Name : ttx
@@ -63,5 +69,16 @@ public class TaskSiteBean implements Serializable{
             }
         }
         return result;
+    }
+
+    public Object deepClone() throws IOException, ClassNotFoundException {
+        // 将对象写到流里
+        ByteArrayOutputStream bo = new ByteArrayOutputStream();
+        ObjectOutputStream oo = new ObjectOutputStream(bo);
+        oo.writeObject(this);
+        // 从流里读出来
+        ByteArrayInputStream bi = new ByteArrayInputStream(bo.toByteArray());
+        ObjectInputStream oi = new ObjectInputStream(bi);
+        return (oi.readObject());
     }
 }

@@ -6,18 +6,22 @@ import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
 import com.barisetech.www.workmanage.bean.AccessTokenInfo;
+import com.barisetech.www.workmanage.bean.ImageInfo;
 import com.barisetech.www.workmanage.bean.TokenInfo;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.bean.incident.IncidentInfo;
+import com.barisetech.www.workmanage.bean.signin.ReqSignIn;
 import com.barisetech.www.workmanage.db.dao.AccessTokenInfoDao;
 import com.barisetech.www.workmanage.db.dao.AlarmInfoDao;
 import com.barisetech.www.workmanage.db.dao.IncidentDao;
+import com.barisetech.www.workmanage.db.dao.SignInAndImagesDao;
 import com.barisetech.www.workmanage.db.dao.TokenInfoDao;
 
 /**
  * Created by LJH on 2018/8/8.
  */
-@Database(entities = {AccessTokenInfo.class, TokenInfo.class, AlarmInfo.class, IncidentInfo.class}, version = 1)
+@Database(entities = {AccessTokenInfo.class, TokenInfo.class, AlarmInfo.class, IncidentInfo.class, ReqSignIn.class,
+        ImageInfo.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase sInstance;
 
@@ -27,6 +31,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract TokenInfoDao tokenInfoDao();
     public abstract AlarmInfoDao alarmInfoDao();
     public abstract IncidentDao incidentDao();
+    public abstract SignInAndImagesDao signInAndImagesDao();
 
     public static AppDatabase getsInstance(final Context context) {
         if (null == sInstance) {

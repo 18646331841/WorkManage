@@ -99,6 +99,7 @@ public class SignInFragment extends BaseFragment {
     private static final int EXCEPTION = 2;
     private int curSiteState = NORMAL;
     private Disposable curDisposable;
+    private int curState = 3;
 
     public static SignInFragment newInstance(TaskSiteBean taskSiteBean) {
         SignInFragment fragment = new SignInFragment();
@@ -150,17 +151,20 @@ public class SignInFragment extends BaseFragment {
                     mBinding.planSignInSite.setVisibility(View.VISIBLE);
                     mBinding.planSignInCheckIn.setVisibility(View.VISIBLE);
                     mBinding.planSignInWriteLocation.setVisibility(View.GONE);
+                    curState = 1;
                 } else {
                     mBinding.planSignInCheckIn.setVisibility(View.GONE);
                     mBinding.planSignInWriteLocation.setVisibility(View.VISIBLE);
                     mBinding.planSignInArea.setText(getString(R.string.plan_sign_in_out_area));
                     mBinding.planSignInArea.setTextColor(getResources().getColor(R.color.plan_sign_in_red_color));
                     mBinding.planSignInSite.setVisibility(View.GONE);
+                    curState = 2;
                 }
 
                 Log.d(TAG, "longtude:" + longitude + ",latitude:" + latitude);
             } else {
-                ToastUtil.showToast("定位失败");
+                curState = 2;
+//                ToastUtil.showToast("定位失败");
                 Log.d(TAG, "location Error, ErrCode:"
                         + aMapLocation.getErrorCode() + ", errInfo:"
                         + aMapLocation.getErrorInfo());
@@ -281,7 +285,7 @@ public class SignInFragment extends BaseFragment {
 
         curSiteBean.DateTime = date;
         curSiteBean.Remark = remark;
-        curSiteBean.State = 1;
+        curSiteBean.State = curState;
         curSiteBean.SiteState = curSiteState;
         curSiteBean.UserLatitude = confirmLatitude;
         curSiteBean.UserLongitude = confirmLongitude;
@@ -345,8 +349,9 @@ public class SignInFragment extends BaseFragment {
                 if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
                     if (null != siteBean) {
                         ToastUtil.showToast("打卡成功");
-                        //TODO
+                        getActivity().onBackPressed();
                     } else {
+                        curSiteBean.State = 4;
                         ToastUtil.showToast("打卡失败");
                     }
                 }

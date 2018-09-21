@@ -1,5 +1,10 @@
 package com.barisetech.www.workmanage.bean.signin;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.Index;
+import android.arch.persistence.room.PrimaryKey;
+
 import com.barisetech.www.workmanage.bean.ImageInfo;
 import com.barisetech.www.workmanage.bean.worktask.TaskSiteBean;
 
@@ -8,6 +13,7 @@ import java.util.List;
 /**
  * Created by LJH on 2018/9/20.
  */
+@Entity(tableName = "sign_in")
 public class ReqSignIn {
     /**
      * Name : ttx
@@ -18,6 +24,8 @@ public class ReqSignIn {
      * State :  状态1正常打卡2离线打卡3未打卡4打卡失败
      * SiteState :   站点状态1正常2异常
      */
+    @PrimaryKey
+    public int id;
 
     public String Name;
     public String SiteId;
@@ -29,6 +37,8 @@ public class ReqSignIn {
     public String SiteState;
     public String UserLongitude;
     public String UserLatitude;
+
+    @Ignore
     public List<ImageInfo> WorkImageList;
 
     public void toTaskSite(TaskSiteBean siteBean) {

@@ -42,6 +42,7 @@ import com.barisetech.www.workmanage.viewmodel.TaskViewModel;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,6 +85,8 @@ public class TaskListFragment extends BaseFragment {
         curSiteList = new ArrayList<>();
         if (getArguments() != null) {
             curPlanBean = (PlanBean) getArguments().getSerializable(PLAN_ID);
+            //TODO
+            curPlanBean.TotalNumberOfTimes = 3;
         }
     }
 
@@ -123,7 +126,7 @@ public class TaskListFragment extends BaseFragment {
 
     private void initRecyclerView() {
 
-        planTaskListAdapter = new PlanTaskListAdapter(curSiteList, 3, curPlanBean
+        planTaskListAdapter = new PlanTaskListAdapter(curSiteList, curPlanBean
                 .PersonLiable, getContext(), itemCallBack);
         loadMoreWrapper = new BaseLoadMoreWrapper(planTaskListAdapter);
         loadMoreWrapper.setLoadingViewHeight(DisplayUtil.dip2px(getContext(), 50));
@@ -212,7 +215,32 @@ public class TaskListFragment extends BaseFragment {
                         if (taskBeans.size() > 0) {
                             List<TaskSiteBean> taskSiteBeans = taskBeans.get(0).TaskSiteList;
                             if (taskSiteBeans != null && taskSiteBeans.size() > 0) {
-                                curSiteList.addAll(taskSiteBeans);
+
+                                for(int i = 1; i <= curPlanBean.TotalNumberOfTimes; i++) {
+                                    TaskSiteBean titleSiteBean = new TaskSiteBean();//占位标题类
+                                    titleSiteBean.SiteId = -1;
+                                    titleSiteBean.Name = String.valueOf(i);
+                                    curSiteList.add(titleSiteBean);
+                                    for (TaskSiteBean taskSiteBean : taskSiteBeans) {
+                                        if (i > 1) {
+                                            try {
+                                                taskSiteBean = (TaskSiteBean) taskSiteBean.deepClone();
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            } catch (ClassNotFoundException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                        if (i == curPlanBean.TimesOfCompletion) {
+                                            taskSiteBean.State = 1;
+                                        } else if (i > curPlanBean.TimesOfCompletion) {
+                                            taskSiteBean.State = 3;
+                                        }
+                                        curSiteList.add(taskSiteBean);
+                                    }
+                                }
+
+//                                curSiteList.addAll(taskSiteBeans);
                                 LogUtil.d(TAG, "load complete = " + taskBeans);
                                 loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_COMPLETE);
                             } else {

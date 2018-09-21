@@ -165,7 +165,7 @@ public class FirstPublishFragment extends BaseFragment {
         ReqAllContacts reqAllContacts = new ReqAllContacts();
         reqAllContacts.setStartIndex(String.valueOf(formIndex));
         reqAllContacts.setNumberOfRecords(String.valueOf(toIndex));
-        reqAllContacts.setSelectItem("0");
+        reqAllContacts.setSelectItem("3");
         reqAllContacts.setSearchString(curSearch);
 
         curDisposable = contactsViewModel.reqAll(reqAllContacts);
@@ -176,7 +176,7 @@ public class FirstPublishFragment extends BaseFragment {
 
         ReqContactsNum reqContactsNum = new ReqContactsNum();
         reqContactsNum.setSearchString(curSearch);
-        reqContactsNum.setSelectItem("0");
+        reqContactsNum.setSelectItem("3");
 
         numDisposable = contactsViewModel.reqNum(reqContactsNum);
     }

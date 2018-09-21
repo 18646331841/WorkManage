@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 
+import com.barisetech.www.workmanage.base.BaseApplication;
 import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseViewModel;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
@@ -17,6 +18,7 @@ import com.barisetech.www.workmanage.bean.worktask.TaskSiteBean;
 import com.barisetech.www.workmanage.callback.ModelCallBack;
 import com.barisetech.www.workmanage.http.Config;
 import com.barisetech.www.workmanage.model.SignInModel;
+import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.view.LoginActivity;
 
 import org.greenrobot.eventbus.EventBus;
@@ -39,7 +41,7 @@ public class SignInViewModel extends BaseViewModel implements ModelCallBack {
         super(application);
         mDelivery = new Handler(Looper.getMainLooper());
 
-        signInModel = new SignInModel(this);
+        signInModel = new SignInModel(this, BaseApplication.getInstance().getDatabase());
 
         mObservableGet = new MutableLiveData<>();
         mObservableGet.setValue(null);
@@ -69,6 +71,14 @@ public class SignInViewModel extends BaseViewModel implements ModelCallBack {
         Disposable disposable = signInModel.reqSignIn(reqSignIn);
         addDisposable(disposable);
         return disposable;
+    }
+
+    /**
+     * 补打保存在数据库中的失败打卡
+     */
+    public void reqReSignIn() {
+        Disposable disposable = signInModel.uploadSignInFail();
+        addDisposable(disposable);
     }
 
     @Override
@@ -104,7 +114,12 @@ public class SignInViewModel extends BaseViewModel implements ModelCallBack {
                         mObservableGet.setValue(null);
                         break;
                     case SignInModel.TYPE_CHECK:
-                        mObservableSignIn.setValue(null);
+                        if (failResponse.code == Config.ERROR_NETWORK) {
+                            ToastUtil.showToast("网路错误，打卡信息已记录");
+                            mObservableSignIn.setValue(new TaskSiteBean());
+                        } else {
+                            mObservableSignIn.setValue(null);
+                        }
                         break;
                 }
             });

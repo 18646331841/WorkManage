@@ -24,16 +24,14 @@ public class PlanTaskListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private List<TaskSiteBean> mList;
     private Context ctx;
     private ItemCallBack itemCallBack;
-    private int curSum = 1;
     private String curPerson;
     private String role;
 
-    public PlanTaskListAdapter(List<TaskSiteBean> list, int sum, String person, Context context, @NonNull
+    public PlanTaskListAdapter(List<TaskSiteBean> list, String person, Context context, @NonNull
             ItemCallBack itemCallBack) {
         this.mList = list;
         this.ctx = context;
         this.itemCallBack = itemCallBack;
-        this.curSum = sum;
         this.curPerson = person;
         role = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_ROLE, "");
     }
@@ -51,23 +49,26 @@ public class PlanTaskListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof MyHolder) {
             MyHolder myHolder = (MyHolder) holder;
-            int count = position % (mList.size() + 1);
-            boolean isTitle = count == 0;
+//            int count = position % (mList.size() + 1);
+//            boolean isTitle = count == 0;
+            boolean isTitle = mList.get(position).SiteId == -1;
             if (isTitle) {
                 myHolder.binding.planTaskItemTitle.setVisibility(View.VISIBLE);
                 myHolder.binding.planTaskItemContent.setVisibility(View.GONE);
                 StringBuilder sb = new StringBuilder();
-                int num = position / (mList.size() + 1);
-                sb.append("第").append(num + 1).append("次巡线");
+//                int num = position / (mList.size() + 1);
+//                sb.append("第").append(num + 1).append("次巡线");
+                sb.append("第").append(mList.get(position).Name).append("次巡线");
                 myHolder.binding.planTaskItemNum.setText(sb.toString());
             } else {
                 myHolder.binding.planTaskItemTitle.setVisibility(View.GONE);
                 myHolder.binding.planTaskItemContent.setVisibility(View.VISIBLE);
-                TaskSiteBean taskSiteBean = mList.get(count - 1);
+//                TaskSiteBean taskSiteBean = mList.get(count - 1);
+                TaskSiteBean taskSiteBean = mList.get(position);
 
                 myHolder.binding.planTaskItemSite.setText(taskSiteBean.Name);
                 myHolder.binding.planTaskItemTime.setText(taskSiteBean.DateTime);
-                if (taskSiteBean.SiteState == 1) {
+                if (taskSiteBean.SiteState != 1) {
                     myHolder.binding.planTaskItemException.setBackgroundResource(R.drawable.icon_arrow_right);
                 } else {
                     myHolder.binding.planTaskItemException.setBackgroundColor(Color.TRANSPARENT);
@@ -92,13 +93,13 @@ public class PlanTaskListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public int getItemCount() {
-        if (mList.size() > 0) {
-            if (curSum == 0) {
-                return mList.size() + 1;
-            }
-            int count = mList.size() * curSum + curSum;
-            return count;
-        }
+//        if (mList.size() > 0) {
+//            if (curSum == 0) {
+//                return mList.size() + 1;
+//            }
+//            int count = mList.size() * curSum + curSum;
+//            return count;
+//        }
         return mList.size();
     }
 
