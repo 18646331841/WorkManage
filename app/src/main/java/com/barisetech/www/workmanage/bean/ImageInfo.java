@@ -12,15 +12,16 @@ import java.io.Serializable;
 /**
  * Created by LJH on 2018/9/3.
  */
-@Entity(tableName = "image_info", indices = {@Index("signId")}, foreignKeys = {@ForeignKey(entity = ReqSignIn.class,
-        parentColumns = "id", childColumns = "signId")})
+//@Entity(tableName = "image_info", indices = {@Index("signId")}, foreignKeys = {@ForeignKey(entity = ReqSignIn.class,
+//        parentColumns = "id", childColumns = "signId")})
+@Entity(tableName = "image_info")
 public class ImageInfo implements Serializable {
     /**
      * Data : 图片string编码对象
      * CreatUser : account
      */
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     public int id;
     /**
      * 专门打卡时使用

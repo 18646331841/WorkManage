@@ -281,6 +281,9 @@ public class SignInFragment extends BaseFragment {
                 imageInfo.setData(imgS);
                 imageInfos.add(imageInfo);
             }
+        } else {
+            ToastUtil.showToast("没有照片，请添加照片");
+            return;
         }
 
         curSiteBean.DateTime = date;

@@ -231,9 +231,12 @@ public class TaskListFragment extends BaseFragment {
                                                 e.printStackTrace();
                                             }
                                         }
-                                        if (i == curPlanBean.TimesOfCompletion) {
-                                            taskSiteBean.State = 1;
-                                        } else if (i > curPlanBean.TimesOfCompletion) {
+//                                        if (i == curPlanBean.TimesOfCompletion) {
+//                                            taskSiteBean.State = 1;
+//                                        } else if (i > curPlanBean.TimesOfCompletion) {
+//                                            taskSiteBean.State = 3;
+//                                        }
+                                        if (i > curPlanBean.TimesOfCompletion) {
                                             taskSiteBean.State = 3;
                                         }
                                         curSiteList.add(taskSiteBean);
