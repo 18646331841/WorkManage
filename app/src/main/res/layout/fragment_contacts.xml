@@ -26,33 +26,28 @@
         <LinearLayout
             android:id="@+id/l_select"
             android:layout_width="match_parent"
-            android:orientation="vertical"
+            android:orientation="horizontal"
+            android:weightSum="3"
             android:layout_height="wrap_content"
-            android:visibility="gone">
-            <RadioGroup
-                android:orientation="horizontal"
-                android:weightSum="3"
-                android:id="@+id/type_group"
+            android:visibility="gone"
+            android:layout_margin="@dimen/dp_10">
+
+
+            <Button
+                android:id="@+id/pipe_collection"
+                android:layout_weight="1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dp_10"
-                android:layout_marginBottom="@dimen/dp_10">
+                android:layout_height="@dimen/dp_30"
+                android:background="@drawable/filter_button_style"
+                android:button="@null"
+                android:gravity="center"
+                android:text="@string/tv_pipeline_collection"
+                android:textColor="@drawable/font_gray_blue_selector"
+                android:textSize="14sp"/>
 
 
-                <RadioButton
-                    android:id="@+id/pipe_collection"
-                    android:layout_width="match_parent"
-                    android:layout_weight="1"
-                    android:layout_height="@dimen/dp_30"
-                    android:background="@drawable/filter_button_style"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:text="@string/tv_pipeline_collection"
-                    android:textColor="@drawable/font_gray_blue_selector"
-                    android:textSize="14sp"/>
 
-
-                <RadioButton
+                <Button
                     android:id="@+id/site"
                     android:layout_width="match_parent"
                     android:layout_weight="1"
@@ -66,7 +61,7 @@
                     android:textSize="14sp"/>
 
 
-                <RadioButton
+                <Button
                     android:id="@+id/user"
                     android:layout_width="match_parent"
                     android:layout_weight="1"
@@ -78,7 +73,6 @@
                     android:text="@string/alarm_analysis_user"
                     android:textColor="@drawable/font_gray_blue_selector"
                     android:textSize="14sp"/>
-            </RadioGroup>
         </LinearLayout>
 
 

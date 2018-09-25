@@ -41,7 +41,7 @@ import java.util.List;
 
 import io.reactivex.disposables.Disposable;
 
-public class ContactsFragment extends BaseFragment {
+public class ContactsFragment extends BaseFragment implements View.OnClickListener {
 
     public static final String TAG = "ContactsFragment";
     FragmentContactsBinding mBinding;
@@ -55,7 +55,7 @@ public class ContactsFragment extends BaseFragment {
     private static final int PAGE_COUNT = 10;
     private int maxNum;
     private boolean flag = false;
-    private String selectItem;
+    private String selectItem = "0";
 
 
     public static ContactsFragment newInstance() {
@@ -89,7 +89,11 @@ public class ContactsFragment extends BaseFragment {
         if (flag) {
             mBinding.searchLayout.tvFilter.setTextColor(getResources().getColor(R.color.blue_text));
             mBinding.lSelect.setVisibility(View.VISIBLE);
+            buttonStyle(selectItem);
         }
+        mBinding.pipeCollection.setOnClickListener(this);
+        mBinding.site.setOnClickListener(this);
+        mBinding.user.setOnClickListener(this);
 
         mBinding.searchLayout.etSearch.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
@@ -113,26 +117,6 @@ public class ContactsFragment extends BaseFragment {
             return false;
         });
 
-            mBinding.typeGroup.setOnCheckedChangeListener((group, checkedId) -> {
-                switch (checkedId) {
-                    case R.id.pipe_collection:
-                        selectItem = "1";
-                        filterFunc(selectItem, mBinding.searchLayout.etSearch.getText().toString());
-                        break;
-                    case R.id.site:
-                        selectItem = "2";
-                        filterFunc(selectItem, mBinding.searchLayout.etSearch.getText().toString());
-                        break;
-                    case R.id.user:
-                        selectItem = "3";
-                        filterFunc(selectItem, mBinding.searchLayout.etSearch.getText().toString());
-                        break;
-                    default:
-                        break;
-                }
-
-            });
-
 
         mBinding.searchLayout.tvFilter.setOnClickListener(v -> {
             if (flag) {
@@ -140,12 +124,16 @@ public class ContactsFragment extends BaseFragment {
                 mBinding.lSelect.setVisibility(View.GONE);
                 contactsBeanList.clear();
                 loadMoreWrapper.notifyDataSetChanged();
-                mBinding.typeGroup.clearCheck();
                 selectItem = "0";
                 filterFunc(selectItem, mBinding.searchLayout.etSearch.getText().toString());
+                mBinding.pipeCollection.setTextColor(getResources().getColor(R.color.message_item_gray));
+                mBinding.site.setTextColor(getResources().getColor(R.color.message_item_gray));
+                mBinding.user.setTextColor(getResources().getColor(R.color.message_item_gray));
+                mBinding.site.setBackgroundResource(R.drawable.shape_button_corners_line_gray);
+                mBinding.user.setBackgroundResource(R.drawable.shape_button_corners_line_gray);
+                mBinding.pipeCollection.setBackgroundResource(R.drawable.shape_button_corners_line_gray);
                 flag = false;
             } else {
-                mBinding.pipeCollection.setChecked(true);
                 mBinding.searchLayout.tvFilter.setTextColor(getResources().getColor(R.color.blue_text));
                 mBinding.lSelect.setVisibility(View.VISIBLE);
                 flag = true;
@@ -283,5 +271,67 @@ public class ContactsFragment extends BaseFragment {
         super.onPause();
         contactsViewModel.getObservableAll().setValue(null);
     }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.pipe_collection:
+                selectItem = "1";
+                buttonStyle(selectItem);
+                filterFunc(selectItem, mBinding.searchLayout.etSearch.getText().toString());
+                break;
+            case R.id.site:
+                selectItem = "2";
+                buttonStyle(selectItem);
+                filterFunc(selectItem, mBinding.searchLayout.etSearch.getText().toString());
+                break;
+            case R.id.user:
+                selectItem = "3";
+                buttonStyle(selectItem);
+                filterFunc(selectItem, mBinding.searchLayout.etSearch.getText().toString());
+                break;
+            default:
+                break;
+
+        }
+
+    }
+
+
+    private void buttonStyle(String str) {
+        switch (str) {
+            case "1":
+                mBinding.pipeCollection.setTextColor(getResources().getColor(R.color.filter_blue));
+                mBinding.site.setTextColor(getResources().getColor(R.color.message_item_gray));
+                mBinding.user.setTextColor(getResources().getColor(R.color.message_item_gray));
+                mBinding.site.setBackgroundResource(R.drawable.shape_button_corners_line_gray);
+                mBinding.user.setBackgroundResource(R.drawable.shape_button_corners_line_gray);
+                mBinding.pipeCollection.setBackgroundResource(R.drawable.shape_button_corners_line_blue);
+                break;
+
+            case "2":
+                mBinding.pipeCollection.setTextColor(getResources().getColor(R.color.message_item_gray));
+                mBinding.site.setTextColor(getResources().getColor(R.color.filter_blue));
+                mBinding.user.setTextColor(getResources().getColor(R.color.message_item_gray));
+                mBinding.site.setBackgroundResource(R.drawable.shape_button_corners_line_blue);
+                mBinding.user.setBackgroundResource(R.drawable.shape_button_corners_line_gray);
+                mBinding.pipeCollection.setBackgroundResource(R.drawable.shape_button_corners_line_gray);
+                break;
+
+            case "3":
+                mBinding.pipeCollection.setTextColor(getResources().getColor(R.color.message_item_gray));
+                mBinding.site.setTextColor(getResources().getColor(R.color.message_item_gray));
+                mBinding.user.setTextColor(getResources().getColor(R.color.filter_blue));
+                mBinding.site.setBackgroundResource(R.drawable.shape_button_corners_line_gray);
+                mBinding.user.setBackgroundResource(R.drawable.shape_button_corners_line_blue);
+                mBinding.pipeCollection.setBackgroundResource(R.drawable.shape_button_corners_line_gray);
+                break;
+            case "0":
+                break;
+            default:
+                break;
+        }
+    }
+
 
 }

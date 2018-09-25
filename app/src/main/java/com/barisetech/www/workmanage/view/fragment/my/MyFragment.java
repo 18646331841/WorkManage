@@ -89,18 +89,12 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
                 EventBus.getDefault().post(new EventBusMessage(NotDisturbFragment.TAG));
                 break;
             case R.id.item_clear_cache:
-                showTwoButtonDialog("是否清除缓存", 0, null, "确定", "取消", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        DataCleanManagerUtil.clearAllCache(getContext());
-                        mDialog.dismiss();
-                    }
-                }, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mDialog.dismiss();
-                    }
-                });
+                showTwoButtonDialog("是否清除缓存", 0, null, "确定", "取消", v -> {
+                    DataCleanManagerUtil.cleanInternalCache(getContext());
+                    DataCleanManagerUtil.cleanSharedPreference(getContext());
+                    DataCleanManagerUtil.cleanDatabases(getContext());
+                    mDialog.dismiss();
+                }, v -> mDialog.dismiss());
                 break;
             case R.id.item_contacts:
                 EventBus.getDefault().post(new EventBusMessage(ContactsFragment.TAG));
