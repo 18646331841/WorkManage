@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.barisetech.www.workmanage.R;
+import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
@@ -113,7 +114,8 @@ public class AlarmDetailsFragment extends BaseFragment implements View.OnClickLi
                 EventBus.getDefault().post(eventBusMessage);
                 break;
             case R.id.lift_alarm_bt:
-
+                EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_SHOW));
+                alarmViewModel.reqLiftAlarm(curAlarmInfo.getKey());
                 break;
             case R.id.belong_lines_bt:
 

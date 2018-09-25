@@ -48,6 +48,7 @@ import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
 import com.barisetech.www.workmanage.utils.TimeUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.viewmodel.SignInViewModel;
+import com.barisetech.www.workmanage.widget.CustomDialog;
 import com.barisetech.www.workmanage.widget.CustomPopupWindow;
 
 import org.greenrobot.eventbus.EventBus;
@@ -100,6 +101,9 @@ public class SignInFragment extends BaseFragment {
     private int curSiteState = NORMAL;
     private Disposable curDisposable;
     private int curState = 3;
+
+    private CustomDialog.Builder builder;
+    private CustomDialog mDialog;
 
     public static SignInFragment newInstance(TaskSiteBean taskSiteBean) {
         SignInFragment fragment = new SignInFragment();
@@ -188,6 +192,8 @@ public class SignInFragment extends BaseFragment {
     }
 
     private void initView() {
+        builder = new CustomDialog.Builder(getContext());
+
         mLocationClient = new AMapLocationClient(getContext());
         mLocationClient.setLocationListener(mLocationListener);
         mLocationOption = new AMapLocationClientOption();
@@ -340,6 +346,16 @@ public class SignInFragment extends BaseFragment {
         }
     }
 
+    private void showSingleButtonDialog(String alertText, int ImgId, String title, String btnText, View
+            .OnClickListener onClickListener) {
+        mDialog = builder.setMessage(alertText)
+                .setTitle(title)
+                .setImagView(ImgId)
+                .setSingleButton(btnText, onClickListener)
+                .createSingleButtonDialog();
+        mDialog.show();
+    }
+
     @Override
     public void bindViewModel() {
         signInViewModel = ViewModelProviders.of(this).get(SignInViewModel.class);
@@ -352,7 +368,12 @@ public class SignInFragment extends BaseFragment {
                 if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
                     if (null != siteBean) {
                         ToastUtil.showToast("打卡成功");
-                        getActivity().onBackPressed();
+                        if (curSiteBean.isEnd) {
+                            showSingleButtonDialog("恭喜您已完成1次巡线任务", R.mipmap.ic_launcher_round, null, "确定", view -> {
+                                mDialog.dismiss();
+                                getActivity().onBackPressed();
+                            });
+                        }
                     } else {
                         curSiteBean.State = 4;
                         ToastUtil.showToast("打卡失败");

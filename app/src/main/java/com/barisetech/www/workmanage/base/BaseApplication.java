@@ -4,11 +4,14 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.support.multidex.MultiDexApplication;
 
 import com.barisetech.www.workmanage.bean.AccessTokenInfo;
 import com.barisetech.www.workmanage.bean.TokenInfo;
 import com.barisetech.www.workmanage.db.AppDatabase;
+import com.barisetech.www.workmanage.service.JobSchedulerManager;
+import com.barisetech.www.workmanage.service.MyNotifyService;
 import com.barisetech.www.workmanage.utils.LogUtil;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
@@ -24,6 +27,8 @@ public class BaseApplication extends MultiDexApplication {
     private static BaseApplication Instance;
     public static String dataDir;
     public static String appDir = "/WorkManage";
+
+    public static final String PACKAGE_NAME = "com.barisetech.www.workmanage";
     /**
      * 是否为大屏左右显示，true表示是
      */
@@ -35,6 +40,14 @@ public class BaseApplication extends MultiDexApplication {
         Instance = this;
         dataDir = getFilesDir().getAbsolutePath() + appDir;
 
+        //5.0以上系统使用jobService保活
+        JobSchedulerManager jobSchedulerInstance = JobSchedulerManager.getJobSchedulerInstance(this);
+        if (jobSchedulerInstance != null) {
+            jobSchedulerInstance.startJobScheduler();
+        }
+
+        Intent notifyIntent = new Intent(this, MyNotifyService.class);
+        startService(notifyIntent);
     }
 
     public AppDatabase getDatabase() {

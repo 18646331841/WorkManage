@@ -44,7 +44,7 @@ public class ManageFragment extends BaseFragment implements View.OnClickListener
             mBinding.itemStatistics.setOnClickListener(this);
             mBinding.itemPipelineBlindArea.setOnClickListener(this);
             mBinding.itemPipelineWorkStatus.setOnClickListener(this);
-            mBinding.itemContacts.setOnClickListener(this);
+//            mBinding.itemContacts.setOnClickListener(this);
             mBinding.itemDisk.setOnClickListener(this);
             return mBinding.getRoot();
     }
@@ -81,8 +81,8 @@ public class ManageFragment extends BaseFragment implements View.OnClickListener
             case R.id.item_pipeline_blind_area:
                 EventBus.getDefault().post(new EventBusMessage(PipeLindAreaFragment.TAG));
                 break;
-            case R.id.item_contacts:
-                break;
+//            case R.id.item_contacts:
+//                break;
             case R.id.item_disk:
                 break;
             case R.id.item_statistics:

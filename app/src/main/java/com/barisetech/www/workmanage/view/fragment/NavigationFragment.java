@@ -29,7 +29,6 @@ public class NavigationFragment extends Fragment {
     private FragmentManager fm;
     private static final String CUR_TAG = "curTag";
     private BottomNavigationView navigation;
-    private BottomNavigationItemView manage;
 
     private boolean fromOtherView = false;
     private String curFragment = "";
@@ -82,10 +81,10 @@ public class NavigationFragment extends Fragment {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         BottomNavigationMenuView menuView = (BottomNavigationMenuView) navigation.getChildAt(0);
-        manage = (BottomNavigationItemView) menuView.getChildAt(2);
+        BottomNavigationItemView my = (BottomNavigationItemView) menuView.getChildAt(3);
 
         View badge = LayoutInflater.from(getActivity()).inflate(R.layout.menu_badge, menuView, false);
-        manage.addView(badge);
+        my.addView(badge);
         TextView count = (TextView) badge.findViewById(R.id.tv_msg_count);
         count.setText(String.valueOf(1));
         BottomNavigationViewHelper.disableShiftMode(navigation);

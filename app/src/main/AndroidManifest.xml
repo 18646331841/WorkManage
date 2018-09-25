@@ -23,6 +23,8 @@
     <!-- 指纹识别权限 -->
     <uses-permission android:name="android.permission.USE_FINGERPRINT" />
 
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+
     <application
         android:name=".base.BaseApplication"
         android:allowBackup="true"
@@ -59,11 +61,27 @@
             android:name=".view.LoginActivity"
             android:configChanges="screenSize|keyboardHidden|orientation"
             android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustPan|stateHidden"></activity>
+            android:windowSoftInputMode="adjustPan|stateHidden">
+
+        </activity>
 
         <activity
             android:name="me.nereo.multi_image_selector.MultiImageSelectorActivity"
             android:configChanges="orientation|screenSize" />
+
+        <activity android:name=".service.singlepixel.SinglePixelActivity"
+                  android:configChanges="keyboardHidden|orientation|screenSize|navigation|keyboard"
+                  android:excludeFromRecents="true"
+                  android:finishOnTaskLaunch="false"
+                  android:launchMode="singleInstance"/>
+
+        <service
+            android:name=".service.AliveJobService"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
+
+        <service android:name=".service.MyNotifyService">
+
+        </service>
     </application>
 
 </manifest>

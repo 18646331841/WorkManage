@@ -40,6 +40,11 @@ public class TaskSiteBean implements Serializable {
     public List<ImageInfo> WorkImageList;
 
     /**
+     * 标记是否为每次打卡中的最后一个
+     */
+    public boolean isEnd = false;
+
+    /**
      * 为了传范围到签到界面，自己加的
      */
     public double range;

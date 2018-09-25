@@ -440,68 +440,68 @@
                         app:layout_constraintBottom_toBottomOf="@id/item_pipeline_work_status" />
                 </android.support.constraint.ConstraintLayout>
 
-                <android.support.constraint.ConstraintLayout
-                    android:id="@+id/item_contacts"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:layout_marginLeft="22dp"
-                    android:layout_marginRight="15dp">
+                <!--<android.support.constraint.ConstraintLayout-->
+                    <!--android:id="@+id/item_contacts"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="60dp"-->
+                    <!--android:layout_marginLeft="22dp"-->
+                    <!--android:layout_marginRight="15dp">-->
 
-                    <ImageView
-                        android:src="@drawable/ic_contacts"
-                        android:id="@+id/img_contacts"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintBottom_toBottomOf="@id/item_contacts"
-                        app:layout_constraintLeft_toLeftOf="@id/item_contacts"
-                        app:layout_constraintTop_toTopOf="@id/item_contacts" />
+                    <!--<ImageView-->
+                        <!--android:src="@drawable/ic_contacts"-->
+                        <!--android:id="@+id/img_contacts"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--app:layout_constraintBottom_toBottomOf="@id/item_contacts"-->
+                        <!--app:layout_constraintLeft_toLeftOf="@id/item_contacts"-->
+                        <!--app:layout_constraintTop_toTopOf="@id/item_contacts" />-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:text="@string/tv_contacts"
-                        app:layout_constraintBottom_toBottomOf="@id/item_contacts"
-                        app:layout_constraintLeft_toRightOf="@id/img_contacts"
-                        app:layout_constraintTop_toTopOf="@id/item_contacts" />
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginLeft="20dp"-->
+                        <!--android:text="@string/tv_contacts"-->
+                        <!--app:layout_constraintBottom_toBottomOf="@id/item_contacts"-->
+                        <!--app:layout_constraintLeft_toRightOf="@id/img_contacts"-->
+                        <!--app:layout_constraintTop_toTopOf="@id/item_contacts" />-->
 
 
-                    <ImageView
-                        android:id="@+id/img_enter_contacts"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
-                        app:layout_constraintBottom_toBottomOf="@id/item_contacts"
-                        app:layout_constraintRight_toRightOf="@id/item_contacts"
-                        app:layout_constraintTop_toTopOf="@id/item_contacts" />
+                    <!--<ImageView-->
+                        <!--android:id="@+id/img_enter_contacts"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginRight="10dp"-->
+                        <!--app:layout_constraintBottom_toBottomOf="@id/item_contacts"-->
+                        <!--app:layout_constraintRight_toRightOf="@id/item_contacts"-->
+                        <!--app:layout_constraintTop_toTopOf="@id/item_contacts" />-->
 
-                    <TextView
-                        android:id="@+id/tv_contacts"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="15dp"
-                        app:layout_constraintBottom_toBottomOf="@id/item_contacts"
-                        app:layout_constraintRight_toLeftOf="@id/img_enter_contacts"
-                        app:layout_constraintTop_toTopOf="@id/item_contacts" />
+                    <!--<TextView-->
+                        <!--android:id="@+id/tv_contacts"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginRight="15dp"-->
+                        <!--app:layout_constraintBottom_toBottomOf="@id/item_contacts"-->
+                        <!--app:layout_constraintRight_toLeftOf="@id/img_enter_contacts"-->
+                        <!--app:layout_constraintTop_toTopOf="@id/item_contacts" />-->
 
-                    <TextView
-                        android:id="@+id/contacts_num"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:background="@drawable/shape_bg_red_circle"
-                        android:gravity="center"
-                        android:text="1"
-                        android:textColor="@color/white"
-                        app:layout_constraintBottom_toBottomOf="@id/item_contacts"
-                        app:layout_constraintRight_toLeftOf="@id/tv_contacts"
-                        app:layout_constraintTop_toTopOf="@id/item_contacts" />
+                    <!--<TextView-->
+                        <!--android:id="@+id/contacts_num"-->
+                        <!--android:layout_width="20dp"-->
+                        <!--android:layout_height="20dp"-->
+                        <!--android:background="@drawable/shape_bg_red_circle"-->
+                        <!--android:gravity="center"-->
+                        <!--android:text="1"-->
+                        <!--android:textColor="@color/white"-->
+                        <!--app:layout_constraintBottom_toBottomOf="@id/item_contacts"-->
+                        <!--app:layout_constraintRight_toLeftOf="@id/tv_contacts"-->
+                        <!--app:layout_constraintTop_toTopOf="@id/item_contacts" />-->
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/line_gray"
-                        app:layout_constraintBottom_toBottomOf="@id/item_contacts" />
-                </android.support.constraint.ConstraintLayout>
+                    <!--<View-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="1dp"-->
+                        <!--android:background="@color/line_gray"-->
+                        <!--app:layout_constraintBottom_toBottomOf="@id/item_contacts" />-->
+                <!--</android.support.constraint.ConstraintLayout>-->
 
 
             </LinearLayout>

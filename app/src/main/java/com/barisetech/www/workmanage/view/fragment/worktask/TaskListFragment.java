@@ -18,6 +18,7 @@ import com.barisetech.www.workmanage.adapter.ItemCallBack;
 import com.barisetech.www.workmanage.adapter.OnScrollListener;
 import com.barisetech.www.workmanage.adapter.PlanContactsListAdapter;
 import com.barisetech.www.workmanage.adapter.PlanTaskListAdapter;
+import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.base.BaseLoadMoreWrapper;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
@@ -66,6 +67,7 @@ public class TaskListFragment extends BaseFragment {
 
     private static final String PLAN_ID = "plan";
     private PlanBean curPlanBean;
+    private int siteNum = 0;
 
     public TaskListFragment() {
         // Required empty public constructor
@@ -195,6 +197,21 @@ public class TaskListFragment extends BaseFragment {
             TaskSiteBean taskSiteBean = (TaskSiteBean) item;
             taskSiteBean.range = curPlanBean.Range;
 
+            //判断是否该完成最后每次的最后一个打卡
+            boolean isEnd = true;
+            int start = curPlanBean.TimesOfCompletion * siteNum + curPlanBean.TimesOfCompletion;
+            int total = start + siteNum;
+            for(int i = start; i < total; i++) {
+                if (curSiteList.get(i).SiteId == -1) {
+                    continue;
+                }
+                if (curSiteList.get(i).State != BaseConstant.STATUS_COMPLETED) {
+                    isEnd = false;
+                    break;
+                }
+            }
+
+            taskSiteBean.isEnd = isEnd;
             EventBusMessage eventBusMessage = new EventBusMessage(SignInFragment.TAG);
             eventBusMessage.setArg1(taskSiteBean);
             EventBus.getDefault().post(eventBusMessage);
@@ -215,7 +232,7 @@ public class TaskListFragment extends BaseFragment {
                         if (taskBeans.size() > 0) {
                             List<TaskSiteBean> taskSiteBeans = taskBeans.get(0).TaskSiteList;
                             if (taskSiteBeans != null && taskSiteBeans.size() > 0) {
-
+                                siteNum = taskBeans.size();
                                 for(int i = 1; i <= curPlanBean.TotalNumberOfTimes; i++) {
                                     TaskSiteBean titleSiteBean = new TaskSiteBean();//占位标题类
                                     titleSiteBean.SiteId = -1;

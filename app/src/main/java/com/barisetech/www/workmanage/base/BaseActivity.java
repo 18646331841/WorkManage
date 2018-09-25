@@ -18,6 +18,8 @@ import android.view.View;
 
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
+import com.barisetech.www.workmanage.service.singlepixel.ScreenManager;
+import com.barisetech.www.workmanage.service.singlepixel.ScreenReceiverUtil;
 import com.barisetech.www.workmanage.utils.LogUtil;
 import com.barisetech.www.workmanage.view.dialog.CommonDialogFragment;
 import com.barisetech.www.workmanage.view.dialog.DialogFragmentHelper;
@@ -32,6 +34,11 @@ import io.reactivex.annotations.NonNull;
  */
 public abstract class BaseActivity extends AppCompatActivity {
     private static final String TAG = "BaseActivity";
+
+    // 动态注册锁屏等广播
+    private ScreenReceiverUtil mScreenListener;
+    // 1像素Activity管理类
+    private ScreenManager mScreenManager;
 
     protected Context mContext;
     protected CommonDialogFragment commonDialogFragment;
@@ -50,6 +57,11 @@ public abstract class BaseActivity extends AppCompatActivity {
             LogUtil.d(TAG, "portrait");
             screenOrientation = PORTRAIT;
         }
+
+        // 1. 注册锁屏广播监听器
+        mScreenListener = new ScreenReceiverUtil(this);
+        mScreenManager = ScreenManager.getScreenManagerInstance(this);
+        mScreenListener.setScreenReceiverListener(mScreenListenerer);
 
         LogUtil.d(TAG, "Base onCreate");
         setCustomDensity(this, getApplication());
@@ -86,6 +98,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        mScreenListener.stopScreenReceiverListener();
     }
 
     @Override
@@ -272,4 +285,24 @@ public abstract class BaseActivity extends AppCompatActivity {
             activityDisplayMetrics.scaledDensity = targetScaledDensity;
         }
     }
+
+    private ScreenReceiverUtil.SreenStateListener mScreenListenerer = new ScreenReceiverUtil.SreenStateListener() {
+        @Override
+        public void onSreenOn() {
+            // 移除"1像素"
+            mScreenManager.finishActivity();
+        }
+
+
+        @Override
+        public void onSreenOff() {
+            mScreenManager.startActivity();
+        }
+
+
+        @Override
+        public void onUserPresent() {
+            // 解锁，暂不用，保留
+        }
+    };
 }
