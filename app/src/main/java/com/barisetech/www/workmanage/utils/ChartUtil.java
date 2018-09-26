@@ -63,7 +63,7 @@ public class ChartUtil {
         line.setFilled(false);//是否填充曲线的面积
         line.setHasLabelsOnlyForSelected(true);//点击数据坐标提示数据（设置了这个line.setHasLabels(true);就无效）
         line.setHasLines(true);//是否用直线显示。如果为false 则没有曲线只有点显示
-        line.setHasPoints(true);//是否显示圆点 如果为false 则没有原点只有点显示
+        line.setHasPoints(false);//是否显示圆点 如果为false 则没有原点只有点显示
         line.setColor(Color.parseColor("#FEB04C"));
         line.setStrokeWidth(1);//设置线的宽度
         lines.add(line);

@@ -1,7 +1,9 @@
 package com.barisetech.www.workmanage.service;
 
+import android.app.Notification;
 import android.app.Service;
 import android.content.Intent;
+import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
@@ -17,6 +19,7 @@ public class MyNotifyService extends Service {
     public void onCreate() {
         super.onCreate();
         LogUtil.d(TAG, "onCreate");
+        startForeground(1, new Notification());
     }
 
     @Override
@@ -41,8 +44,11 @@ public class MyNotifyService extends Service {
      * 5.0以下保活
      */
     private void gcEnv() {
-        Intent serviceTo = new Intent();
-        serviceTo.setClass(this, MyNotifyService.class);
-        this.startService(serviceTo);
+        Intent serviceTo = new Intent(getApplicationContext(), MyNotifyService.class);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(serviceTo);
+        } else {
+            startService(serviceTo);
+        }
     }
 }

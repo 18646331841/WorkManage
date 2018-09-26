@@ -21,14 +21,24 @@ public class PipeDetailFragment extends BaseFragment {
 
     public static final String TAG = "PipeDetailFragment";
 
-    private static final String PIPE_ID = "pipeInfo";
+    private static final String PIPE = "pipeInfo";
+    private static final String PIPE_ID = "pipeId";
     private PipeInfo pipeInfo;
+    private int pipeId;
     FragmentPipeDetailBinding mBinding;
 
     public static PipeDetailFragment newInstance(PipeInfo pipeInfo) {
         PipeDetailFragment fragment = new PipeDetailFragment();
         Bundle bundle = new Bundle();
-        bundle.putSerializable(PIPE_ID, pipeInfo);
+        bundle.putSerializable(PIPE, pipeInfo);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+    public static PipeDetailFragment newInstance(int pipeId) {
+        PipeDetailFragment fragment = new PipeDetailFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(PIPE_ID, pipeId);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -37,7 +47,8 @@ public class PipeDetailFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (null != getArguments()) {
-            pipeInfo = (PipeInfo) getArguments().getSerializable(PIPE_ID);
+            pipeInfo = (PipeInfo) getArguments().getSerializable(PIPE);
+            pipeId = getArguments().getInt(PIPE_ID);
         }
     }
 

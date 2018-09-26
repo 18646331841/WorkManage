@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
+import com.barisetech.www.workmanage.bean.digitalizer.DigitalizerBean;
 import com.barisetech.www.workmanage.databinding.FragmentDigitizingDetailBinding;
 
 public class DigitizingDetailFragment extends BaseFragment{
@@ -18,12 +19,26 @@ public class DigitizingDetailFragment extends BaseFragment{
     public static final String TAG ="DigitizingDetailFragment";
     FragmentDigitizingDetailBinding mBinding;
 
+    private static final String DIGITALIZER = "digitalizer";
+    private DigitalizerBean digitalizerBean;
 
-    public static DigitizingDetailFragment newInstance() {
+    public static DigitizingDetailFragment newInstance(DigitalizerBean digitalizerBean) {
         DigitizingDetailFragment fragment = new  DigitizingDetailFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(DIGITALIZER, digitalizerBean);
+        fragment.setArguments(bundle);
         return fragment;
     }
 
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (null != getArguments()) {
+            digitalizerBean = new DigitalizerBean();
+            digitalizerBean = (DigitalizerBean) getArguments().getSerializable(DIGITALIZER);
+        }
+    }
 
     @Nullable
     @Override

@@ -13,6 +13,7 @@ import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.bean.alarmanalysis.AlarmAnalysis;
+import com.barisetech.www.workmanage.bean.digitalizer.DigitalizerBean;
 import com.barisetech.www.workmanage.bean.incident.IncidentInfo;
 import com.barisetech.www.workmanage.bean.pipe.PipeInfo;
 import com.barisetech.www.workmanage.bean.pipecollections.PipeCollections;
@@ -285,7 +286,8 @@ public class MainActivity extends BaseActivity {
                     break;
                 case DigitizingDetailFragment.TAG:
                     transaction
-                            .replace(R.id.fragment_content, DigitizingDetailFragment.newInstance(), tag).commit();
+                            .replace(R.id.fragment_content, DigitizingDetailFragment.newInstance((DigitalizerBean)
+                                    eventBusMessage.getArg1()), tag).commit();
                     if (!isActivity) {
                         transaction.addToBackStack(tag);
                     }

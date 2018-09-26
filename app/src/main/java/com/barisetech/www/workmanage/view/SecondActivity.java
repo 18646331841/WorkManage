@@ -12,6 +12,7 @@ import com.barisetech.www.workmanage.bean.UserInfo;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.bean.alarmanalysis.AlarmAnalysis;
 import com.barisetech.www.workmanage.bean.contacts.ContactsBean;
+import com.barisetech.www.workmanage.bean.digitalizer.DigitalizerBean;
 import com.barisetech.www.workmanage.bean.incident.IncidentInfo;
 import com.barisetech.www.workmanage.bean.pipe.PipeInfo;
 import com.barisetech.www.workmanage.bean.pipecollections.PipeCollections;
@@ -219,7 +220,8 @@ public class SecondActivity extends BaseActivity {
                 break;
             case DigitizingDetailFragment.TAG:
                 transaction
-                        .replace(R.id.second_framelayout, DigitizingDetailFragment.newInstance(), tag).commit();
+                        .replace(R.id.second_framelayout, DigitizingDetailFragment.newInstance((DigitalizerBean)
+                                eventBusMessage.getArg1()), tag).commit();
                 if (!isActivity) {
                     transaction.addToBackStack(tag);
                 }

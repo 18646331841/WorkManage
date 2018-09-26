@@ -2,7 +2,6 @@ package com.barisetech.www.workmanage.widget;
 
 import android.app.Activity;
 import android.content.Context;
-import android.databinding.generated.callback.OnClickListener;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -140,7 +139,7 @@ public  class CustomPopupWindow implements PopupWindow.OnDismissListener {
      * @param viewid
      * @param listener
      */
-    public void setOnClickListener(int viewid, OnClickListener listener){
+    public void setOnClickListener(int viewid, View.OnClickListener listener){
         getItemView(viewid).setOnClickListener(listener);
     }
 
