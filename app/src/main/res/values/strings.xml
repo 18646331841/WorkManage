@@ -134,8 +134,11 @@
     <string name="alarm_lift_success">解除成功</string>
     <string name="alarm_lift_fail">解除失败</string>
     <string name="belong_line">所在管线</string>
-    <string name="waveform">波形图</string>
     <string name="build_alarm_analysis">生成警报分析</string>
+
+    <string name="title_waveform">波形图</string>
+    <string name="waveform_start_site">首站</string>
+    <string name="waveform_end_site">末站</string>
 
     <string name="login_fingerprint">指纹登录</string>
     <string name="login_fingerprint_summary">开启后可使用指纹认证完成快速登录，设置仅对本机生效。如需修改指纹，请在系统设置中操作</string>

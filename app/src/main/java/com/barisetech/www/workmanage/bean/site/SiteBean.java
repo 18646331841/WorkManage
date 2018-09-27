@@ -1,5 +1,8 @@
 package com.barisetech.www.workmanage.bean.site;
 
+import android.databinding.BindingAdapter;
+import android.widget.TextView;
+
 import java.io.Serializable;
 
 public class SiteBean implements Serializable{
@@ -127,5 +130,14 @@ public class SiteBean implements Serializable{
     public String LdPluginId;
     public int ShieldingRange;
     public int TimeOffset;
+
+    @BindingAdapter("showBool")
+    public static void showBool(TextView view, Boolean b) {
+        if (b) {
+            view.setText("是");
+        } else {
+            view.setText("否");
+        }
+    }
 
 }

@@ -112,7 +112,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/dp_10"
                     android:background="@drawable/shane_button_corners_line"
-                    android:text="@string/waveform"
+                    android:text="@string/title_waveform"
                     android:textColor="@color/gray_alarm_details_text"
                     android:textSize="@dimen/sp_18"/>
 

@@ -2,22 +2,18 @@ package com.barisetech.www.workmanage.base;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.support.multidex.MultiDexApplication;
 
-import com.barisetech.www.workmanage.bean.AccessTokenInfo;
-import com.barisetech.www.workmanage.bean.TokenInfo;
 import com.barisetech.www.workmanage.db.AppDatabase;
 import com.barisetech.www.workmanage.service.JobSchedulerManager;
 import com.barisetech.www.workmanage.service.MyNotifyService;
 import com.barisetech.www.workmanage.utils.LogUtil;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by LJH on 2018/7/9.
@@ -47,7 +43,11 @@ public class BaseApplication extends MultiDexApplication {
         }
 
         Intent notifyIntent = new Intent(this, MyNotifyService.class);
-        startService(notifyIntent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(notifyIntent);
+        } else {
+            startService(notifyIntent);
+        }
     }
 
     public AppDatabase getDatabase() {

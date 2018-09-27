@@ -18,6 +18,7 @@ import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
+import com.barisetech.www.workmanage.bean.pipe.PipeInfo;
 import com.barisetech.www.workmanage.databinding.FragmentAlarmDetailsBinding;
 import com.barisetech.www.workmanage.utils.LogUtil;
 import com.barisetech.www.workmanage.viewmodel.AlarmViewModel;
@@ -118,7 +119,12 @@ public class AlarmDetailsFragment extends BaseFragment implements View.OnClickLi
                 alarmViewModel.reqLiftAlarm(curAlarmInfo.getKey());
                 break;
             case R.id.belong_lines_bt:
-
+                EventBusMessage pipeMessage = new EventBusMessage(PipeDetailFragment.TAG);
+                PipeInfo pipeInfo = new PipeInfo();
+                pipeInfo.PipeId = curAlarmInfo.getPipeId();
+                pipeInfo.Name = BaseConstant.DATA_REQUEST_NAME;
+                pipeMessage.setArg1(pipeInfo);
+                EventBus.getDefault().post(pipeMessage);
                 break;
             case R.id.waveform_bt:
                 EventBus.getDefault().post(new EventBusMessage(WaveFormFragment.TAG));

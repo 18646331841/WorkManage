@@ -75,12 +75,14 @@ public class AlarmViewModel extends BaseViewModel implements ModelCallBack {
 
     public AlarmViewModel(@NonNull Application application, int alarmId) {
         super(application);
+        mDelivery = new android.os.Handler(Looper.getMainLooper());
         appDatabase = BaseApplication.getInstance().getDatabase();
         alarmModel = new AlarmModel(appDatabase, this);
 
         mObservableAlarmInfo = alarmModel.getAlarmInfo(alarmId);
-//        mObservableAllAlarmInfos = alarmModel.getAllAlarmInfo();
-//        mObservableNotReadAlarmInfos = alarmModel.getAlarmInfosByRead(false);
+
+        mObservableLiftAlarm = new MutableLiveData<>();
+        mObservableLiftAlarm.setValue(null);
     }
 
     public void reqAlarmNum() {

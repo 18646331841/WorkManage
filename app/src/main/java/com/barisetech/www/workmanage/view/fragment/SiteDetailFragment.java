@@ -1,5 +1,7 @@
 package com.barisetech.www.workmanage.view.fragment;
 
+import android.arch.lifecycle.Lifecycle;
+import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,11 +11,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.barisetech.www.workmanage.R;
+import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
+import com.barisetech.www.workmanage.bean.site.ReqSiteBean;
+import com.barisetech.www.workmanage.bean.site.ReqSiteInfos;
 import com.barisetech.www.workmanage.bean.site.SiteBean;
 import com.barisetech.www.workmanage.databinding.FragmentSiteDetailBinding;
+import com.barisetech.www.workmanage.utils.ToastUtil;
+import com.barisetech.www.workmanage.viewmodel.SiteViewModel;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -24,6 +31,7 @@ public class SiteDetailFragment extends BaseFragment {
 
     private static final String SITE_ID = "siteBean";
     private SiteBean siteBean;
+    private SiteViewModel siteViewModel;
 
     public static SiteDetailFragment newInstance(SiteBean siteBean) {
         SiteDetailFragment fragment = new SiteDetailFragment();
@@ -37,7 +45,6 @@ public class SiteDetailFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (null != getArguments()) {
-            siteBean = new SiteBean();
             siteBean = (SiteBean) getArguments().getSerializable(SITE_ID);
         }
     }
@@ -60,30 +67,54 @@ public class SiteDetailFragment extends BaseFragment {
     }
 
     private void initView() {
-        mBinding.tvId.setText(String.valueOf(siteBean.SiteId));
-        mBinding.tvCompany.setText(siteBean.Company);
-        mBinding.tvLongitude.setText(String.valueOf(siteBean.Longitude));
-        mBinding.tvLatitude.setText(String.valueOf(siteBean.Latitude));
-        mBinding.tvPrincipal.setText(siteBean.Manager);
-        mBinding.tvPhoneNum.setText(siteBean.Telephone);
-        mBinding.tvLineWhether.setText(siteBean.IsOnLine?"是":"否");
-        mBinding.tvDoubleSnesor.setText(siteBean.IsDualSensor?"是":"否");
-        mBinding.tvDoubleFilter.setText(siteBean.IsDirFilterEnabled?"是":"否");
-        mBinding.tvLeakPlugin.setText(siteBean.LdPluginName);
+        mBinding.setSiteBean(siteBean);
+
         mBinding.toolbar.tvOne.setOnClickListener(view -> {
             EventBusMessage eventBusMessage = new EventBusMessage(ModifySiteFragment.TAG);
             eventBusMessage.setArg1(siteBean);
+            EventBus.getDefault().post(eventBusMessage);
+        });
+
+        mBinding.addSite.setOnClickListener(view -> {
+            EventBusMessage eventBusMessage = new EventBusMessage(PipeAddFragment.TAG);
             EventBus.getDefault().post(eventBusMessage);
         });
     }
 
     @Override
     public void bindViewModel() {
-
+        siteViewModel = ViewModelProviders.of(this).get(SiteViewModel.class);
     }
 
     @Override
     public void subscribeToModel() {
+        if (!siteViewModel.getmObservableSiteInfos().hasObservers()) {
+            siteViewModel.getmObservableSiteInfos().observe(this, siteBeans -> {
+                if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                    if (siteBeans != null && siteBeans.size() > 0) {
+                        siteBean = siteBeans.get(0);
+                        mBinding.setSiteBean(siteBean);
+                    } else {
+                        ToastUtil.showToast("未查到站点数据");
+                    }
+                }
+            });
+        }
 
+        if (siteBean.Name.equals(BaseConstant.DATA_REQUEST_NAME)) {
+            getData();
+        }
+    }
+
+    private void getData() {
+        EventBusMessage eventBusMessage = new EventBusMessage(BaseConstant.PROGRESS_SHOW);
+        EventBus.getDefault().post(eventBusMessage);
+
+        ReqSiteInfos reqSiteInfos = new ReqSiteInfos();
+        reqSiteInfos.setSiteId(String.valueOf(siteBean.SiteId));
+        reqSiteInfos.setStartIndex("0");
+        reqSiteInfos.setNumberOfRecords("1");
+
+        siteViewModel.reqAllSite(reqSiteInfos);
     }
 }

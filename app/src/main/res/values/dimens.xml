@@ -69,6 +69,7 @@
     <dimen name="dp_270">270dp</dimen>
     <dimen name="dp_275">275dp</dimen>
     <dimen name="dp_290">290dp</dimen>
+    <dimen name="dp_300">300dp</dimen>
     <dimen name="dp_315">315dp</dimen>
 
     <!--sp-->

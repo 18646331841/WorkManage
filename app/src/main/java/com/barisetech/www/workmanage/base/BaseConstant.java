@@ -6,6 +6,11 @@ package com.barisetech.www.workmanage.base;
 public class BaseConstant {
 
     /**
+     * 部分页面跳转时，需要从网络拿数据时的对象名
+     */
+    public static final String DATA_REQUEST_NAME = "requestNet";
+
+    /**
      * 用户角色权限，分三类
      */
     public static final String ROLE_SUPER_ADMINS = "SuperAdmins";

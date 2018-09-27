@@ -24,6 +24,8 @@ import com.barisetech.www.workmanage.bean.alarm.ReqAllAlarm;
 import com.barisetech.www.workmanage.bean.incident.IncidentInfo;
 import com.barisetech.www.workmanage.bean.incident.ReqAllIncident;
 import com.barisetech.www.workmanage.bean.incident.ReqIncidentSelectItem;
+import com.barisetech.www.workmanage.bean.pipe.PipeInfo;
+import com.barisetech.www.workmanage.bean.site.SiteBean;
 import com.barisetech.www.workmanage.databinding.FragmentMessageBinding;
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.utils.LogUtil;
@@ -132,7 +134,13 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
                             alarmViewModel.reqLiftAlarm(curAlarmInfo.getKey());
                             break;
                         case 2:
-
+                            curAlarmInfo = alarmInfo;
+                            EventBusMessage pipeMessage = new EventBusMessage(PipeDetailFragment.TAG);
+                            PipeInfo pipeInfo = new PipeInfo();
+                            pipeInfo.PipeId = curAlarmInfo.getPipeId();
+                            pipeInfo.Name = BaseConstant.DATA_REQUEST_NAME;
+                            pipeMessage.setArg1(pipeInfo);
+                            EventBus.getDefault().post(pipeMessage);
                             break;
                         case 3:
                             EventBusMessage waveFormMessage = new EventBusMessage(WaveFormFragment.TAG);
@@ -160,10 +168,20 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
                 floatMenu.setOnItemClickListener((v, position1) -> {
                     switch (position1) {
                         case 0:
-
+                            EventBusMessage siteMessage = new EventBusMessage(SiteDetailFragment.TAG);
+                            SiteBean siteBean = new SiteBean();
+                            siteBean.SiteId = incidentInfo.getSiteId();
+                            siteBean.Name = BaseConstant.DATA_REQUEST_NAME;
+                            siteMessage.setArg1(siteBean);
+                            EventBus.getDefault().post(siteMessage);
                             break;
                         case 1:
-
+                            EventBusMessage pipeMessage = new EventBusMessage(PipeDetailFragment.TAG);
+                            PipeInfo pipeInfo = new PipeInfo();
+                            pipeInfo.PipeId = incidentInfo.getPipeId();
+                            pipeInfo.Name = BaseConstant.DATA_REQUEST_NAME;
+                            pipeMessage.setArg1(pipeInfo);
+                            EventBus.getDefault().post(pipeMessage);
                             break;
                         case 2:
                             mBinding.mulitpleMenu.setVisibility(View.VISIBLE);

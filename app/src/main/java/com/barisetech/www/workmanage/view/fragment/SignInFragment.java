@@ -373,6 +373,8 @@ public class SignInFragment extends BaseFragment {
                                 mDialog.dismiss();
                                 getActivity().onBackPressed();
                             });
+                        } else {
+                            getActivity().onBackPressed();
                         }
                     } else {
                         curSiteBean.State = 4;

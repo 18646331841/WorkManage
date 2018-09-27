@@ -137,6 +137,14 @@ public class PipeblindAreaViewModel extends BaseViewModel implements ModelCallBa
             if (failResponse.code == Config.ERROR_UNAUTHORIZED) {
                 EventBus.getDefault().post(new EventBusMessage(LoginActivity.TAG));
             }
+
+            mDelivery.post(() -> {
+                switch (failResponse.type) {
+                    case PipeLindAreaModel.TYPE_ALL:
+                        mObservableAllPipeLindArea.setValue(null);
+                        break;
+                }
+            });
         }
     }
 

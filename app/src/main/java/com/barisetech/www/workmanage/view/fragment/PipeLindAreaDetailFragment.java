@@ -1,5 +1,7 @@
 package com.barisetech.www.workmanage.view.fragment;
 
+import android.arch.lifecycle.Lifecycle;
+import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,11 +11,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.barisetech.www.workmanage.R;
+import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.bean.pipelindarea.PipeLindAreaInfo;
+import com.barisetech.www.workmanage.bean.pipelindarea.ReqAllPipelindArea;
 import com.barisetech.www.workmanage.databinding.FragmentPipeLindAreaDetailBinding;
+import com.barisetech.www.workmanage.utils.ToastUtil;
+import com.barisetech.www.workmanage.viewmodel.PipeblindAreaViewModel;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -23,7 +29,7 @@ public class PipeLindAreaDetailFragment extends BaseFragment{
     FragmentPipeLindAreaDetailBinding mBinding;
     private PipeLindAreaInfo pipeLindAreaInfo;
     private static final String LIND_AREA_ID="pipeLindAreaInfo";
-
+    private PipeblindAreaViewModel pipeblindAreaViewModel;
 
     public static PipeLindAreaDetailFragment newInstance(PipeLindAreaInfo pipeLindAreaInfo) {
         PipeLindAreaDetailFragment fragment = new PipeLindAreaDetailFragment();
@@ -57,26 +63,9 @@ public class PipeLindAreaDetailFragment extends BaseFragment{
         return mBinding.getRoot();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        mBinding.lindAreaId.setText(String.valueOf(pipeLindAreaInfo.getId()));
-        mBinding.pipeLindAreaId.setText(String.valueOf(pipeLindAreaInfo.getPipeId()));
-        mBinding.isEnable.setText(pipeLindAreaInfo.isIsEnabled()?"是":"否");
-        mBinding.lindAreaType.setText(String.valueOf(pipeLindAreaInfo.getType()));
-        mBinding.lindAreaStart.setText(String.valueOf(pipeLindAreaInfo.getStartDistance()));
-        mBinding.lindAreaEnd.setText(String.valueOf(pipeLindAreaInfo.getEndDistance()));
-        mBinding.lindAreaRemark.setText(pipeLindAreaInfo.getRemark());
-    }
-
     private void initView() {
-        mBinding.lindAreaId.setText(String.valueOf(pipeLindAreaInfo.getId()));
-        mBinding.pipeLindAreaId.setText(String.valueOf(pipeLindAreaInfo.getPipeId()));
-        mBinding.isEnable.setText(pipeLindAreaInfo.isIsEnabled()?"是":"否");
-        mBinding.lindAreaType.setText(String.valueOf(pipeLindAreaInfo.getType()));
-        mBinding.lindAreaStart.setText(String.valueOf(pipeLindAreaInfo.getStartDistance()));
-        mBinding.lindAreaEnd.setText(String.valueOf(pipeLindAreaInfo.getEndDistance()));
-        mBinding.lindAreaRemark.setText(pipeLindAreaInfo.getRemark());
+        mBinding.setPb(pipeLindAreaInfo);
+
         mBinding.toLindModify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,11 +78,41 @@ public class PipeLindAreaDetailFragment extends BaseFragment{
 
     @Override
     public void bindViewModel() {
-
+        pipeblindAreaViewModel = ViewModelProviders.of(this).get(PipeblindAreaViewModel.class);
     }
 
     @Override
     public void subscribeToModel() {
+        if (!pipeblindAreaViewModel.getmObservableAllPipeLindArea().hasObservers()) {
+            pipeblindAreaViewModel.getmObservableAllPipeLindArea().observe(this, pipeLindAreaInfos -> {
+                if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                    if (pipeLindAreaInfos != null && pipeLindAreaInfos.size() > 0) {
+                        pipeLindAreaInfo = pipeLindAreaInfos.get(0);
+                        mBinding.setPb(pipeLindAreaInfo);
+                    } else {
+                        ToastUtil.showToast("未查到管线盲区数据");
+                    }
+                }
+            });
+        }
 
+        if (pipeLindAreaInfo.getRemark().equals(BaseConstant.DATA_REQUEST_NAME)) {
+            getData();
+        }
+    }
+
+    private void getData() {
+        EventBusMessage eventBusMessage = new EventBusMessage(BaseConstant.PROGRESS_SHOW);
+        EventBus.getDefault().post(eventBusMessage);
+
+        ReqAllPipelindArea reqAllPipelindArea = new ReqAllPipelindArea();
+        reqAllPipelindArea.setPipeId(String.valueOf(pipeLindAreaInfo.getPipeId()));
+        reqAllPipelindArea.setIsGetAll("false");
+        reqAllPipelindArea.setPipeIdQueryChecked("true");
+        reqAllPipelindArea.setType("0");
+        reqAllPipelindArea.setStartIndex("0");
+        reqAllPipelindArea.setNumberOfRecords("1");
+
+        pipeblindAreaViewModel.reqAllPipeLindArea(reqAllPipelindArea);
     }
 }

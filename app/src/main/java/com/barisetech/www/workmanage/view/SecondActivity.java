@@ -301,8 +301,14 @@ public class SecondActivity extends BaseActivity {
                 }
                 break;
             case PipeWorkAddFragment.TAG:
-                transaction
-                        .replace(R.id.second_framelayout, PipeWorkAddFragment.newInstance(), tag).commit();
+                if (eventBusMessage.getArg1() != null) {
+                    transaction
+                            .replace(R.id.second_framelayout, PipeWorkAddFragment.newInstance((int) eventBusMessage
+                                    .getArg1()), tag).commit();
+                } else {
+                    transaction
+                            .replace(R.id.second_framelayout, PipeWorkAddFragment.newInstance(), tag).commit();
+                }
                 if (!isActivity) {
                     transaction.addToBackStack(tag);
                 }
@@ -337,8 +343,14 @@ public class SecondActivity extends BaseActivity {
                 break;
 
             case PipeLindAreaAddFragment.TAG:
-                transaction
-                        .replace(R.id.second_framelayout, PipeLindAreaAddFragment.newInstance(), tag).commit();
+                if (eventBusMessage.getArg1() != null) {
+                    transaction
+                            .replace(R.id.second_framelayout, PipeLindAreaAddFragment.newInstance((int)
+                                    eventBusMessage.getArg1()), tag).commit();
+                } else {
+                    transaction
+                            .replace(R.id.second_framelayout, PipeLindAreaAddFragment.newInstance(), tag).commit();
+                }
                 if (!isActivity) {
                     transaction.addToBackStack(tag);
                 }

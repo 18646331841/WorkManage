@@ -142,7 +142,6 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void bindViews() {
-
     }
 
     @Override

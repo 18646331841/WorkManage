@@ -11,11 +11,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.barisetech.www.workmanage.R;
+import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseFragment;
+import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.bean.incident.IncidentInfo;
+import com.barisetech.www.workmanage.bean.pipe.PipeInfo;
+import com.barisetech.www.workmanage.bean.site.SiteBean;
 import com.barisetech.www.workmanage.databinding.FragmentIncidentDetailsBinding;
 import com.barisetech.www.workmanage.viewmodel.IncidentViewModel;
+
+import org.greenrobot.eventbus.EventBus;
 
 public class IncidentDetailsFragment extends BaseFragment implements View.OnClickListener{
     public static final String TAG = "IncidentDetailsFragment";
@@ -87,10 +93,20 @@ public class IncidentDetailsFragment extends BaseFragment implements View.OnClic
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.to_site_bt:
-
+                EventBusMessage siteMessage = new EventBusMessage(SiteDetailFragment.TAG);
+                SiteBean siteBean = new SiteBean();
+                siteBean.SiteId = curIncidentInfo.getSiteId();
+                siteBean.Name = BaseConstant.DATA_REQUEST_NAME;
+                siteMessage.setArg1(siteBean);
+                EventBus.getDefault().post(siteMessage);
                 break;
             case R.id.to_pipe_bt:
-
+                EventBusMessage pipeMessage = new EventBusMessage(PipeDetailFragment.TAG);
+                PipeInfo pipeInfo = new PipeInfo();
+                pipeInfo.PipeId = curIncidentInfo.getPipeId();
+                pipeInfo.Name = BaseConstant.DATA_REQUEST_NAME;
+                pipeMessage.setArg1(pipeInfo);
+                EventBus.getDefault().post(pipeMessage);
                 break;
         }
     }

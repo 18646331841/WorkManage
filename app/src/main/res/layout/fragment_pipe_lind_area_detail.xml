@@ -6,6 +6,10 @@
     <data>
 
         <variable
+            name="pb"
+            type="com.barisetech.www.workmanage.bean.pipelindarea.PipeLindAreaInfo"/>
+
+        <variable
             name="fragment"
             type="com.barisetech.www.workmanage.base.BaseFragment" />
     </data>
@@ -57,6 +61,7 @@
                     android:id="@+id/lind_area_id"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:showText="@{String.valueOf(pb.getId())}"
                     order:ddd_content_enable="false"
                     order:ddd_is_bottom_line="false"
                     order:ddd_is_indicate="false"
@@ -66,6 +71,7 @@
                     android:id="@+id/pipe_lind_area_id"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:showText="@{String.valueOf(pb.getPipeId())}"
                     order:ddd_content_enable="false"
                     order:ddd_is_bottom_line="false"
                     order:ddd_is_indicate="false"
@@ -75,6 +81,7 @@
                     android:id="@+id/is_enable"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:showBool="@{pb.isIsEnabled()}"
                     order:ddd_content_enable="false"
                     order:ddd_is_bottom_line="false"
                     order:ddd_is_indicate="false"
@@ -84,6 +91,7 @@
                     android:id="@+id/lind_area_type"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:showText="@{String.valueOf(pb.getType())}"
                     order:ddd_content_enable="false"
                     order:ddd_is_bottom_line="false"
                     order:ddd_is_indicate="false"
@@ -93,6 +101,7 @@
                     android:id="@+id/lind_area_start"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:showText="@{String.valueOf(pb.getStartDistance())}"
                     order:ddd_content_enable="false"
                     order:ddd_is_bottom_line="false"
                     order:ddd_is_indicate="false"
@@ -102,6 +111,7 @@
                     android:id="@+id/lind_area_end"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:showText="@{String.valueOf(pb.getEndDistance())}"
                     order:ddd_content_enable="false"
                     order:ddd_is_bottom_line="false"
                     order:ddd_is_indicate="false"
@@ -111,6 +121,7 @@
                     android:id="@+id/lind_area_remark"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:showText="@{pb.getRemark()}"
                     order:ddd_content_enable="false"
                     order:ddd_is_bottom_line="false"
                     order:ddd_is_indicate="false"

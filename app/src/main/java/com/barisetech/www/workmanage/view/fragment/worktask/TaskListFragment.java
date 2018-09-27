@@ -87,8 +87,6 @@ public class TaskListFragment extends BaseFragment {
         curSiteList = new ArrayList<>();
         if (getArguments() != null) {
             curPlanBean = (PlanBean) getArguments().getSerializable(PLAN_ID);
-            //TODO
-            curPlanBean.TotalNumberOfTimes = 3;
         }
     }
 
@@ -197,18 +195,21 @@ public class TaskListFragment extends BaseFragment {
             TaskSiteBean taskSiteBean = (TaskSiteBean) item;
             taskSiteBean.range = curPlanBean.Range;
 
-            //判断是否该完成最后每次的最后一个打卡
-            boolean isEnd = true;
+            //判断是否该完成每次的最后一个打卡
+            boolean isEnd = false;
+            int numUnComplete = 0;
             int start = curPlanBean.TimesOfCompletion * siteNum + curPlanBean.TimesOfCompletion;
-            int total = start + siteNum;
+            int total = start + siteNum + 1;
             for(int i = start; i < total; i++) {
                 if (curSiteList.get(i).SiteId == -1) {
                     continue;
                 }
                 if (curSiteList.get(i).State != BaseConstant.STATUS_COMPLETED) {
-                    isEnd = false;
-                    break;
+                    numUnComplete++;
                 }
+            }
+            if (numUnComplete == 1) {
+                isEnd = true;
             }
 
             taskSiteBean.isEnd = isEnd;
@@ -232,7 +233,7 @@ public class TaskListFragment extends BaseFragment {
                         if (taskBeans.size() > 0) {
                             List<TaskSiteBean> taskSiteBeans = taskBeans.get(0).TaskSiteList;
                             if (taskSiteBeans != null && taskSiteBeans.size() > 0) {
-                                siteNum = taskBeans.size();
+                                siteNum = taskSiteBeans.size();
                                 for(int i = 1; i <= curPlanBean.TotalNumberOfTimes; i++) {
                                     TaskSiteBean titleSiteBean = new TaskSiteBean();//占位标题类
                                     titleSiteBean.SiteId = -1;

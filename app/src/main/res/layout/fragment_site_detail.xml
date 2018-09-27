@@ -5,6 +5,10 @@
     <data>
 
         <variable
+            name="siteBean"
+            type="com.barisetech.www.workmanage.bean.site.SiteBean"/>
+
+        <variable
             name="fragment"
             type="com.barisetech.www.workmanage.base.BaseFragment" />
     </data>
@@ -45,9 +49,9 @@
                     android:text="@string/normal_setting"
                     android:textColor="@color/white"
                     android:textSize="@dimen/sp_14"
-                    app:layout_constraintLeft_toLeftOf="@id/normal_setting"
-                    app:layout_constraintRight_toRightOf="@id/normal_setting"
-                    app:layout_constraintTop_toTopOf="@id/normal_setting" />
+                    app:layout_constraintLeft_toLeftOf="@+id/normal_setting"
+                    app:layout_constraintRight_toRightOf="@+id/normal_setting"
+                    app:layout_constraintTop_toTopOf="@+id/normal_setting" />
 
 
                 <TextView
@@ -57,17 +61,18 @@
                     android:layout_marginLeft="@dimen/dp_80"
                     android:layout_marginTop="@dimen/dp_10"
                     android:text="@string/tv_id"
-                    app:layout_constraintLeft_toLeftOf="@id/tv_normal_setting"
-                    app:layout_constraintTop_toBottomOf="@id/tv_normal_setting" />
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_normal_setting"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_normal_setting" />
 
                 <TextView
                     android:id="@+id/tv_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="28dp"
-                    app:layout_constraintBottom_toBottomOf="@id/title_id"
-                    app:layout_constraintLeft_toRightOf="@id/title_id"
-                    app:layout_constraintTop_toTopOf="@id/title_id" />
+                    android:text="@{String.valueOf(siteBean.SiteId)}"
+                    app:layout_constraintBottom_toBottomOf="@+id/title_id"
+                    app:layout_constraintLeft_toRightOf="@+id/title_id"
+                    app:layout_constraintTop_toTopOf="@+id/title_id" />
 
 
                 <TextView
@@ -76,16 +81,17 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_10"
                     android:text="@string/along_company"
-                    app:layout_constraintRight_toRightOf="@id/title_id"
-                    app:layout_constraintTop_toBottomOf="@id/title_id" />
+                    app:layout_constraintRight_toRightOf="@+id/title_id"
+                    app:layout_constraintTop_toBottomOf="@+id/title_id" />
 
                 <TextView
                     android:id="@+id/tv_company"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_10"
-                    app:layout_constraintLeft_toLeftOf="@id/tv_id"
-                    app:layout_constraintTop_toBottomOf="@id/tv_id" />
+                    android:text="@{siteBean.Company}"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_id"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_id" />
 
 
                 <TextView
@@ -94,16 +100,17 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_10"
                     android:text="@string/longitude"
-                    app:layout_constraintRight_toRightOf="@id/title_company"
-                    app:layout_constraintTop_toBottomOf="@id/title_company" />
+                    app:layout_constraintRight_toRightOf="@+id/title_company"
+                    app:layout_constraintTop_toBottomOf="@+id/title_company" />
 
                 <TextView
                     android:id="@+id/tv_longitude"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@{String.valueOf(siteBean.Longitude)}"
                     android:layout_marginTop="@dimen/dp_10"
-                    app:layout_constraintLeft_toLeftOf="@id/tv_company"
-                    app:layout_constraintTop_toBottomOf="@id/tv_company" />
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_company"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_company" />
 
 
                 <TextView
@@ -112,16 +119,17 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_10"
                     android:text="@string/latitude"
-                    app:layout_constraintRight_toRightOf="@id/title_longitude"
-                    app:layout_constraintTop_toBottomOf="@id/title_longitude" />
+                    app:layout_constraintRight_toRightOf="@+id/title_longitude"
+                    app:layout_constraintTop_toBottomOf="@+id/title_longitude" />
 
                 <TextView
                     android:id="@+id/tv_latitude"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_10"
-                    app:layout_constraintLeft_toLeftOf="@id/tv_longitude"
-                    app:layout_constraintTop_toBottomOf="@id/tv_longitude" />
+                    android:text="@{String.valueOf(siteBean.Latitude)}"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_longitude"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_longitude" />
 
                 <TextView
                     android:id="@+id/title_phone_num"
@@ -129,16 +137,17 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_10"
                     android:text="@string/phone_num"
-                    app:layout_constraintRight_toRightOf="@id/title_latitude"
-                    app:layout_constraintTop_toBottomOf="@id/title_latitude" />
+                    app:layout_constraintRight_toRightOf="@+id/title_latitude"
+                    app:layout_constraintTop_toBottomOf="@+id/title_latitude" />
 
                 <TextView
                     android:id="@+id/tv_phone_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_10"
-                    app:layout_constraintLeft_toLeftOf="@id/tv_latitude"
-                    app:layout_constraintTop_toBottomOf="@id/tv_latitude" />
+                    android:text="@{siteBean.Telephone}"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_latitude"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_latitude" />
 
                 <TextView
                     android:id="@+id/title_principal"
@@ -146,16 +155,17 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_10"
                     android:text="@string/principal"
-                    app:layout_constraintRight_toRightOf="@id/title_phone_num"
-                    app:layout_constraintTop_toBottomOf="@id/title_phone_num" />
+                    app:layout_constraintRight_toRightOf="@+id/title_phone_num"
+                    app:layout_constraintTop_toBottomOf="@+id/title_phone_num" />
 
                 <TextView
                     android:id="@+id/tv_principal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_10"
-                    app:layout_constraintLeft_toLeftOf="@id/tv_phone_num"
-                    app:layout_constraintTop_toBottomOf="@id/tv_phone_num" />
+                    android:text="@{siteBean.Manager}"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_phone_num"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_phone_num" />
 
 
                 <TextView
@@ -164,16 +174,17 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_10"
                     android:text="@string/line_whether"
-                    app:layout_constraintRight_toRightOf="@id/title_principal"
-                    app:layout_constraintTop_toBottomOf="@id/title_principal" />
+                    app:layout_constraintRight_toRightOf="@+id/title_principal"
+                    app:layout_constraintTop_toBottomOf="@+id/title_principal" />
 
                 <TextView
                     android:id="@+id/tv_line_whether"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_10"
-                    app:layout_constraintLeft_toLeftOf="@id/tv_principal"
-                    app:layout_constraintTop_toBottomOf="@id/tv_principal" />
+                    app:showBool="@{siteBean.IsOnLine}"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_principal"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_principal" />
 
 
                 <TextView
@@ -182,16 +193,17 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_10"
                     android:text="@string/double_snesor"
-                    app:layout_constraintRight_toRightOf="@id/title_line_whether"
-                    app:layout_constraintTop_toBottomOf="@id/title_line_whether" />
+                    app:layout_constraintRight_toRightOf="@+id/title_line_whether"
+                    app:layout_constraintTop_toBottomOf="@+id/title_line_whether" />
 
                 <TextView
                     android:id="@+id/tv_double_snesor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_10"
-                    app:layout_constraintLeft_toLeftOf="@id/tv_line_whether"
-                    app:layout_constraintTop_toBottomOf="@id/tv_line_whether" />
+                    app:showBool="@{siteBean.IsDualSensor}"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_line_whether"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_line_whether" />
 
                 <TextView
                     android:id="@+id/title_double_filter"
@@ -199,16 +211,17 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_10"
                     android:text="@string/double_filter"
-                    app:layout_constraintRight_toRightOf="@id/title_double_snesor"
-                    app:layout_constraintTop_toBottomOf="@id/title_double_snesor" />
+                    app:layout_constraintRight_toRightOf="@+id/title_double_snesor"
+                    app:layout_constraintTop_toBottomOf="@+id/title_double_snesor" />
 
                 <TextView
                     android:id="@+id/tv_double_filter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_10"
-                    app:layout_constraintLeft_toLeftOf="@id/tv_double_snesor"
-                    app:layout_constraintTop_toBottomOf="@id/tv_double_snesor" />
+                    app:showBool="@{siteBean.IsDirFilterEnabled}"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_double_snesor"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_double_snesor" />
 
 
                 <TextView
@@ -217,16 +230,17 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_10"
                     android:text="@string/leak_plugin"
-                    app:layout_constraintRight_toRightOf="@id/title_double_filter"
-                    app:layout_constraintTop_toBottomOf="@id/title_double_filter" />
+                    app:layout_constraintRight_toRightOf="@+id/title_double_filter"
+                    app:layout_constraintTop_toBottomOf="@+id/title_double_filter" />
 
                 <TextView
                     android:id="@+id/tv_leak_plugin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_10"
-                    app:layout_constraintLeft_toLeftOf="@id/tv_double_filter"
-                    app:layout_constraintTop_toBottomOf="@id/tv_double_filter" />
+                    android:text="@{siteBean.LdPluginName}"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_double_filter"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_double_filter" />
 
 
                 <TextView
@@ -235,16 +249,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_10"
                     android:text="@string/contacts_name"
-                    app:layout_constraintRight_toRightOf="@id/title_leak_plugin"
-                    app:layout_constraintTop_toBottomOf="@id/title_leak_plugin" />
+                    app:layout_constraintRight_toRightOf="@+id/title_leak_plugin"
+                    app:layout_constraintTop_toBottomOf="@+id/title_leak_plugin" />
 
                 <TextView
                     android:id="@+id/tv_contacts_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_10"
-                    app:layout_constraintLeft_toLeftOf="@id/tv_leak_plugin"
-                    app:layout_constraintTop_toBottomOf="@id/tv_leak_plugin" />
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_leak_plugin"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_leak_plugin" />
 
 
                 <TextView
@@ -253,16 +267,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_10"
                     android:text="@string/contacts_phone"
-                    app:layout_constraintRight_toRightOf="@id/title_contacts_name"
-                    app:layout_constraintTop_toBottomOf="@id/title_contacts_name" />
+                    app:layout_constraintRight_toRightOf="@+id/title_contacts_name"
+                    app:layout_constraintTop_toBottomOf="@+id/title_contacts_name" />
 
                 <TextView
                     android:id="@+id/tv_contacts_phone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_10"
-                    app:layout_constraintLeft_toLeftOf="@id/tv_contacts_name"
-                    app:layout_constraintTop_toBottomOf="@id/tv_contacts_name" />
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_contacts_name"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_contacts_name" />
 
 
                 <TextView
@@ -272,9 +286,9 @@
                     android:layout_marginBottom="@dimen/dp_20"
                     android:layout_marginTop="@dimen/dp_10"
                     android:text="@string/contacts_email"
-                    app:layout_constraintBottom_toBottomOf="@id/normal_setting"
-                    app:layout_constraintRight_toRightOf="@id/title_contacts_phone"
-                    app:layout_constraintTop_toBottomOf="@id/title_contacts_phone" />
+                    app:layout_constraintBottom_toBottomOf="@+id/normal_setting"
+                    app:layout_constraintRight_toRightOf="@+id/title_contacts_phone"
+                    app:layout_constraintTop_toBottomOf="@+id/title_contacts_phone" />
 
                 <TextView
                     android:id="@+id/tv_contacts_email"
@@ -282,9 +296,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/dp_20"
                     android:layout_marginTop="@dimen/dp_10"
-                    app:layout_constraintBottom_toBottomOf="@id/normal_setting"
-                    app:layout_constraintLeft_toLeftOf="@id/tv_contacts_phone"
-                    app:layout_constraintTop_toBottomOf="@id/title_contacts_phone" />
+                    app:layout_constraintBottom_toBottomOf="@+id/normal_setting"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_contacts_phone"
+                    app:layout_constraintTop_toBottomOf="@+id/title_contacts_phone" />
 
 
             </android.support.constraint.ConstraintLayout>

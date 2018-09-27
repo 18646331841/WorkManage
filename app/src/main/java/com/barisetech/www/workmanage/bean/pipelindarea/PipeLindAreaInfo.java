@@ -1,5 +1,9 @@
 package com.barisetech.www.workmanage.bean.pipelindarea;
 
+import android.databinding.BindingAdapter;
+
+import com.barisetech.www.workmanage.widget.LineView;
+
 import java.io.Serializable;
 
 public class PipeLindAreaInfo implements Serializable {
@@ -15,27 +19,27 @@ public class PipeLindAreaInfo implements Serializable {
      * Remark : 0
      */
 
-    private long Id;
-    private long PipeId;
+    private int Id;
+    private int PipeId;
     private boolean IsEnabled;
     private int Type;
     private float StartDistance;
     private float EndDistance;
     private String Remark;
 
-    public long getId() {
+    public int getId() {
         return Id;
     }
 
-    public void setId(long Id) {
+    public void setId(int Id) {
         this.Id = Id;
     }
 
-    public long getPipeId() {
+    public int getPipeId() {
         return PipeId;
     }
 
-    public void setPipeId(long PipeId) {
+    public void setPipeId(int PipeId) {
         this.PipeId = PipeId;
     }
 
@@ -77,5 +81,19 @@ public class PipeLindAreaInfo implements Serializable {
 
     public void setRemark(String Remark) {
         this.Remark = Remark;
+    }
+
+    @BindingAdapter("showText")
+    public static void showText(LineView view, String text) {
+        view.setText(text);
+    }
+
+    @BindingAdapter("showBool")
+    public static void showBool(LineView view, boolean b) {
+        if (b) {
+            view.setText("是");
+        } else {
+            view.setText("否");
+        }
     }
 }

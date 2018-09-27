@@ -39,10 +39,28 @@ public class PipeWorkAddFragment extends BaseFragment {
     private PipeWorkViewModel pipeWorkViewModel;
     private CommonDialogFragment commonDialogFragment;
     private Disposable curDisposable;
+    private static final String PIPE_ID = "pipeId";
 
     public static PipeWorkAddFragment newInstance() {
         PipeWorkAddFragment fragment = new PipeWorkAddFragment();
         return fragment;
+    }
+
+    public static PipeWorkAddFragment newInstance(int pipeId) {
+        PipeWorkAddFragment fragment = new PipeWorkAddFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(PIPE_ID, pipeId);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        curPipeWork = new PipeWork();
+        if (null != getArguments()) {
+            curPipeWork.PipeId = getArguments().getInt(PIPE_ID);
+        }
     }
 
     @Nullable
@@ -75,7 +93,6 @@ public class PipeWorkAddFragment extends BaseFragment {
     }
 
     private void initView() {
-        curPipeWork = new PipeWork();
         mBinding.setPw(curPipeWork);
 
         mBinding.addPw.setOnClickListener(view -> {

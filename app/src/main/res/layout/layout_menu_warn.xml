@@ -40,7 +40,7 @@
         android:textColor="@drawable/selector_tv_white"/>
     <TextView
         android:id="@+id/waveform"
-        android:text="@string/waveform"
+        android:text="@string/title_waveform"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
