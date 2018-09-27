@@ -11,6 +11,7 @@ public class ReqWave {
      * startTime : 2018-09-04 00:00:00
      * endTime : 2018-09-04 00:02:00
      */
+    public int type;
 
     public String MachineCode;
     public String siteId;

@@ -13,7 +13,14 @@ import com.barisetech.www.workmanage.http.ObserverCallBack;
 import com.barisetech.www.workmanage.http.api.WaveService;
 import com.barisetech.www.workmanage.utils.LogUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.Scheduler;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -34,7 +41,8 @@ public class WaveModel extends BaseModel {
     }
 
     /**
-     * 获取所有数字化仪
+     * 获取波形
+     *
      * @param reqWave
      * @return
      */
@@ -71,6 +79,86 @@ public class WaveModel extends BaseModel {
                         TypeResponse typeResponse = new TypeResponse(TYPE_ALL, response);
                         modelCallBack.netResult(typeResponse);
                     }
+                });
+        return disposable;
+    }
+
+    private String siteId;
+    private int type;
+
+    /**
+     * 获取所有波形
+     *
+     * @param reqWaves
+     * @return
+     */
+    public Disposable reqAll(List<ReqWave> reqWaves) {
+        if (null == reqWaves || reqWaves.size() <= 0) {
+            return null;
+        }
+
+        List<WaveBean> waveBeanList = new ArrayList<>();
+
+        Disposable disposable = Observable.fromArray(reqWaves)
+                .flatMap((Function<List<ReqWave>, ObservableSource<ReqWave>>) reqWaves1 -> {
+                    siteId = "default";
+                    type = 0;
+                    return Observable.fromIterable(reqWaves1);
+                })
+                .flatMap((Function<ReqWave, ObservableSource<BaseResponse<WaveBean>>>) reqWave -> {
+                    siteId = reqWave.siteId;
+                    type = reqWave.type;
+                    return waveService.getAll(reqWave).onErrorReturnItem(new
+                            BaseResponse<>(-1, "", null));
+                })
+                .map(new Function<BaseResponse<WaveBean>, Integer>() {
+                    @Override
+                    public Integer apply(BaseResponse<WaveBean> waveBeanBaseResponse) throws Exception {
+
+                        if (waveBeanBaseResponse != null) {
+                            int code = waveBeanBaseResponse.Code;
+                            if (code == 200) {
+                                WaveBean response = waveBeanBaseResponse.Response;
+                                if (response != null) {
+                                    response.siteId = siteId;
+                                    response.type = type;
+                                    waveBeanList.add(response);
+                                    return code;
+                                } else {
+                                    LogUtil.d(TAG, "siteId : " + siteId + " type : " + type + " Response = null");
+                                }
+                            } else {
+                                LogUtil.d(TAG, "siteId : " + siteId + " type : " + type + " Response Code = " + code);
+                                if (code == 401) {
+                                    return Config.ERROR_UNAUTHORIZED;
+                                }
+                            }
+                        } else {
+                            LogUtil.d(TAG, "siteId : " + siteId + " type : " + type + " BaseResponse = null");
+                        }
+                        return Config.ERROR_FAIL;
+                    }
+                })
+                .toList()
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribe(lists -> {
+                    if (waveBeanList.size() <= 0) {
+                        FailResponse failResponse = new FailResponse(TYPE_ALL, Config.ERROR_FAIL);
+                        for (int i = 0; i < lists.size(); i++) {
+                            if (lists.get(i) == Config.ERROR_UNAUTHORIZED) {
+                                failResponse = new FailResponse(TYPE_ALL, Config.ERROR_UNAUTHORIZED);
+                                break;
+                            }
+                        }
+                        modelCallBack.fail(failResponse);
+                    } else {
+                        LogUtil.d(TAG, "wave all load");
+                        TypeResponse typeResponse = new TypeResponse(TYPE_ALL, waveBeanList);
+                        modelCallBack.netResult(typeResponse);
+                    }
+                }, throwable -> {
+                    LogUtil.d(TAG, throwable.getMessage());
                 });
         return disposable;
     }

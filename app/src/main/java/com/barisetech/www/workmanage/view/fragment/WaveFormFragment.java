@@ -15,8 +15,13 @@ import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.bean.DataRateBean;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
+import com.barisetech.www.workmanage.bean.pipe.PipeInfo;
+import com.barisetech.www.workmanage.bean.pipe.ReqAllPipe;
+import com.barisetech.www.workmanage.bean.site.SiteBean;
+import com.barisetech.www.workmanage.bean.wave.ReqWave;
 import com.barisetech.www.workmanage.databinding.FragmentWaveFormBinding;
 import com.barisetech.www.workmanage.utils.ChartUtil;
+import com.barisetech.www.workmanage.viewmodel.PipeViewModel;
 import com.barisetech.www.workmanage.viewmodel.WaveViewModel;
 
 import java.util.ArrayList;
@@ -33,9 +38,18 @@ public class WaveFormFragment extends BaseFragment {
     private Map<String, List<DataRateBean>> startMapData;
     private Map<String, List<DataRateBean>> endMapData;
     private WaveViewModel waveViewModel;
+    private int curType = 1;
+    private PipeInfo curPipeInfo;
 
-    public static WaveFormFragment newInstance() {
+    private int curPipeId;
+    private static final String PIPE_ID = "pipeId";
+    private PipeViewModel pipeViewModel;
+
+    public static WaveFormFragment newInstance(int pipeId) {
         WaveFormFragment fragment = new WaveFormFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(PIPE_ID, pipeId);
+        fragment.setArguments(bundle);
         return fragment;
     }
 
@@ -44,6 +58,9 @@ public class WaveFormFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         startMapData = new HashMap<>();
         endMapData = new HashMap<>();
+        if (null != getArguments()) {
+            curPipeId = getArguments().getInt(PIPE_ID);
+        }
     }
 
     @Nullable
@@ -84,10 +101,30 @@ public class WaveFormFragment extends BaseFragment {
     @Override
     public void bindViewModel() {
         waveViewModel = ViewModelProviders.of(this).get(WaveViewModel.class);
+        pipeViewModel = ViewModelProviders.of(this).get(PipeViewModel.class);
     }
 
     @Override
     public void subscribeToModel() {
+        if (!pipeViewModel.getmObservableAllPipe().hasObservers()) {
+            pipeViewModel.getmObservableAllPipe().observe(this, pipeInfos -> {
+                if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                    if (pipeInfos != null && pipeInfos.size() > 0) {
+                        curPipeInfo = pipeInfos.get(0);
+                        int startSiteId = curPipeInfo.StartSiteId;
+                        int endSiteId;
+                        List<SiteBean> sites = curPipeInfo.Sites;
+                        for (SiteBean siteBean : sites) {
+                            if (siteBean.SiteId != startSiteId) {
+                                endSiteId = siteBean.SiteId;
+                            }
+                        }
+
+                    }
+                }
+            });
+        }
+
         if (!waveViewModel.getmObservableWave().hasObservers()) {
             waveViewModel.getmObservableWave().observe(this, waveBean -> {
                 if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
@@ -97,6 +134,26 @@ public class WaveFormFragment extends BaseFragment {
                 }
             });
         }
+
+        if (curPipeInfo == null) {
+            getPipe();
+        }
+    }
+
+    private void getPipe() {
+        ReqAllPipe reqAllPipe = new ReqAllPipe();
+        reqAllPipe.setPipeId(String.valueOf(curPipeId));
+        reqAllPipe.setStartIndex("0");
+        reqAllPipe.setNumberOfRecords("1");
+
+        pipeViewModel.reqAllPipe(reqAllPipe);
+    }
+
+    private void getData() {
+        ReqWave reqWave = new ReqWave();
+        reqWave.sensorType = String.valueOf(curType);
+        reqWave.startTime = "2018-09-04 00:00:00";
+        reqWave.endTime = "2018-09-04 00:00:30";
     }
 
     @Override

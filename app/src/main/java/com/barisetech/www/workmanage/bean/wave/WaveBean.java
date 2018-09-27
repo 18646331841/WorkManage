@@ -16,6 +16,9 @@ public class WaveBean {
      * IsEndMatch : true
      */
 
+    public String siteId;
+    public int type;
+
     public ActualTimeRangeBean ActualTimeRange;
     public ExpectTimeRangeBean ExpectTimeRange;
     public int SampleRate;
