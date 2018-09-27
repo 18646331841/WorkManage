@@ -25,6 +25,7 @@ import com.barisetech.www.workmanage.viewmodel.ContactsViewModel;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.disposables.Disposable;
@@ -40,6 +41,8 @@ public class MyInfoFragment extends BaseFragment {
     private List<ContactsBean> contactsBeanList;
     private Disposable disposable;
     private String user;
+    private String email;
+    private String phone;
 
     public static MyInfoFragment newInstance() {
         MyInfoFragment fragment = new MyInfoFragment();
@@ -62,7 +65,6 @@ public class MyInfoFragment extends BaseFragment {
 
     private void initView() {
         user = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_ACCOUNT, "");
-        mBinding.tvAccount.setText(user);
 
         mBinding.itemPhone.setOnClickListener(view -> {
             EventBusMessage eventBusMessage = new EventBusMessage(ModifyPhoneFragment.TAG);
@@ -84,25 +86,36 @@ public class MyInfoFragment extends BaseFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        mBinding.tvAccount.setText(user);
+        mBinding.tvEmail.setText(email);
+        mBinding.tvPhone.setText(phone);
+    }
+
+    @Override
     public void bindViewModel() {
         contactsViewModel = ViewModelProviders.of(this).get(ContactsViewModel.class);
 
-
     }
+
 
     @Override
     public void subscribeToModel() {
         if (!contactsViewModel.getObservableAll().hasObservers()) {
             contactsViewModel.getObservableAll().observe(this, contactsBeans -> {
                 if (MyInfoFragment.this.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                    contactsBeanList = new ArrayList<>();
                     if (null != contactsBeans) {
                         if (contactsBeans.size() > 0) {
                             contactsBeanList.addAll(contactsBeans);
                             for (ContactsBean contactsBean : contactsBeanList) {
                                 if (contactsBean.getName().equals(user)) {
-                                    mBinding.tvEmail.setText(contactsBean.getEmail());
-                                    mBinding.tvPhone.setText(contactsBean.getTelephone());
-                                    mBinding.tvAccount.setText(contactsBean.getName());
+                                    email = contactsBean.getEmail();
+                                    phone = contactsBean.getTelephone();
+                                    mBinding.tvAccount.setText(user);
+                                    mBinding.tvEmail.setText(email);
+                                    mBinding.tvPhone.setText(phone);
                                 }
                             }
 
