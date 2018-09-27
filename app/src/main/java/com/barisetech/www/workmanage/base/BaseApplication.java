@@ -54,6 +54,10 @@ public class BaseApplication extends MultiDexApplication {
         return AppDatabase.getsInstance(this);
     }
 
+    public void reBuildDB() {
+        AppDatabase.getsInstance(this).reBuild(this);
+    }
+
     public void requestPermissions(Activity activity) {
         String tag = activity.getLocalClassName();
         RxPermissions rxPermission = new RxPermissions(activity);

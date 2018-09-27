@@ -9,11 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.barisetech.www.workmanage.R;
+import com.barisetech.www.workmanage.base.BaseApplication;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.databinding.FragmentMyBinding;
 import com.barisetech.www.workmanage.utils.DataCleanManagerUtil;
+import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
 import com.barisetech.www.workmanage.widget.CustomDialog;
 
 import org.greenrobot.eventbus.EventBus;
@@ -90,11 +92,13 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
                 break;
             case R.id.item_clear_cache:
                 showTwoButtonDialog("是否清除缓存", 0, null, "确定", "取消", v -> {
-                    DataCleanManagerUtil.cleanInternalCache(getContext());
                     DataCleanManagerUtil.cleanSharedPreference(getContext());
                     DataCleanManagerUtil.cleanDatabases(getContext());
+                    DataCleanManagerUtil.cleanInternalCache(getContext());
                     mDialog.dismiss();
-                }, v -> mDialog.dismiss());
+                    BaseApplication.getInstance().reBuildDB();
+                    SharedPreferencesUtil.getInstance().clearAll();
+                    }, v -> mDialog.dismiss());
                 break;
             case R.id.item_contacts:
                 EventBus.getDefault().post(new EventBusMessage(ContactsFragment.TAG));

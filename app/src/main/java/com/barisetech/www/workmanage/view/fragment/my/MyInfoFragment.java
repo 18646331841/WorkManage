@@ -86,14 +86,6 @@ public class MyInfoFragment extends BaseFragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        mBinding.tvAccount.setText(user);
-        mBinding.tvEmail.setText(email);
-        mBinding.tvPhone.setText(phone);
-    }
-
-    @Override
     public void bindViewModel() {
         contactsViewModel = ViewModelProviders.of(this).get(ContactsViewModel.class);
 
@@ -104,7 +96,6 @@ public class MyInfoFragment extends BaseFragment {
     public void subscribeToModel() {
         if (!contactsViewModel.getObservableAll().hasObservers()) {
             contactsViewModel.getObservableAll().observe(this, contactsBeans -> {
-                if (MyInfoFragment.this.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
                     contactsBeanList = new ArrayList<>();
                     if (null != contactsBeans) {
                         if (contactsBeans.size() > 0) {
@@ -121,7 +112,6 @@ public class MyInfoFragment extends BaseFragment {
 
                         }
                     }
-                }
             });
         }
 
@@ -136,9 +126,9 @@ public class MyInfoFragment extends BaseFragment {
             });
         }
 
-        if (null == contactsBeanList || contactsBeanList.size() <= 0) {
+
             getContactsNum();
-        }
+
 
     }
 

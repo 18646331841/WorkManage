@@ -3,6 +3,7 @@ package com.barisetech.www.workmanage.utils;
 import android.content.Context;
 import android.os.Environment;
 import android.text.TextUtils;
+import android.util.Log;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -103,7 +104,8 @@ public class DataCleanManagerUtil {
     private static void deleteFilesByDirectory(File directory) {
         if (directory != null && directory.exists() && directory.isDirectory()) {
             for (File item : directory.listFiles()) {
-                item.delete();
+                boolean delete = item.delete();
+                Log.e("flag","" + directory.listFiles()+","+delete);
             }
         }
     }

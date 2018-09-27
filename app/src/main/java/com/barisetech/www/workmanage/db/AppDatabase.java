@@ -46,6 +46,10 @@ public abstract class AppDatabase extends RoomDatabase {
         return sInstance;
     }
 
+    public AppDatabase reBuild(final Context context) {
+        sInstance = buildDatabase(context);
+        return sInstance;
+    }
     private static AppDatabase buildDatabase(final Context context) {
         return Room.databaseBuilder(context, AppDatabase.class, DATABASE_NAME).build();
     }
