@@ -53,7 +53,7 @@ public class FingerFragment extends BaseFragment{
     }
 
     private void initView() {
-        if (SharedPreferencesUtil.getInstance().getBoolean(BaseConstant.SP_LOGIN_FP,true)){
+        if (SharedPreferencesUtil.getInstance().getBoolean(BaseConstant.SP_LOGIN_FP,false)){
             mBinding.toolbar.tvTwo.setVisibility(View.GONE);
         }else {
             mBinding.toolbar.tvTwo.setVisibility(View.VISIBLE);

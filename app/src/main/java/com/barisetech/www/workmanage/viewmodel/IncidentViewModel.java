@@ -143,6 +143,14 @@ public class IncidentViewModel extends BaseViewModel implements ModelCallBack{
         incidentModel.readedIncident(key);
     }
 
+    /**
+     * 设置多个事件已读
+     * @param keys
+     */
+    public void setReadIncident(List<Integer> keys) {
+        incidentModel.readedIncident(keys);
+    }
+
     public void reqLiftIncident(String incidentId) {
         addDisposable(incidentModel.reqLiftIncident(incidentId));
     }

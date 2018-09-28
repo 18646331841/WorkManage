@@ -36,4 +36,7 @@ public interface IncidentDao {
 
     @Update
     void updateIncident(IncidentInfo incidentInfo);
+
+    @Update
+    void updateIncident(List<IncidentInfo> incidentInfos);
 }

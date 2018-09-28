@@ -259,9 +259,26 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
     private void markReadWork() {
         LogUtil.d(TAG, "mapSize = " + messageAdapter.map.size());
         Set<Map.Entry<Integer, MessageInfo>> entries = messageAdapter.map.entrySet();
+        List<Integer> alarmKeys = new ArrayList<>();
+        List<Integer> incidentKeys = new ArrayList<>();
         for (Map.Entry<Integer, MessageInfo> entry : entries) {
             LogUtil.d(TAG, "type = " + entry.getKey());
+            MessageInfo value = entry.getValue();
+            if (value instanceof AlarmInfo) {
+                alarmKeys.add(((AlarmInfo) value).getKey());
+            } else if (value instanceof IncidentInfo) {
+                incidentKeys.add(((IncidentInfo) value).getKey());
+            }
         }
+
+        if (alarmKeys.size() > 0) {
+            alarmViewModel.setReadAlarm(alarmKeys);
+        }
+
+        if (incidentKeys.size() > 0) {
+            incidentViewModel.setReadIncident(incidentKeys);
+        }
+
         messageAdapter.neverall();
         mBinding.mulitpleMenu.setVisibility(View.GONE);
         mBinding.tvNewMsg.setVisibility(View.VISIBLE);

@@ -38,4 +38,7 @@ public interface AlarmInfoDao {
 
     @Update
     void updateAlarmLift(AlarmInfo alarmInfo);
+
+    @Update
+    void updateAlarmLift(List<AlarmInfo> alarmInfos);
 }

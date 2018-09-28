@@ -24,10 +24,13 @@ import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.ObservableSource;
+import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -332,6 +335,24 @@ public class AlarmModel extends BaseModel {
                     } else {
                         LogUtil.d(TAG, "read alarminfo is null");
                     }
+                });
+    }
+
+    public void readedAlarms(List<Integer> keys) {
+        Disposable subscribe = Observable.fromIterable(keys)
+                .map(integer -> appDatabase.alarmInfoDao().getAlarmInfoSync(integer))
+                .toList()
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribe(alarmInfos -> {
+                    if (alarmInfos != null && alarmInfos.size() > 0) {
+                        for (AlarmInfo alarmInfo : alarmInfos) {
+                            alarmInfo.setRead(true);
+                        }
+                        appDatabase.alarmInfoDao().updateAlarmLift(alarmInfos);
+                    }
+                }, throwable -> {
+                    LogUtil.d(TAG, throwable.getMessage());
                 });
     }
 }

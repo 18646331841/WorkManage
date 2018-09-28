@@ -36,7 +36,6 @@ import com.barisetech.www.workmanage.view.fragment.AlarmDetailsFragment;
 import com.barisetech.www.workmanage.view.fragment.AlarmListFragment;
 import com.barisetech.www.workmanage.view.fragment.DigitizingDetailFragment;
 import com.barisetech.www.workmanage.view.fragment.DigitizingFragment;
-import com.barisetech.www.workmanage.view.fragment.FingerprintManagerFragment;
 import com.barisetech.www.workmanage.view.fragment.IncidentDetailsFragment;
 import com.barisetech.www.workmanage.view.fragment.IncidentListFragment;
 import com.barisetech.www.workmanage.view.fragment.MapFragment;
@@ -197,10 +196,6 @@ public class MainActivity extends BaseActivity {
                     transaction
                             .replace(R.id.fragment_content, AlarmListFragment.newInstance(), tag)
                             .commit();
-                    break;
-                case FingerprintManagerFragment.TAG:
-                    transaction
-                            .replace(R.id.fragment_content, FingerprintManagerFragment.newInstance(), tag).commit();
                     break;
                 case AlarmDetailsFragment.TAG:
                     transaction

@@ -146,6 +146,14 @@ public class AlarmViewModel extends BaseViewModel implements ModelCallBack {
         alarmModel.readedAlarm(key);
     }
 
+    /**
+     * 设置多个警报已读
+     * @param keys
+     */
+    public void setReadAlarm(List<Integer> keys) {
+        alarmModel.readedAlarms(keys);
+    }
+
     public LiveData<List<AlarmInfo>> getNotReadAlarmInfos() {
         return mObservableNotReadAlarmInfos;
     }

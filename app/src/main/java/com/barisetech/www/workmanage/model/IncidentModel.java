@@ -21,7 +21,9 @@ import com.barisetech.www.workmanage.utils.LogUtil;
 import java.util.List;
 
 import io.reactivex.Maybe;
+import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -232,6 +234,24 @@ public class IncidentModel extends BaseModel {
                     } else {
                         LogUtil.d(TAG, "read incident is null");
                     }
+                });
+    }
+
+    public void readedIncident(List<Integer> keys) {
+        Disposable subscribe = Observable.fromIterable(keys)
+                .map(integer -> appDatabase.incidentDao().getIncidentInfoSync(integer))
+                .toList()
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribe(incidentInfos -> {
+                    if (incidentInfos != null && incidentInfos.size() > 0) {
+                        for (IncidentInfo incidentInfo : incidentInfos) {
+                            incidentInfo.setRead(true);
+                        }
+                        appDatabase.incidentDao().updateIncident(incidentInfos);
+                    }
+                }, throwable -> {
+                    LogUtil.d(TAG, throwable.getMessage());
                 });
     }
 }
