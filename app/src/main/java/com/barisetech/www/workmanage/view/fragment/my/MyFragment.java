@@ -92,7 +92,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
                 break;
             case R.id.item_clear_cache:
                 showTwoButtonDialog("是否清除缓存", 0, null, "确定", "取消", v -> {
-                    DataCleanManagerUtil.cleanSharedPreference(getContext());
+//                    DataCleanManagerUtil.cleanSharedPreference(getContext());
                     DataCleanManagerUtil.cleanDatabases(getContext());
                     DataCleanManagerUtil.cleanInternalCache(getContext());
                     mDialog.dismiss();

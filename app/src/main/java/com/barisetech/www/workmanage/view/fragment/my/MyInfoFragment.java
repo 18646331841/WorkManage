@@ -96,22 +96,22 @@ public class MyInfoFragment extends BaseFragment {
     public void subscribeToModel() {
         if (!contactsViewModel.getObservableAll().hasObservers()) {
             contactsViewModel.getObservableAll().observe(this, contactsBeans -> {
-                    contactsBeanList = new ArrayList<>();
-                    if (null != contactsBeans) {
-                        if (contactsBeans.size() > 0) {
-                            contactsBeanList.addAll(contactsBeans);
-                            for (ContactsBean contactsBean : contactsBeanList) {
-                                if (contactsBean.getName().equals(user)) {
-                                    email = contactsBean.getEmail();
-                                    phone = contactsBean.getTelephone();
-                                    mBinding.tvAccount.setText(user);
-                                    mBinding.tvEmail.setText(email);
-                                    mBinding.tvPhone.setText(phone);
-                                }
+                contactsBeanList = new ArrayList<>();
+                if (null != contactsBeans) {
+                    if (contactsBeans.size() > 0) {
+                        contactsBeanList.addAll(contactsBeans);
+                        for (ContactsBean contactsBean : contactsBeanList) {
+                            if (contactsBean.getName().equals(user)) {
+                                email = contactsBean.getEmail();
+                                phone = contactsBean.getTelephone();
+                                mBinding.tvAccount.setText(user);
+                                mBinding.tvEmail.setText(email);
+                                mBinding.tvPhone.setText(phone);
                             }
-
                         }
+
                     }
+                }
             });
         }
 
@@ -126,8 +126,7 @@ public class MyInfoFragment extends BaseFragment {
             });
         }
 
-
-            getContactsNum();
+        getContactsNum();
 
 
     }

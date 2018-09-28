@@ -81,6 +81,7 @@ public class FingerOpenFragment extends BaseFragment {
                     public void onClick(View view) {
                         mDialog.dismiss();
                         mBinding.fingerSwitch.setBackgroundResource(R.drawable.item_shape);
+                        SharedPreferencesUtil.getInstance().setBoolean(BaseConstant.SP_LOGIN_FP, false);
                         flag = true;
                     }
                 }, new View.OnClickListener() {

@@ -88,4 +88,12 @@ public class BaseConstant {
     public static final String PROGRESS_SHOW = "show_progress";
     //关闭progress
     public static final String PROGRESS_CLOSE = "close_progress";
+
+
+    //免打扰开始时间
+    public static final String NOT_DISTURB_START = "not_disturb_start";
+    //免打扰结束时间
+    public static final String NOT_DISTURB_END = "not_disturb_end";
+    //免打扰开启标识
+    public static final String NOT_DISTURB_OPEN = "not_disturb_open";
 }

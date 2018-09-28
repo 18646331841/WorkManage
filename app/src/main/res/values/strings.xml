@@ -415,7 +415,8 @@
     <string name="tv_shock">震动</string>
     <string name="event_type_toast">是否接受通知</string>
     <string name="finger_open_toast">开启后可使用指纹认证完成快速登录，设置仅对本机生效。如需修改指纹，请在系统设置中操作。</string>
-    <string name="select_time">选择生效时间</string>
+    <string name="select_time_start">选择开始时间</string>
+    <string name="select_time_end">选择结束时间</string>
     <string name="source">来源</string>
     <string name="call_phone">拨打电话</string>
     <string name="send_sms">发送短信</string>
@@ -423,6 +424,8 @@
     <string name="tv_contact_detail">联系人详情</string>
     <string name="modify_phone">修改电话</string>
     <string name="modify_email">修改邮箱</string>
+    <string name="finger_manager">指纹管理</string>
+    <string name="skip">跳过</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->

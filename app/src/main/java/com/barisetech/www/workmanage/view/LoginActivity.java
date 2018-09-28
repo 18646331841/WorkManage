@@ -9,6 +9,7 @@ import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.utils.FragmentUtil;
 import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
+import com.barisetech.www.workmanage.view.fragment.FingerFragment;
 import com.barisetech.www.workmanage.view.fragment.IpFragment;
 import com.barisetech.www.workmanage.view.fragment.LoginFragment;
 
@@ -54,6 +55,10 @@ public class LoginActivity extends BaseActivity {
                 break;
             case IpFragment.TAG:
                 FragmentUtil.replaceSupportFragment(this, R.id.login_container, IpFragment.class, IpFragment.TAG,
+                        false, false);
+                break;
+            case FingerFragment.TAG:
+                FragmentUtil.replaceSupportFragment(this, R.id.login_container, FingerFragment.class, FingerFragment.TAG,
                         false, false);
                 break;
             default:
