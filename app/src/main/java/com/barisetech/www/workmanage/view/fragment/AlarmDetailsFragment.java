@@ -127,8 +127,9 @@ public class AlarmDetailsFragment extends BaseFragment implements View.OnClickLi
                 EventBus.getDefault().post(pipeMessage);
                 break;
             case R.id.waveform_bt:
-                EventBus.getDefault().post(new EventBusMessage(WaveFormFragment.TAG));
-
+                EventBusMessage waveFormMessage = new EventBusMessage(WaveFormFragment.TAG);
+                waveFormMessage.setArg1(curAlarmInfo.getPipeId());
+                EventBus.getDefault().post(waveFormMessage);
                 break;
             case R.id.build_alarm_analysis_bt:
                 eventBusMessage = new EventBusMessage(AlarmAnalysisFragment.TAG);

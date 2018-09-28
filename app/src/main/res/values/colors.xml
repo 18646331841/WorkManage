@@ -30,6 +30,9 @@
     <color name="plan_sign_in_red_color">#fe7272</color>
     <color name="plan_sign_in_gray_circle">#dbdbdb</color>
 
+    <color name="wave_main">#FEB04C</color>
+    <color name="wave_sub">#008aff</color>
+
     <drawable name="button_text_white">#FFFFFF</drawable>
     <drawable name="button_text_blue">#30a0ff</drawable>
 </resources>

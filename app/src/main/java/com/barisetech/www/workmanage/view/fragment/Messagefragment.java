@@ -143,7 +143,9 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
                             EventBus.getDefault().post(pipeMessage);
                             break;
                         case 3:
+                            curAlarmInfo = alarmInfo;
                             EventBusMessage waveFormMessage = new EventBusMessage(WaveFormFragment.TAG);
+                            waveFormMessage.setArg1(curAlarmInfo.getPipeId());
                             EventBus.getDefault().post(waveFormMessage);
                             break;
                         case 4:

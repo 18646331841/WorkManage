@@ -39,6 +39,7 @@ public class WaveViewModel extends BaseViewModel implements ModelCallBack {
 
     private WaveModel waveModel;
     private MutableLiveData<WaveBean> mObservableWave;
+    private MutableLiveData<List<WaveBean>> mObservableWaves;
 
     public WaveViewModel(@NonNull Application application) {
         super(application);
@@ -48,16 +49,30 @@ public class WaveViewModel extends BaseViewModel implements ModelCallBack {
 
         mObservableWave = new MutableLiveData<>();
         mObservableWave.setValue(null);
+        mObservableWaves = new MutableLiveData<>();
+        mObservableWaves.setValue(null);
     }
 
     /**
-     * 获取所有数字化仪
+     * 获取单个波形
      *
      * @param reqWave
      * @return
      */
-    public Disposable reqAll(ReqWave reqWave) {
+    public Disposable reqWave(ReqWave reqWave) {
         Disposable disposable = waveModel.reqAll(reqWave);
+        addDisposable(disposable);
+        return disposable;
+    }
+
+    /**
+     * 获取多个波形
+     *
+     * @param reqWaves
+     * @return
+     */
+    public Disposable reqAll(List<ReqWave> reqWaves) {
+        Disposable disposable = waveModel.reqAll(reqWaves);
         addDisposable(disposable);
         return disposable;
     }
@@ -69,7 +84,10 @@ public class WaveViewModel extends BaseViewModel implements ModelCallBack {
             TypeResponse typeResponse = (TypeResponse) object;
             mDelivery.post(() -> {
                 switch (typeResponse.type) {
-                    case PipeModel.TYPE_ALL:
+                    case WaveModel.TYPE_ALL:
+                        mObservableWaves.setValue((List<WaveBean>) typeResponse.data);
+                        break;
+                    case WaveModel.TYPE_SINGLE:
                         mObservableWave.setValue((WaveBean) typeResponse.data);
                         break;
                 }
@@ -88,7 +106,10 @@ public class WaveViewModel extends BaseViewModel implements ModelCallBack {
 
             mDelivery.post(() -> {
                 switch (failResponse.type) {
-                    case PipeModel.TYPE_ALL:
+                    case WaveModel.TYPE_ALL:
+                        mObservableWaves.setValue(null);
+                        break;
+                    case WaveModel.TYPE_SINGLE:
                         mObservableWave.setValue(null);
                         break;
                 }
@@ -98,5 +119,9 @@ public class WaveViewModel extends BaseViewModel implements ModelCallBack {
 
     public MutableLiveData<WaveBean> getmObservableWave() {
         return mObservableWave;
+    }
+
+    public MutableLiveData<List<WaveBean>> getmObservableWaves() {
+        return mObservableWaves;
     }
 }

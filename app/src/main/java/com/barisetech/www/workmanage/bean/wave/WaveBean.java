@@ -17,7 +17,7 @@ public class WaveBean {
      */
 
     public String siteId;
-    public int type;
+    public String type;
 
     public ActualTimeRangeBean ActualTimeRange;
     public ExpectTimeRangeBean ExpectTimeRange;

@@ -371,7 +371,8 @@ public class MainActivity extends BaseActivity {
                     break;
                 case WaveFormFragment.TAG:
                     transaction
-                            .replace(R.id.fragment_content, WaveFormFragment.newInstance(), tag).commit();
+                            .replace(R.id.fragment_content, WaveFormFragment.newInstance((int) eventBusMessage
+                                    .getArg1()), tag).commit();
                     if (!isActivity) {
                         transaction.addToBackStack(tag);
                     }

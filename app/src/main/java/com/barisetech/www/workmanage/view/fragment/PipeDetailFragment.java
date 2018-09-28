@@ -77,9 +77,9 @@ public class PipeDetailFragment extends BaseFragment {
         });
 
         mBinding.toolbar.tvTwo.setOnClickListener(view -> {
-            EventBusMessage eventBusMessage = new EventBusMessage(WaveFormFragment.TAG);
-            EventBus.getDefault().post(eventBusMessage);
-
+            EventBusMessage waveFormMessage = new EventBusMessage(WaveFormFragment.TAG);
+            waveFormMessage.setArg1(pipeInfo.PipeId);
+            EventBus.getDefault().post(waveFormMessage);
         });
 
         mBinding.toPw.setOnClickListener(view -> {

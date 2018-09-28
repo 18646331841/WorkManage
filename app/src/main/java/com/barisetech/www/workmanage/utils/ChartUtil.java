@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import lecho.lib.hellocharts.gesture.ZoomType;
 import lecho.lib.hellocharts.model.Axis;
 import lecho.lib.hellocharts.model.AxisValue;
 import lecho.lib.hellocharts.model.Line;
@@ -20,7 +21,7 @@ import lecho.lib.hellocharts.model.Viewport;
 import lecho.lib.hellocharts.view.LineChartView;
 
 public class ChartUtil {
-    private static final String TAG = "Tools";
+    private static final String TAG = "ChartUtil";
     private static final String[] colors = new String[]{"#FEB04C", "#008aff"};
 
     public static void setChartViewData(List<DataRateBean> heartList, LineChartView lineChart) {
@@ -188,16 +189,21 @@ public class ChartUtil {
             if (dataRateBeanList != null && dataRateBeanList.size() > 0) {
                 if (dataSize < dataRateBeanList.size()) {
                     dataSize = dataRateBeanList.size();
+                    axisXBottomValues.clear();
                 }
                 List<PointValue> mPointValues = new ArrayList<>();
                 for (int i = 0; i < dataRateBeanList.size(); i++) {
                     DataRateBean dataRateBean = dataRateBeanList.get(i);
                     //数据点
                     mPointValues.add(new PointValue(i, dataRateBean.getData()));
-                    axisXBottomValues.add(new AxisValue(i).setLabel(dataRateBean.getTime()));
+                    if (axisXBottomValues.size() < dataSize) {
+                        if (i % 500 == 0) {
+                            axisXBottomValues.add(new AxisValue(i).setLabel(dataRateBean.getTime()));
+                        }
+                    }
                 }
                 Line line = new Line(mPointValues);
-
+                LogUtil.d(TAG, "wave key = " + entry.getKey());
                 //LineChartValueFormatter chartValueFormatter = new SimpleLineChartValueFormatter(2);
                 //line.setFormatter(chartValueFormatter);//显示小数点（后2位）
                 line.setHasLabels(false);//曲线的数据坐标是否加上备注
@@ -211,6 +217,12 @@ public class ChartUtil {
                 line.setHasLines(true);//是否用直线显示。如果为false 则没有曲线只有点显示
                 line.setHasPoints(false);//是否显示圆点 如果为false 则没有原点只有点显示
                 line.setColor(Color.parseColor(colors[0]));
+                String[] keys = entry.getKey().split("_");
+                if (keys.length == 2) {
+                    if (keys[1].equals("2")) {
+                        line.setColor(Color.parseColor(colors[1]));
+                    }
+                }
                 line.setStrokeWidth(1);//设置线的宽度
 
                 lines.add(line);
@@ -220,6 +232,8 @@ public class ChartUtil {
         if (lines.size() <= 0) {
             return;
         }
+
+        LogUtil.d(TAG, "lines size = " + lines.size() + " axis size = " + axisXBottomValues.size());
 
         LineChartData data = new LineChartData();
         data.setLines(lines);
@@ -245,7 +259,7 @@ public class ChartUtil {
 
         //左边参数设置
         Axis axisY = new Axis();
-        //axisY.setMaxLabelChars(6); //最多几个X轴坐标，意思就是你的缩放让X轴上数据的个数
+        axisY.setMaxLabelChars(6); //最多几个X轴坐标，意思就是你的缩放让X轴上数据的个数
         axisY.setTextSize(12);
         axisY.setTextColor(Color.parseColor("#666666"));
         axisY.setHasLines(false);
@@ -256,12 +270,11 @@ public class ChartUtil {
         //设置行为属性，支持缩放、滑动以及平移
         lineChart.setInteractive(true);
         //水平缩放
-        //lineChart.setZoomType(ZoomType.HORIZONTAL);
+        lineChart.setZoomType(ZoomType.HORIZONTAL);
         //是否可滑动
         lineChart.setScrollEnabled(true);
         //放入数据源至控件中
         lineChart.setLineChartData(data);
-
         //设置最大缩放比例。默认值20
         //lineChart.setMaxZoom(10);
         //将视图窗口（viewport）移动至指定位置。如果可以移动，viewport将以该点为视图的中心。
@@ -312,9 +325,9 @@ public class ChartUtil {
         //左边起始位置 轴
         v.left = 0;
         //如果数据点超过20，显示20个、否则，显示数据本身大小{自己根据需求设置}
-        if (dataSize > 20) {
+        if (dataSize > 10) {
             // Y轴显示多少数据
-            v.right = 20;
+            v.right = 10;
         } else {
             v.right = dataSize;
         }

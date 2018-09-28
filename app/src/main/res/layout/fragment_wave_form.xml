@@ -41,13 +41,14 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <RadioButton
-                        android:id="@+id/infrasound_wave"
+                        android:id="@+id/subsonic_wave"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/dp_8"
                         android:layout_weight="1"
                         android:background="@drawable/radio_button_style"
                         android:button="@null"
+                        android:checked="true"
                         android:gravity="center"
                         android:text="@string/infrasound_wave"
                         android:textColor="@drawable/font_white_black_selector"
@@ -61,7 +62,6 @@
                         android:layout_weight="1"
                         android:background="@drawable/radio_button_style"
                         android:button="@null"
-                        android:checked="true"
                         android:gravity="center"
                         android:text="@string/pressure"
                         android:textColor="@drawable/font_white_black_selector"
@@ -82,13 +82,39 @@
                 </RadioGroup>
 
 
-                <TextView
-                    android:id="@+id/wave_form_time"
+                <LinearLayout
+                    android:id="@+id/wave_form_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_10"
-                    android:gravity="center"
-                    android:textSize="@dimen/sp_14"/>
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/main_wave"
+                        android:layout_marginLeft="@dimen/dp_20"
+                        android:textSize="@dimen/sp_12"/>
+
+                    <View
+                        android:layout_width="@dimen/dp_60"
+                        android:layout_height="@dimen/dp_5"
+                        android:layout_marginLeft="@dimen/dp_5"
+                        android:layout_gravity="center"
+                        android:background="@color/wave_main"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/sub_wave"
+                        android:layout_marginLeft="@dimen/dp_30"
+                        android:textSize="@dimen/sp_12"/>
+                    <View
+                        android:layout_width="@dimen/dp_60"
+                        android:layout_height="@dimen/dp_5"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/dp_5"
+                        android:background="@color/wave_sub"/>
+                </LinearLayout>
 
 
                 <LinearLayout
@@ -116,7 +142,8 @@
                     android:id="@+id/chart_start_site"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_300"
-                    android:layout_marginTop="@dimen/dp_10"/>
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_marginLeft="@dimen/dp_10"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -144,7 +171,9 @@
                     android:id="@+id/chart_end_site"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_300"
-                    android:layout_marginTop="@dimen/dp_10"/>
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_marginBottom="@dimen/dp_20"/>
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

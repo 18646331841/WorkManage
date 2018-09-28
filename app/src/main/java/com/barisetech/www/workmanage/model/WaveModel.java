@@ -32,6 +32,7 @@ public class WaveModel extends BaseModel {
     private ModelCallBack modelCallBack;
     private WaveService waveService;
 
+    public static final int TYPE_SINGLE = 3;
     public static final int TYPE_ALL = 4;
 
     public WaveModel(ModelCallBack modelCallBack) {
@@ -57,7 +58,7 @@ public class WaveModel extends BaseModel {
                 .subscribeWith(new ObserverCallBack<WaveBean>() {
                     @Override
                     protected void onThrowable(Throwable e) {
-                        FailResponse failResponse = new FailResponse(TYPE_ALL, Config.ERROR_NETWORK);
+                        FailResponse failResponse = new FailResponse(TYPE_SINGLE, Config.ERROR_NETWORK);
                         modelCallBack.fail(failResponse);
 
                     }
@@ -66,9 +67,9 @@ public class WaveModel extends BaseModel {
                     protected void onFailure(BaseResponse response) {
                         FailResponse failResponse;
                         if (response.Code == 401) {
-                            failResponse = new FailResponse(TYPE_ALL, Config.ERROR_UNAUTHORIZED);
+                            failResponse = new FailResponse(TYPE_SINGLE, Config.ERROR_UNAUTHORIZED);
                         } else {
-                            failResponse = new FailResponse(TYPE_ALL, Config.ERROR_FAIL);
+                            failResponse = new FailResponse(TYPE_SINGLE, Config.ERROR_FAIL);
                         }
                         modelCallBack.fail(failResponse);
                     }
@@ -76,7 +77,7 @@ public class WaveModel extends BaseModel {
                     @Override
                     protected void onSuccess(WaveBean response) {
                         LogUtil.d(TAG, "wave result = " + response);
-                        TypeResponse typeResponse = new TypeResponse(TYPE_ALL, response);
+                        TypeResponse typeResponse = new TypeResponse(TYPE_SINGLE, response);
                         modelCallBack.netResult(typeResponse);
                     }
                 });
@@ -84,7 +85,7 @@ public class WaveModel extends BaseModel {
     }
 
     private String siteId;
-    private int type;
+    private String type;
 
     /**
      * 获取所有波形
@@ -102,12 +103,13 @@ public class WaveModel extends BaseModel {
         Disposable disposable = Observable.fromArray(reqWaves)
                 .flatMap((Function<List<ReqWave>, ObservableSource<ReqWave>>) reqWaves1 -> {
                     siteId = "default";
-                    type = 0;
+                    type = "default";
                     return Observable.fromIterable(reqWaves1);
                 })
                 .flatMap((Function<ReqWave, ObservableSource<BaseResponse<WaveBean>>>) reqWave -> {
                     siteId = reqWave.siteId;
-                    type = reqWave.type;
+                    type = reqWave.sensorType;
+                    reqWave.MachineCode = mToken;
                     return waveService.getAll(reqWave).onErrorReturnItem(new
                             BaseResponse<>(-1, "", null));
                 })
