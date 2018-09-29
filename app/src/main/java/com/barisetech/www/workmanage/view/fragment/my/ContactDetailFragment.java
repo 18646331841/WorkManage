@@ -1,5 +1,6 @@
 package com.barisetech.www.workmanage.view.fragment.my;
 
+import android.app.Activity;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.telephony.TelephonyManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,7 @@ import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.bean.contacts.ContactsBean;
 import com.barisetech.www.workmanage.databinding.FragmentContactDetailBinding;
+import com.barisetech.www.workmanage.utils.ToastUtil;
 
 public class ContactDetailFragment extends BaseFragment {
 
@@ -47,10 +50,10 @@ public class ContactDetailFragment extends BaseFragment {
     }
 
 
-
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
+            savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_contact_detail, container, false);
         setToolBarHeight(mBinding.toolbar.getRoot());
         mBinding.setFragment(this);
@@ -69,16 +72,20 @@ public class ContactDetailFragment extends BaseFragment {
         mBinding.source.setText(contactsBean.getSource());
 
         mBinding.copyEmail.setOnClickListener(view -> {
-           onClickCopy();
+            onClickCopy();
         });
 
         mBinding.toCallPhone.setOnClickListener(view -> {
-            Intent dialIntent =  new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + mBinding.phone.getText()));
-            startActivity(dialIntent);
+            if (hasCall(getActivity())) {
+                Intent dialIntent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + mBinding.phone.getText()));
+                startActivity(dialIntent);
+            } else {
+                ToastUtil.showToast("该设备不具备电话功能");
+            }
         });
 
         mBinding.toSendSms.setOnClickListener(view -> {
-            Uri smsToUri = Uri.parse("smsto:"+mBinding.phone.getText());
+            Uri smsToUri = Uri.parse("smsto:" + mBinding.phone.getText());
             Intent intent = new Intent(Intent.ACTION_SENDTO, smsToUri);
             startActivity(intent);
         });
@@ -100,5 +107,20 @@ public class ContactDetailFragment extends BaseFragment {
         ClipboardManager cm = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
         cm.setText(mBinding.email.getText());
         Toast.makeText(getContext(), "复制成功", Toast.LENGTH_LONG).show();
+    }
+
+    /**
+     * 判断是否有电话功能
+     *
+     * @param activity
+     * @return
+     */
+    public boolean hasCall(Activity activity) {
+        TelephonyManager telephony = (TelephonyManager) activity.getSystemService(Context.TELEPHONY_SERVICE);
+        if (telephony.getPhoneType() == TelephonyManager.PHONE_TYPE_NONE) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }

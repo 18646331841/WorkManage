@@ -11,8 +11,10 @@ import com.barisetech.www.workmanage.base.BaseActivity;
 import com.barisetech.www.workmanage.base.BaseApplication;
 import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
+import com.barisetech.www.workmanage.bean.UserInfo;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.bean.alarmanalysis.AlarmAnalysis;
+import com.barisetech.www.workmanage.bean.contacts.ContactsBean;
 import com.barisetech.www.workmanage.bean.digitalizer.DigitalizerBean;
 import com.barisetech.www.workmanage.bean.incident.IncidentInfo;
 import com.barisetech.www.workmanage.bean.pipe.PipeInfo;
@@ -42,6 +44,11 @@ import com.barisetech.www.workmanage.view.fragment.IncidentListFragment;
 import com.barisetech.www.workmanage.view.fragment.MapFragment;
 import com.barisetech.www.workmanage.view.fragment.Messagefragment;
 import com.barisetech.www.workmanage.view.fragment.ModifySiteFragment;
+import com.barisetech.www.workmanage.view.fragment.my.ContactDetailFragment;
+import com.barisetech.www.workmanage.view.fragment.my.ContactsFragment;
+import com.barisetech.www.workmanage.view.fragment.my.EventTypeFragment;
+import com.barisetech.www.workmanage.view.fragment.my.ModifyEmailFragment;
+import com.barisetech.www.workmanage.view.fragment.my.ModifyPhoneFragment;
 import com.barisetech.www.workmanage.view.fragment.my.MyInfoFragment;
 import com.barisetech.www.workmanage.view.fragment.NavigationFragment;
 import com.barisetech.www.workmanage.view.fragment.NewsAddFragment;
@@ -50,6 +57,7 @@ import com.barisetech.www.workmanage.view.fragment.NewsListFragment;
 import com.barisetech.www.workmanage.view.fragment.NullFragment;
 import com.barisetech.www.workmanage.view.fragment.PadMapFragment;
 import com.barisetech.www.workmanage.view.fragment.PadMapListFragment;
+import com.barisetech.www.workmanage.view.fragment.my.NotDisturbFragment;
 import com.barisetech.www.workmanage.view.fragment.my.PassWordFragment;
 import com.barisetech.www.workmanage.view.fragment.PipeAddFragment;
 import com.barisetech.www.workmanage.view.fragment.PipeCollectionAddFragment;
@@ -118,7 +126,8 @@ public class MainActivity extends BaseActivity {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 //        if (!isTwoPanel) {
 //            //小屏设备界面，单个fragment
-//            transaction.add(R.id.fragment_navigation, NavigationFragment.newInstance(), NavigationFragment.TAG).commit();
+//            transaction.add(R.id.fragment_navigation, NavigationFragment.newInstance(), NavigationFragment.TAG)
+// .commit();
 //        } else {
 //            //大屏设备界面，左右两个fragment
         EventBusMessage eventBusMessage = new EventBusMessage(tag);
@@ -132,7 +141,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        if(ev.getAction() == MotionEvent.ACTION_DOWN){
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
             point.x = (int) ev.getRawX();
             point.y = (int) ev.getRawY();
         }
@@ -163,7 +172,8 @@ public class MainActivity extends BaseActivity {
                     finish();
                     break;
                 case MapFragment.TAG:
-                    transaction.add(R.id.fragment_navigation, NavigationFragment.newInstance(eventBusMessage), NavigationFragment
+                    transaction.add(R.id.fragment_navigation, NavigationFragment.newInstance(eventBusMessage),
+                            NavigationFragment
                             .TAG).commit();
                     break;
                 default:
@@ -229,7 +239,8 @@ public class MainActivity extends BaseActivity {
                 case MapFragment.TAG:
                     EventBusMessage eventBusMessage1 = new EventBusMessage(PadMapListFragment.TAG);
                     eventBusMessage1.setArg1(eventBusMessage.getArg1());
-                    transaction.replace(R.id.fragment_navigation, NavigationFragment.newInstance(eventBusMessage1), NavigationFragment
+                    transaction.replace(R.id.fragment_navigation, NavigationFragment.newInstance(eventBusMessage1),
+                            NavigationFragment
                             .TAG).commit();
                     break;
                 case PadMapFragment.TAG:
@@ -477,7 +488,7 @@ public class MainActivity extends BaseActivity {
 
                 case PassWordFragment.TAG:
                     transaction
-                            .replace(R.id.second_framelayout, PassWordFragment.newInstance(), tag).commit();
+                            .replace(R.id.fragment_content, PassWordFragment.newInstance(), tag).commit();
                     if (!isActivity) {
                         transaction.addToBackStack(tag);
                     }
@@ -485,17 +496,54 @@ public class MainActivity extends BaseActivity {
 
                 case SoundFragment.TAG:
                     transaction
-                            .replace(R.id.second_framelayout, SoundFragment.newInstance(), tag).commit();
+                            .replace(R.id.fragment_content, SoundFragment.newInstance(), tag).commit();
                     break;
 
                 case AboutFragment.TAG:
                     transaction
-                            .replace(R.id.second_framelayout, AboutFragment.newInstance(), tag).commit();
+                            .replace(R.id.fragment_content, AboutFragment.newInstance(), tag).commit();
                     break;
 
                 case MyInfoFragment.TAG:
                     transaction
-                            .replace(R.id.second_framelayout, MyInfoFragment.newInstance(), tag).commit();
+                            .replace(R.id.fragment_content, MyInfoFragment.newInstance(), tag).commit();
+                    break;
+                case ModifyPhoneFragment.TAG:
+                    transaction
+                            .replace(R.id.fragment_content, ModifyPhoneFragment.newInstance((UserInfo)
+                                    eventBusMessage.getArg1()), tag).commit();
+                    if (!isActivity) {
+                        transaction.addToBackStack(tag);
+                    }
+                    break;
+
+                case ModifyEmailFragment.TAG:
+                    transaction
+                            .replace(R.id.fragment_content, ModifyEmailFragment.newInstance((UserInfo)
+                                    eventBusMessage.getArg1()), tag).commit();
+                    if (!isActivity) {
+                        transaction.addToBackStack(tag);
+                    }
+                    break;
+                case EventTypeFragment.TAG:
+                    transaction
+                            .replace(R.id.fragment_content, EventTypeFragment.newInstance(), tag).commit();
+                    break;
+                case NotDisturbFragment.TAG:
+                    transaction
+                            .replace(R.id.fragment_content, NotDisturbFragment.newInstance(), tag).commit();
+                    break;
+                case ContactsFragment.TAG:
+                    transaction
+                            .replace(R.id.fragment_content, ContactsFragment.newInstance(), tag).commit();
+                    break;
+                case ContactDetailFragment.TAG:
+                    transaction
+                            .replace(R.id.fragment_content, ContactDetailFragment.newInstance((ContactsBean)
+                                    eventBusMessage.getArg1()), tag).commit();
+                    if (!isActivity) {
+                        transaction.addToBackStack(tag);
+                    }
                     break;
             }
         }

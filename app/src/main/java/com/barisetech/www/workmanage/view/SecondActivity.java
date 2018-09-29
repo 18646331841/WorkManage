@@ -466,7 +466,6 @@ public class SecondActivity extends BaseActivity {
                         .replace(R.id.second_framelayout, ContactsFragment.newInstance(), tag).commit();
                 break;
 
-
             case ContactDetailFragment.TAG:
                 transaction
                         .replace(R.id.second_framelayout, ContactDetailFragment.newInstance((ContactsBean)
@@ -475,7 +474,6 @@ public class SecondActivity extends BaseActivity {
                     transaction.addToBackStack(tag);
                 }
                 break;
-
 
             case ModifyPhoneFragment.TAG:
                 transaction
@@ -486,8 +484,6 @@ public class SecondActivity extends BaseActivity {
                 }
                 break;
 
-
-
             case ModifyEmailFragment.TAG:
                 transaction
                         .replace(R.id.second_framelayout, ModifyEmailFragment.newInstance((UserInfo)
@@ -496,8 +492,6 @@ public class SecondActivity extends BaseActivity {
                     transaction.addToBackStack(tag);
                 }
                 break;
-
-
         }
     }
 }
