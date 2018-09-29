@@ -82,7 +82,7 @@ public class DigitizingFragment extends BaseFragment {
     }
 
     private void initView() {
-        if (!EventBus.getDefault().isRegistered(this)){
+        if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
 
@@ -157,12 +157,7 @@ public class DigitizingFragment extends BaseFragment {
         digitalizerViewModel.reqNum();
     }
 
-    private DigitizingAdapter.OnItemLongClickListener onItemLongClickListener = new DigitizingAdapter
-            .OnItemLongClickListener() {
-
-
-        @Override
-        public void onItemClick(View view, int position) {
+    private DigitizingAdapter.OnItemLongClickListener onItemLongClickListener = (view, position) ->
             QPopuWindow.getInstance(getActivity()).builder
                     .bindView(view, 0)
                     .setPopupItemList(new String[]{"新增站点"})
@@ -170,22 +165,17 @@ public class DigitizingFragment extends BaseFragment {
                     .setOnPopuListItemClickListener((anchorView, anchorViewPosition, position1) -> {
                         switch (position1) {
                             case 0:
-                                //TODO
+                                EventBus.getDefault().post(new EventBusMessage(AddSiteFragment.TAG));
                                 break;
                         }
                     }).show();
-        }
-    };
 
-    private ItemCallBack itemCallBack = new ItemCallBack() {
-        @Override
-        public void onClick(Object item) {
-            if (item instanceof DigitalizerBean) {
-                DigitalizerBean digitalizerBean = (DigitalizerBean) item;
-                EventBusMessage eventBusMessage = new EventBusMessage(DigitizingDetailFragment.TAG);
-                eventBusMessage.setArg1(digitalizerBean);
-                EventBus.getDefault().post(eventBusMessage);
-            }
+    private ItemCallBack itemCallBack = item -> {
+        if (item instanceof DigitalizerBean) {
+            DigitalizerBean digitalizerBean = (DigitalizerBean) item;
+            EventBusMessage eventBusMessage = new EventBusMessage(DigitizingDetailFragment.TAG);
+            eventBusMessage.setArg1(digitalizerBean);
+            EventBus.getDefault().post(eventBusMessage);
         }
     };
 

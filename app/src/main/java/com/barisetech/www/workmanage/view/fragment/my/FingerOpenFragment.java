@@ -60,6 +60,12 @@ public class FingerOpenFragment extends BaseFragment {
     }
 
     private void initView() {
+        boolean fp = SharedPreferencesUtil.getInstance().getBoolean(BaseConstant.SP_LOGIN_FP, false);
+        if (fp) {
+            mBinding.fingerSwitch.setBackgroundResource(R.drawable.shape_button_corners);
+        } else {
+            mBinding.fingerSwitch.setBackgroundResource(R.drawable.item_shape);
+        }
 
         builder = new CustomDialog.Builder(getContext());
 

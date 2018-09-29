@@ -22,6 +22,7 @@ import com.barisetech.www.workmanage.bean.site.SiteBean;
 import com.barisetech.www.workmanage.bean.workplan.PlanBean;
 import com.barisetech.www.workmanage.bean.workplan.ReqAddPlan;
 import com.barisetech.www.workmanage.bean.worktask.TaskSiteBean;
+import com.barisetech.www.workmanage.view.fragment.DigitizingModifyFragment;
 import com.barisetech.www.workmanage.view.fragment.PlanListFragment;
 import com.barisetech.www.workmanage.view.fragment.SignInFragment;
 import com.barisetech.www.workmanage.view.fragment.my.AboutFragment;
@@ -216,6 +217,14 @@ public class SecondActivity extends BaseActivity {
             case DigitizingDetailFragment.TAG:
                 transaction
                         .replace(R.id.second_framelayout, DigitizingDetailFragment.newInstance((DigitalizerBean)
+                                eventBusMessage.getArg1()), tag).commit();
+                if (!isActivity) {
+                    transaction.addToBackStack(tag);
+                }
+                break;
+            case DigitizingModifyFragment.TAG:
+                transaction
+                        .replace(R.id.second_framelayout, DigitizingModifyFragment.newInstance((DigitalizerBean)
                                 eventBusMessage.getArg1()), tag).commit();
                 if (!isActivity) {
                     transaction.addToBackStack(tag);

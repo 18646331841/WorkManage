@@ -137,7 +137,6 @@ public class WaveFormFragment extends BaseFragment {
                 if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
                     if (pipeInfos != null && pipeInfos.size() > 0) {
                         curPipeInfo = pipeInfos.get(0);
-//                        startSiteId = 3;
                         startSiteId = curPipeInfo.StartSiteId;
                         List<SiteBean> sites = curPipeInfo.Sites;
                         for (SiteBean siteBean : sites) {
@@ -145,7 +144,6 @@ public class WaveFormFragment extends BaseFragment {
                                 endSiteId = siteBean.SiteId;
                             }
                         }
-//                        endSiteId = 4;
                         getSubsonicDatas();
                     }
                 }

@@ -28,89 +28,31 @@ public class ReqModifyDigitalizer {
     public int ID;
     public String Company;
     public String Name;
-    public int Latitude;
-    public int Longitude;
+    public float Latitude;
+    public float Longitude;
     public String HardVersion;
     public String SoftVersion;
     public String SerialNumber;
     public String SimNumber;
-    public PrimarySensorBean PrimarySensor;
-    public SencondarySensorBean SencondarySensor;
-    public StatusBean Status;
-    public String PressureSampleRate;
-    public String FlowSampleSampleRate;
-    public String TemperatureSampleRate;
+    public DigitalizerBean.PrimarySensorBean PrimarySensor;
+    public DigitalizerBean.SencondarySensorBean SencondarySensor;
+    public DigitalizerBean.StatusBean Status;
+    public String PressureSampleRate = "";
+    public String FlowSampleSampleRate = "";
+    public String TemperatureSampleRate = "";
 
-
-    public static class PrimarySensorBean {
-        /**
-         * ID : 2
-         * SensorChannel : 1
-         * AdcChannel : 3
-         * SampleRate : 1000
-         * IntGainEn : false
-         * IntGain : 0
-         * ExtGain : 10
-         * IntFirEn : true
-         * IntFir : 2
-         * ExtFir : 500
-         */
-
-        public int ID;
-        public int SensorChannel;
-        public int AdcChannel;
-        public int SampleRate;
-        public boolean IntGainEn;
-        public int IntGain;
-        public int ExtGain;
-        public boolean IntFirEn;
-        public int IntFir;
-        public int ExtFir;
-    }
-
-    public static class SencondarySensorBean {
-        /**
-         * ID : 2
-         * SensorChannel : 2
-         * AdcChannel : 3
-         * SampleRate : 1000
-         * IntGainEn : false
-         * IntGain : 0
-         * ExtGain : 10
-         * IntFirEn : true
-         * IntFir : 2
-         * ExtFir : 500
-         */
-
-        public int ID;
-        public int SensorChannel;
-        public int AdcChannel;
-        public int SampleRate;
-        public boolean IntGainEn;
-        public int IntGain;
-        public int ExtGain;
-        public boolean IntFirEn;
-        public int IntFir;
-        public int ExtFir;
-    }
-
-    public static class StatusBean {
-        /**
-         * IsSubsonic1Exist : false
-         * IsSubsonic2Exist : true
-         * IsPressureExist : true
-         * IsFluxExist : true
-         * OpenvpnAddr : 10.0.0.1
-         * Temperature : 55.2
-         * BatteryVoltage : 2600
-         */
-
-        public boolean IsSubsonic1Exist;
-        public boolean IsSubsonic2Exist;
-        public boolean IsPressureExist;
-        public boolean IsFluxExist;
-        public String OpenvpnAddr;
-        public double Temperature;
-        public int BatteryVoltage;
+    public void toBean(DigitalizerBean digitalizerBean) {
+        ID = digitalizerBean.ID;
+        Company = digitalizerBean.Company;
+        Name = digitalizerBean.Name;
+        Latitude = digitalizerBean.Latitude;
+        Longitude = digitalizerBean.Longitude;
+        HardVersion = digitalizerBean.HardVersion;
+        SoftVersion = digitalizerBean.SoftVersion;
+        SerialNumber = digitalizerBean.SerialNumber;
+        SimNumber = digitalizerBean.SimNumber;
+        PrimarySensor = digitalizerBean.PrimarySensor;
+        SencondarySensor = digitalizerBean.SencondarySensor;
+        Status = digitalizerBean.Status;
     }
 }
