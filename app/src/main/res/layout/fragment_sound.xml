@@ -42,11 +42,13 @@
                 app:layout_constraintTop_toTopOf="@id/item_sound" />
 
 
-            <com.barisetech.www.workmanage.widget.SwitchView
+            <Switch
                 android:id="@+id/sound_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="15dp"
+                android:thumb="@drawable/switch_ios_thumb"
+                android:track="@drawable/switch_ios_track_selector"
                 app:layout_constraintBottom_toBottomOf="@id/item_sound"
                 app:layout_constraintRight_toRightOf="@id/item_sound"
                 app:layout_constraintTop_toTopOf="@id/item_sound"/>
@@ -77,11 +79,13 @@
                 app:layout_constraintLeft_toLeftOf="@id/item_shock"
                 app:layout_constraintTop_toTopOf="@id/item_shock" />
 
-            <com.barisetech.www.workmanage.widget.SwitchView
+            <Switch
                 android:id="@+id/shock_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="15dp"
+                android:thumb="@drawable/switch_ios_thumb"
+                android:track="@drawable/switch_ios_track_selector"
                 app:layout_constraintBottom_toBottomOf="@id/item_shock"
                 app:layout_constraintRight_toRightOf="@id/item_shock"
                 app:layout_constraintTop_toTopOf="@id/item_shock"/>

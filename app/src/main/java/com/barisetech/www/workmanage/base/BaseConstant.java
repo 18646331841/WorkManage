@@ -96,4 +96,13 @@ public class BaseConstant {
     public static final String NOT_DISTURB_END = "not_disturb_end";
     //免打扰开启标识
     public static final String NOT_DISTURB_OPEN = "not_disturb_open";
+
+
+    //声音开启
+    public static final String SOUND_OPEN = "sound_open";
+    //震动开启
+    public static final String SHOCK_OPEN = "shock_open";
+
+
+
 }

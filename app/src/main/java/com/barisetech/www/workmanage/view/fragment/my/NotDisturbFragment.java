@@ -5,10 +5,13 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.base.BaseConstant;
@@ -54,41 +57,60 @@ public class NotDisturbFragment extends BaseFragment {
         startTimePicker = TimeUtil.getTimePicker(getActivity(), onStartTimeSetListener);
         endTimePicker = TimeUtil.getTimePicker(getActivity(), onEndTimeSetListener);
 
-        if (SharedPreferencesUtil.getInstance().getBoolean(BaseConstant.NOT_DISTURB_OPEN, false)){
-
+        if (SharedPreferencesUtil.getInstance().getBoolean(BaseConstant.NOT_DISTURB_OPEN, false)) {
             mBinding.tvTimeStart.setText(SharedPreferencesUtil.getInstance().getString(BaseConstant.NOT_DISTURB_START, ""));
             mBinding.tvTimeEnd.setText(SharedPreferencesUtil.getInstance().getString(BaseConstant.NOT_DISTURB_END, ""));
-        }else {
-
+            mBinding.fingerSwitch.setChecked(true);
+        } else {
+            mBinding.fingerSwitch.setEnabled(false);
         }
 
-        mBinding.fingerSwitch.setOnClickListener(view -> {
-            if (TextUtils.isEmpty(startTime)){
-                ToastUtil.showToast("未设置开始时间");
-            }else if (TextUtils.isEmpty(endTime)){
-                ToastUtil.showToast("未设置结束时间");
-            }
-        });
 
-
-        mBinding.fingerSwitch.setOnStateChangedListener(new SwitchView.OnStateChangedListener() {
-            @Override
-            public void toggleToOn(SwitchView view) {
+        mBinding.fingerSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b) {
                 SharedPreferencesUtil.getInstance().setString(BaseConstant.NOT_DISTURB_START, startTime);
                 SharedPreferencesUtil.getInstance().setString(BaseConstant.NOT_DISTURB_END, endTime);
                 SharedPreferencesUtil.getInstance().setBoolean(BaseConstant.NOT_DISTURB_OPEN, true);
-
-            }
-
-            @Override
-            public void toggleToOff(SwitchView view) {
+            } else {
                 SharedPreferencesUtil.getInstance().setString(BaseConstant.NOT_DISTURB_START, "");
                 SharedPreferencesUtil.getInstance().setString(BaseConstant.NOT_DISTURB_END, "");
                 SharedPreferencesUtil.getInstance().setBoolean(BaseConstant.NOT_DISTURB_OPEN, false);
                 mBinding.tvTimeEnd.setText("");
                 mBinding.tvTimeStart.setText("");
+                endTime="";
+                startTime="";
+                mBinding.fingerSwitch.setEnabled(false);
             }
         });
+
+
+//        mBinding.fingerSwitch.setOnClickListener(view -> {
+//            if (TextUtils.isEmpty(startTime)){
+//                ToastUtil.showToast("未设置开始时间");
+//            }else if (TextUtils.isEmpty(endTime)){
+//                ToastUtil.showToast("未设置结束时间");
+//            }
+//        });
+
+
+//        mBinding.fingerSwitch.setOnStateChangedListener(new SwitchView.OnStateChangedListener() {
+//            @Override
+//            public void toggleToOn(SwitchView view) {
+//                SharedPreferencesUtil.getInstance().setString(BaseConstant.NOT_DISTURB_START, startTime);
+//                SharedPreferencesUtil.getInstance().setString(BaseConstant.NOT_DISTURB_END, endTime);
+//                SharedPreferencesUtil.getInstance().setBoolean(BaseConstant.NOT_DISTURB_OPEN, true);
+//
+//            }
+//
+//            @Override
+//            public void toggleToOff(SwitchView view) {
+//                SharedPreferencesUtil.getInstance().setString(BaseConstant.NOT_DISTURB_START, "");
+//                SharedPreferencesUtil.getInstance().setString(BaseConstant.NOT_DISTURB_END, "");
+//                SharedPreferencesUtil.getInstance().setBoolean(BaseConstant.NOT_DISTURB_OPEN, false);
+//                mBinding.tvTimeEnd.setText("");
+//                mBinding.tvTimeStart.setText("");
+//            }
+//        });
         mBinding.itemTimeStart.setOnClickListener(view -> {
             startTimePicker.show();
 
@@ -96,6 +118,48 @@ public class NotDisturbFragment extends BaseFragment {
         mBinding.itemTimeEnd.setOnClickListener(view -> {
             endTimePicker.show();
 
+        });
+
+        mBinding.tvTimeEnd.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (TextUtils.isEmpty(endTime)||TextUtils.isEmpty(startTime)){
+                    mBinding.fingerSwitch.setEnabled(false);
+                }else {
+                    mBinding.fingerSwitch.setEnabled(true);
+                }
+            }
+        });
+
+        mBinding.tvTimeStart.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (TextUtils.isEmpty(endTime)||TextUtils.isEmpty(startTime)){
+                    mBinding.fingerSwitch.setEnabled(false);
+                }else {
+                    mBinding.fingerSwitch.setEnabled(true);
+                }
+            }
         });
     }
 
@@ -139,6 +203,7 @@ public class NotDisturbFragment extends BaseFragment {
         endTime = sb.toString();
         mBinding.tvTimeEnd.setText(endTime);
     });
+
 
     @Override
     public void bindViewModel() {
