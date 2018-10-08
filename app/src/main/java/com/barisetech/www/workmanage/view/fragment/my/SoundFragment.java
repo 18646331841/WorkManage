@@ -45,16 +45,20 @@ public class SoundFragment extends BaseFragment {
 
     private void initView() {
 
-        if (SharedPreferencesUtil.getInstance().getBoolean(BaseConstant.SOUND_OPEN, false)){
+        if (SharedPreferencesUtil.getInstance().getBoolean(BaseConstant.SOUND_OPEN, true)){
             mBinding.soundSwitch.setChecked(true);
+            openSound = true;
         }else {
             mBinding.soundSwitch.setChecked(false);
+            openSound = false;
         }
 
-        if (SharedPreferencesUtil.getInstance().getBoolean(BaseConstant.SHOCK_OPEN, false)){
+        if (SharedPreferencesUtil.getInstance().getBoolean(BaseConstant.SHOCK_OPEN, true)){
             mBinding.shockSwitch.setChecked(true);
+            openShock = true;
         }else {
             mBinding.shockSwitch.setChecked(false);
+            openShock = false;
         }
 
 

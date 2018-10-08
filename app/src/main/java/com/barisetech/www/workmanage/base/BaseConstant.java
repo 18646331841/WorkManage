@@ -80,6 +80,16 @@ public class BaseConstant {
     public static final String SP_IP_PORT = "ip_port";
     //上次请求新消息的时间
     public static final String SP_LAST_TIME_NEWINFO = "last_time";
+    //免打扰开始时间
+    public static final String NOT_DISTURB_START = "not_disturb_start";
+    //免打扰结束时间
+    public static final String NOT_DISTURB_END = "not_disturb_end";
+    //免打扰开启标识
+    public static final String NOT_DISTURB_OPEN = "not_disturb_open";
+    //声音开启
+    public static final String SOUND_OPEN = "sound_open";
+    //震动开启
+    public static final String SHOCK_OPEN = "shock_open";
 
     /**
      * progress
@@ -89,20 +99,19 @@ public class BaseConstant {
     //关闭progress
     public static final String PROGRESS_CLOSE = "close_progress";
 
-
-    //免打扰开始时间
-    public static final String NOT_DISTURB_START = "not_disturb_start";
-    //免打扰结束时间
-    public static final String NOT_DISTURB_END = "not_disturb_end";
-    //免打扰开启标识
-    public static final String NOT_DISTURB_OPEN = "not_disturb_open";
-
-
-    //声音开启
-    public static final String SOUND_OPEN = "sound_open";
-    //震动开启
-    public static final String SHOCK_OPEN = "shock_open";
-
-
-
+    /**
+     * 定时通知时间
+     */
+    //警报10s
+    public static final int ALARM_TIME = 10000;
+    //事件20s
+    public static final int INCIDENT_TIME = 20000;
+    //新闻60s
+    public static final int NEWS_TIME = 60000;
+    //警报分析30s
+    public static final int ALARM_ANALYSIS_TIME = 30000;
+    //工作计划30s
+    public static final int PLAN_TIME = 30000;
+    //授权10s
+    public static final int AUTH_TIME = 10000;
 }
