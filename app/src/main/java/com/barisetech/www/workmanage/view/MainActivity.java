@@ -1,5 +1,6 @@
 package com.barisetech.www.workmanage.view;
 
+import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -115,12 +116,14 @@ public class MainActivity extends BaseActivity {
         Bundle bundle = getIntent().getExtras();
         String tag = Messagefragment.TAG;
         String arg1 = null;
+        String notify = null;
         if (null != bundle) {
             String tag1 = bundle.getString("tag");
             if (!TextUtils.isEmpty(tag1)) {
                 tag = tag1;
             }
             arg1 = bundle.getString("arg1");
+            notify = bundle.getString(BaseConstant.NOTIFY_TAG);
         }
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -137,6 +140,25 @@ public class MainActivity extends BaseActivity {
         transaction.add(R.id.fragment_navigation, navigationFragment, NavigationFragment.TAG);
         transaction.commit();
 //        }
+        if (!TextUtils.isEmpty(notify)) {
+            LogUtil.d(TAG, "onCreate---" + notify);
+            showActivityOrFragment(new EventBusMessage(notify), true);
+        }
+    }
+
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        Bundle bundle = intent.getExtras();
+        String notify = null;
+        if (null != bundle) {
+            notify = bundle.getString(BaseConstant.NOTIFY_TAG);
+        }
+        if (!TextUtils.isEmpty(notify)) {
+            LogUtil.d(TAG, "onNewIntent---" + notify);
+            showActivityOrFragment(new EventBusMessage(notify), true);
+        }
     }
 
     @Override

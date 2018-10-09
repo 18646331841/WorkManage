@@ -18,6 +18,7 @@ import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.databinding.FragmentNotDisturbBinding;
+import com.barisetech.www.workmanage.utils.LogUtil;
 import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
 import com.barisetech.www.workmanage.utils.TimeUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
@@ -42,7 +43,8 @@ public class NotDisturbFragment extends BaseFragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
+            savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_not_disturb, container, false);
         setToolBarHeight(mBinding.toolbar.getRoot());
         mBinding.setFragment(this);
@@ -58,7 +60,8 @@ public class NotDisturbFragment extends BaseFragment {
         endTimePicker = TimeUtil.getTimePicker(getActivity(), onEndTimeSetListener);
 
         if (SharedPreferencesUtil.getInstance().getBoolean(BaseConstant.NOT_DISTURB_OPEN, false)) {
-            mBinding.tvTimeStart.setText(SharedPreferencesUtil.getInstance().getString(BaseConstant.NOT_DISTURB_START, ""));
+            mBinding.tvTimeStart.setText(SharedPreferencesUtil.getInstance().getString(BaseConstant
+                    .NOT_DISTURB_START, ""));
             mBinding.tvTimeEnd.setText(SharedPreferencesUtil.getInstance().getString(BaseConstant.NOT_DISTURB_END, ""));
             mBinding.fingerSwitch.setChecked(true);
         } else {
@@ -70,16 +73,17 @@ public class NotDisturbFragment extends BaseFragment {
             if (b) {
                 SharedPreferencesUtil.getInstance().setString(BaseConstant.NOT_DISTURB_START, startTime);
                 SharedPreferencesUtil.getInstance().setString(BaseConstant.NOT_DISTURB_END, endTime);
+                LogUtil.d(TAG, startTime + "---" + endTime);
                 SharedPreferencesUtil.getInstance().setBoolean(BaseConstant.NOT_DISTURB_OPEN, true);
             } else {
-                SharedPreferencesUtil.getInstance().setString(BaseConstant.NOT_DISTURB_START, "");
-                SharedPreferencesUtil.getInstance().setString(BaseConstant.NOT_DISTURB_END, "");
+//                SharedPreferencesUtil.getInstance().setString(BaseConstant.NOT_DISTURB_START, "");
+//                SharedPreferencesUtil.getInstance().setString(BaseConstant.NOT_DISTURB_END, "");
                 SharedPreferencesUtil.getInstance().setBoolean(BaseConstant.NOT_DISTURB_OPEN, false);
-                mBinding.tvTimeEnd.setText("");
-                mBinding.tvTimeStart.setText("");
-                endTime="";
-                startTime="";
-                mBinding.fingerSwitch.setEnabled(false);
+//                mBinding.tvTimeEnd.setText("");
+//                mBinding.tvTimeStart.setText("");
+//                endTime="";
+//                startTime="";
+//                mBinding.fingerSwitch.setEnabled(false);
             }
         });
 
@@ -133,9 +137,9 @@ public class NotDisturbFragment extends BaseFragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (TextUtils.isEmpty(endTime)||TextUtils.isEmpty(startTime)){
+                if (TextUtils.isEmpty(endTime) || TextUtils.isEmpty(startTime)) {
                     mBinding.fingerSwitch.setEnabled(false);
-                }else {
+                } else {
                     mBinding.fingerSwitch.setEnabled(true);
                 }
             }
@@ -154,9 +158,9 @@ public class NotDisturbFragment extends BaseFragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (TextUtils.isEmpty(endTime)||TextUtils.isEmpty(startTime)){
+                if (TextUtils.isEmpty(endTime) || TextUtils.isEmpty(startTime)) {
                     mBinding.fingerSwitch.setEnabled(false);
-                }else {
+                } else {
                     mBinding.fingerSwitch.setEnabled(true);
                 }
             }
@@ -177,7 +181,7 @@ public class NotDisturbFragment extends BaseFragment {
             minuteS = "0" + minuteS;
         }
         StringBuilder sb = new StringBuilder();
-        sb.append(startTime)
+        sb
                 .append(hourS).append(":")
                 .append(minuteS).append(":00");
         startTime = sb.toString();
@@ -197,7 +201,7 @@ public class NotDisturbFragment extends BaseFragment {
             minuteS = "0" + minuteS;
         }
         StringBuilder sb = new StringBuilder();
-        sb.append(endTime)
+        sb
                 .append(hourS).append(":")
                 .append(minuteS).append(":00");
         endTime = sb.toString();

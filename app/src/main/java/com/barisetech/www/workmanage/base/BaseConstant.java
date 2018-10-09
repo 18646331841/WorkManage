@@ -44,6 +44,8 @@ public class BaseConstant {
     public static final int TYPE_INCIDENT_SENSOR_OFFLINE = 5;
     public static final int TYPE_INCIDENT_ISOLATOR_OFFLINE = 6;
     public static final int TYPE_INCIDENT_UNKNOWN = 7;
+    public static final String TYPES_INCIDENT = "2,3,4,5,6,7";
+
 
     /**
      * 巡线计划类型
@@ -90,6 +92,8 @@ public class BaseConstant {
     public static final String SOUND_OPEN = "sound_open";
     //震动开启
     public static final String SHOCK_OPEN = "shock_open";
+    //事件通知类型
+    public static final String SP_INCIDENT_TYPES = "incident_type";
 
     /**
      * progress
@@ -114,4 +118,12 @@ public class BaseConstant {
     public static final int PLAN_TIME = 30000;
     //授权10s
     public static final int AUTH_TIME = 10000;
+
+    public static final String NOTIFY_TAG = "notify";
+
+    public static final String ALARM_CHANNEL = "警报";
+    public static final String INCIDENT_CHANNEL = "事件";
+    public static final String NEWS_CHANNEL = "新闻";
+    public static final String ALARM_ANALYSIS_CHANNEL = "警报分析";
+    public static final String PLAN_CHANNEL = "计划";
 }

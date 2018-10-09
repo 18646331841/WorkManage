@@ -3,20 +3,24 @@ package com.barisetech.www.workmanage.service;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.base.BaseApplication;
 import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseResponse;
-import com.barisetech.www.workmanage.bean.FailResponse;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.bean.alarm.ReqAllAlarm;
 import com.barisetech.www.workmanage.bean.alarmanalysis.AlarmAnalysis;
@@ -36,17 +40,24 @@ import com.barisetech.www.workmanage.http.api.PlanService;
 import com.barisetech.www.workmanage.utils.LogUtil;
 import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
 import com.barisetech.www.workmanage.utils.TimeUtil;
+import com.barisetech.www.workmanage.view.MainActivity;
+import com.barisetech.www.workmanage.view.fragment.AlarmAnalysisListFragment;
+import com.barisetech.www.workmanage.view.fragment.AlarmListFragment;
+import com.barisetech.www.workmanage.view.fragment.IncidentListFragment;
+import com.barisetech.www.workmanage.view.fragment.Messagefragment;
+import com.barisetech.www.workmanage.view.fragment.NewsListFragment;
+import com.barisetech.www.workmanage.view.fragment.PlanListFragment;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
+
+import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 
 /**
  * Created by LJH on 2018/9/25.
@@ -61,13 +72,14 @@ public class MyNotifyService extends Service {
     private CompositeDisposable mDisposable = new CompositeDisposable();
 
     private NotificationManager notificationManager;
-    private final String channelId = "1";
-    private final String channelName = BaseApplication.getInstance().getResources().getString(R.string.app_name);
+    private String channelId = "work_manager";
+//    private final String channelName = BaseApplication.getInstance().getResources().getString(R.string.app_name);
     private final int alarmId = 1;
     private final int incidentId = 2;
     private final int newsId = 3;
     private final int alarmAnalysisId = 4;
     private final int planId = 5;
+    private int channelCount;
 
     @Override
     public void onCreate() {
@@ -76,12 +88,7 @@ public class MyNotifyService extends Service {
         startForeground(1, new Notification());
 
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(channelId, channelName, NotificationManager
-                    .IMPORTANCE_DEFAULT);
-            channel.enableLights(true);
-            notificationManager.createNotificationChannel(channel);
-        }
+
         alarmService = HttpService.getInstance().buildJsonRetrofit().create(AlarmService.class);
         incidentService = HttpService.getInstance().buildJsonRetrofit().create(IncidentService.class);
         newsService = HttpService.getInstance().buildJsonRetrofit().create(NewsService.class);
@@ -131,9 +138,12 @@ public class MyNotifyService extends Service {
      * @param title
      * @param content
      */
-    private void buildNotify(int id, String title, String content) {
+    private void buildNotify(int id, String channelName, String title, String content) {
         boolean isSound = SharedPreferencesUtil.getInstance().getBoolean(BaseConstant.SOUND_OPEN, true);
         boolean isVibrate = SharedPreferencesUtil.getInstance().getBoolean(BaseConstant.SHOCK_OPEN, true);
+
+        buildNotificationChannel(channelName, isSound, isVibrate);
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelId);
         builder.setContentTitle(title)
                 .setContentText(content)
@@ -142,7 +152,8 @@ public class MyNotifyService extends Service {
                 //设置小图标
                 .setSmallIcon(R.mipmap.ic_launcher_round)
                 //设置通知时间
-                .setWhen(System.currentTimeMillis());
+                .setWhen(System.currentTimeMillis())
+                .setAutoCancel(true);
 
         int defaults = Notification.DEFAULT_LIGHTS;
         //设置通知方式，声音，震动，呼吸灯等效果
@@ -155,14 +166,77 @@ public class MyNotifyService extends Service {
         }
         builder.setDefaults(defaults);
 
+        Log.d(TAG, "isSound---" + isSound);
+        Log.d(TAG, "isVibrate---" + isVibrate);
+        Log.d(TAG, "defaults---" + defaults);
+
+        Bundle bundle = new Bundle();
+        bundle.putString("tag", Messagefragment.TAG);
         switch (id) {
             case alarmId:
-//                Intent intent = new Intent(this, .class);
-//                PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
-//                mBuilder.setContentIntent(pendingIntent);
+                bundle.putString(BaseConstant.NOTIFY_TAG, AlarmListFragment.TAG);
+                break;
+            case incidentId:
+                bundle.putString(BaseConstant.NOTIFY_TAG, IncidentListFragment.TAG);
+                break;
+            case newsId:
+                bundle.putString(BaseConstant.NOTIFY_TAG, NewsListFragment.TAG);
+                break;
+            case alarmAnalysisId:
+                bundle.putString(BaseConstant.NOTIFY_TAG, AlarmAnalysisListFragment.TAG);
+                break;
+            case planId:
+                bundle.putString(BaseConstant.NOTIFY_TAG, PlanListFragment.TAG);
+                break;
         }
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtras(bundle);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, channelCount, intent, PendingIntent
+                .FLAG_UPDATE_CURRENT);
+        builder.setContentIntent(pendingIntent);
 
-        notificationManager.notify(id, builder.build());
+        notificationManager.notify(channelName, id, builder.build());
+    }
+
+    /**
+     * 8.0适配
+     *
+     * @param isSound
+     * @param isVibrate
+     */
+    private void buildNotificationChannel(String channelName, boolean isSound, boolean isVibrate) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            NotificationChannel old = notificationManager.getNotificationChannel(channelId);
+//            if (old != null) {
+//                notificationManager.deleteNotificationChannel(old.getId());
+//            }
+            deleteChannel(channelName);
+            channelCount++;
+            channelId += channelCount;
+            NotificationChannel channel = new NotificationChannel(channelId, channelName,
+                    NotificationManager.IMPORTANCE_MAX);
+            channel.enableVibration(isVibrate);
+            channel.enableLights(true);
+            if (isSound) {
+                channel.setSound(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.europa),
+                        Notification.AUDIO_ATTRIBUTES_DEFAULT);
+            } else {
+                channel.setSound(null, null);
+            }
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void deleteChannel(String channelName) {
+        List<NotificationChannel> notificationChannels = notificationManager.getNotificationChannels();
+        if (notificationChannels != null && notificationChannels.size() > 0) {
+            for (NotificationChannel channel : notificationChannels) {
+                if (channel.getName().equals(channelName)) {
+                    notificationManager.deleteNotificationChannel(channel.getId());
+                }
+            }
+        }
     }
 
     private void startInterval() {
@@ -186,7 +260,7 @@ public class MyNotifyService extends Service {
                     reqAllAlarm.setIsAllAlarm("true");
                     reqAllAlarm.setStartIndex("0");
                     reqAllAlarm.setNumberOfRecords("1");
-                    reqAllAlarm.setGetByTimeDiff("false");
+                    reqAllAlarm.setGetByTimeDiff("true");
                     long endTime = System.currentTimeMillis();
                     long startTime = endTime - BaseConstant.ALARM_TIME;
                     reqAllAlarm.setStartTime(TimeUtil.ms2Date(startTime));
@@ -208,7 +282,7 @@ public class MyNotifyService extends Service {
 
                                 @Override
                                 protected void onSuccess(List<AlarmInfo> response) {
-                                    buildNotify(alarmId, "有新警报信息", String.valueOf(response.size() + "个"));
+                                    buildNotify(alarmId, BaseConstant.ALARM_CHANNEL, "有新警报信息", String.valueOf(response.size() + "个"));
                                 }
                             });
                 })
@@ -221,6 +295,11 @@ public class MyNotifyService extends Service {
     private void incidentInterval() {
         Disposable disposable = Observable.interval(0, BaseConstant.INCIDENT_TIME, TimeUnit.MILLISECONDS)
                 .doOnNext(aLong -> {
+
+                    if (isNotDistub()) {
+                        return;
+                    }
+
                     LogUtil.d(TAG, "事件定时任务---" + aLong);
                     String token = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_TOKEN, "");
                     if (TextUtils.isEmpty(token)) {
@@ -230,17 +309,18 @@ public class MyNotifyService extends Service {
                     ReqIncidentSelectItem reqIncidentSelectItem = new ReqIncidentSelectItem();
                     long endTime = System.currentTimeMillis();
                     long startTime = endTime - BaseConstant.INCIDENT_TIME;
-                    reqIncidentSelectItem.setMStartTime(TimeUtil.ms2Date(startTime));
+//                    reqIncidentSelectItem.setMStartTime(TimeUtil.ms2Date(startTime));
+                    reqIncidentSelectItem.setMStartTime("1970-01-01 00:00:00");
                     reqIncidentSelectItem.setMEndTime(TimeUtil.ms2Date(endTime));
                     reqIncidentSelectItem.setTimeQueryChecked("true");
                     reqIncidentSelectItem.setSiteIdQueryChecked("false");
                     reqIncidentSelectItem.setSiteID("0");
-                    reqIncidentSelectItem.setMIncidentType("1");
+                    reqIncidentSelectItem.setMIncidentType(String.valueOf(BaseConstant.TYPE_INCIDENT_ALL));
 
                     ReqAllIncident reqAllIncident = new ReqAllIncident();
                     reqAllIncident.setMachineCode(token);
                     reqAllIncident.setStartIndex("0");
-                    reqAllIncident.setNumberOfRecord("1");
+                    reqAllIncident.setNumberOfRecord("20");
                     reqAllIncident.setIncidentSelectItem(reqIncidentSelectItem);
 
                     incidentService.getAllIncident(reqAllIncident)
@@ -259,7 +339,23 @@ public class MyNotifyService extends Service {
 
                                 @Override
                                 protected void onSuccess(List<IncidentInfo> response) {
-                                    //TODO
+                                    if (response != null && response.size() > 0) {
+                                        //判断通知哪种类型的事件
+                                        String typeSP = SharedPreferencesUtil.getInstance().getString(BaseConstant
+                                                .SP_INCIDENT_TYPES, BaseConstant.TYPES_INCIDENT);
+                                        int count = 0;
+                                        for (IncidentInfo incidentInfo : response) {
+                                            if (typeSP.contains(String.valueOf(incidentInfo.getType()))) {
+                                                count++;
+                                            }
+                                        }
+                                        if (count > 0) {
+                                            buildNotify(incidentId, BaseConstant.INCIDENT_CHANNEL, "有新事件信息", String
+                                                    .valueOf(count + "个"));
+                                        } else {
+                                            LogUtil.d(TAG, "没有需要通知的事件类型");
+                                        }
+                                    }
                                 }
                             });
                 })
@@ -314,7 +410,7 @@ public class MyNotifyService extends Service {
 
                                 @Override
                                 protected void onSuccess(List<AlarmAnalysis> response) {
-                                    //TODO
+                                    buildNotify(alarmAnalysisId, BaseConstant.ALARM_ANALYSIS_CHANNEL, "有新警报分析信息", String.valueOf(response.size() + "个"));
                                 }
                             });
                 })
@@ -371,7 +467,7 @@ public class MyNotifyService extends Service {
 
                                 @Override
                                 protected void onSuccess(List<PlanBean> response) {
-                                    //TODO
+                                    buildNotify(planId, BaseConstant.PLAN_CHANNEL, "有新计划信息", String.valueOf(response.size() + "个"));
                                 }
                             });
                 })
@@ -379,5 +475,33 @@ public class MyNotifyService extends Service {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
         mDisposable.add(disposable);
+    }
+
+    /**
+     * 是否在免打扰时间段
+     * @return
+     */
+    private boolean isNotDistub() {
+        if (SharedPreferencesUtil.getInstance().getBoolean(BaseConstant.NOT_DISTURB_OPEN, false)) {
+            String start = SharedPreferencesUtil.getInstance().getString(BaseConstant.NOT_DISTURB_START, "");
+            String end = SharedPreferencesUtil.getInstance().getString(BaseConstant.NOT_DISTURB_END, "");
+            if (!TextUtils.isEmpty(start) && !TextUtils.isEmpty(end)) {
+                String[] starts = start.split(":");
+                String[] ends = end.split(":");
+                if (starts.length > 0 && ends.length > 0) {
+                    int sHour = Integer.valueOf(starts[0]);
+                    int sMinute = Integer.valueOf(starts[1]);
+                    int eHour = Integer.valueOf(ends[0]);
+                    int eMinute = Integer.valueOf(ends[1]);
+
+                    long spe1 = TimeUtil.getSpeDate(sHour, sMinute, 0, 0);
+                    long spe2 = TimeUtil.getSpeDate(eHour, eMinute, 0, 0);
+                    boolean b = System.currentTimeMillis() > spe1 && System.currentTimeMillis() < spe2;
+                    LogUtil.d(TAG, "isNotDistub = " + b + " start = " + spe1 + " end = " + spe2);
+                    return b;
+                }
+            }
+        }
+        return false;
     }
 }
