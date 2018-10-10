@@ -12,6 +12,7 @@ import com.barisetech.www.workmanage.base.BaseViewModel;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.FailResponse;
 import com.barisetech.www.workmanage.bean.TokenInfo;
+import com.barisetech.www.workmanage.bean.auth.ReqAuth;
 import com.barisetech.www.workmanage.callback.ModelCallBack;
 import com.barisetech.www.workmanage.db.AppDatabase;
 import com.barisetech.www.workmanage.model.LoginModel;
@@ -49,6 +50,19 @@ public class LoginViewModel extends BaseViewModel implements ModelCallBack{
 
     public Disposable login(String name, String password) {
         Disposable disposable = loginModel.getToken(name, password);
+        addDisposable(disposable);
+        return disposable;
+    }
+
+    /**
+     * 新登录方法
+     * @param reqAuth
+     * @param name
+     * @param password
+     * @return
+     */
+    public Disposable login(ReqAuth reqAuth, String name, String password) {
+        Disposable disposable = loginModel.getToken(reqAuth, name, password);
         addDisposable(disposable);
         return disposable;
     }

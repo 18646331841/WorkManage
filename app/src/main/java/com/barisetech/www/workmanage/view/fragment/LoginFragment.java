@@ -2,9 +2,11 @@ package com.barisetech.www.workmanage.view.fragment;
 
 import android.annotation.TargetApi;
 import android.app.KeyguardManager;
+import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableField;
+import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -25,15 +27,21 @@ import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
+import com.barisetech.www.workmanage.bean.auth.ReqAuth;
 import com.barisetech.www.workmanage.databinding.FragmentLoginBinding;
 import com.barisetech.www.workmanage.http.Config;
 import com.barisetech.www.workmanage.utils.LogUtil;
 import com.barisetech.www.workmanage.utils.NetworkUtil;
+import com.barisetech.www.workmanage.utils.OsUtil;
 import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
+import com.barisetech.www.workmanage.utils.TimeUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.viewmodel.LoginViewModel;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.disposables.Disposable;
 
@@ -90,18 +98,76 @@ public class LoginFragment extends BaseFragment {
                 loginViewModel.removeDisposable(curDisposable);
                 isFirst = false;
                 EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_SHOW));
-                curDisposable = loginViewModel.login(account, password);
+//                curDisposable = loginViewModel.login(account, password);
+
+                ReqAuth reqAuth = new ReqAuth();
+                reqAuth.ID = "0";
+                String ipPort = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_IP_PORT, "");
+                if (!TextUtils.isEmpty(ipPort)) {
+                    String[] split = ipPort.split("_");
+                    if (split.length > 1) {
+                        reqAuth.ServerIP = split[0];
+                        reqAuth.ServerPort = split[1];
+                        reqAuth.ServerName = ipPort;
+                    }
+                }
+
+                String serialNumber = OsUtil.getSerialNumber(getContext());
+                if (!TextUtils.isEmpty(serialNumber)) {
+                    reqAuth.SerialNumber = serialNumber;
+                }
+
+                boolean pad = OsUtil.isPad(getContext());
+                if (pad) {
+                    reqAuth.EquipmentType = BaseConstant.TYPE_PAD;
+                } else {
+                    reqAuth.EquipmentType = BaseConstant.TYPE_PHONE;
+                }
+
+                Point screenMetrics = OsUtil.getScreenMetrics(getContext());
+                reqAuth.ScreenHeight = String.valueOf(screenMetrics.y);
+                reqAuth.ScreenWidth = String.valueOf(screenMetrics.x);
+
+                reqAuth.ApplicatorName = account;
+
+                String ip = OsUtil.getIp();
+                if (!TextUtils.isEmpty(ip)) {
+                    reqAuth.ApplicatorIPAdress = ip;
+                }
+
+                reqAuth.ApplicatorTime = TimeUtil.ms2Date(System.currentTimeMillis());
+
+                List<ReqAuth.SIMCardListBean> simCardListBeans = new ArrayList<>();
+                String imsi = OsUtil.getIMSI(getContext());
+                if (!TextUtils.isEmpty(imsi)) {
+                    ReqAuth.SIMCardListBean simCardListBean = new ReqAuth.SIMCardListBean("0", imsi);
+                    simCardListBeans.add(simCardListBean);
+                }
+                reqAuth.SIMCardList = simCardListBeans;
+
+                List<ReqAuth.IMEIListBean> imeiListBeans = new ArrayList<>();
+                List<String> imeis = OsUtil.getIMEI(getContext());
+                if (imeis != null && imeis.size() > 0) {
+                    for (int i = 0; i < imeis.size(); i++) {
+                        String imei = imeis.get(i);
+                        ReqAuth.IMEIListBean imeiListBean = new ReqAuth.IMEIListBean(String.valueOf(i), imei);
+                        imeiListBeans.add(imeiListBean);
+                    }
+                }
+                reqAuth.IMEIList = imeiListBeans;
+
+                curDisposable = loginViewModel.login(reqAuth, account, password);
             }
         });
     }
 
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-    private void checkFingerPrint(){
+    private void checkFingerPrint() {
         FingerprintManagerCompat managerCompat = FingerprintManagerCompat.from(BaseApplication.getInstance()
                 .getApplicationContext());
 
-        if (!managerCompat.isHardwareDetected()){
+        if (!managerCompat.isHardwareDetected()) {
             LogUtil.d(TAG, "设备不支持指纹");
             fingerOpen = false;
             return;
@@ -113,7 +179,7 @@ public class LoginFragment extends BaseFragment {
             fingerOpen = false;
             return;
         }
-        if (!managerCompat.hasEnrolledFingerprints()){
+        if (!managerCompat.hasEnrolledFingerprints()) {
             LogUtil.d(TAG, "设备未设置指纹");
             fingerOpen = false;
             return;
@@ -124,7 +190,7 @@ public class LoginFragment extends BaseFragment {
         mBinding.revealPassword.setActivated(!mBinding.revealPassword.isActivated());
         mBinding.etPassword.setTransformationMethod(mBinding.revealPassword.isActivated() ?
                 HideReturnsTransformationMethod
-                .getInstance() : PasswordTransformationMethod.getInstance());
+                        .getInstance() : PasswordTransformationMethod.getInstance());
         mBinding.etPassword.setSelection(mBinding.etPassword.getText().toString().trim().length());
     }
 
@@ -135,43 +201,53 @@ public class LoginFragment extends BaseFragment {
 
     @Override
     public void subscribeToModel() {
-        loginViewModel.getObservableTokenInfo().observe(this, tokenInfo -> {
-            if (!isFirst && null != tokenInfo && tokenInfo.isLoginResult()) {
+        if (!loginViewModel.getObservableTokenInfo().hasObservers()) {
+            loginViewModel.getObservableTokenInfo().observe(this, tokenInfo -> {
+                if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
 
-                ToastUtil.showToast(getString(R.string.login_success));
-                //登录成功，设置token到sp
+                    if (!isFirst && null != tokenInfo && tokenInfo.isLoginResult()) {
+
+                        ToastUtil.showToast(getString(R.string.login_success));
+                        //登录成功，设置token到sp
 //                BaseApplication.getInstance().curTokenInfo = tokenInfo;
-                SharedPreferencesUtil.getInstance().setString(BaseConstant.SP_TOKEN, tokenInfo.getToken());
-                EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_CLOSE));
-                if (fingerOpen){
-                    fingerFlag = SharedPreferencesUtil.getInstance().getBoolean(BaseConstant.SP_LOGIN_FP,true);
-                    if (fingerFlag){
-                        EventBus.getDefault().post(new EventBusMessage(FingerFragment.TAG));
-                    }else {
-                        EventBus.getDefault().post(new EventBusMessage(NavigationFragment.TAG));
+                        SharedPreferencesUtil.getInstance().setString(BaseConstant.SP_TOKEN, tokenInfo.getToken());
+                        EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_CLOSE));
+                        if (fingerOpen) {
+                            fingerFlag = SharedPreferencesUtil.getInstance().getBoolean(BaseConstant.SP_LOGIN_FP, true);
+                            if (fingerFlag) {
+                                EventBus.getDefault().post(new EventBusMessage(FingerFragment.TAG));
+                            } else {
+                                EventBus.getDefault().post(new EventBusMessage(NavigationFragment.TAG));
+                            }
+                        } else {
+                            EventBus.getDefault().post(new EventBusMessage(NavigationFragment.TAG));
+                        }
+
+
                     }
-                }else {
-                    EventBus.getDefault().post(new EventBusMessage(NavigationFragment.TAG));
                 }
+            });
+        }
 
+        if (!loginViewModel.getObservableLoginFail().hasObservers()) {
+            loginViewModel.getObservableLoginFail().observe(this, errorCode -> {
+                if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
 
-            }
-        });
+                    if (null != errorCode) {
 
-
-        loginViewModel.getObservableLoginFail().observe(this, errorCode -> {
-            if (null != errorCode) {
-
-                if (errorCode == Config.ERROR_LOGIN_FAILED) {
-                    ToastUtil.showToast(getString(R.string.account_mistake));
-                } else if (errorCode == Config.ERROR_NETWORK) {
-                    if (!NetworkUtil.isNetworkAvailable(BaseApplication.getInstance().getApplicationContext())) {
-                        ToastUtil.showToast(getString(R.string.network_error));
+                        if (errorCode == Config.ERROR_LOGIN_FAILED) {
+                            ToastUtil.showToast(getString(R.string.account_mistake));
+                        } else if (errorCode == Config.ERROR_NETWORK) {
+                            if (!NetworkUtil.isNetworkAvailable(BaseApplication.getInstance().getApplicationContext()
+                            )) {
+                                ToastUtil.showToast(getString(R.string.network_error));
+                            }
+                        } else {
+                            ToastUtil.showToast(getString(R.string.login_fail));
+                        }
                     }
-                } else {
-                    ToastUtil.showToast(getString(R.string.login_fail));
                 }
-            }
-        });
+            });
+        }
     }
 }

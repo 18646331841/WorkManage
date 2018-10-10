@@ -282,7 +282,9 @@ public class MyNotifyService extends Service {
 
                                 @Override
                                 protected void onSuccess(List<AlarmInfo> response) {
-                                    buildNotify(alarmId, BaseConstant.ALARM_CHANNEL, "有新警报信息", String.valueOf(response.size() + "个"));
+                                    if (response != null && response.size() > 0) {
+                                        buildNotify(alarmId, BaseConstant.ALARM_CHANNEL, "有新警报信息", String.valueOf(response.size() + "个"));
+                                    }
                                 }
                             });
                 })
@@ -309,8 +311,8 @@ public class MyNotifyService extends Service {
                     ReqIncidentSelectItem reqIncidentSelectItem = new ReqIncidentSelectItem();
                     long endTime = System.currentTimeMillis();
                     long startTime = endTime - BaseConstant.INCIDENT_TIME;
-//                    reqIncidentSelectItem.setMStartTime(TimeUtil.ms2Date(startTime));
-                    reqIncidentSelectItem.setMStartTime("1970-01-01 00:00:00");
+                    reqIncidentSelectItem.setMStartTime(TimeUtil.ms2Date(startTime));
+//                    reqIncidentSelectItem.setMStartTime("1970-01-01 00:00:00"); 测试使用
                     reqIncidentSelectItem.setMEndTime(TimeUtil.ms2Date(endTime));
                     reqIncidentSelectItem.setTimeQueryChecked("true");
                     reqIncidentSelectItem.setSiteIdQueryChecked("false");
@@ -410,7 +412,9 @@ public class MyNotifyService extends Service {
 
                                 @Override
                                 protected void onSuccess(List<AlarmAnalysis> response) {
-                                    buildNotify(alarmAnalysisId, BaseConstant.ALARM_ANALYSIS_CHANNEL, "有新警报分析信息", String.valueOf(response.size() + "个"));
+                                    if (response != null && response.size() > 0) {
+                                        buildNotify(alarmAnalysisId, BaseConstant.ALARM_ANALYSIS_CHANNEL, "有新警报分析信息", String.valueOf(response.size() + "个"));
+                                    }
                                 }
                             });
                 })
@@ -467,7 +471,9 @@ public class MyNotifyService extends Service {
 
                                 @Override
                                 protected void onSuccess(List<PlanBean> response) {
-                                    buildNotify(planId, BaseConstant.PLAN_CHANNEL, "有新计划信息", String.valueOf(response.size() + "个"));
+                                    if (response != null && response.size() > 0) {
+                                        buildNotify(planId, BaseConstant.PLAN_CHANNEL, "有新计划信息", String.valueOf(response.size() + "个"));
+                                    }
                                 }
                             });
                 })

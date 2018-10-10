@@ -1,12 +1,16 @@
 package com.barisetech.www.workmanage.http.api;
 
+import com.barisetech.www.workmanage.base.BaseResponse;
 import com.barisetech.www.workmanage.bean.AccessTokenInfo;
 import com.barisetech.www.workmanage.bean.TokenInfo;
+import com.barisetech.www.workmanage.bean.auth.ReqAuth;
 
 import io.reactivex.Observable;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 
@@ -17,6 +21,7 @@ public interface TokenService {
 
     /**
      * 获取access_token
+     *
      * @param grantType
      * @param username
      * @param password
@@ -30,9 +35,20 @@ public interface TokenService {
 
     /**
      * 获取token
+     *
      * @param refreshToken
      * @return
      */
     @GET("/api/Login/{refresh_token}")
     Observable<TokenInfo> getTokenInfo(@Path("refresh_token") String refreshToken);
+
+    /**
+     * 新获取token
+     *
+     * @param refreshToken
+     * @param reqAuth
+     * @return
+     */
+    @POST("/api/Login/{refresh_token}")
+    Observable<BaseResponse<TokenInfo>> getTokenInfo(@Path("refresh_token") String refreshToken, @Body ReqAuth reqAuth);
 }

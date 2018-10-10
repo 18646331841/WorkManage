@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.base.BaseActivity;
+import com.barisetech.www.workmanage.base.BaseApplication;
 import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.utils.FragmentUtil;
@@ -23,6 +24,7 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void loadViewLayout() {
         setContentView(R.layout.activity_login);
+        BaseApplication.getInstance().requestPermissions(this);
     }
 
     @Override

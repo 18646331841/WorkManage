@@ -3,8 +3,10 @@ package com.barisetech.www.workmanage.model;
 import android.arch.lifecycle.LiveData;
 
 import com.barisetech.www.workmanage.base.BaseConstant;
+import com.barisetech.www.workmanage.base.BaseResponse;
 import com.barisetech.www.workmanage.bean.AccessTokenInfo;
 import com.barisetech.www.workmanage.bean.TokenInfo;
+import com.barisetech.www.workmanage.bean.auth.ReqAuth;
 import com.barisetech.www.workmanage.callback.ModelCallBack;
 import com.barisetech.www.workmanage.db.AppDatabase;
 import com.barisetech.www.workmanage.db.dao.TokenInfoDao;
@@ -138,6 +140,91 @@ public class LoginModel {
 //                }, throwable -> {
 //                    LogUtil.e(TAG, "获取token失败");
 //                });
+    }
+
+    /**
+     * 新登录请求
+     *
+     * @param reqAuth
+     * @param name
+     * @param password
+     * @return
+     */
+    public Disposable getToken(ReqAuth reqAuth, String name, String password) {
+        Map<String, String> headerMap = new HashMap<>();
+        headerMap.put("Accept-Encoding", "gzip");
+        headerMap.put("Accept", "application/json");
+        headerMap.put("Content-Type", "application/json; charset=utf-8");
+
+        TokenService tokenService = HttpService.getInstance().buildRetrofit(headerMap).create(TokenService.class);
+        Observable<AccessTokenInfo> network = tokenService.getAccessTokenInfo("password", name, password);
+        Disposable disposable = network
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .doOnNext(accessTokenInfo -> {
+                    LogUtil.d(TAG, "网络获取accesstoken---" + accessTokenInfo.toString());
+                    //如果需要保存tokenInfo到数据库，再打开使用
+//                        AppDatabase appDatabase = BaseApplication.getInstance().getDatabase();
+//                        AccessTokenInfo tokenInfo1 = appDatabase.tokenInfoDao().loadTokenInfoById(0);
+//                        if (null != tokenInfo1) {
+//                            appDatabase.tokenInfoDao().delete(tokenInfo1);
+//                            appDatabase.tokenInfoDao().insertTokenInfo(accessTokenInfo);
+                }
+                )
+                .flatMap((Function<AccessTokenInfo, ObservableSource<BaseResponse<TokenInfo>>>) accessTokenInfo -> {
+                    if (accessTokenInfo != null && accessTokenInfo.getAccessToken() != null) {
+                        LogUtil.d(TAG, "网络获取token");
+                        headerMap.put("Authorization", "Bearer " + accessTokenInfo.getAccessToken());
+                        reqAuth.Token = accessTokenInfo.getRefreshToken();
+                        return HttpService.getInstance().buildRetrofit(headerMap).create
+                                (TokenService.class).getTokenInfo(accessTokenInfo.getRefreshToken(), reqAuth)
+                                .onErrorReturnItem(new BaseResponse<>(-1, "", null));
+                    }
+                    return null;
+                })
+                .map(tokenInfoBaseResponse -> {
+                    if (tokenInfoBaseResponse != null) {
+                        int code = tokenInfoBaseResponse.Code;
+                        if (code == 200) {
+                            return tokenInfoBaseResponse.Response;
+                        }
+                    }
+                    return null;
+                })
+                .doOnNext(tokenInfo -> {
+                    if (null != tokenInfo) {
+                        if (tokenInfo.isLoginResult()) {
+                            TokenInfoDao tokenInfoDao = appDatabase.tokenInfoDao();
+                            tokenInfoDao.insert(tokenInfo);
+                        }
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(tokenInfo -> {
+                    if (null != tokenInfo) {
+                        if (tokenInfo.isLoginResult()) {
+                            LogUtil.d(TAG, "网络获取token结果---" + tokenInfo.toString());
+                            //登录成功，保存用户account到SP中
+                            SharedPreferencesUtil.getInstance().setString(BaseConstant.SP_ACCOUNT, name);
+                            SharedPreferencesUtil.getInstance().setString(BaseConstant.SP_ROLE, tokenInfo.getRole().trim());
+                            SharedPreferencesUtil.getInstance().setString(BaseConstant.SP_COMPANY, tokenInfo.getCompany().trim());
+                        } else {
+                            modelCallBack.fail(Config.ERROR_LOGIN_FAILED);
+                            LogUtil.d(TAG, "网络获取token失败---" + tokenInfo.toString());
+                        }
+                    } else {
+                        modelCallBack.fail(Config.ERROR_LOGIN_FAILED);
+                    }
+                }, throwable -> {
+                    if (throwable.getMessage().contains("400")) {
+                        modelCallBack.fail(Config.ERROR_LOGIN_FAILED);
+                    } else {
+                        modelCallBack.fail(Config.ERROR_NETWORK);
+                    }
+                    LogUtil.e(TAG, "网络获取token失败---throwable" + throwable.getMessage());
+                });
+
+        return disposable;
     }
 
     public LiveData<TokenInfo> getTokenInfo() {

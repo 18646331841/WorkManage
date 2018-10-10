@@ -45,6 +45,7 @@ import com.barisetech.www.workmanage.view.fragment.IncidentListFragment;
 import com.barisetech.www.workmanage.view.fragment.MapFragment;
 import com.barisetech.www.workmanage.view.fragment.Messagefragment;
 import com.barisetech.www.workmanage.view.fragment.ModifySiteFragment;
+import com.barisetech.www.workmanage.view.fragment.my.AuthListFragment;
 import com.barisetech.www.workmanage.view.fragment.my.ContactDetailFragment;
 import com.barisetech.www.workmanage.view.fragment.my.ContactsFragment;
 import com.barisetech.www.workmanage.view.fragment.my.EventTypeFragment;
@@ -558,6 +559,10 @@ public class MainActivity extends BaseActivity {
                 case ContactsFragment.TAG:
                     transaction
                             .replace(R.id.fragment_content, ContactsFragment.newInstance(), tag).commit();
+                    break;
+                case AuthListFragment.TAG:
+                    transaction
+                            .replace(R.id.fragment_content, AuthListFragment.newInstance(), tag).commit();
                     break;
                 case ContactDetailFragment.TAG:
                     transaction

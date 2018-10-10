@@ -34,6 +34,7 @@ import com.barisetech.www.workmanage.view.fragment.AlarmDetailsFragment;
 import com.barisetech.www.workmanage.view.fragment.AlarmListFragment;
 import com.barisetech.www.workmanage.view.fragment.DigitizingDetailFragment;
 import com.barisetech.www.workmanage.view.fragment.DigitizingFragment;
+import com.barisetech.www.workmanage.view.fragment.my.AuthListFragment;
 import com.barisetech.www.workmanage.view.fragment.my.ContactDetailFragment;
 import com.barisetech.www.workmanage.view.fragment.my.ContactsFragment;
 import com.barisetech.www.workmanage.view.fragment.my.EventTypeFragment;
@@ -483,7 +484,6 @@ public class SecondActivity extends BaseActivity {
                     transaction.addToBackStack(tag);
                 }
                 break;
-
             case ModifyEmailFragment.TAG:
                 transaction
                         .replace(R.id.second_framelayout, ModifyEmailFragment.newInstance((UserInfo)
@@ -491,6 +491,10 @@ public class SecondActivity extends BaseActivity {
                 if (!isActivity) {
                     transaction.addToBackStack(tag);
                 }
+                break;
+            case AuthListFragment.TAG:
+                transaction
+                        .replace(R.id.second_framelayout, AuthListFragment.newInstance(), tag).commit();
                 break;
         }
     }

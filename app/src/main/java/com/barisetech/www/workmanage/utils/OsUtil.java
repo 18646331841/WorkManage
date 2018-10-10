@@ -1,14 +1,18 @@
 package com.barisetech.www.workmanage.utils;
 
 import android.content.Context;
+import android.content.res.Configuration;
+import android.graphics.Point;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 
 import com.barisetech.www.workmanage.base.BaseApplication;
 
+import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -51,7 +55,7 @@ public class OsUtil {
                 NetworkInterface intf = en.nextElement();
                 for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
                     InetAddress inetAddress = enumIpAddr.nextElement();
-                    if (!inetAddress.isLoopbackAddress()) {
+                    if (!inetAddress.isLoopbackAddress() && (inetAddress instanceof Inet4Address)) {
                         String ip = inetAddress.getHostAddress().toString();
                         if (!TextUtils.isEmpty(ip)) {
                             return ip;
@@ -81,5 +85,34 @@ public class OsUtil {
                 ((i >> 8) & 0xFF) + "." +
                 ((i >> 16) & 0xFF) + "." +
                 (i >> 24 & 0xFF);
+    }
+
+    public static String getSerialNumber(Context context) {
+        TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        return telephonyManager.getSimSerialNumber(); //取出ICCID
+    }
+
+    public static String getIMSI(Context context) {
+        TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        return telephonyManager.getSubscriberId();
+    }
+
+    public static Point getScreenMetrics(Context context) {
+        DisplayMetrics dm = context.getResources().getDisplayMetrics();
+        int w_screen = dm.widthPixels;
+        int h_screen = dm.heightPixels;
+        return new Point(w_screen, h_screen);
+    }
+
+    /**
+     * 判断当前设备是手机还是平板，代码来自 Google I/O App for Android
+     *
+     * @param context
+     * @return 平板返回 True，手机返回 False
+     */
+    public static boolean isPad(Context context) {
+        return (context.getResources().getConfiguration().screenLayout
+                & Configuration.SCREENLAYOUT_SIZE_MASK)
+                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 }
