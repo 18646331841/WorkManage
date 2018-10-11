@@ -31,4 +31,18 @@ public class ReqModifyPipeTap {
     public String Approver;
     public String ApproverState;
     public String ApproverTime;
+
+    public void toBean(PipeTapInfo pipeTapInfo) {
+        ID = String.valueOf(pipeTapInfo.ID);
+        Remark = pipeTapInfo.Remark;
+        Applicant = pipeTapInfo.Applicant;
+        ApplicationTime = pipeTapInfo.ApplicationTime;
+        SiteID = String.valueOf(pipeTapInfo.SiteID);
+        SiteName = pipeTapInfo.SiteName;
+        TapSwitch = String.valueOf(pipeTapInfo.TapSwitch);
+        LV = String.valueOf(pipeTapInfo.LV);
+        Approver = pipeTapInfo.Approver;
+        ApproverState = String.valueOf(pipeTapInfo.ApproverState);
+        ApproverTime = pipeTapInfo.ApproverTime;
+    }
 }

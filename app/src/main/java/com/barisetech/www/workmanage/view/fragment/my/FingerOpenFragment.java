@@ -37,8 +37,6 @@ public class FingerOpenFragment extends BaseFragment {
     private CustomDialog mDialog;
     private boolean flag = true;
 
-
-
     public static FingerOpenFragment newInstance() {
         FingerOpenFragment fragment = new FingerOpenFragment();
         return fragment;
@@ -98,9 +96,6 @@ public class FingerOpenFragment extends BaseFragment {
                         mDialog.dismiss();
                     }
                 });
-
-
-
             }
         });
 

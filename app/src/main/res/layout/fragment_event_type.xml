@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
         <variable
             name="fragment"
-            type="com.barisetech.www.workmanage.base.BaseFragment" />
+            type="com.barisetech.www.workmanage.base.BaseFragment"/>
     </data>
 
 
@@ -18,18 +18,19 @@
         <include
             android:id="@+id/toolbar"
             layout="@layout/layout_toolbar"
-            app:toolbar="@{fragment.observableToolbar}" />
+            app:toolbar="@{fragment.observableToolbar}"/>
 
         <TextView
-            android:textSize="@dimen/sp_18"
-            android:textColor="@color/text_black"
-            android:text="@string/event_type_toast"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
             android:layout_marginTop="@dimen/dp_20"
             android:background="@color/white"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/dp_15"
-            android:layout_width="match_parent"
-            android:layout_height="50dp" />
+            android:text="@string/event_type_toast"
+            android:textColor="@color/text_black"
+            android:textSize="@dimen/sp_18"/>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -48,11 +49,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="42dp"
                 android:text="@string/incident_list_digitizer_online"
-                android:textSize="18sp"
                 android:textColor="@color/text_black"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"/>
 
 
             <com.barisetech.www.workmanage.widget.SwitchView
@@ -68,7 +69,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/line_gray"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                app:layout_constraintBottom_toBottomOf="parent"/>
         </android.support.constraint.ConstraintLayout>
 
 
@@ -84,11 +85,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="42dp"
                 android:text="@string/incident_list_digitizer_offline"
-                android:textSize="18sp"
                 android:textColor="@color/text_black"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"/>
 
 
             <com.barisetech.www.workmanage.widget.SwitchView
@@ -104,7 +105,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/line_gray"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                app:layout_constraintBottom_toBottomOf="parent"/>
         </android.support.constraint.ConstraintLayout>
 
         <android.support.constraint.ConstraintLayout
@@ -119,11 +120,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="42dp"
                 android:text="@string/incident_list_digitizer_time_off"
-                android:textSize="18sp"
                 android:textColor="@color/text_black"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"/>
 
 
             <com.barisetech.www.workmanage.widget.SwitchView
@@ -139,7 +140,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/line_gray"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                app:layout_constraintBottom_toBottomOf="parent"/>
         </android.support.constraint.ConstraintLayout>
 
 
@@ -155,11 +156,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="42dp"
                 android:text="@string/incident_list_sensor_offline"
-                android:textSize="18sp"
                 android:textColor="@color/text_black"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"/>
 
 
             <com.barisetech.www.workmanage.widget.SwitchView
@@ -175,7 +176,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/line_gray"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                app:layout_constraintBottom_toBottomOf="parent"/>
         </android.support.constraint.ConstraintLayout>
 
 
@@ -191,11 +192,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="42dp"
                 android:text="@string/incident_list_isolator_offline"
-                android:textSize="18sp"
                 android:textColor="@color/text_black"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"/>
 
 
             <com.barisetech.www.workmanage.widget.SwitchView
@@ -211,7 +212,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/line_gray"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                app:layout_constraintBottom_toBottomOf="parent"/>
         </android.support.constraint.ConstraintLayout>
 
 
@@ -227,11 +228,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="42dp"
                 android:text="@string/incident_list_unknown"
-                android:textSize="18sp"
                 android:textColor="@color/text_black"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"/>
 
 
             <com.barisetech.www.workmanage.widget.SwitchView
@@ -247,12 +248,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/line_gray"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                app:layout_constraintBottom_toBottomOf="parent"/>
         </android.support.constraint.ConstraintLayout>
-
-
-
-
 
         <Button
             android:id="@+id/event_type_save"
@@ -260,10 +257,10 @@
             android:layout_height="@dimen/dp_50"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/dp_30"
+            android:layout_marginBottom="@dimen/dp_50"
             android:background="@drawable/shane_button_corners"
             android:text="@string/save"
             android:textColor="@color/white"
-            android:layout_marginBottom="@dimen/dp_50"
             android:textSize="@dimen/sp_18"/>
     </LinearLayout>
 </layout>

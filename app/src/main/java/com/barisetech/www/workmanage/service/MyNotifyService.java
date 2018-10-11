@@ -25,17 +25,23 @@ import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.bean.alarm.ReqAllAlarm;
 import com.barisetech.www.workmanage.bean.alarmanalysis.AlarmAnalysis;
 import com.barisetech.www.workmanage.bean.alarmanalysis.ReqAllAlarmAnalysis;
+import com.barisetech.www.workmanage.bean.auth.AuthInfo;
+import com.barisetech.www.workmanage.bean.auth.ReqAllAuth;
 import com.barisetech.www.workmanage.bean.incident.IncidentInfo;
 import com.barisetech.www.workmanage.bean.incident.ReqAllIncident;
 import com.barisetech.www.workmanage.bean.incident.ReqIncidentSelectItem;
+import com.barisetech.www.workmanage.bean.pipetap.PipeTapInfo;
+import com.barisetech.www.workmanage.bean.pipetap.ReqAllPipeTap;
 import com.barisetech.www.workmanage.bean.workplan.PlanBean;
 import com.barisetech.www.workmanage.bean.workplan.ReqAllPlan;
 import com.barisetech.www.workmanage.http.HttpService;
 import com.barisetech.www.workmanage.http.ObserverCallBack;
 import com.barisetech.www.workmanage.http.api.AlarmAnalysisService;
 import com.barisetech.www.workmanage.http.api.AlarmService;
+import com.barisetech.www.workmanage.http.api.AuthService;
 import com.barisetech.www.workmanage.http.api.IncidentService;
 import com.barisetech.www.workmanage.http.api.NewsService;
+import com.barisetech.www.workmanage.http.api.PipeTapService;
 import com.barisetech.www.workmanage.http.api.PlanService;
 import com.barisetech.www.workmanage.utils.LogUtil;
 import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
@@ -47,6 +53,7 @@ import com.barisetech.www.workmanage.view.fragment.IncidentListFragment;
 import com.barisetech.www.workmanage.view.fragment.Messagefragment;
 import com.barisetech.www.workmanage.view.fragment.NewsListFragment;
 import com.barisetech.www.workmanage.view.fragment.PlanListFragment;
+import com.barisetech.www.workmanage.view.fragment.my.AuthListFragment;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -69,16 +76,19 @@ public class MyNotifyService extends Service {
     private NewsService newsService;
     private AlarmAnalysisService alarmAnalysisService;
     private PlanService planService;
+    private AuthService authService;
+    private PipeTapService pipeTapService;
     private CompositeDisposable mDisposable = new CompositeDisposable();
 
     private NotificationManager notificationManager;
     private String channelId = "work_manager";
-//    private final String channelName = BaseApplication.getInstance().getResources().getString(R.string.app_name);
+    //    private final String channelName = BaseApplication.getInstance().getResources().getString(R.string.app_name);
     private final int alarmId = 1;
     private final int incidentId = 2;
     private final int newsId = 3;
     private final int alarmAnalysisId = 4;
     private final int planId = 5;
+    private final int authId = 6;
     private int channelCount;
 
     @Override
@@ -95,6 +105,8 @@ public class MyNotifyService extends Service {
         alarmAnalysisService = HttpService.getInstance().buildJsonRetrofit().create
                 (AlarmAnalysisService.class);
         planService = HttpService.getInstance().buildJsonRetrofit().create(PlanService.class);
+        authService = HttpService.getInstance().buildJsonRetrofit().create(AuthService.class);
+        pipeTapService = HttpService.getInstance().buildJsonRetrofit().create(PipeTapService.class);
 
         startInterval();
     }
@@ -188,6 +200,9 @@ public class MyNotifyService extends Service {
             case planId:
                 bundle.putString(BaseConstant.NOTIFY_TAG, PlanListFragment.TAG);
                 break;
+            case authId:
+                bundle.putString(BaseConstant.NOTIFY_TAG, AuthListFragment.TAG);
+                break;
         }
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtras(bundle);
@@ -245,6 +260,7 @@ public class MyNotifyService extends Service {
         newsInterval();
         alarmAnalysisInterval();
         planInterval();
+        authInterval();
     }
 
     private void alarmInterval() {
@@ -283,7 +299,8 @@ public class MyNotifyService extends Service {
                                 @Override
                                 protected void onSuccess(List<AlarmInfo> response) {
                                     if (response != null && response.size() > 0) {
-                                        buildNotify(alarmId, BaseConstant.ALARM_CHANNEL, "有新警报信息", String.valueOf(response.size() + "个"));
+                                        buildNotify(alarmId, BaseConstant.ALARM_CHANNEL, "有新警报信息", String.valueOf
+                                                (response.size() + "个"));
                                     }
                                 }
                             });
@@ -413,7 +430,8 @@ public class MyNotifyService extends Service {
                                 @Override
                                 protected void onSuccess(List<AlarmAnalysis> response) {
                                     if (response != null && response.size() > 0) {
-                                        buildNotify(alarmAnalysisId, BaseConstant.ALARM_ANALYSIS_CHANNEL, "有新警报分析信息", String.valueOf(response.size() + "个"));
+                                        buildNotify(alarmAnalysisId, BaseConstant.ALARM_ANALYSIS_CHANNEL, "有新警报分析信息",
+                                                String.valueOf(response.size() + "个"));
                                     }
                                 }
                             });
@@ -472,7 +490,105 @@ public class MyNotifyService extends Service {
                                 @Override
                                 protected void onSuccess(List<PlanBean> response) {
                                     if (response != null && response.size() > 0) {
-                                        buildNotify(planId, BaseConstant.PLAN_CHANNEL, "有新计划信息", String.valueOf(response.size() + "个"));
+                                        buildNotify(planId, BaseConstant.PLAN_CHANNEL, "有新计划信息", String.valueOf
+                                                (response.size() + "个"));
+                                    }
+                                }
+                            });
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
+        mDisposable.add(disposable);
+    }
+
+    private void authInterval() {
+        Disposable disposable = Observable.interval(0, BaseConstant.AUTH_TIME, TimeUnit.MILLISECONDS)
+                .doOnNext(aLong -> {
+                    LogUtil.d(TAG, "授权定时任务---" + aLong);
+                    String token = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_TOKEN, "");
+                    if (TextUtils.isEmpty(token)) {
+                        return;
+                    }
+
+                    long endTime = System.currentTimeMillis();
+                    long startTime = endTime - BaseConstant.PLAN_TIME;
+
+                    ReqAllPipeTap reqAllPipeTap = new ReqAllPipeTap();
+                    reqAllPipeTap.isGetAll = "false";
+                    reqAllPipeTap.mStartTime = TimeUtil.ms2Date(startTime);
+                    reqAllPipeTap.mEndTime = TimeUtil.ms2Date(endTime);
+                    reqAllPipeTap.startIndex = String.valueOf("0");
+                    reqAllPipeTap.numberOfRecords = String.valueOf("1");
+                    reqAllPipeTap.TimeQueryChecked = "true";
+                    reqAllPipeTap.PesonChecked = "false";
+                    reqAllPipeTap.State = "2";
+                    reqAllPipeTap.Applicant = "";
+                    reqAllPipeTap.Approver = "";
+
+                    pipeTapService.getAll(reqAllPipeTap)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribeWith(new ObserverCallBack<List<PipeTapInfo>>() {
+                                @Override
+                                protected void onThrowable(Throwable e) {
+                                    LogUtil.d(TAG, "授权阀门请求失败---" + e.getMessage());
+                                }
+
+                                @Override
+                                protected void onFailure(BaseResponse response) {
+                                    LogUtil.d(TAG, "授权阀门请求失败---" + response.Code + "---message---" + response.Message);
+                                }
+
+                                @Override
+                                protected void onSuccess(List<PipeTapInfo> response) {
+                                    if (response != null && response.size() > 0) {
+                                        buildNotify(authId, BaseConstant.AUTH_CHANNEL, "有新授权信息", String.valueOf
+                                                (response.size() + "个"));
+                                    }
+                                }
+                            });
+
+                    ReqAllAuth reqAllAuth = new ReqAllAuth();
+                    reqAllAuth.Id = "-1";
+                    reqAllAuth.isGetAll = "false";
+                    reqAllAuth.mStartTime = TimeUtil.ms2Date(startTime);
+                    reqAllAuth.mEndTime = TimeUtil.ms2Date(endTime);
+                    String ipPort = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_IP_PORT, "");
+                    if (!TextUtils.isEmpty(ipPort)) {
+                        String[] split = ipPort.split("_");
+                        if (split.length > 1) {
+                            reqAllAuth.serverIP = split[0];
+                            reqAllAuth.serverPort = split[1];
+                            reqAllAuth.serverName = ipPort;
+                        }
+                    }
+                    reqAllAuth.startIndex = String.valueOf("0");
+                    reqAllAuth.numberOfRecords = String.valueOf("1");
+                    reqAllAuth.TimeQueryChecked = "true";
+                    reqAllAuth.PesonChecked = "false";
+                    reqAllAuth.State = "2";
+                    reqAllAuth.Applicant = "";
+                    reqAllAuth.Approver = "";
+
+                    authService.getAll(reqAllAuth)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribeWith(new ObserverCallBack<List<AuthInfo>>() {
+                                @Override
+                                protected void onThrowable(Throwable e) {
+                                    LogUtil.d(TAG, "用户授权请求失败---" + e.getMessage());
+                                }
+
+                                @Override
+                                protected void onFailure(BaseResponse response) {
+                                    LogUtil.d(TAG, "用户授权请求失败---" + response.Code + "---message---" + response.Message);
+                                }
+
+                                @Override
+                                protected void onSuccess(List<AuthInfo> response) {
+                                    if (response != null && response.size() > 0) {
+                                        buildNotify(authId, BaseConstant.AUTH_CHANNEL, "有新授权信息", String.valueOf(response.size() + "个"));
                                     }
                                 }
                             });
@@ -485,6 +601,7 @@ public class MyNotifyService extends Service {
 
     /**
      * 是否在免打扰时间段
+     *
      * @return
      */
     private boolean isNotDistub() {

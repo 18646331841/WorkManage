@@ -1,5 +1,8 @@
 package com.barisetech.www.workmanage.bean.auth;
 
+import android.text.TextUtils;
+
+import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.bean.AuthBean;
 
 import java.util.List;
@@ -75,6 +78,13 @@ public class AuthInfo extends AuthBean {
      */
     public void toSuper() {
         type = AuthBean.TYPE_USER;
-        title = ApplicatorTime + "请求授权登录";
+        title = ApplicatorTime + "  请求授权登录";
+        String eType = "手机";
+        if (EquipmentType == Integer.valueOf(BaseConstant.TYPE_PAD)) {
+            eType = "平板";
+        }
+        content = "型号：" + eType + "  卡号：" + SerialNumber;
+        completed = !TextUtils.isEmpty(ApproverUserName);
+        state = ApproverState;
     }
 }

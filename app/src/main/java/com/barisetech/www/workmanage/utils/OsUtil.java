@@ -24,6 +24,7 @@ import java.util.List;
  * Created by LJH on 2018/10/9.
  */
 public class OsUtil {
+    public static final String TAG = "OsUtil";
 
     public static List<String> getIMEI(Context context) {
         TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
@@ -89,7 +90,13 @@ public class OsUtil {
 
     public static String getSerialNumber(Context context) {
         TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-        return telephonyManager.getSimSerialNumber(); //取出ICCID
+        String simSerialNumber = telephonyManager.getSimSerialNumber();//取出ICCID
+        if (!TextUtils.isEmpty(simSerialNumber)) {
+            return simSerialNumber;
+        } else {
+            LogUtil.d(TAG, "simSerialNumber is null, get Build.SERIAL = " + Build.SERIAL);
+            return Build.SERIAL;
+        }
     }
 
     public static String getIMSI(Context context) {

@@ -120,7 +120,7 @@ public class AuthListFragment extends BaseFragment {
                             loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_END);
                         }
                     } else {
-                        if (null != userList && users.size() > 0) {
+                        if (null != userList && userList.size() > 0) {
                             loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_END);
                         }
                     }

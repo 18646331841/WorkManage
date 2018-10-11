@@ -34,6 +34,7 @@ import com.barisetech.www.workmanage.view.fragment.AlarmDetailsFragment;
 import com.barisetech.www.workmanage.view.fragment.AlarmListFragment;
 import com.barisetech.www.workmanage.view.fragment.DigitizingDetailFragment;
 import com.barisetech.www.workmanage.view.fragment.DigitizingFragment;
+import com.barisetech.www.workmanage.view.fragment.my.AuthDetailFragment;
 import com.barisetech.www.workmanage.view.fragment.my.AuthListFragment;
 import com.barisetech.www.workmanage.view.fragment.my.ContactDetailFragment;
 import com.barisetech.www.workmanage.view.fragment.my.ContactsFragment;
@@ -495,6 +496,14 @@ public class SecondActivity extends BaseActivity {
             case AuthListFragment.TAG:
                 transaction
                         .replace(R.id.second_framelayout, AuthListFragment.newInstance(), tag).commit();
+                break;
+            case AuthDetailFragment.TAG:
+                transaction
+                        .replace(R.id.second_framelayout, AuthDetailFragment.newInstance((String) eventBusMessage
+                                .getArg1()), tag).commit();
+                if (!isActivity) {
+                    transaction.addToBackStack(tag);
+                }
                 break;
         }
     }

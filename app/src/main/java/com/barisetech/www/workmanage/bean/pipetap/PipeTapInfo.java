@@ -1,5 +1,7 @@
 package com.barisetech.www.workmanage.bean.pipetap;
 
+import android.text.TextUtils;
+
 import com.barisetech.www.workmanage.bean.AuthBean;
 
 /**
@@ -29,7 +31,7 @@ public class PipeTapInfo extends AuthBean {
     public int SiteID;
     public String SiteName;
     public boolean TapSwitch;
-    public int LV;
+    public int LV = 2;
     public String Approver;
     public boolean ApproverState;
     public String ApproverTime;
@@ -39,7 +41,10 @@ public class PipeTapInfo extends AuthBean {
      */
     public void toSuper() {
         type = AuthBean.TYPE_PIPETAP;
-        title = ApplicationTime + " 请求打开阀门";
+        String tapSwitch = TapSwitch ? "打开" : "关闭";
+        title = ApplicationTime + "  请求" + tapSwitch + SiteName + "阀门";
         content = "备注：" + Remark;
+        completed = !TextUtils.isEmpty(Approver);
+        state = ApproverState;
     }
 }

@@ -167,6 +167,9 @@
     <string name="tv_contacts">联系人</string>
 
     <string name="title_auth_manager">授权管理</string>
+    <string name="auth_offline_user">下线用户</string>
+    <string name="auth_user">用户</string>
+    <string name="auth_pipetap">阀门</string>
 
     <string name="title_pipe">管线</string>
 

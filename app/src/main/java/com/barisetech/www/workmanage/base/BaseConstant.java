@@ -126,6 +126,7 @@ public class BaseConstant {
     public static final String NEWS_CHANNEL = "新闻";
     public static final String ALARM_ANALYSIS_CHANNEL = "警报分析";
     public static final String PLAN_CHANNEL = "计划";
+    public static final String AUTH_CHANNEL = "授权";
 
     /**
      * 设备类型

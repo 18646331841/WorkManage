@@ -1,5 +1,6 @@
 package com.barisetech.www.workmanage.bean.auth;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -66,5 +67,44 @@ public class ReqModifyAuth {
 
         public String ID;
         public String Number;
+    }
+
+    public void toBean(AuthInfo authInfo) {
+        ID = String.valueOf(authInfo.ID);
+        Remark = authInfo.Remark;
+        ServerIP = authInfo.ServerIP;
+        ServerName = authInfo.ServerName;
+        ServerPort = authInfo.ServerPort;
+        SerialNumber = authInfo.SerialNumber;
+        EquipmentType = String.valueOf(authInfo.EquipmentType);
+        ScreenHeight = String.valueOf(authInfo.ScreenHeight);
+        ScreenWidth = String.valueOf(authInfo.ScreenWidth);
+        ApplicatorName = authInfo.ApplicatorName;
+        ApplicatorIPAdress = authInfo.ApplicatorIPAdress;
+        ApplicatorTime = authInfo.ApplicatorTime;
+        ApproverUserName = authInfo.ApproverUserName;
+        ApproverState = String.valueOf(authInfo.ApproverState);
+        ApproverIPAdress = authInfo.ApproverIPAdress;
+        ApproverTime = authInfo.ApproverTime;
+
+        SIMCardList = new ArrayList<>();
+        if (authInfo.SIMCards != null) {
+            for (AuthInfo.SIMCardsBean simCardsBean : authInfo.SIMCards) {
+                SIMCardListBean simCardListBean = new SIMCardListBean();
+                simCardListBean.ID = String.valueOf(simCardsBean.ID);
+                simCardListBean.Number = simCardsBean.Number;
+                SIMCardList.add(simCardListBean);
+            }
+        }
+
+        IMEIList = new ArrayList<>();
+        if (authInfo.IMEIList != null) {
+            for (AuthInfo.IMEIListBean imei : authInfo.IMEIList) {
+                IMEIListBean imeiListBean = new IMEIListBean();
+                imeiListBean.ID = String.valueOf(imei.ID);
+                imeiListBean.Number = imei.Number;
+                IMEIList.add(imeiListBean);
+            }
+        }
     }
 }
