@@ -62,6 +62,7 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.BiFunction;
 import io.reactivex.schedulers.Schedulers;
 
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
@@ -515,43 +516,45 @@ public class MyNotifyService extends Service {
                     long startTime = endTime - BaseConstant.PLAN_TIME;
 
                     ReqAllPipeTap reqAllPipeTap = new ReqAllPipeTap();
-                    reqAllPipeTap.isGetAll = "false";
+                    reqAllPipeTap.MachineCode = token;
+                    reqAllPipeTap.isGetAll = "true";
                     reqAllPipeTap.mStartTime = TimeUtil.ms2Date(startTime);
                     reqAllPipeTap.mEndTime = TimeUtil.ms2Date(endTime);
                     reqAllPipeTap.startIndex = String.valueOf("0");
                     reqAllPipeTap.numberOfRecords = String.valueOf("1");
                     reqAllPipeTap.TimeQueryChecked = "true";
                     reqAllPipeTap.PesonChecked = "false";
-                    reqAllPipeTap.State = "2";
+                    reqAllPipeTap.State = "0";
                     reqAllPipeTap.Applicant = "";
                     reqAllPipeTap.Approver = "";
 
-                    pipeTapService.getAll(reqAllPipeTap)
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribeWith(new ObserverCallBack<List<PipeTapInfo>>() {
-                                @Override
-                                protected void onThrowable(Throwable e) {
-                                    LogUtil.d(TAG, "授权阀门请求失败---" + e.getMessage());
-                                }
-
-                                @Override
-                                protected void onFailure(BaseResponse response) {
-                                    LogUtil.d(TAG, "授权阀门请求失败---" + response.Code + "---message---" + response.Message);
-                                }
-
-                                @Override
-                                protected void onSuccess(List<PipeTapInfo> response) {
-                                    if (response != null && response.size() > 0) {
-                                        buildNotify(authId, BaseConstant.AUTH_CHANNEL, "有新授权信息", String.valueOf
-                                                (response.size() + "个"));
-                                    }
-                                }
-                            });
+//                    pipeTapService.getAll(reqAllPipeTap)
+//                            .subscribeOn(Schedulers.io())
+//                            .observeOn(AndroidSchedulers.mainThread())
+//                            .subscribeWith(new ObserverCallBack<List<PipeTapInfo>>() {
+//                                @Override
+//                                protected void onThrowable(Throwable e) {
+//                                    LogUtil.d(TAG, "授权阀门请求失败---" + e.getMessage());
+//                                }
+//
+//                                @Override
+//                                protected void onFailure(BaseResponse response) {
+//                                    LogUtil.d(TAG, "授权阀门请求失败---" + response.Code + "---message---" + response.Message);
+//                                }
+//
+//                                @Override
+//                                protected void onSuccess(List<PipeTapInfo> response) {
+//                                    if (response != null && response.size() > 0) {
+//                                        buildNotify(authId, BaseConstant.AUTH_CHANNEL, "有新授权信息", String.valueOf
+//                                                (response.size() + "个"));
+//                                    }
+//                                }
+//                            });
 
                     ReqAllAuth reqAllAuth = new ReqAllAuth();
+                    reqAllAuth.MachineCode = token;
                     reqAllAuth.Id = "-1";
-                    reqAllAuth.isGetAll = "false";
+                    reqAllAuth.isGetAll = "true";
                     reqAllAuth.mStartTime = TimeUtil.ms2Date(startTime);
                     reqAllAuth.mEndTime = TimeUtil.ms2Date(endTime);
                     String ipPort = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_IP_PORT, "");
@@ -567,30 +570,70 @@ public class MyNotifyService extends Service {
                     reqAllAuth.numberOfRecords = String.valueOf("1");
                     reqAllAuth.TimeQueryChecked = "true";
                     reqAllAuth.PesonChecked = "false";
-                    reqAllAuth.State = "2";
+                    reqAllAuth.State = "0";
                     reqAllAuth.Applicant = "";
                     reqAllAuth.Approver = "";
 
-                    authService.getAll(reqAllAuth)
+//                    authService.getAll(reqAllAuth)
+//                            .subscribeOn(Schedulers.io())
+//                            .observeOn(AndroidSchedulers.mainThread())
+//                            .subscribeWith(new ObserverCallBack<List<AuthInfo>>() {
+//                                @Override
+//                                protected void onThrowable(Throwable e) {
+//                                    LogUtil.d(TAG, "用户授权请求失败---" + e.getMessage());
+//                                }
+//
+//                                @Override
+//                                protected void onFailure(BaseResponse response) {
+//                                    LogUtil.d(TAG, "用户授权请求失败---" + response.Code + "---message---" + response.Message);
+//                                }
+//
+//                                @Override
+//                                protected void onSuccess(List<AuthInfo> response) {
+//                                    if (response != null && response.size() > 0) {
+//                                        buildNotify(authId, BaseConstant.AUTH_CHANNEL, "有新授权信息", String.valueOf(response.size() + "个"));
+//                                    }
+//                                }
+//                            });
+
+                    Observable.zip(pipeTapService.getAll(reqAllPipeTap), authService.getAll(reqAllAuth),
+                            (BiFunction<BaseResponse<List<PipeTapInfo>>, BaseResponse<List<AuthInfo>>, String>)
+                                    (listBaseResponse, listBaseResponse2) -> {
+                                        StringBuilder sb = new StringBuilder();
+                                        if (listBaseResponse != null && listBaseResponse.Code == 200) {
+                                            List<PipeTapInfo> pipeTapInfos = listBaseResponse.Response;
+                                            if (pipeTapInfos != null && pipeTapInfos.size() > 0) {
+                                                for (PipeTapInfo pipeTapInfo : pipeTapInfos) {
+                                                    sb.append(pipeTapInfo.Applicant).append(",");
+                                                }
+                                            }
+                                        }
+
+                                        if (listBaseResponse2 != null && listBaseResponse2.Code == 200) {
+                                            List<AuthInfo> authInfos = listBaseResponse2.Response;
+                                            if (authInfos != null && authInfos.size() > 0) {
+                                                for (AuthInfo authInfo : authInfos) {
+                                                    sb.append(authInfo.ApplicatorName).append(",");
+                                                }
+                                            }
+                                        }
+
+                                        if (sb.length() > 0) {
+                                            sb.deleteCharAt(sb.length() - 1);
+                                        }
+
+                                        return sb.toString();
+                                    })
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
-                            .subscribeWith(new ObserverCallBack<List<AuthInfo>>() {
-                                @Override
-                                protected void onThrowable(Throwable e) {
-                                    LogUtil.d(TAG, "用户授权请求失败---" + e.getMessage());
+                            .subscribe(s -> {
+                                if (!TextUtils.isEmpty(s)) {
+                                    LogUtil.d(TAG, "授权通知结果---" + s);
+                                    String[] count = s.split(",");
+                                    buildNotify(authId, BaseConstant.AUTH_CHANNEL, "有新授权信息", count.length + "个");
                                 }
-
-                                @Override
-                                protected void onFailure(BaseResponse response) {
-                                    LogUtil.d(TAG, "用户授权请求失败---" + response.Code + "---message---" + response.Message);
-                                }
-
-                                @Override
-                                protected void onSuccess(List<AuthInfo> response) {
-                                    if (response != null && response.size() > 0) {
-                                        buildNotify(authId, BaseConstant.AUTH_CHANNEL, "有新授权信息", String.valueOf(response.size() + "个"));
-                                    }
-                                }
+                            }, throwable -> {
+                                LogUtil.e(TAG, "授权通知结果---" + throwable.getMessage());
                             });
                 })
                 .subscribeOn(Schedulers.io())
