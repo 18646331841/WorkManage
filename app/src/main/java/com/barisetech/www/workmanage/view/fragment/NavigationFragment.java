@@ -32,6 +32,8 @@ public class NavigationFragment extends Fragment {
 
     private boolean fromOtherView = false;
     private String curFragment = "";
+    private String auth;
+    private TextView authCount;
 
     public NavigationFragment() {
         // Required empty public constructor
@@ -66,6 +68,16 @@ public class NavigationFragment extends Fragment {
             if(eventBusMessage != null){
                 fromOtherView = true;
                 showNavContentFragment(eventBusMessage);
+
+                if (eventBusMessage.getArg2() instanceof String) {
+                    //授权通知信息
+                    auth = (String) eventBusMessage.getArg2();
+                    if (!TextUtils.isEmpty(auth)) {
+                        String[] count = auth.split(",");
+                        authCount.setText(count.length);
+                        authCount.setVisibility(View.VISIBLE);
+                    }
+                }
                 return root;
             }
         }
@@ -73,6 +85,12 @@ public class NavigationFragment extends Fragment {
         showNavContentFragment(new EventBusMessage(Messagefragment.TAG));
 
         return root;
+    }
+
+    private void clearCount() {
+        auth = "";
+        authCount.setText("");
+        authCount.setVisibility(View.GONE);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -85,8 +103,8 @@ public class NavigationFragment extends Fragment {
 
         View badge = LayoutInflater.from(getActivity()).inflate(R.layout.menu_badge, menuView, false);
         my.addView(badge);
-        TextView count = (TextView) badge.findViewById(R.id.tv_msg_count);
-        count.setText(String.valueOf(1));
+        authCount = (TextView) badge.findViewById(R.id.tv_msg_count);
+        authCount.setVisibility(View.GONE);
         BottomNavigationViewHelper.disableShiftMode(navigation);
     }
 
@@ -112,7 +130,10 @@ public class NavigationFragment extends Fragment {
                         showNavContentFragment(new EventBusMessage(ManageFragment.TAG));
                         return true;
                     case R.id.navigation_myself:
-                        showNavContentFragment(new EventBusMessage(MyFragment.TAG));
+                        EventBusMessage my = new EventBusMessage(MyFragment.TAG);
+                        my.setArg1(auth);
+                        showNavContentFragment(my);
+                        clearCount();
                         return true;
                 }
                 return false;
@@ -186,12 +207,16 @@ public class NavigationFragment extends Fragment {
                 transaction.replace(R.id.navigation_content, ManageFragment.newInstance(), tag)
                         .commit();
                 break;
-
-
             case MyFragment.TAG:
                 showItem(R.id.navigation_manage);
-                transaction.replace(R.id.navigation_content, MyFragment.newInstance(), tag)
-                        .commit();
+                if (eventBusMessage.getArg1() instanceof String) {
+                    transaction.replace(R.id.navigation_content, MyFragment.newInstance((String) eventBusMessage
+                            .getArg1()), tag)
+                            .commit();
+                } else {
+                    transaction.replace(R.id.navigation_content, MyFragment.newInstance(null), tag)
+                            .commit();
+                }
                 break;
         }
         curFragment = tag;

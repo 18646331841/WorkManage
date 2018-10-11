@@ -118,6 +118,7 @@ public class MainActivity extends BaseActivity {
         Bundle bundle = getIntent().getExtras();
         String tag = Messagefragment.TAG;
         String arg1 = null;
+        String arg2 = null;
         String notify = null;
         if (null != bundle) {
             String tag1 = bundle.getString("tag");
@@ -125,6 +126,7 @@ public class MainActivity extends BaseActivity {
                 tag = tag1;
             }
             arg1 = bundle.getString("arg1");
+            arg2 = bundle.getString("arg2");
             notify = bundle.getString(BaseConstant.NOTIFY_TAG);
         }
 
@@ -137,6 +139,7 @@ public class MainActivity extends BaseActivity {
 //            //大屏设备界面，左右两个fragment
         EventBusMessage eventBusMessage = new EventBusMessage(tag);
         eventBusMessage.setArg1(arg1);
+        eventBusMessage.setArg1(arg2);
         LogUtil.d(TAG, "tag = " + tag + " arg1 = " + arg1);
         navigationFragment = NavigationFragment.newInstance(eventBusMessage);
         transaction.add(R.id.fragment_navigation, navigationFragment, NavigationFragment.TAG);
@@ -144,6 +147,9 @@ public class MainActivity extends BaseActivity {
 //        }
         if (!TextUtils.isEmpty(notify)) {
             LogUtil.d(TAG, "onCreate---" + notify);
+            if (notify.equals(AuthListFragment.TAG)) {
+                return;
+            }
             showActivityOrFragment(new EventBusMessage(notify), true);
         }
     }
@@ -153,12 +159,34 @@ public class MainActivity extends BaseActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         Bundle bundle = intent.getExtras();
+        String tag = Messagefragment.TAG;
+        String arg1 = null;
+        String arg2 = null;
         String notify = null;
         if (null != bundle) {
+            String tag1 = bundle.getString("tag");
+            if (!TextUtils.isEmpty(tag1)) {
+                tag = tag1;
+            }
+            arg1 = bundle.getString("arg1");
+            arg2 = bundle.getString("arg2");
             notify = bundle.getString(BaseConstant.NOTIFY_TAG);
         }
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        EventBusMessage eventBusMessage = new EventBusMessage(tag);
+        eventBusMessage.setArg1(arg1);
+        eventBusMessage.setArg1(arg2);
+        LogUtil.d(TAG, "tag = " + tag + " arg1 = " + arg1 + " arg2 = " + arg2);
+        navigationFragment = NavigationFragment.newInstance(eventBusMessage);
+        transaction.replace(R.id.fragment_navigation, navigationFragment, NavigationFragment.TAG);
+        transaction.commit();
+
         if (!TextUtils.isEmpty(notify)) {
             LogUtil.d(TAG, "onNewIntent---" + notify);
+            if (notify.equals(AuthListFragment.TAG)) {
+                return;
+            }
             showActivityOrFragment(new EventBusMessage(notify), true);
         }
     }
@@ -562,8 +590,14 @@ public class MainActivity extends BaseActivity {
                             .replace(R.id.fragment_content, ContactsFragment.newInstance(), tag).commit();
                     break;
                 case AuthListFragment.TAG:
-                    transaction
-                            .replace(R.id.fragment_content, AuthListFragment.newInstance(), tag).commit();
+                    if (eventBusMessage.getArg1() instanceof String) {
+                        transaction
+                                .replace(R.id.fragment_content, AuthListFragment.newInstance((String) eventBusMessage
+                                        .getArg1()), tag).commit();
+                    } else {
+                        transaction
+                                .replace(R.id.fragment_content, AuthListFragment.newInstance(null), tag).commit();
+                    }
                     break;
                 case AuthDetailFragment.TAG:
                     transaction

@@ -4,12 +4,14 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.base.BaseApplication;
+import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
@@ -21,18 +23,31 @@ import com.barisetech.www.workmanage.widget.CustomDialog;
 import org.greenrobot.eventbus.EventBus;
 
 public class MyFragment extends BaseFragment implements View.OnClickListener {
-
-
     public static final String TAG = "MyFragment";
     FragmentMyBinding mBinding;
 
     private CustomDialog.Builder builder;
     private CustomDialog mDialog;
+    private static final String COUNT = "count";
+    private String count;
 
-
-    public static MyFragment newInstance() {
+    public static MyFragment newInstance(String count) {
         MyFragment fragment = new MyFragment();
+        if (!TextUtils.isEmpty(count)) {
+            Bundle bundle = new Bundle();
+            bundle.putString(COUNT, count);
+            fragment.setArguments(bundle);
+        }
         return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle bundle = getArguments();
+        if (null != bundle) {
+            count = bundle.getString(COUNT);
+        }
     }
 
     @Nullable
@@ -54,9 +69,20 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
         mBinding.itemNotDisturb.setOnClickListener(this);
         mBinding.itemSound.setOnClickListener(this);
         mBinding.itemInfo.setOnClickListener(this);
+
+        if (!TextUtils.isEmpty(count)) {
+            mBinding.authorizationManageNum.setText(count);
+            mBinding.authorizationManageNum.setVisibility(View.VISIBLE);
+        }
+
         return mBinding.getRoot();
     }
 
+    private void clearCount() {
+        count = "";
+        mBinding.authorizationManageNum.setText(count);
+        mBinding.authorizationManageNum.setVisibility(View.GONE);
+    }
 
     @Override
     public void bindViewModel() {
@@ -85,7 +111,13 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
                 EventBus.getDefault().post(new EventBusMessage(EventTypeFragment.TAG));
                 break;
             case R.id.item_authorization_manage:
-                EventBus.getDefault().post(new EventBusMessage(AuthListFragment.TAG));
+                String role = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_ROLE, "");
+                if (role.equals(BaseConstant.ROLE_ADMINS) || role.equals(BaseConstant.ROLE_SUPER_ADMINS)) {
+                    EventBusMessage authList = new EventBusMessage(AuthListFragment.TAG);
+                    authList.setArg1(count);
+                    EventBus.getDefault().post(authList);
+                    clearCount();
+                }
                 break;
             case R.id.item_not_disturb:
                 EventBus.getDefault().post(new EventBusMessage(NotDisturbFragment.TAG));

@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,9 +42,16 @@ public class AuthListFragment extends BaseFragment {
     private BaseLoadMoreWrapper loadMoreWrapper;
     private OnlineUserViewModel onlineUserViewModel;
     private Disposable disposable;
+    private static final String USERS = "users";
+    private String users;
 
-    public static AuthListFragment newInstance() {
+    public static AuthListFragment newInstance(String users) {
         AuthListFragment fragment = new AuthListFragment();
+        if (!TextUtils.isEmpty(users)) {
+            Bundle bundle = new Bundle();
+            bundle.putString(USERS, users);
+            fragment.setArguments(bundle);
+        }
         return fragment;
     }
 
@@ -51,6 +59,10 @@ public class AuthListFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         userList = new ArrayList<>();
+        Bundle bundle = getArguments();
+        if (null != bundle) {
+            users = bundle.getString(USERS);
+        }
     }
 
 

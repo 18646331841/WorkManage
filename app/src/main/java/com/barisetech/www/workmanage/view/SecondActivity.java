@@ -494,8 +494,14 @@ public class SecondActivity extends BaseActivity {
                 }
                 break;
             case AuthListFragment.TAG:
-                transaction
-                        .replace(R.id.second_framelayout, AuthListFragment.newInstance(), tag).commit();
+                if (eventBusMessage.getArg1() instanceof String) {
+                    transaction
+                            .replace(R.id.second_framelayout, AuthListFragment.newInstance((String) eventBusMessage
+                                    .getArg1()), tag).commit();
+                } else {
+                    transaction
+                            .replace(R.id.second_framelayout, AuthListFragment.newInstance(null), tag).commit();
+                }
                 break;
             case AuthDetailFragment.TAG:
                 transaction

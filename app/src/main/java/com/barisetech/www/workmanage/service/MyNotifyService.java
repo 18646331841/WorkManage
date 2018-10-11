@@ -144,14 +144,19 @@ public class MyNotifyService extends Service {
         }
     }
 
-    /**
-     * 发送通知
-     *
-     * @param id
-     * @param title
-     * @param content
-     */
     private void buildNotify(int id, String channelName, String title, String content) {
+        buildNotify(id, channelName, title, content, null);
+    }
+
+
+        /**
+         * 发送通知
+         *
+         * @param id
+         * @param title
+         * @param content
+         */
+    private void buildNotify(int id, String channelName, String title, String content, Object arg) {
         boolean isSound = SharedPreferencesUtil.getInstance().getBoolean(BaseConstant.SOUND_OPEN, true);
         boolean isVibrate = SharedPreferencesUtil.getInstance().getBoolean(BaseConstant.SHOCK_OPEN, true);
 
@@ -203,6 +208,9 @@ public class MyNotifyService extends Service {
                 break;
             case authId:
                 bundle.putString(BaseConstant.NOTIFY_TAG, AuthListFragment.TAG);
+                if (arg instanceof String) {
+                    bundle.putString("arg2", (String) arg);
+                }
                 break;
         }
         Intent intent = new Intent(this, MainActivity.class);
@@ -630,7 +638,7 @@ public class MyNotifyService extends Service {
                                 if (!TextUtils.isEmpty(s)) {
                                     LogUtil.d(TAG, "授权通知结果---" + s);
                                     String[] count = s.split(",");
-                                    buildNotify(authId, BaseConstant.AUTH_CHANNEL, "有新授权信息", count.length + "个");
+                                    buildNotify(authId, BaseConstant.AUTH_CHANNEL, "有新授权信息", count.length + "个", s);
                                 }
                             }, throwable -> {
                                 LogUtil.e(TAG, "授权通知结果---" + throwable.getMessage());
