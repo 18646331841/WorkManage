@@ -81,9 +81,9 @@ public class LoginFragment extends BaseFragment {
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void initView() {
-        //TODO 后期去掉
-        mBinding.etAccount.setText("admin");
-        mBinding.etPassword.setText("123456");
+        //TODO
+//        mBinding.etAccount.setText("admin");
+//        mBinding.etPassword.setText("123456");
         checkFingerPrint();
         mBinding.revealPassword.setOnClickListener(v -> revealPassword());
         mBinding.toolbar.tvTwo.setOnClickListener(view -> {

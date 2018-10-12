@@ -3,7 +3,7 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_height="match_parent"
               android:layout_width="match_parent"
-              android:weightSum="2"
+              android:weightSum="100"
               android:orientation="horizontal"
               android:baselineAligned="false">
 
@@ -11,11 +11,17 @@
         android:id="@+id/fragment_navigation"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"/>
+        android:layout_weight="64"/>
+
+    <View
+        android:layout_width="@dimen/dp_1"
+        android:layout_height="match_parent"
+        android:background="@color/line_gray"
+        />
 
     <FrameLayout
         android:id="@+id/fragment_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"/>
+        android:layout_weight="35"/>
 </LinearLayout>

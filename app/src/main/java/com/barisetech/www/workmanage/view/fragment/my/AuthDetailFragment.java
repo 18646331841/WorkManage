@@ -220,7 +220,7 @@ public class AuthDetailFragment extends BaseFragment {
 
         ReqAllAuth reqAllAuth = new ReqAllAuth();
         reqAllAuth.Id = "-1";
-        reqAllAuth.isGetAll = "true";
+        reqAllAuth.isGetAll = "false";
         reqAllAuth.mStartTime = "1970-01-01 00:00:00";
         reqAllAuth.mEndTime = TimeUtil.ms2Date(System.currentTimeMillis());
         String ipPort = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_IP_PORT, "");

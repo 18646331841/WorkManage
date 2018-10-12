@@ -28,14 +28,14 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
 
     private CustomDialog.Builder builder;
     private CustomDialog mDialog;
-    private static final String COUNT = "count";
-    private String count;
+    private static final String USER = "user";
+    private String user;
 
     public static MyFragment newInstance(String count) {
         MyFragment fragment = new MyFragment();
         if (!TextUtils.isEmpty(count)) {
             Bundle bundle = new Bundle();
-            bundle.putString(COUNT, count);
+            bundle.putString(USER, count);
             fragment.setArguments(bundle);
         }
         return fragment;
@@ -46,7 +46,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
         if (null != bundle) {
-            count = bundle.getString(COUNT);
+            user = bundle.getString(USER);
         }
     }
 
@@ -70,8 +70,9 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
         mBinding.itemSound.setOnClickListener(this);
         mBinding.itemInfo.setOnClickListener(this);
 
-        if (!TextUtils.isEmpty(count)) {
-            mBinding.authorizationManageNum.setText(count);
+        if (!TextUtils.isEmpty(user)) {
+            String[] count = user.split(",");
+            mBinding.authorizationManageNum.setText(String.valueOf(count.length));
             mBinding.authorizationManageNum.setVisibility(View.VISIBLE);
         }
 
@@ -79,8 +80,8 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
     }
 
     private void clearCount() {
-        count = "";
-        mBinding.authorizationManageNum.setText(count);
+        user = "";
+        mBinding.authorizationManageNum.setText(user);
         mBinding.authorizationManageNum.setVisibility(View.GONE);
     }
 
@@ -114,7 +115,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
                 String role = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_ROLE, "");
                 if (role.equals(BaseConstant.ROLE_ADMINS) || role.equals(BaseConstant.ROLE_SUPER_ADMINS)) {
                     EventBusMessage authList = new EventBusMessage(AuthListFragment.TAG);
-                    authList.setArg1(count);
+                    authList.setArg1(user);
                     EventBus.getDefault().post(authList);
                     clearCount();
                 }

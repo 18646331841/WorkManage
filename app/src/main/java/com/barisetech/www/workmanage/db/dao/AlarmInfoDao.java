@@ -18,7 +18,7 @@ import io.reactivex.Maybe;
 @Dao
 public interface AlarmInfoDao {
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<AlarmInfo> alarmInfos);
 
     @Query("select * from alarm_info order by `Key` desc")

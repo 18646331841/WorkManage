@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ import com.barisetech.www.workmanage.bean.site.SiteBean;
 import com.barisetech.www.workmanage.databinding.FragmentMessageBinding;
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.utils.LogUtil;
+import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
 import com.barisetech.www.workmanage.utils.TimeUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.viewmodel.AlarmViewModel;
@@ -401,23 +403,30 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
             });
         }
 
-//        getAlarmListNums();
+        //先获取上次请求的时间，没有就去取登录时间
+        String startTime;
+        String lastTime = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_LAST_TIME_NEWINFO, "");
+        if (TextUtils.isEmpty(lastTime)) {
+            String loginTime = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_LOGIN_TIME, "");
+            startTime = loginTime;
+        } else {
+            startTime = lastTime;
+        }
 
-        //TODO 需要确定好逻辑
         ReqAllAlarm reqAllAlarm = new ReqAllAlarm();
         reqAllAlarm.setStartIndex("0");
         reqAllAlarm.setNumberOfRecords("0");
         reqAllAlarm.setIsAllAlarm("true");
         reqAllAlarm.setGetByTimeDiff("true");
-        reqAllAlarm.setStartTime("1970-1-1 00:00:00");
+        reqAllAlarm.setStartTime(startTime);
         reqAllAlarm.setEndTime(TimeUtil.ms2Date(System.currentTimeMillis()));
         alarmViewModel.getAllAlarmByConditionToDB(reqAllAlarm);
 
         alarmViewModel.getAllUnliftAlarm();
 
         ReqIncidentSelectItem reqIncidentSelectItem = new ReqIncidentSelectItem();
-        reqIncidentSelectItem.setMStartTime("2010-01-01 12:12:12");
-        reqIncidentSelectItem.setMEndTime("2019-01-01 12:12:12");
+        reqIncidentSelectItem.setMStartTime(startTime);
+        reqIncidentSelectItem.setMEndTime(TimeUtil.ms2Date(System.currentTimeMillis()));
         reqIncidentSelectItem.setTimeQueryChecked("true");
         reqIncidentSelectItem.setSiteIdQueryChecked("false");
         reqIncidentSelectItem.setSiteID("0");

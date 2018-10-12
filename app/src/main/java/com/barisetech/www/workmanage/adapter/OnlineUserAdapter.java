@@ -11,14 +11,16 @@ import android.widget.TextView;
 
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.bean.contacts.ContactsBean;
+import com.barisetech.www.workmanage.utils.LogUtil;
 
 import java.util.List;
+import java.util.Map;
 
 public class OnlineUserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<String> mList;
     private Context context;
-
+    private Map<String, Integer> countMap;
     private ItemCallBack callBack;
 
 
@@ -31,7 +33,6 @@ public class OnlineUserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         this.callBack = callBack;
     }
 
-
     @NonNull
     @Override
     public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -42,7 +43,17 @@ public class OnlineUserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Holder viewholder = (Holder) holder;
-        viewholder.tv_name.setText(mList.get(position));
+        String name = mList.get(position);
+        viewholder.tv_name.setText(name);
+
+        viewholder.tv_num.setVisibility(View.GONE);
+        if (countMap != null && countMap.size() > 0) {
+            if (countMap.containsKey(name)) {
+                viewholder.tv_num.setText(String.valueOf(countMap.get(name)));
+                viewholder.tv_num.setVisibility(View.VISIBLE);
+            }
+        }
+
         viewholder.layout.setOnClickListener(view -> {
             if (callBack!=null){
                 callBack.onClick(mList.get(position));
@@ -57,15 +68,21 @@ public class OnlineUserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         return mList.size();
     }
 
+    public void setCountMap(Map<String, Integer> countMap) {
+        this.countMap = countMap;
+    }
+
     class Holder extends RecyclerView.ViewHolder{
 
 
         TextView tv_name;
+        TextView tv_num;
         ConstraintLayout layout;
         public Holder(View itemView) {
             super(itemView);
             tv_name = itemView.findViewById(R.id.tv_name);
             layout = itemView.findViewById(R.id.l_contact);
+            tv_num = itemView.findViewById(R.id.auth_num);
         }
     }
 }

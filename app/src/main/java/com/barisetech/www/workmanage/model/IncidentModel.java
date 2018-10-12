@@ -2,6 +2,7 @@ package com.barisetech.www.workmanage.model;
 
 import android.arch.lifecycle.LiveData;
 
+import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseModel;
 import com.barisetech.www.workmanage.base.BaseResponse;
 import com.barisetech.www.workmanage.bean.FailResponse;
@@ -17,6 +18,9 @@ import com.barisetech.www.workmanage.http.HttpService;
 import com.barisetech.www.workmanage.http.ObserverCallBack;
 import com.barisetech.www.workmanage.http.api.IncidentService;
 import com.barisetech.www.workmanage.utils.LogUtil;
+import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
+import com.barisetech.www.workmanage.utils.SystemUtil;
+import com.barisetech.www.workmanage.utils.TimeUtil;
 
 import java.util.List;
 
@@ -80,6 +84,8 @@ public class IncidentModel extends BaseModel {
                     @Override
                     protected void onSuccess(List<IncidentInfo> response) {
 //                        modelCallBack.netResult(response);
+                        SharedPreferencesUtil.getInstance().setString(BaseConstant.SP_LAST_TIME_NEWINFO, TimeUtil
+                                .ms2Date(System.currentTimeMillis()));
                         for (int i = 0; i < response.size(); i++) {
                             IncidentInfo incidentInfoSync = appDatabase.incidentDao().getIncidentInfoSync(response
                                     .get(i).getKey());

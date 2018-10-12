@@ -240,6 +240,7 @@
                     android:id="@+id/item_statistics"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
+                    android:visibility="gone"
                     android:layout_marginLeft="22dp"
                     android:layout_marginRight="15dp">
 
@@ -291,6 +292,7 @@
                     android:id="@+id/item_disk"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
+                    android:visibility="gone"
                     android:layout_marginLeft="22dp"
                     android:layout_marginRight="15dp">
 

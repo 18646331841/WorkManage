@@ -17,6 +17,7 @@ public class BaseConstant {
     public static final String ROLE_ADMINS = "Admins";
     public static final String ROLE_USERS = "Users";
 
+    public static final String AUTH_HEADER = "Authorization";
     /**
      * int型用户等级
      */
@@ -78,6 +79,12 @@ public class BaseConstant {
     public static final String SP_COMPANY = "company";
     //用户token
     public static final String SP_TOKEN = "token";
+    //登录时间
+    public static final String SP_LOGIN_TIME = "login_time";
+    //access token
+    public static final String SP_ACCESS_TOKEN = "access_token";
+    //refresh token
+    public static final String SP_REFRESH_TOKEN = "refresh_token";
     //Ip port, value = ip_port
     public static final String SP_IP_PORT = "ip_port";
     //上次请求新消息的时间
@@ -106,6 +113,8 @@ public class BaseConstant {
     /**
      * 定时通知时间
      */
+    //刷新token 10s
+    public static final int REFRESH_TOKEN_TIME = 12000;
     //警报10s
     public static final int ALARM_TIME = 10000;
     //事件20s

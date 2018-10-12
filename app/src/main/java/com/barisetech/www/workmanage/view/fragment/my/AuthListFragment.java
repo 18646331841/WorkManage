@@ -23,12 +23,15 @@ import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.bean.contacts.ContactsBean;
 import com.barisetech.www.workmanage.databinding.FragmentAuthListBinding;
 import com.barisetech.www.workmanage.utils.DisplayUtil;
+import com.barisetech.www.workmanage.utils.LogUtil;
 import com.barisetech.www.workmanage.viewmodel.OnlineUserViewModel;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.disposables.Disposable;
 
@@ -43,7 +46,8 @@ public class AuthListFragment extends BaseFragment {
     private OnlineUserViewModel onlineUserViewModel;
     private Disposable disposable;
     private static final String USERS = "users";
-    private String users;
+    private String user;
+    private Map<String, Integer> userCount;
 
     public static AuthListFragment newInstance(String users) {
         AuthListFragment fragment = new AuthListFragment();
@@ -59,9 +63,10 @@ public class AuthListFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         userList = new ArrayList<>();
+        userCount = new HashMap<>();
         Bundle bundle = getArguments();
         if (null != bundle) {
-            users = bundle.getString(USERS);
+            user = bundle.getString(USERS);
         }
     }
 
@@ -81,6 +86,20 @@ public class AuthListFragment extends BaseFragment {
     }
 
     private void initView() {
+        if (!TextUtils.isEmpty(user) && userCount.size() <= 0) {
+            String[] count = user.split(",");
+            if (count.length > 0) {
+                for (String name : count) {
+                    if (userCount.containsKey(name)) {
+                        Integer num = userCount.get(name) + 1;
+                        userCount.put(name, num);
+                    } else {
+                        userCount.put(name, 1);
+                    }
+                }
+            }
+        }
+
         initRecyclerView();
         mBinding.etSearch.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
@@ -94,6 +113,7 @@ public class AuthListFragment extends BaseFragment {
 
     private void initRecyclerView() {
         onlineUserAdapter = new OnlineUserAdapter(getContext(), userList);
+        onlineUserAdapter.setCountMap(userCount);
         loadMoreWrapper = new BaseLoadMoreWrapper(onlineUserAdapter);
         loadMoreWrapper.setLoadingViewHeight(DisplayUtil.dip2px(getContext(), 50));
         mBinding.userList.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -102,6 +122,15 @@ public class AuthListFragment extends BaseFragment {
 
         onlineUserAdapter.OnClick(item -> {
             String user = (String) item;
+            if (userCount.size() > 0) {
+                if (userCount.containsKey(user)) {
+                    userCount.remove(user);
+                    if (userCount.size() <= 0) {
+                        this.user = "";
+                    }
+                    loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_COMPLETE);
+                }
+            }
             EventBusMessage eventBusMessage = new EventBusMessage(AuthDetailFragment.TAG);
             eventBusMessage.setArg1(user);
             EventBus.getDefault().post(eventBusMessage);

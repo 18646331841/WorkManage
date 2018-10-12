@@ -8,6 +8,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Binder;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -21,6 +22,7 @@ import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.base.BaseApplication;
 import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseResponse;
+import com.barisetech.www.workmanage.bean.AccessTokenInfo;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.bean.alarm.ReqAllAlarm;
 import com.barisetech.www.workmanage.bean.alarmanalysis.AlarmAnalysis;
@@ -43,8 +45,10 @@ import com.barisetech.www.workmanage.http.api.IncidentService;
 import com.barisetech.www.workmanage.http.api.NewsService;
 import com.barisetech.www.workmanage.http.api.PipeTapService;
 import com.barisetech.www.workmanage.http.api.PlanService;
+import com.barisetech.www.workmanage.http.api.TokenService;
 import com.barisetech.www.workmanage.utils.LogUtil;
 import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
+import com.barisetech.www.workmanage.utils.SystemUtil;
 import com.barisetech.www.workmanage.utils.TimeUtil;
 import com.barisetech.www.workmanage.view.MainActivity;
 import com.barisetech.www.workmanage.view.fragment.AlarmAnalysisListFragment;
@@ -55,7 +59,9 @@ import com.barisetech.www.workmanage.view.fragment.NewsListFragment;
 import com.barisetech.www.workmanage.view.fragment.PlanListFragment;
 import com.barisetech.www.workmanage.view.fragment.my.AuthListFragment;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -72,13 +78,7 @@ import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
  */
 public class MyNotifyService extends Service {
     private static final String TAG = "MyNotifyService";
-    private AlarmService alarmService;
-    private IncidentService incidentService;
-    private NewsService newsService;
-    private AlarmAnalysisService alarmAnalysisService;
-    private PlanService planService;
-    private AuthService authService;
-    private PipeTapService pipeTapService;
+    private TokenService tokenService;
     private CompositeDisposable mDisposable = new CompositeDisposable();
 
     private NotificationManager notificationManager;
@@ -92,6 +92,8 @@ public class MyNotifyService extends Service {
     private final int authId = 6;
     private int channelCount;
 
+    private MyBinder myBinder = new MyBinder();
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -100,16 +102,11 @@ public class MyNotifyService extends Service {
 
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-        alarmService = HttpService.getInstance().buildJsonRetrofit().create(AlarmService.class);
-        incidentService = HttpService.getInstance().buildJsonRetrofit().create(IncidentService.class);
-        newsService = HttpService.getInstance().buildJsonRetrofit().create(NewsService.class);
-        alarmAnalysisService = HttpService.getInstance().buildJsonRetrofit().create
-                (AlarmAnalysisService.class);
-        planService = HttpService.getInstance().buildJsonRetrofit().create(PlanService.class);
-        authService = HttpService.getInstance().buildJsonRetrofit().create(AuthService.class);
-        pipeTapService = HttpService.getInstance().buildJsonRetrofit().create(PipeTapService.class);
+        Map<String, String> headerMap = new HashMap<>();
+        headerMap.put("Content-Type", "application/x-www-form-urlencoded");
+        headerMap.put("Cache-Control", "no-cache");
 
-        startInterval();
+        tokenService = HttpService.getInstance().buildRetrofit(headerMap).create(TokenService.class);
     }
 
     @Override
@@ -121,14 +118,30 @@ public class MyNotifyService extends Service {
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        return null;
+        return myBinder;
     }
+
+    public class MyBinder extends Binder {
+        /**
+         * 开启轮询任务
+         */
+        public void startInterval() {
+            MyNotifyService.this.startInterval();
+        }
+
+        /**
+         * 关闭轮询任务
+         */
+        public void stopInterval() {
+            MyNotifyService.this.stopInterval();
+        }
+    }
+
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mDisposable.dispose();
-        mDisposable.clear();
+        stopInterval();
         gcEnv();
     }
 
@@ -264,12 +277,50 @@ public class MyNotifyService extends Service {
     }
 
     private void startInterval() {
+        refreshTokenInterval();
         alarmInterval();
         incidentInterval();
         newsInterval();
         alarmAnalysisInterval();
         planInterval();
         authInterval();
+    }
+
+    private void stopInterval() {
+        if (mDisposable.isDisposed()) {
+            LogUtil.d(TAG, "dispose disposableSize = " + mDisposable.size());
+            mDisposable.dispose();
+            mDisposable.clear();
+        }
+    }
+
+    private void refreshTokenInterval() {
+        Disposable disposable = Observable.interval(0, BaseConstant.REFRESH_TOKEN_TIME, TimeUnit.MILLISECONDS)
+                .doOnNext(aLong -> {
+                    LogUtil.d(TAG, "刷新token定时任务---" + aLong);
+                    String refreshToken = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_REFRESH_TOKEN, "");
+                    if (TextUtils.isEmpty(refreshToken)) {
+                        return;
+                    }
+                    tokenService.refreshTokenInfo(BaseConstant.SP_REFRESH_TOKEN, refreshToken)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(accessTokenInfo -> {
+                                if (accessTokenInfo != null) {
+                                    LogUtil.d(TAG, "刷新token定时任务成功---" + accessTokenInfo.toString());
+                                    SharedPreferencesUtil.getInstance().setString(BaseConstant.SP_REFRESH_TOKEN,
+                                            accessTokenInfo.getRefreshToken());
+                                    SharedPreferencesUtil.getInstance().setString(BaseConstant.SP_ACCESS_TOKEN,
+                                            accessTokenInfo.getAccessToken());
+                                }
+                            }, throwable -> {
+                                LogUtil.e(TAG, "刷新token定时任务失败---" + throwable.getMessage());
+                            });
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
+        mDisposable.add(disposable);
     }
 
     private void alarmInterval() {
@@ -291,6 +342,7 @@ public class MyNotifyService extends Service {
                     reqAllAlarm.setStartTime(TimeUtil.ms2Date(startTime));
                     reqAllAlarm.setEndTime(TimeUtil.ms2Date(endTime));
 
+                    AlarmService alarmService = HttpService.getInstance().buildJsonRetrofit().create(AlarmService.class);
                     alarmService.getAllAlarm(reqAllAlarm)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
@@ -351,6 +403,7 @@ public class MyNotifyService extends Service {
                     reqAllIncident.setNumberOfRecord("20");
                     reqAllIncident.setIncidentSelectItem(reqIncidentSelectItem);
 
+                    IncidentService incidentService = HttpService.getInstance().buildJsonRetrofit().create(IncidentService.class);
                     incidentService.getAllIncident(reqAllIncident)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
@@ -421,7 +474,8 @@ public class MyNotifyService extends Service {
                     reqAllAlarmAnalysis.setStartIndex("0");
                     reqAllAlarmAnalysis.setNumberOfRecords("1");
                     reqAllAlarmAnalysis.setType("0");
-
+                    AlarmAnalysisService alarmAnalysisService = HttpService.getInstance().buildJsonRetrofit().create
+                            (AlarmAnalysisService.class);
                     alarmAnalysisService.getAllAnalysis(reqAllAlarmAnalysis)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
@@ -482,6 +536,7 @@ public class MyNotifyService extends Service {
                         }
                     }
 
+                    PlanService planService = HttpService.getInstance().buildJsonRetrofit().create(PlanService.class);
                     planService.getAllPlan(reqAllPlan)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
@@ -514,6 +569,10 @@ public class MyNotifyService extends Service {
     private void authInterval() {
         Disposable disposable = Observable.interval(0, BaseConstant.AUTH_TIME, TimeUnit.MILLISECONDS)
                 .doOnNext(aLong -> {
+                    if (!SystemUtil.isAdmin()) {
+                        return;
+                    }
+
                     LogUtil.d(TAG, "授权定时任务---" + aLong);
                     String token = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_TOKEN, "");
                     if (TextUtils.isEmpty(token)) {
@@ -525,7 +584,7 @@ public class MyNotifyService extends Service {
 
                     ReqAllPipeTap reqAllPipeTap = new ReqAllPipeTap();
                     reqAllPipeTap.MachineCode = token;
-                    reqAllPipeTap.isGetAll = "true";
+                    reqAllPipeTap.isGetAll = "false";
                     reqAllPipeTap.mStartTime = TimeUtil.ms2Date(startTime);
                     reqAllPipeTap.mEndTime = TimeUtil.ms2Date(endTime);
                     reqAllPipeTap.startIndex = String.valueOf("0");
@@ -562,7 +621,7 @@ public class MyNotifyService extends Service {
                     ReqAllAuth reqAllAuth = new ReqAllAuth();
                     reqAllAuth.MachineCode = token;
                     reqAllAuth.Id = "-1";
-                    reqAllAuth.isGetAll = "true";
+                    reqAllAuth.isGetAll = "false";
                     reqAllAuth.mStartTime = TimeUtil.ms2Date(startTime);
                     reqAllAuth.mEndTime = TimeUtil.ms2Date(endTime);
                     String ipPort = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_IP_PORT, "");
@@ -604,6 +663,9 @@ public class MyNotifyService extends Service {
 //                                }
 //                            });
 
+                    AuthService authService = HttpService.getInstance().buildJsonRetrofit().create(AuthService.class);
+                    PipeTapService pipeTapService = HttpService.getInstance().buildJsonRetrofit().create
+                            (PipeTapService.class);
                     Observable.zip(pipeTapService.getAll(reqAllPipeTap), authService.getAll(reqAllAuth),
                             (BiFunction<BaseResponse<List<PipeTapInfo>>, BaseResponse<List<AuthInfo>>, String>)
                                     (listBaseResponse, listBaseResponse2) -> {

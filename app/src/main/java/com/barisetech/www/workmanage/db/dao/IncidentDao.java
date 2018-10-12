@@ -19,7 +19,7 @@ import io.reactivex.Maybe;
 @Dao
 public interface IncidentDao {
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<IncidentInfo> incidentInfos);
 
     @Query("select * from incident_info order by `Key` desc")

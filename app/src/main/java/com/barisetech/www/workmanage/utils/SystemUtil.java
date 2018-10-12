@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 
+import com.barisetech.www.workmanage.base.BaseConstant;
+
 import java.io.File;
 import java.util.List;
 
@@ -30,5 +32,18 @@ public class SystemUtil {
             }
         }
         return isAPPRunning;
+    }
+
+    /**
+     * 判断是否为管理员权限
+     * @return
+     */
+    public static boolean isAdmin() {
+        String role = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_ROLE, "");
+        if (role.equals(BaseConstant.ROLE_ADMINS) || role.equals(BaseConstant.ROLE_SUPER_ADMINS)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

@@ -15,6 +15,7 @@ import com.barisetech.www.workmanage.http.HttpService;
 import com.barisetech.www.workmanage.http.api.TokenService;
 import com.barisetech.www.workmanage.utils.LogUtil;
 import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
+import com.barisetech.www.workmanage.utils.TimeUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -174,7 +175,8 @@ public class LoginModel {
                 .flatMap((Function<AccessTokenInfo, ObservableSource<BaseResponse<TokenInfo>>>) accessTokenInfo -> {
                     if (accessTokenInfo != null && accessTokenInfo.getAccessToken() != null) {
                         LogUtil.d(TAG, "网络获取token");
-                        headerMap.put("Authorization", "Bearer " + accessTokenInfo.getAccessToken());
+                        SharedPreferencesUtil.getInstance().setString(BaseConstant.SP_ACCESS_TOKEN, accessTokenInfo
+                                .getAccessToken());
                         reqAuth.Token = accessTokenInfo.getRefreshToken();
                         return HttpService.getInstance().buildRetrofit(headerMap).create
                                 (TokenService.class).getTokenInfo(accessTokenInfo.getRefreshToken(), reqAuth)
@@ -208,6 +210,9 @@ public class LoginModel {
                             SharedPreferencesUtil.getInstance().setString(BaseConstant.SP_ACCOUNT, name);
                             SharedPreferencesUtil.getInstance().setString(BaseConstant.SP_ROLE, tokenInfo.getRole().trim());
                             SharedPreferencesUtil.getInstance().setString(BaseConstant.SP_COMPANY, tokenInfo.getCompany().trim());
+                            SharedPreferencesUtil.getInstance().setString(BaseConstant.SP_REFRESH_TOKEN, reqAuth.Token);
+                            SharedPreferencesUtil.getInstance().setString(BaseConstant.SP_LOGIN_TIME, TimeUtil
+                                    .ms2Date(System.currentTimeMillis()));
                         } else {
                             modelCallBack.fail(Config.ERROR_LOGIN_FAILED);
                             LogUtil.d(TAG, "网络获取token失败---" + tokenInfo.toString());

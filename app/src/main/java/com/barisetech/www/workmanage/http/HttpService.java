@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import com.barisetech.www.workmanage.BuildConfig;
 import com.barisetech.www.workmanage.base.BaseConstant;
+import com.barisetech.www.workmanage.utils.LogUtil;
 import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
 
 import java.util.HashMap;
@@ -22,6 +23,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by LJH on 2018/8/3.
  */
 public class HttpService {
+    public static final String TAG = "HttpService";
     private static final int DEFAULT_TIME_OUT = 20;//超时时间 10s
     private static final int DEFAULT_READ_TIME_OUT = 10;
     private Retrofit mRetrofit;
@@ -68,6 +70,9 @@ public class HttpService {
      * @return
      */
     public HttpService buildRetrofit(Map<String, String> headerMap) {
+        headerMap.put(BaseConstant.AUTH_HEADER, "Bearer " + SharedPreferencesUtil.getInstance().getString(BaseConstant
+                .SP_ACCESS_TOKEN, ""));
+
         // 创建 OKHttpClient
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
 

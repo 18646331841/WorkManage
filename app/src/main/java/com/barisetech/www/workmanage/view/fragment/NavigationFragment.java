@@ -69,12 +69,12 @@ public class NavigationFragment extends Fragment {
                 fromOtherView = true;
                 showNavContentFragment(eventBusMessage);
 
-                if (eventBusMessage.getArg2() instanceof String) {
+                if (eventBusMessage.getArg1() instanceof String) {
                     //授权通知信息
-                    auth = (String) eventBusMessage.getArg2();
+                    auth = (String) eventBusMessage.getArg1();
                     if (!TextUtils.isEmpty(auth)) {
                         String[] count = auth.split(",");
-                        authCount.setText(count.length);
+                        authCount.setText(String.valueOf(count.length));
                         authCount.setVisibility(View.VISIBLE);
                     }
                 }

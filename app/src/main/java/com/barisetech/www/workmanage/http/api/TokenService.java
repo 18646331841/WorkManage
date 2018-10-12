@@ -51,4 +51,15 @@ public interface TokenService {
      */
     @POST("/api/Login/{refresh_token}")
     Observable<BaseResponse<TokenInfo>> getTokenInfo(@Path("refresh_token") String refreshToken, @Body ReqAuth reqAuth);
+
+    /**
+     * 刷新凭据接口
+     * @param grantType
+     * @param refreshToken
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("token")
+    Observable<AccessTokenInfo> refreshTokenInfo(@Field("grant_type") String grantType,
+                                                 @Field("refresh_token") String refreshToken);
 }
