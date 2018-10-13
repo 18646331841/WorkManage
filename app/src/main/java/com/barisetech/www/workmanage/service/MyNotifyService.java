@@ -107,6 +107,8 @@ public class MyNotifyService extends Service {
         headerMap.put("Cache-Control", "no-cache");
 
         tokenService = HttpService.getInstance().buildRetrofit(headerMap).create(TokenService.class);
+
+        startInterval();
     }
 
     @Override
@@ -519,7 +521,7 @@ public class MyNotifyService extends Service {
 
                     ReqAllPlan reqAllPlan = new ReqAllPlan();
                     reqAllPlan.MachineCode = token;
-                    reqAllPlan.isGetAll = "true";
+                    reqAllPlan.isGetAll = "false";
                     reqAllPlan.State = "0";
                     reqAllPlan.startIndex = "0";
                     reqAllPlan.numberOfRecords = "1";
@@ -591,7 +593,7 @@ public class MyNotifyService extends Service {
                     reqAllPipeTap.numberOfRecords = String.valueOf("1");
                     reqAllPipeTap.TimeQueryChecked = "true";
                     reqAllPipeTap.PesonChecked = "false";
-                    reqAllPipeTap.State = "0";
+                    reqAllPipeTap.State = "2";
                     reqAllPipeTap.Applicant = "";
                     reqAllPipeTap.Approver = "";
 
@@ -637,7 +639,7 @@ public class MyNotifyService extends Service {
                     reqAllAuth.numberOfRecords = String.valueOf("1");
                     reqAllAuth.TimeQueryChecked = "true";
                     reqAllAuth.PesonChecked = "false";
-                    reqAllAuth.State = "0";
+                    reqAllAuth.State = "2";
                     reqAllAuth.Applicant = "";
                     reqAllAuth.Approver = "";
 

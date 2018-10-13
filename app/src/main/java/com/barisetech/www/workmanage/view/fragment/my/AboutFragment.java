@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.barisetech.www.workmanage.BuildConfig;
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
@@ -39,6 +40,9 @@ public class AboutFragment extends BaseFragment{
     }
 
     private void initView() {
+        String version = BuildConfig.VERSION_NAME;
+        String pre = getString(R.string.app_name) + " v";
+        mBinding.tvVersion.setText(pre + version);
     }
 
     @Override

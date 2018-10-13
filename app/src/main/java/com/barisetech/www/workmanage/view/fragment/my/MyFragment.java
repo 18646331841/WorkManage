@@ -18,6 +18,7 @@ import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.databinding.FragmentMyBinding;
 import com.barisetech.www.workmanage.utils.DataCleanManagerUtil;
 import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
+import com.barisetech.www.workmanage.view.LoginActivity;
 import com.barisetech.www.workmanage.widget.CustomDialog;
 
 import org.greenrobot.eventbus.EventBus;
@@ -58,7 +59,20 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
         mBinding.setFragment(this);
         ToolbarInfo toolbarInfo = new ToolbarInfo();
         toolbarInfo.setTitle(getString(R.string.title_myself));
+        toolbarInfo.setOneText(getString(R.string.myself_sign_out));
         observableToolbar.set(toolbarInfo);
+
+        mBinding.toolbar.tvOne.setOnClickListener(view -> {
+            showTwoButtonDialog("确认退出登录？", 0, "管线管理助手", "确定", "取消", new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mDialog.dismiss();
+                    clearMemory();
+                    EventBus.getDefault().post(new EventBusMessage(LoginActivity.TAG));
+                }
+            }, view1 -> mDialog.dismiss());
+        });
+
         builder = new CustomDialog.Builder(getContext());
         mBinding.itemAbout.setOnClickListener(this);
         mBinding.itemAuthorizationManage.setOnClickListener(this);
@@ -125,12 +139,9 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
                 break;
             case R.id.item_clear_cache:
                 showTwoButtonDialog("是否清除缓存", 0, null, "确定", "取消", v -> {
-//                    DataCleanManagerUtil.cleanSharedPreference(getContext());
-                    DataCleanManagerUtil.cleanDatabases(getContext());
-                    DataCleanManagerUtil.cleanInternalCache(getContext());
                     mDialog.dismiss();
-                    BaseApplication.getInstance().reBuildDB();
-                    SharedPreferencesUtil.getInstance().clearAll();
+                    clearMemory();
+                    EventBus.getDefault().post(new EventBusMessage(LoginActivity.TAG));
                     }, v -> mDialog.dismiss());
                 break;
             case R.id.item_contacts:
@@ -142,6 +153,14 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
 
         }
 
+    }
+
+    private void clearMemory() {
+//        DataCleanManagerUtil.cleanSharedPreference(getContext());
+        DataCleanManagerUtil.cleanDatabases(getContext());
+        DataCleanManagerUtil.cleanInternalCache(getContext());
+        BaseApplication.getInstance().reBuildDB();
+        SharedPreferencesUtil.getInstance().clearAll();
     }
 
     private void showTwoButtonDialog(String alertText, int ImgId,String title,String confirmText, String cancelText, View.OnClickListener conFirmListener, View.OnClickListener cancelListener) {

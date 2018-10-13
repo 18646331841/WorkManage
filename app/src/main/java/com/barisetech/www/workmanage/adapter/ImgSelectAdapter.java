@@ -74,7 +74,7 @@ public class ImgSelectAdapter extends BaseAdapter {
             if (position == maxNum) {
                 holder.imgSrc.setVisibility(View.GONE);
             } else {
-                holder.imgSrc.setImageResource(R.drawable.ic_checkbox2);
+                holder.imgSrc.setImageResource(R.drawable.img_add);
                 holder.imgSrc.setOnClickListener(view -> {
                     itemCallBack.onClick(sign);
                 });

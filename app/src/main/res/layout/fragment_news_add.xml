@@ -175,7 +175,7 @@
                         android:id="@+id/img_upload"
                         android:layout_width="@dimen/dp_110"
                         android:layout_height="@dimen/dp_80"
-                        android:background="@drawable/bannerbg"
+                        android:background="@drawable/img_add"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"/>
 
