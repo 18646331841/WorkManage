@@ -27,8 +27,9 @@ public class SecondPublishFragment extends BaseFragment {
 
     FragmentPlanPublishSecondBinding mBinding;
     private DatePickerDialog endDatePicker;
-    private TimePickerDialog endTimePicker;
+//    private TimePickerDialog endTimePicker;
     private String endTime = "";
+    private String time = "24:00:00";
     private int curTime = 0;
     private static final int TIME_ONE_MONTH = 1;
     private static final int TIME_ONE_QUARTER = 2;
@@ -76,14 +77,18 @@ public class SecondPublishFragment extends BaseFragment {
 
     private void initView() {
         endDatePicker = TimeUtil.getDatePicker(getActivity(), onEndDateSetListener);
-        endTimePicker = TimeUtil.getTimePicker(getActivity(), onEndTimeSetListener);
+//        endTimePicker = TimeUtil.getTimePicker(getActivity(), onEndTimeSetListener);
 
         mBinding.planListStartTime.setOnClickListener(view -> {
+            if (curTime != 0) {
+                return;
+            }
             endDatePicker.show();
         });
 
         mBinding.planPublishSecondOneMonth.setOnCheckedChangeListener((compoundButton, b) -> {
             if (b) {
+                closeTimePicker();
                 curTime = TIME_ONE_MONTH;
                 mBinding.planPublishSecondOneQuarter.setChecked(false);
                 mBinding.planPublishSecondOneYear.setChecked(false);
@@ -93,6 +98,7 @@ public class SecondPublishFragment extends BaseFragment {
         });
         mBinding.planPublishSecondOneQuarter.setOnCheckedChangeListener(((compoundButton, b) -> {
             if (b) {
+                closeTimePicker();
                 curTime = TIME_ONE_QUARTER;
                 mBinding.planPublishSecondOneMonth.setChecked(false);
                 mBinding.planPublishSecondOneYear.setChecked(false);
@@ -102,6 +108,7 @@ public class SecondPublishFragment extends BaseFragment {
         }));
         mBinding.planPublishSecondOneYear.setOnCheckedChangeListener(((compoundButton, b) -> {
             if (b) {
+                closeTimePicker();
                 curTime = TIME_ONE_YEAR;
                 mBinding.planPublishSecondOneMonth.setChecked(false);
                 mBinding.planPublishSecondOneQuarter.setChecked(false);
@@ -136,7 +143,7 @@ public class SecondPublishFragment extends BaseFragment {
                 return;
             }
 
-            if (TextUtils.isEmpty(date)) {
+            if (TextUtils.isEmpty(date) || date.equals(getString(R.string.plan_publish_second_deadline))) {
                 ToastUtil.showToast("请选择日期");
                 return;
             }
@@ -159,6 +166,11 @@ public class SecondPublishFragment extends BaseFragment {
         });
     }
 
+    private void closeTimePicker() {
+        mBinding.planListStartTime.setText(getString(R.string.plan_publish_second_deadline));
+        mBinding.planListStartTime.setChecked(false);
+    }
+
     /**
      * 开始日期选择回调
      */
@@ -174,9 +186,11 @@ public class SecondPublishFragment extends BaseFragment {
         StringBuilder sb = new StringBuilder();
         sb.append(year).append("-")
                 .append(monthS).append("-")
-                .append(dayS).append(" ");
+                .append(dayS).append(" ")
+                .append(time);
         endTime = sb.toString();
-        endTimePicker.show();
+//        endTimePicker.show();
+        mBinding.planListStartTime.setText(endTime);
     };
 
     /**

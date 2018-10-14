@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -197,6 +198,9 @@ public class ThirdPublishFragment extends BaseFragment {
         loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING);
 
         ReqSiteInfos reqSiteInfos = new ReqSiteInfos();
+        if (TextUtils.isEmpty(curSiteId)) {
+            curSiteId = "0";
+        }
         reqSiteInfos.setSiteId(curSiteId);
         reqSiteInfos.setStartIndex(String.valueOf(formIndex));
         reqSiteInfos.setNumberOfRecords(String.valueOf(toIndex));

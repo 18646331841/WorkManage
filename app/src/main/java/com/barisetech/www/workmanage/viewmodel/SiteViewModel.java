@@ -136,6 +136,23 @@ public class SiteViewModel extends BaseViewModel implements ModelCallBack {
             if (failResponse.code == Config.ERROR_UNAUTHORIZED) {
                 EventBus.getDefault().post(new EventBusMessage(LoginActivity.TAG));
             }
+
+            mDelivery.post(() -> {
+                switch (failResponse.type) {
+                    case SiteModel.TYPE_NUM:
+                        mObservableSiteNum.setValue(0);
+                        break;
+                    case SiteModel.TYPE_ALL:
+                        mObservableSiteInfos.setValue(null);
+                        break;
+                    case SiteModel.TYPE_ADD:
+                        meObservableAddOrModifySite.setValue(null);
+                        break;
+                    case SiteModel.TYPE_DELETE:
+                        mObservableSiteDel.setValue(false);
+                        break;
+                }
+            });
         }
     }
 
