@@ -30,8 +30,7 @@ import com.barisetech.www.workmanage.viewmodel.SiteViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ModifySiteFragment extends BaseFragment implements View.OnClickListener{
-
+public class ModifySiteFragment extends BaseFragment implements View.OnClickListener {
 
 
     public static final String TAG = "ModifySiteFragment";
@@ -64,7 +63,8 @@ public class ModifySiteFragment extends BaseFragment implements View.OnClickList
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
+            savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_modify_site, container, false);
         setToolBarHeight(mBinding.toolbar.getRoot());
         mBinding.setFragment(this);
@@ -84,51 +84,52 @@ public class ModifySiteFragment extends BaseFragment implements View.OnClickList
         mBinding.siteLatitude.setText(String.valueOf(siteBean.Latitude));
         mBinding.sitePhone.setText(siteBean.Telephone);
         mBinding.sitePrincipal.setText(siteBean.Manager);
-        mBinding.siteLineWhether.setText(siteBean.IsOnLine?"是":"否");
-        mBinding.siteDoubleSensor.setText(siteBean.IsDualSensor?"是":"否");
-        mBinding.siteDoubleFilter.setText(siteBean.IsDirFilterEnabled?"是":"否");
-        mBinding.siteLineWhether.setOnItemClickListener(()->{
+        mBinding.siteLineWhether.setText(siteBean.IsOnLine ? "是" : "否");
+        mBinding.siteDoubleSensor.setText(siteBean.IsDualSensor ? "是" : "否");
+        mBinding.siteDoubleFilter.setText(siteBean.IsDirFilterEnabled ? "是" : "否");
+        mBinding.siteLineWhether.setOnItemClickListener(() -> {
             showDialog(getString(R.string.line_whether), Boolean.valueOf(siteBean.IsOnLine), (radioGroup, i) -> {
                 closeDialog();
                 switch (i) {
                     case R.id.dialog_yes_rb:
-                        siteBean.IsOnLine=true;
+                        siteBean.IsOnLine = true;
                         mBinding.siteLineWhether.setText("是");
                         break;
                     case R.id.dialog_no_rb:
-                        siteBean.IsOnLine=false;
+                        siteBean.IsOnLine = false;
                         mBinding.siteLineWhether.setText("否");
                         break;
                 }
 
             });
         });
-        mBinding.siteDoubleSensor.setOnItemClickListener(()->{
+        mBinding.siteDoubleSensor.setOnItemClickListener(() -> {
             showDialog(getString(R.string.double_snesor), Boolean.valueOf(siteBean.IsDualSensor), (radioGroup, i) -> {
                 closeDialog();
                 switch (i) {
                     case R.id.dialog_yes_rb:
-                        siteBean.IsDualSensor=true;
+                        siteBean.IsDualSensor = true;
                         mBinding.siteDoubleSensor.setText("是");
                         break;
                     case R.id.dialog_no_rb:
-                        siteBean.IsDualSensor=false;
+                        siteBean.IsDualSensor = false;
                         mBinding.siteDoubleSensor.setText("否");
                         break;
                 }
 
             });
         });
-        mBinding.siteDoubleFilter.setOnItemClickListener(()->{
-            showDialog(getString(R.string.double_filter), Boolean.valueOf(siteBean.IsDirFilterEnabled), (radioGroup, i) -> {
+        mBinding.siteDoubleFilter.setOnItemClickListener(() -> {
+            showDialog(getString(R.string.double_filter), Boolean.valueOf(siteBean.IsDirFilterEnabled), (radioGroup,
+                                                                                                         i) -> {
                 closeDialog();
                 switch (i) {
                     case R.id.dialog_yes_rb:
-                        siteBean.IsDirFilterEnabled=true;
+                        siteBean.IsDirFilterEnabled = true;
                         mBinding.siteDoubleFilter.setText("是");
                         break;
                     case R.id.dialog_no_rb:
-                        siteBean.IsDirFilterEnabled=false;
+                        siteBean.IsDirFilterEnabled = false;
                         mBinding.siteDoubleFilter.setText("否");
                         break;
                 }
@@ -145,27 +146,37 @@ public class ModifySiteFragment extends BaseFragment implements View.OnClickList
 
     @Override
     public void subscribeToModel() {
-       siteViewModel.getMeObservableAddOrModifySite().observe(this,s -> {
-           if (null != s) {
-               if (s.equals("成功修改")) {
-                   ToastUtil.showToast("成功修改");
-                   getActivity().onBackPressed();
-               } else if (s.equals("失败修改")){
-                   ToastUtil.showToast("失败修改");
-               }
-           }
-       });
+        if (!siteViewModel.getMeObservableAddOrModifySite().hasObservers()) {
+            siteViewModel.getMeObservableAddOrModifySite().observe(this, s -> {
+                if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                    if (!TextUtils.isEmpty(s)) {
+                        if (s.equals("成功修改")) {
+                            ToastUtil.showToast("成功修改");
+                            getActivity().onBackPressed();
+                        } else if (s.equals("失败修改")) {
+                            ToastUtil.showToast("失败修改");
+                        }
+                    } else {
+                        ToastUtil.showToast("失败修改");
+                    }
+                }
+            });
+        }
 
-       siteViewModel.getmObservableSiteDel().observe(this,flag->{
-           if (null!=flag){
-               if (flag){
-                   ToastUtil.showToast("删除成功");
-                   getActivity().onBackPressed();
-               }else {
-                   ToastUtil.showToast("删除失败");
-               }
-           }
-       });
+        if (!siteViewModel.getmObservableSiteDel().hasObservers()) {
+            siteViewModel.getmObservableSiteDel().observe(this, flag -> {
+                if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                    if (null != flag) {
+                        if (flag) {
+                            ToastUtil.showToast("删除成功");
+                            getActivity().onBackPressed();
+                        } else {
+                            ToastUtil.showToast("删除失败");
+                        }
+                    }
+                }
+            });
+        }
 
         if (!pluginViewModel.getmObservableAllPlugin().hasObservers()) {
             pluginViewModel.getmObservableAllPlugin().observe(this, pluginInfos -> {
@@ -201,16 +212,16 @@ public class ModifySiteFragment extends BaseFragment implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.sumbit_modify:
                 siteBean.SiteId = Integer.valueOf(mBinding.siteId.getText().toString());
                 siteBean.Company = mBinding.siteCompany.getText().toString();
                 siteBean.Longitude = Double.valueOf(mBinding.siteLongitude.getText().toString());
                 siteBean.Latitude = Double.valueOf(mBinding.siteLatitude.getText().toString());
-                siteBean.Telephone  = mBinding.sitePhone.getText().toString();
+                siteBean.Telephone = mBinding.sitePhone.getText().toString();
                 siteBean.Manager = mBinding.sitePrincipal.getText().toString();
-                siteBean.IsOnLine = (mBinding.siteLineWhether.getText().equals("是")?true:false);
-                siteBean.IsDualSensor = (mBinding.siteDoubleSensor.getText().equals("是")?true:false);
+                siteBean.IsOnLine = (mBinding.siteLineWhether.getText().equals("是") ? true : false);
+                siteBean.IsDualSensor = (mBinding.siteDoubleSensor.getText().equals("是") ? true : false);
                 siteBean.IsDirFilterEnabled = (mBinding.siteDoubleFilter.getText().equals("是") ? true : false);
                 for (PluginInfo pluginInfo : pluginInfoList) {
                     if (pluginInfo.getName().equals(mBinding.spSelectPlugin.getText().toString())) {

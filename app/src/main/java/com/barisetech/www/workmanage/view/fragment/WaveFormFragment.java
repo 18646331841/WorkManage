@@ -238,8 +238,8 @@ public class WaveFormFragment extends BaseFragment {
 //        String startTime = TimeUtil.ms2Date(System.currentTimeMillis() - 30000);
 //        String endTime = TimeUtil.ms2Date(System.currentTimeMillis() + 30000);
         //TODO 测试使用
-        String startTime = "2018-09-04 00:00:00";
-        String endTime = "2018-09-04 00:00:30";
+        String startTime = "2018-10-14 00:00:00";
+        String endTime = "2018-10-14 00:01:00";
 
         //首站两个波
         ReqWave startWave = new ReqWave();
@@ -274,8 +274,8 @@ public class WaveFormFragment extends BaseFragment {
 //        String startTime = TimeUtil.ms2Date(System.currentTimeMillis() - 30000);
 //        String endTime = TimeUtil.ms2Date(System.currentTimeMillis() + 30000);
         //TODO 测试使用
-        String startTime = "2018-09-04 00:00:00";
-        String endTime = "2018-09-04 00:00:30";
+        String startTime = "2018-10-14 00:00:00";
+        String endTime = "2018-10-14 00:01:00";
 
         //首站两个波
         ReqWave startWave1 = new ReqWave();

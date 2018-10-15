@@ -132,6 +132,7 @@ public class MapFragment extends BaseFragment {
 
     private static final String ALARM_ID = "alarmId";
     private String curPipeId;
+    private ToolbarInfo toolbarInfo;
 
     public static MapFragment newInstance(String pipeId) {
         MapFragment fragment = new MapFragment();
@@ -157,9 +158,10 @@ public class MapFragment extends BaseFragment {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_map, container, false);
         setToolBarHeight(mBinding.toolbar.getRoot());
         mBinding.setFragment(this);
-        ToolbarInfo toolbarInfo = new ToolbarInfo();
+        toolbarInfo = new ToolbarInfo();
         toolbarInfo.setTitle(getString(R.string.title_map));
-        toolbarInfo.setBackText("菜单");
+        toolbarInfo.setBackText("管线");
+        toolbarInfo.setOneText("卫星图");
         observableToolbar.set(toolbarInfo);
 
 //        initMenu();
@@ -219,6 +221,16 @@ public class MapFragment extends BaseFragment {
         mAMapNaviView.onCreate(savedInstanceState);
         setAmapNaviViewOptions();
         initMap();
+
+        mBinding.toolbar.tvOne.setOnClickListener(view -> {
+            if (mBinding.toolbar.tvOne.getText().equals("卫星图")) {
+                mAMap.setMapType(AMap.MAP_TYPE_SATELLITE);
+                mBinding.toolbar.tvOne.setText("普通图");
+            } else {
+                mAMap.setMapType(AMap.MAP_TYPE_NORMAL);
+                mBinding.toolbar.tvOne.setText("卫星图");
+            }
+        });
     }
 
     /**

@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.RadioGroup;
 
 import com.barisetech.www.workmanage.R;
+import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.bean.plugin.PluginInfo;
@@ -20,6 +21,7 @@ import com.barisetech.www.workmanage.bean.plugin.ReqAllPlugin;
 import com.barisetech.www.workmanage.bean.site.ReqAddSite;
 import com.barisetech.www.workmanage.bean.site.SiteBean;
 import com.barisetech.www.workmanage.databinding.FragmentAddSiteBinding;
+import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.view.dialog.CommonDialogFragment;
 import com.barisetech.www.workmanage.view.dialog.DialogFragmentHelper;
@@ -60,6 +62,9 @@ public class AddSiteFragment extends BaseFragment{
     }
 
     private void initView() {
+        String company = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_COMPANY, "");
+        mBinding.siteCompany.setText(company);
+
         mBinding.addSite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

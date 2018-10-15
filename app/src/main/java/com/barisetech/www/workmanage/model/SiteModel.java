@@ -126,7 +126,6 @@ public class SiteModel extends BaseModel{
                     protected void onThrowable(Throwable e) {
                         FailResponse failResponse = new FailResponse(TYPE_ADD, Config.ERROR_NETWORK);
                         modelCallBack.fail(failResponse);
-
                     }
 
                     @Override
