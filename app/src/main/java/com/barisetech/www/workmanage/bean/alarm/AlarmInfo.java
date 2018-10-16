@@ -41,9 +41,9 @@ public class AlarmInfo extends MessageInfo implements Serializable{
 
     private int DisplayId;
     private int PipeId;
-    private int Latitude;
-    private int Longitude;
-    private int Distance;
+    private double Latitude;
+    private double Longitude;
+    private double Distance;
     private String TimeStamp;
     private int Type;
     private int TimeDiff;
@@ -54,9 +54,9 @@ public class AlarmInfo extends MessageInfo implements Serializable{
      */
     private int LeakId;
     private String SiteName1;
-    private int Distance1;
+    private double Distance1;
     private String SiteName2;
-    private int Distance2;
+    private double Distance2;
     private String PipeName;
     private String LiftUser;
     private String WarningMessage;
@@ -96,30 +96,6 @@ public class AlarmInfo extends MessageInfo implements Serializable{
 
     public void setPipeId(int PipeId) {
         this.PipeId = PipeId;
-    }
-
-    public int getLatitude() {
-        return Latitude;
-    }
-
-    public void setLatitude(int Latitude) {
-        this.Latitude = Latitude;
-    }
-
-    public int getLongitude() {
-        return Longitude;
-    }
-
-    public void setLongitude(int Longitude) {
-        this.Longitude = Longitude;
-    }
-
-    public int getDistance() {
-        return Distance;
-    }
-
-    public void setDistance(int Distance) {
-        this.Distance = Distance;
     }
 
     public String getTimeStamp() {
@@ -179,28 +155,12 @@ public class AlarmInfo extends MessageInfo implements Serializable{
         this.SiteName1 = SiteName1;
     }
 
-    public int getDistance1() {
-        return Distance1;
-    }
-
-    public void setDistance1(int Distance1) {
-        this.Distance1 = Distance1;
-    }
-
     public String getSiteName2() {
         return SiteName2;
     }
 
     public void setSiteName2(String SiteName2) {
         this.SiteName2 = SiteName2;
-    }
-
-    public int getDistance2() {
-        return Distance2;
-    }
-
-    public void setDistance2(int Distance2) {
-        this.Distance2 = Distance2;
     }
 
     public String getPipeName() {
@@ -320,5 +280,45 @@ public class AlarmInfo extends MessageInfo implements Serializable{
                 ", isRead=" + isRead +
                 ", details='" + details + '\'' +
                 '}';
+    }
+
+    public double getLatitude() {
+        return Latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        Latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return Longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        Longitude = longitude;
+    }
+
+    public double getDistance() {
+        return Distance;
+    }
+
+    public void setDistance(double distance) {
+        Distance = distance;
+    }
+
+    public double getDistance1() {
+        return Distance1;
+    }
+
+    public void setDistance1(double distance1) {
+        Distance1 = distance1;
+    }
+
+    public double getDistance2() {
+        return Distance2;
+    }
+
+    public void setDistance2(double distance2) {
+        Distance2 = distance2;
     }
 }
