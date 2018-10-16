@@ -31,8 +31,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ModifySiteFragment extends BaseFragment implements View.OnClickListener {
-
-
     public static final String TAG = "ModifySiteFragment";
     FragmentModifySiteBinding mBinding;
     private static final String SITE_ID = "siteBean";
@@ -173,6 +171,8 @@ public class ModifySiteFragment extends BaseFragment implements View.OnClickList
                         } else {
                             ToastUtil.showToast("删除失败");
                         }
+                    } else {
+                        ToastUtil.showToast("删除失败");
                     }
                 }
             });

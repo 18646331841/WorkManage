@@ -4,6 +4,7 @@ package com.barisetech.www.workmanage.view.fragment;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -16,18 +17,24 @@ import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.adapter.ItemCallBack;
 import com.barisetech.www.workmanage.adapter.OnScrollListener;
 import com.barisetech.www.workmanage.adapter.PipeCollectionAdapter;
+import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.base.BaseLoadMoreWrapper;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.bean.pipecollections.PipeCollections;
 import com.barisetech.www.workmanage.bean.pipecollections.ReqAllPc;
+import com.barisetech.www.workmanage.bean.pipecollections.ReqDeletePc;
 import com.barisetech.www.workmanage.databinding.FragmentPipeCollectionBinding;
 import com.barisetech.www.workmanage.utils.DisplayUtil;
 import com.barisetech.www.workmanage.utils.LogUtil;
+import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.viewmodel.PipeCollectionsViewModel;
+import com.barisetech.www.workmanage.widget.QPopuWindow;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +53,8 @@ public class PipeCollectionFragment extends BaseFragment {
     //每次加载个数
     private static final int PAGE_COUNT = 10;
     private int maxNum;
+
+    private Point mPoint = new Point();
 
     public PipeCollectionFragment() {
         // Required empty public constructor
@@ -73,6 +82,10 @@ public class PipeCollectionFragment extends BaseFragment {
         toolbarInfo.setTitle(getString(R.string.title_pipe_collection));
         toolbarInfo.setTwoText("新增");
         observableToolbar.set(toolbarInfo);
+
+        if (!EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().register(this);
+        }
 
         initView();
 
@@ -116,6 +129,36 @@ public class PipeCollectionFragment extends BaseFragment {
                 }
             }
         });
+
+        pipeCollectionAdapter.setOnItemLongClickListener((view, position) -> {
+            PipeCollections pipeCollection = pipeCollectionsList.get(position);
+            QPopuWindow.getInstance(getActivity()).builder
+                    .bindView(view,0)
+                    .setPopupItemList(new String[]{"编辑管线集合", "删除管线集合"})
+                    .setPointers(mPoint.x,mPoint.y)
+                    .setOnPopuListItemClickListener(new QPopuWindow.OnPopuListItemClickListener() {
+                        @Override
+                        public void onPopuListItemClick(View anchorView, int anchorViewPosition, int p) {
+                            switch (p){
+                                case 0:
+                                    EventBusMessage eventBusMessage = new EventBusMessage(PipeCollectionModifyFragment.TAG);
+                                    eventBusMessage.setArg1(pipeCollection);
+                                    EventBus.getDefault().post(eventBusMessage);
+                                    break;
+                                case 1:
+                                    ReqDeletePc reqDeletePc = new ReqDeletePc();
+                                    reqDeletePc.setPipeCollectId(pipeCollection.getId());
+                                    pipeCollectionsViewModel.reqDeletePc(reqDeletePc);
+                                    break;
+                            }
+                        }
+                    }).show();
+        });
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void PointEventBus(Point point) {
+        mPoint = point;
     }
 
     private void updateRecyclerView(int fromIndex, int toIndex) {
@@ -198,5 +241,24 @@ public class PipeCollectionFragment extends BaseFragment {
         if (null == pipeCollectionsList || pipeCollectionsList.size() <= 0) {
             getNums();
         }
+
+        if (!pipeCollectionsViewModel.getmObservableDelete().hasObservers()) {
+            pipeCollectionsViewModel.getmObservableDelete().observe(this, aBoolean -> {
+                if (this.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                    if (aBoolean) {
+                        ToastUtil.showToast("删除成功");
+                        getActivity().onBackPressed();
+                    } else {
+                        ToastUtil.showToast("删除失败");
+                    }
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

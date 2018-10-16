@@ -1,6 +1,7 @@
 package com.barisetech.www.workmanage.view.fragment;
 
 import android.arch.lifecycle.Lifecycle;
+import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableField;
@@ -24,6 +25,7 @@ import com.barisetech.www.workmanage.bean.pipe.PipeInfo;
 import com.barisetech.www.workmanage.bean.pipe.ReqAddPipe;
 import com.barisetech.www.workmanage.bean.pipe.ReqPipeInfo;
 import com.barisetech.www.workmanage.bean.pipecollections.PipeCollections;
+import com.barisetech.www.workmanage.bean.pipecollections.ReqAllPc;
 import com.barisetech.www.workmanage.bean.plugin.PluginInfo;
 import com.barisetech.www.workmanage.bean.plugin.ReqAllPlugin;
 import com.barisetech.www.workmanage.bean.site.ReqSiteBean;
@@ -34,6 +36,7 @@ import com.barisetech.www.workmanage.utils.LogUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.view.dialog.CommonDialogFragment;
 import com.barisetech.www.workmanage.view.dialog.DialogFragmentHelper;
+import com.barisetech.www.workmanage.viewmodel.PipeCollectionsViewModel;
 import com.barisetech.www.workmanage.viewmodel.PipeViewModel;
 import com.barisetech.www.workmanage.viewmodel.PluginViewModel;
 import com.barisetech.www.workmanage.viewmodel.SiteViewModel;
@@ -57,6 +60,9 @@ public class PipeAddFragment extends BaseFragment {
     private List<SiteBean> siteList = new ArrayList<>();
     private List<String> siteName = new ArrayList<>();
     private SiteViewModel siteViewModel;
+    private PipeCollectionsViewModel pipeCollectionsViewModel;
+    private List<PipeCollections> pipeCollectionsList = new ArrayList<>();
+    private List<String> pcName = new ArrayList<>();
 
     private PluginViewModel pluginViewModel;
     private List<PluginInfo> pluginInfoList = new ArrayList<>();
@@ -65,6 +71,12 @@ public class PipeAddFragment extends BaseFragment {
     public static PipeAddFragment newInstance() {
         PipeAddFragment fragment = new PipeAddFragment();
         return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        pcName.add(0, "单独管线");
     }
 
     @Nullable
@@ -78,7 +90,6 @@ public class PipeAddFragment extends BaseFragment {
         toolbarInfo.setTitle(getString(R.string.title_pipe_add));
         observableToolbar.set(toolbarInfo);
         initView();
-
 
         return mBinding.getRoot();
     }
@@ -98,25 +109,28 @@ public class PipeAddFragment extends BaseFragment {
     }
 
     private void initView() {
+        mBinding.spSelectPipePc.attachDataSource(pcName);
 
         mBinding.pipeAlgorithm.setOnItemClickListener(() -> {
-            showDialog(getString(R.string.pipe_detail_is_algorithm), Boolean.valueOf(reqPipeInfo.Algorithm), (radioGroup, i) -> {
-                closeDialog();
-                switch (i) {
-                    case R.id.dialog_yes_rb:
-                        reqPipeInfo.Algorithm = "true";
-                        mBinding.pipeAlgorithm.setText("是");
-                        break;
-                    case R.id.dialog_no_rb:
-                        reqPipeInfo.Algorithm = "false";
-                        mBinding.pipeAlgorithm.setText("否");
-                        break;
-                }
-            });
+            showDialog(getString(R.string.pipe_detail_is_algorithm), Boolean.valueOf(reqPipeInfo.Algorithm),
+                    (radioGroup, i) -> {
+                        closeDialog();
+                        switch (i) {
+                            case R.id.dialog_yes_rb:
+                                reqPipeInfo.Algorithm = "true";
+                                mBinding.pipeAlgorithm.setText("是");
+                                break;
+                            case R.id.dialog_no_rb:
+                                reqPipeInfo.Algorithm = "false";
+                                mBinding.pipeAlgorithm.setText("否");
+                                break;
+                        }
+                    });
         });
 
         mBinding.pipeTest.setOnItemClickListener(() -> {
-            showDialog(getString(R.string.pipe_detail_is_test), Boolean.valueOf(reqPipeInfo.IsTestMode), (radioGroup, i) -> {
+            showDialog(getString(R.string.pipe_detail_is_test), Boolean.valueOf(reqPipeInfo.IsTestMode), (radioGroup,
+                                                                                                          i) -> {
                 closeDialog();
 
                 switch (i) {
@@ -133,38 +147,40 @@ public class PipeAddFragment extends BaseFragment {
             });
         });
         mBinding.pipeBall.setOnItemClickListener(() -> {
-            showDialog(getString(R.string.pipe_detail_ball), Boolean.valueOf(reqPipeInfo.BallChokLocation), (radioGroup, i) -> {
-                closeDialog();
+            showDialog(getString(R.string.pipe_detail_ball), Boolean.valueOf(reqPipeInfo.BallChokLocation),
+                    (radioGroup, i) -> {
+                        closeDialog();
 
-                switch (i) {
-                    case R.id.dialog_yes_rb:
-                        reqPipeInfo.BallChokLocation = "true";
-                        mBinding.pipeBall.setText("是");
-                        break;
-                    case R.id.dialog_no_rb:
-                        reqPipeInfo.BallChokLocation = "false";
-                        mBinding.pipeBall.setText("否");
-                        break;
-                }
+                        switch (i) {
+                            case R.id.dialog_yes_rb:
+                                reqPipeInfo.BallChokLocation = "true";
+                                mBinding.pipeBall.setText("是");
+                                break;
+                            case R.id.dialog_no_rb:
+                                reqPipeInfo.BallChokLocation = "false";
+                                mBinding.pipeBall.setText("否");
+                                break;
+                        }
 
-            });
+                    });
         });
         mBinding.pipeLeak.setOnItemClickListener(() -> {
-            showDialog(getString(R.string.pipe_detail_leak_age), Boolean.valueOf(reqPipeInfo.LeakageAssessment), (radioGroup, i) -> {
-                closeDialog();
+            showDialog(getString(R.string.pipe_detail_leak_age), Boolean.valueOf(reqPipeInfo.LeakageAssessment),
+                    (radioGroup, i) -> {
+                        closeDialog();
 
-                switch (i) {
-                    case R.id.dialog_yes_rb:
-                        reqPipeInfo.LeakageAssessment = "true";
-                        mBinding.pipeLeak.setText("是");
-                        break;
-                    case R.id.dialog_no_rb:
-                        reqPipeInfo.LeakageAssessment = "false";
-                        mBinding.pipeLeak.setText("否");
-                        break;
-                }
+                        switch (i) {
+                            case R.id.dialog_yes_rb:
+                                reqPipeInfo.LeakageAssessment = "true";
+                                mBinding.pipeLeak.setText("是");
+                                break;
+                            case R.id.dialog_no_rb:
+                                reqPipeInfo.LeakageAssessment = "false";
+                                mBinding.pipeLeak.setText("否");
+                                break;
+                        }
 
-            });
+                    });
         });
 
         mBinding.modifyPipe.setOnClickListener(view -> {
@@ -173,7 +189,7 @@ public class PipeAddFragment extends BaseFragment {
             String id = mBinding.pipeId.getText();
             String name = mBinding.pipeName.getText();
             String sortId = mBinding.pipeSortId.getText();
-            String pcId = mBinding.pipePc.getText();
+//            String pcId = mBinding.pipePc.getText();
             String length = mBinding.pipeLength.getText();
             String materail = mBinding.pipeMaterial.getText();
             String company = mBinding.pipeCompany.getText();
@@ -184,10 +200,16 @@ public class PipeAddFragment extends BaseFragment {
             reqPipeInfo.PipeId = id;
             reqPipeInfo.Name = name;
             reqPipeInfo.SortID = sortId;
-            PipeCollections pc = new PipeCollections();
-            pc.setId(pcId);
+//            PipeCollections pc = new PipeCollections();
+////            pc.setId(pcId);
             List<PipeCollections> pcList = new ArrayList<>();
-            pcList.add(pc);
+            if (!mBinding.spSelectPipePc.getText().toString().equals("单独管线")) {
+                for (PipeCollections pipeCollections : pipeCollectionsList) {
+                    if (pipeCollections.getName().equals(mBinding.spSelectPipePc.getText().toString())) {
+                        pcList.add(pipeCollections);
+                    }
+                }
+            }
             reqPipeInfo.PipeCollectID = pcList;
             reqPipeInfo.Length = length;
             reqPipeInfo.PipeMaterial = materail;
@@ -196,8 +218,8 @@ public class PipeAddFragment extends BaseFragment {
             reqPipeInfo.Speed = speed;
             reqPipeInfo.LeakCheckGap = minTime;
             List<ReqSiteBean> reqSiteBeans = new ArrayList<>();
-            for (SiteBean bean:siteList){
-                if (bean.Name.equals(mBinding.spSelectStartSite.getText().toString())){
+            for (SiteBean bean : siteList) {
+                if (bean.Name.equals(mBinding.spSelectStartSite.getText().toString())) {
                     reqPipeInfo.StartSiteId = String.valueOf(bean.SiteId);
                     ReqSiteBean reqSiteBean = new ReqSiteBean();
                     reqSiteBean.toSiteBean(bean);
@@ -252,6 +274,7 @@ public class PipeAddFragment extends BaseFragment {
         pipeViewModel = ViewModelProviders.of(this).get(PipeViewModel.class);
         siteViewModel = ViewModelProviders.of(this).get(SiteViewModel.class);
         pluginViewModel = ViewModelProviders.of(this).get(PluginViewModel.class);
+        pipeCollectionsViewModel = ViewModelProviders.of(this).get(PipeCollectionsViewModel.class);
     }
 
     @Override
@@ -275,14 +298,16 @@ public class PipeAddFragment extends BaseFragment {
 
         if (!siteViewModel.getmObservableSiteInfos().hasObservers()) {
             siteViewModel.getmObservableSiteInfos().observe(this, siteBeans -> {
-                if (null != siteBeans) {
-                    if (siteBeans.size() > 0) {
-                        siteList.addAll(siteBeans);
-                        for (SiteBean siteBean:siteList){
-                            siteName.add(siteBean.Name);
+                if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                    if (null != siteBeans) {
+                        if (siteBeans.size() > 0) {
+                            siteList.addAll(siteBeans);
+                            for (SiteBean siteBean : siteList) {
+                                siteName.add(siteBean.Name);
+                            }
+                            mBinding.spSelectStartSite.attachDataSource(siteName);
+                            mBinding.spSelectEndSite.attachDataSource(siteName);
                         }
-                        mBinding.spSelectStartSite.attachDataSource(siteName);
-                        mBinding.spSelectEndSite.attachDataSource(siteName);
                     }
                 }
             });
@@ -290,8 +315,10 @@ public class PipeAddFragment extends BaseFragment {
 
         if (!siteViewModel.getmObservableSiteNum().hasObservers()) {
             siteViewModel.getmObservableSiteNum().observe(this, integer -> {
-                if (null != integer) {
-                    getDatas(0, integer);
+                if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                    if (null != integer) {
+                        getSiteDatas(0, integer);
+                    }
                 }
             });
         }
@@ -322,10 +349,41 @@ public class PipeAddFragment extends BaseFragment {
             reqAllPlugin.setDataSource("pipe");
             pluginViewModel.reqAllPipe(reqAllPlugin);
         }
+
+        if (!pipeCollectionsViewModel.getmObservableAllPC().hasObservers()) {
+            pipeCollectionsViewModel.getmObservableAllPC().observe(this, pipeCollections -> {
+                if (this.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+
+                    if (null != pipeCollections) {
+                        if (pipeCollections.size() > 0) {
+                            pipeCollectionsList.addAll(pipeCollections);
+                            for (PipeCollections pipeCollections1 : pipeCollections) {
+                                pcName.add(pipeCollections1.getName());
+                            }
+//                            mBinding.spSelectPipePc.attachDataSource(pcName);
+                        }
+                    }
+                }
+            });
+        }
+
+        if (!pipeCollectionsViewModel.getmObservableNum().hasObservers()) {
+            pipeCollectionsViewModel.getmObservableNum().observe(this, integer -> {
+                if (this.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                    if (null != integer) {
+                        getPcDatas(0, integer);
+                    }
+                }
+            });
+        }
+
+        if (null == pipeCollectionsList || pipeCollectionsList.size() <= 0) {
+            pipeCollectionsViewModel.reqPcNum();
+        }
     }
 
 
-    private void getDatas(int formIndex, int toIndex) {
+    private void getSiteDatas(int formIndex, int toIndex) {
         if (toIndex <= 0) {
             return;
         }
@@ -334,7 +392,19 @@ public class PipeAddFragment extends BaseFragment {
         reqSiteInfos.setStartIndex(String.valueOf(formIndex));
         reqSiteInfos.setNumberOfRecords(String.valueOf(toIndex));
 
-        curDisposable = siteViewModel.reqAllSite(reqSiteInfos);
+        siteViewModel.reqAllSite(reqSiteInfos);
     }
 
+    private void getPcDatas(int formIndex, int toIndex) {
+        if (toIndex <= 0) {
+            return;
+        }
+
+        ReqAllPc reqAllPc = new ReqAllPc();
+        reqAllPc.setStartIndex(String.valueOf(formIndex));
+        reqAllPc.setNumberOfRecords(String.valueOf(toIndex));
+        reqAllPc.setPipeCollectionId("0");
+
+        pipeCollectionsViewModel.reqAllPc(reqAllPc);
+    }
 }

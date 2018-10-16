@@ -26,6 +26,7 @@ import com.barisetech.www.workmanage.base.BaseLoadMoreWrapper;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.bean.news.NewsInfo;
+import com.barisetech.www.workmanage.bean.site.ReqDelSiteInfo;
 import com.barisetech.www.workmanage.bean.site.ReqSiteInfos;
 import com.barisetech.www.workmanage.bean.site.SiteBean;
 import com.barisetech.www.workmanage.databinding.FragmentSiteBinding;
@@ -146,18 +147,32 @@ public class SiteFragment extends BaseFragment implements View.OnClickListener{
         siteAdapter.setOnItemLongClickListener((view, position) -> {
             QPopuWindow.getInstance(getActivity()).builder
                     .bindView(view,0)
-                    .setPopupItemList(new String[]{"全选","删除"})
+                    .setPopupItemList(new String[]{"添加管线", "编辑站点", "删除站点"})
                     .setPointers(mPoint.x,mPoint.y)
                     .setOnPopuListItemClickListener(new QPopuWindow.OnPopuListItemClickListener() {
                         @Override
-                        public void onPopuListItemClick(View anchorView, int anchorViewPosition, int position) {
-                            switch (position){
+                        public void onPopuListItemClick(View anchorView, int anchorViewPosition, int p) {
+                            switch (p){
                                 case 0:
-                                    mBinding.longMenu.setVisibility(View.VISIBLE);
-                                    mBinding.selectAll.setText("全选");
-                                    flag = false;
-                                    siteAdapter.setFlag(siteAdapter.SHOW_ALL);
-                                    loadMoreWrapper.notifyDataSetChanged();
+//                                    mBinding.longMenu.setVisibility(View.VISIBLE);
+//                                    mBinding.selectAll.setText("全选");
+//                                    flag = false;
+//                                    siteAdapter.setFlag(siteAdapter.SHOW_ALL);
+//                                    loadMoreWrapper.notifyDataSetChanged();
+                                    EventBusMessage addPipe = new EventBusMessage(PipeAddFragment.TAG);
+                                    EventBus.getDefault().post(addPipe);
+                                    break;
+                                case 1:
+                                    EventBusMessage modify = new EventBusMessage(ModifySiteFragment.TAG);
+                                    modify.setArg1(siteList.get(position));
+                                    EventBus.getDefault().post(modify);
+                                    break;
+                                case 2:
+                                    ReqDelSiteInfo reqDelSiteInfo = new ReqDelSiteInfo();
+                                    SiteBean siteBean = siteList.get(position);
+                                    reqDelSiteInfo.setSiteId(String.valueOf(siteBean.SiteId));
+                                    siteViewModel.reqDelSite(reqDelSiteInfo);
+                                    break;
                             }
                         }
                     }).show();
@@ -221,9 +236,9 @@ public class SiteFragment extends BaseFragment implements View.OnClickListener{
                             loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_END);
                         }
                     } else {
-                        if (null !=siteList && siteList.size() > 0) {
+//                        if (null !=siteList && siteList.size() > 0) {
                             loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_END);
-                        }
+//                        }
                     }
                 }
             });
@@ -246,16 +261,29 @@ public class SiteFragment extends BaseFragment implements View.OnClickListener{
             });
         }
 
+        if (!siteViewModel.getmObservableSiteDel().hasObservers()) {
+            siteViewModel.getmObservableSiteDel().observe(this, flag -> {
+                if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                    if (null != flag) {
+                        if (flag) {
+                            ToastUtil.showToast("删除成功");
+                            getActivity().onBackPressed();
+                        } else {
+                            ToastUtil.showToast("删除失败");
+                        }
+                    } else {
+                        ToastUtil.showToast("删除失败");
+                    }
+                }
+            });
+        }
+
         if (null == siteList || siteList.size() <= 0) {
            getSiteNums();
         }
 
     }
-    @Override
-    public void onPause() {
-        super.onPause();
-        siteViewModel.getmObservableSiteInfos().setValue(null);
-    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();

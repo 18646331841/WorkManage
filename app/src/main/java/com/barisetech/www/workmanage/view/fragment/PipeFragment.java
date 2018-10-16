@@ -4,6 +4,7 @@ package com.barisetech.www.workmanage.view.fragment;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -21,12 +22,16 @@ import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.bean.pipe.PipeInfo;
 import com.barisetech.www.workmanage.bean.pipe.ReqAllPipe;
+import com.barisetech.www.workmanage.bean.pipe.ReqDeletePipe;
 import com.barisetech.www.workmanage.databinding.FragmentPipeBinding;
 import com.barisetech.www.workmanage.utils.DisplayUtil;
 import com.barisetech.www.workmanage.utils.LogUtil;
 import com.barisetech.www.workmanage.viewmodel.PipeViewModel;
+import com.barisetech.www.workmanage.widget.QPopuWindow;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +50,8 @@ public class PipeFragment extends BaseFragment {
     //每次加载个数
     private static final int PAGE_COUNT = 10;
     private int maxNum;
+
+    private Point mPoint = new Point();
 
     public PipeFragment() {
         // Required empty public constructor
@@ -72,6 +79,10 @@ public class PipeFragment extends BaseFragment {
         toolbarInfo.setTitle(getString(R.string.title_pipe));
         toolbarInfo.setTwoText("新增");
         observableToolbar.set(toolbarInfo);
+
+        if (!EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().register(this);
+        }
 
         initView();
 
@@ -121,6 +132,46 @@ public class PipeFragment extends BaseFragment {
                 }
             }
         });
+
+        pipeAdapter.setOnItemLongClickListener((view, position) -> {
+            PipeInfo pipeInfo = pipeInfoList.get(position);
+            QPopuWindow.getInstance(getActivity()).builder
+                    .bindView(view,0)
+                    .setPopupItemList(new String[]{"编辑管线", "删除管线", "创建管线工况", "创建管线盲区"})
+                    .setPointers(mPoint.x,mPoint.y)
+                    .setOnPopuListItemClickListener(new QPopuWindow.OnPopuListItemClickListener() {
+                        @Override
+                        public void onPopuListItemClick(View anchorView, int anchorViewPosition, int p) {
+                            switch (p){
+                                case 0:
+                                    EventBusMessage eventBusMessage = new EventBusMessage(PipeModifyFragment.TAG);
+                                    eventBusMessage.setArg1(pipeInfo);
+                                    EventBus.getDefault().post(eventBusMessage);
+                                    break;
+                                case 1:
+                                    ReqDeletePipe reqDeletePipe = new ReqDeletePipe();
+                                    reqDeletePipe.setPipeId(String.valueOf(pipeInfo.PipeId));
+                                    pipeViewModel.reqDeletePipe(reqDeletePipe);
+                                    break;
+                                case 2:
+                                    EventBusMessage pw = new EventBusMessage(PipeWorkAddFragment.TAG);
+                                    pw.setArg1(pipeInfo.PipeId);
+                                    EventBus.getDefault().post(pw);
+                                    break;
+                                case 3:
+                                    EventBusMessage pb = new EventBusMessage(PipeLindAreaAddFragment.TAG);
+                                    pb.setArg1(pipeInfo.PipeId);
+                                    EventBus.getDefault().post(pb);
+                                    break;
+                            }
+                        }
+                    }).show();
+        });
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void PointEventBus(Point point) {
+        mPoint = point;
     }
 
     private void updateRecyclerView(int fromIndex, int toIndex) {
@@ -194,5 +245,12 @@ public class PipeFragment extends BaseFragment {
         if (null == pipeInfoList || pipeInfoList.size() <= 0) {
             getPipeNums();
         }
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

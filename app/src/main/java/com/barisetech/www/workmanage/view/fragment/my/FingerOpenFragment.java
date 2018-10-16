@@ -72,7 +72,7 @@ public class FingerOpenFragment extends BaseFragment {
         mBinding.fingerSwitch.setOnClickListener(v -> {
             if (flag){
                 FingerprintUtil.getInstance().callFingerprint(onCallBackListenr);
-                showSingleButtonDialog("请验证你的指纹", R.mipmap.ic_launcher_round, null, "取消", new View.OnClickListener() {
+                showSingleButtonDialog("请验证你的指纹", R.drawable.fp_verification, null, "取消", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         mDialog.dismiss();

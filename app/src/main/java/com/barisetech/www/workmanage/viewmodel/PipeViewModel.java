@@ -40,6 +40,7 @@ public class PipeViewModel extends BaseViewModel implements ModelCallBack {
     private MutableLiveData<List<PipeInfo>> mObservableAllPipe;
     private MutableLiveData<Integer> mObservablePipeNum;
     private MutableLiveData<String> mObservableAdd;
+    private MutableLiveData<Boolean> mObservableDelete;
 
     public PipeViewModel(@NonNull Application application) {
         super(application);
@@ -54,6 +55,8 @@ public class PipeViewModel extends BaseViewModel implements ModelCallBack {
         mObservablePipeNum.setValue(null);
         mObservableAdd = new MutableLiveData<>();
         mObservableAdd.setValue(null);
+        mObservableDelete = new MutableLiveData<>();
+        mObservableDelete.setValue(null);
     }
 
     /**
@@ -119,6 +122,9 @@ public class PipeViewModel extends BaseViewModel implements ModelCallBack {
                     case PipeModel.TYPE_ADD:
                         mObservableAdd.setValue((String) typeResponse.data);
                         break;
+                    case PipeModel.TYPE_DELETE:
+                        mObservableDelete.setValue((Boolean) typeResponse.data);
+                        break;
                 }
             });
         }
@@ -144,6 +150,9 @@ public class PipeViewModel extends BaseViewModel implements ModelCallBack {
                     case PipeModel.TYPE_ADD:
                         mObservableAdd.setValue(null);
                         break;
+                    case PipeModel.TYPE_DELETE:
+                        mObservableDelete.setValue(false);
+                        break;
                 }
             });
         }
@@ -159,5 +168,9 @@ public class PipeViewModel extends BaseViewModel implements ModelCallBack {
 
     public MutableLiveData<String> getmObservableAdd() {
         return mObservableAdd;
+    }
+
+    public MutableLiveData<Boolean> getmObservableDelete() {
+        return mObservableDelete;
     }
 }

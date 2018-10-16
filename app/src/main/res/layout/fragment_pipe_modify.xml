@@ -66,16 +66,42 @@
                     order:ddd_is_indicate="false"
                     order:ddd_label="@string/pipe_detail_sort_id"/>
 
-                <com.barisetech.www.workmanage.widget.FormView
-                    android:id="@+id/pipe_pc"
+                <!--<com.barisetech.www.workmanage.widget.FormView-->
+                    <!--android:id="@+id/pipe_pc"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--app:setText="@{myFragment.pipeInfoField.PipeCollectID.Id}"-->
+                    <!--order:ddd_content_enable="true"-->
+                    <!--order:ddd_content_hint="@string/pipe_detail_belong_pc_i"-->
+                    <!--order:ddd_is_bottom_line="false"-->
+                    <!--order:ddd_is_indicate="false"-->
+                    <!--order:ddd_label="@string/pipe_detail_belong_pc"/>-->
+
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:setText="@{myFragment.pipeInfoField.PipeCollectID.Id}"
-                    order:ddd_content_enable="true"
-                    order:ddd_content_hint="@string/pipe_detail_belong_pc_i"
-                    order:ddd_is_bottom_line="false"
-                    order:ddd_is_indicate="false"
-                    order:ddd_label="@string/pipe_detail_belong_pc"/>
+                    android:layout_height="@dimen/dp_45"
+                    android:paddingLeft="28dp"
+                    android:background="@color/white"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/pipe_pc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="24dp"
+                        android:gravity="center_vertical"
+                        android:text="@string/pipe_detail_belong_pc"
+                        android:textColor="#262626"
+                        android:textSize="@dimen/dp_16"/>
+
+                    <org.angmarch.views.NiceSpinner
+                        android:id="@+id/sp_select_pipe_pc"
+                        android:layout_width="@dimen/dp_200"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        app:dropDownListPaddingBottom="@dimen/dp_50"/>
+
+                </RelativeLayout>
 
                 <com.barisetech.www.workmanage.widget.FormView
                     android:id="@+id/pipe_length"
@@ -267,9 +293,20 @@
                     android:layout_height="@dimen/dp_50"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/dp_30"
-                    android:layout_marginBottom="@dimen/dp_40"
                     android:background="@drawable/shane_button_corners"
                     android:text="@string/pipe_modify_confirm_modify"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_18"/>
+
+                <Button
+                    android:id="@+id/delete_pipe"
+                    android:layout_width="@dimen/dp_315"
+                    android:layout_height="@dimen/dp_50"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_marginBottom="@dimen/dp_40"
+                    android:background="@drawable/shane_button_corners_red"
+                    android:text="@string/pipe_modify_confirm_delete"
                     android:textColor="@color/white"
                     android:textSize="@dimen/sp_18"/>
 

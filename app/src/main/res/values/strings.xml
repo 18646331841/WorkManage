@@ -177,6 +177,7 @@
 
     <string name="title_pipe_modify">编辑管线</string>
     <string name="pipe_modify_confirm_modify">确认修改</string>
+    <string name="pipe_modify_confirm_delete">删除管线</string>
 
     <string name="title_pipe_add">新增管线</string>
     <string name="pipe_modify_confirm_add">确认新增</string>
@@ -196,12 +197,12 @@
     <string name="pipe_detail_name">管线名称</string>
     <string name="pipe_detail_sort_id">排序ID</string>
     <string name="pipe_detail_belong_pc">所属管线集合</string>
-    <string name="pipe_detail_length">管道长度</string>
+    <string name="pipe_detail_length">管道长度(km)</string>
     <string name="pipe_detail_material">材质</string>
     <string name="pipe_detail_company">所属公司</string>
     <string name="pipe_detail_start_site">起始站点</string>
     <string name="pipe_detail_end_site">末站站点</string>
-    <string name="pipe_detail_speed">声速</string>
+    <string name="pipe_detail_speed">声速(m/s)</string>
     <string name="pipe_detail_min_time">最小时间间隔</string>
     <string name="pipe_detail_is_algorithm">算法</string>
     <string name="pipe_detail_is_test">测试模式</string>

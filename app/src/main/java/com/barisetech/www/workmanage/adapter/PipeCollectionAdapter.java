@@ -20,6 +20,7 @@ public class PipeCollectionAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private List<PipeCollections> mList;
     private Context ctx;
     private ItemCallBack callBack;
+    private SiteAdapter.OnItemLongClickListener mOnItemClickListener;
 
     public PipeCollectionAdapter(List<PipeCollections> list, Context context, ItemCallBack itemCallBack){
         this.mList = list;
@@ -46,6 +47,15 @@ public class PipeCollectionAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             }
         });
 
+        viewHolder.l_item.setOnLongClickListener(view -> {
+            mOnItemClickListener.onItemClick(view,position);
+            return true;
+        });
+
+    }
+
+    public void setOnItemLongClickListener(SiteAdapter.OnItemLongClickListener onItemClickListener) {
+        mOnItemClickListener = onItemClickListener;
     }
 
     @Override
@@ -63,5 +73,9 @@ public class PipeCollectionAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             tv_pipe_name = itemView.findViewById(R.id.item_data);
             l_item = itemView.findViewById(R.id.l_item);
         }
+    }
+
+    public interface OnItemLongClickListener {
+        void onItemClick(View view, int position);
     }
 }
