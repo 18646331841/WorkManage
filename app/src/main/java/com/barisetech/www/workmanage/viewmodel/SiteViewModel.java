@@ -140,7 +140,7 @@ public class SiteViewModel extends BaseViewModel implements ModelCallBack {
             mDelivery.post(() -> {
                 switch (failResponse.type) {
                     case SiteModel.TYPE_NUM:
-                        mObservableSiteNum.setValue(0);
+                        mObservableSiteNum.setValue(null);
                         break;
                     case SiteModel.TYPE_ALL:
                         mObservableSiteInfos.setValue(null);
