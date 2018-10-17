@@ -124,6 +124,16 @@ public class WaveFormFragment extends BaseFragment {
         });
     }
 
+    private void hideWaveView() {
+        mBinding.chartStartSite.setVisibility(View.GONE);
+        mBinding.chartEndSite.setVisibility(View.GONE);
+    }
+
+    private void showWaveView() {
+        mBinding.chartStartSite.setVisibility(View.VISIBLE);
+        mBinding.chartEndSite.setVisibility(View.VISIBLE);
+    }
+
     @Override
     public void bindViewModel() {
         waveViewModel = ViewModelProviders.of(this).get(WaveViewModel.class);
@@ -196,6 +206,14 @@ public class WaveFormFragment extends BaseFragment {
             }
         }
 
+        if (startMapData != null && startMapData.size() > 0) {
+            mBinding.chartStartSite.setVisibility(View.VISIBLE);
+        }
+
+        if (endMapData != null && endMapData.size() > 0) {
+            mBinding.chartEndSite.setVisibility(View.VISIBLE);
+        }
+
         ChartUtil.setChartViewData(startMapData, mBinding.chartStartSite);
         ChartUtil.setChartViewData(endMapData, mBinding.chartEndSite);
     }
@@ -232,6 +250,8 @@ public class WaveFormFragment extends BaseFragment {
             return;
         }
 
+        hideWaveView();
+
         EventBusMessage eventBusMessage = new EventBusMessage(BaseConstant.PROGRESS_SHOW);
         EventBus.getDefault().post(eventBusMessage);
 
@@ -267,6 +287,8 @@ public class WaveFormFragment extends BaseFragment {
         if (startSiteId < 0 || endSiteId < 0) {
             return;
         }
+
+        hideWaveView();
 
         EventBusMessage eventBusMessage = new EventBusMessage(BaseConstant.PROGRESS_SHOW);
         EventBus.getDefault().post(eventBusMessage);

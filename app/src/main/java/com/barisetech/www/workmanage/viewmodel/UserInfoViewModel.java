@@ -94,10 +94,10 @@ public class UserInfoViewModel extends BaseViewModel implements ModelCallBack {
             mDelivery.post(() -> {
                 switch (failResponse.type) {
                     case UserInfoModel.TYPE_USER:
-                        mObservableModifyUser.setValue(null);
+                        mObservableModifyUser.setValue(false);
                         break;
                     case UserInfoModel.TYPE_PWD:
-                        mObservableModifyPwd.setValue(null);
+                        mObservableModifyPwd.setValue(false);
                 }
             });
         }

@@ -141,6 +141,9 @@ public class AlarmAnalysisViewModel extends BaseViewModel implements ModelCallBa
             }
             mDelivery.post(() -> {
                 switch (failResponse.type) {
+                    case AlarmAnalysisModel.TYPE_ADD:
+                        mObservableAdd.setValue(0);
+                        break;
                     case AlarmAnalysisModel.TYPE_ALL:
                         mObservableAll.setValue(null);
                         break;

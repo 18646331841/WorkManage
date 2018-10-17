@@ -139,7 +139,7 @@ public class MainActivity extends BaseActivity {
 //            //大屏设备界面，左右两个fragment
         EventBusMessage eventBusMessage = new EventBusMessage(tag);
         eventBusMessage.setArg1(arg1);
-        eventBusMessage.setArg1(arg2);
+        eventBusMessage.setArg2(arg2);
         LogUtil.d(TAG, "tag = " + tag + " arg1 = " + arg1);
         navigationFragment = NavigationFragment.newInstance(eventBusMessage);
         transaction.add(R.id.fragment_navigation, navigationFragment, NavigationFragment.TAG);
@@ -176,7 +176,7 @@ public class MainActivity extends BaseActivity {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         EventBusMessage eventBusMessage = new EventBusMessage(tag);
         eventBusMessage.setArg1(arg1);
-        eventBusMessage.setArg1(arg2);
+        eventBusMessage.setArg2(arg2);
         LogUtil.d(TAG, "tag = " + tag + " arg1 = " + arg1 + " arg2 = " + arg2);
         navigationFragment = NavigationFragment.newInstance(eventBusMessage);
         transaction.replace(R.id.fragment_navigation, navigationFragment, NavigationFragment.TAG);

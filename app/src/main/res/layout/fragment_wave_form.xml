@@ -142,6 +142,7 @@
                     android:id="@+id/chart_start_site"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_300"
+                    android:visibility="gone"
                     android:layout_marginTop="@dimen/dp_10"
                     android:layout_marginLeft="@dimen/dp_10"/>
 
@@ -171,6 +172,7 @@
                     android:id="@+id/chart_end_site"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_300"
+                    android:visibility="gone"
                     android:layout_marginTop="@dimen/dp_10"
                     android:layout_marginLeft="@dimen/dp_10"
                     android:layout_marginBottom="@dimen/dp_20"/>

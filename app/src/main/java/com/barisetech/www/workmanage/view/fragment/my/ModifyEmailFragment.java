@@ -1,5 +1,6 @@
 package com.barisetech.www.workmanage.view.fragment.my;
 
+import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -10,13 +11,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.barisetech.www.workmanage.R;
+import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseFragment;
+import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.ReqModifyUser;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.bean.UserInfo;
 import com.barisetech.www.workmanage.databinding.FragmentModifyEmailBinding;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.viewmodel.UserInfoViewModel;
+
+import org.greenrobot.eventbus.EventBus;
 
 public class ModifyEmailFragment extends BaseFragment {
 
@@ -63,6 +68,7 @@ public class ModifyEmailFragment extends BaseFragment {
 
     private void initView() {
         mBinding.emailSave.setOnClickListener(view -> {
+            EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_SHOW));
             ReqModifyUser user = new ReqModifyUser();
             user.setTel(userInfo.getTel());
             user.setEmail(mBinding.modifyEmail.getText());
@@ -79,17 +85,21 @@ public class ModifyEmailFragment extends BaseFragment {
 
     @Override
     public void subscribeToModel() {
-        userInfoViewModel.getmObservableModifyPwd().observe(this,aBoolean -> {
-            if (null != aBoolean){
-                if (aBoolean){
-                    ToastUtil.showToast("修改成功");
-                    getActivity().onBackPressed();
+        if (!userInfoViewModel.getmObservableModifyUser().hasObservers()) {
+            userInfoViewModel.getmObservableModifyUser().observe(this,aBoolean -> {
+                if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                    if (null != aBoolean){
+                        if (aBoolean){
+                            ToastUtil.showToast("修改成功");
+                            getActivity().onBackPressed();
 
-                }else {
-                    ToastUtil.showToast("修改失败");
+                        }else {
+                            ToastUtil.showToast("修改失败");
+                        }
+                    }
                 }
-            }
-        });
+            });
+        }
 
     }
 }

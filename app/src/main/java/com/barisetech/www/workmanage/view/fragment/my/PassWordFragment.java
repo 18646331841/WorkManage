@@ -1,5 +1,6 @@
 package com.barisetech.www.workmanage.view.fragment.my;
 
+import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -12,13 +13,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.barisetech.www.workmanage.R;
+import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseFragment;
+import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.ReqModifyPwd;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.databinding.FragmentPassWordBinding;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.view.LoginActivity;
 import com.barisetech.www.workmanage.viewmodel.UserInfoViewModel;
+
+import org.greenrobot.eventbus.EventBus;
 
 public class PassWordFragment extends BaseFragment {
 
@@ -59,6 +64,8 @@ public class PassWordFragment extends BaseFragment {
                 if (!mBinding.newPwd.getText().equals(mBinding.submitPwd.getText())){
                     ToastUtil.showToast("新密码和确认密码不一致");
                 }else {
+                    EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_SHOW));
+
                     ReqModifyPwd reqModifyPwd = new ReqModifyPwd();
                     reqModifyPwd.setMyNewPsd(mBinding.newPwd.getText());
                     reqModifyPwd.setMyPsd(mBinding.oldPwd.getText());
@@ -77,20 +84,23 @@ public class PassWordFragment extends BaseFragment {
 
     @Override
     public void subscribeToModel() {
-        userInfoViewModel.getmObservableModifyPwd().observe(this,aBoolean -> {
-            if (null != aBoolean){
-                if (aBoolean){
-                    ToastUtil.showToast("修改成功，请重新登录");
-                    Intent itent = new Intent(getContext(), LoginActivity.class);
-                    startActivity(itent);
-                    if (getActivity()!=null){
-                        getActivity().finish();
+        if (!userInfoViewModel.getmObservableModifyPwd().hasObservers()) {
+            userInfoViewModel.getmObservableModifyPwd().observe(this, aBoolean -> {
+                if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                    if (null != aBoolean) {
+                        if (aBoolean) {
+                            ToastUtil.showToast("修改成功，请重新登录");
+                            Intent itent = new Intent(getContext(), LoginActivity.class);
+                            startActivity(itent);
+                            if (getActivity() != null) {
+                                getActivity().finish();
+                            }
+                        } else {
+                            ToastUtil.showToast("修改失败");
+                        }
                     }
-                }else {
-                    ToastUtil.showToast("修改失败");
                 }
-            }
-        });
-
+            });
+        }
     }
 }
