@@ -76,7 +76,7 @@ public class AuthBean {
         }
     }
 
-    @BindingAdapter({"bind:completed", "bind:type"})
+    @BindingAdapter({"completed", "type"})
     public static void setCompletedColor(TextView view, boolean completed, int type) {
         if (type == TYPE_PIPETAP) {
             //只有阀门需要
@@ -88,7 +88,7 @@ public class AuthBean {
         }
     }
 
-    @BindingAdapter({"bind:completed", "bind:type"})
+    @BindingAdapter({"completed", "type"})
     public static void setCompleted(Button button, boolean completed, int type) {
         if (type == TYPE_PIPETAP) {
             //只有阀门需要
@@ -100,7 +100,7 @@ public class AuthBean {
         }
     }
 
-    @BindingAdapter({"bind:completed", "bind:state", "bind:type"})
+    @BindingAdapter({"completed", "state", "type"})
     public static void setCompleted(TextView view, boolean completed, boolean state, int type) {
         if (type == TYPE_PIPETAP) {
             //只有阀门需要

@@ -407,7 +407,7 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
         String startTime;
         String lastTime = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_LAST_TIME_NEWINFO, "");
         if (TextUtils.isEmpty(lastTime)) {
-            String loginTime = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_LOGIN_TIME, "");
+            String loginTime = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_FIRST_LOGIN_TIME, "");
             startTime = loginTime;
         } else {
             startTime = lastTime;

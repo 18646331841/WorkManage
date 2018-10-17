@@ -1,6 +1,7 @@
 package com.barisetech.www.workmanage.model;
 
 import android.arch.lifecycle.LiveData;
+import android.text.TextUtils;
 
 import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseResponse;
@@ -211,8 +212,11 @@ public class LoginModel {
                             SharedPreferencesUtil.getInstance().setString(BaseConstant.SP_ROLE, tokenInfo.getRole().trim());
                             SharedPreferencesUtil.getInstance().setString(BaseConstant.SP_COMPANY, tokenInfo.getCompany().trim());
                             SharedPreferencesUtil.getInstance().setString(BaseConstant.SP_REFRESH_TOKEN, reqAuth.Token);
-                            SharedPreferencesUtil.getInstance().setString(BaseConstant.SP_LOGIN_TIME, TimeUtil
-                                    .ms2Date(System.currentTimeMillis()));
+                            if (TextUtils.isEmpty(SharedPreferencesUtil.getInstance().getString(BaseConstant
+                                    .SP_FIRST_LOGIN_TIME, ""))) {
+                                SharedPreferencesUtil.getInstance().setString(BaseConstant.SP_FIRST_LOGIN_TIME, TimeUtil
+                                        .ms2Date(System.currentTimeMillis()));
+                            }
                         } else {
                             modelCallBack.fail(Config.ERROR_LOGIN_FAILED);
                             LogUtil.d(TAG, "网络获取token失败---" + tokenInfo.toString());

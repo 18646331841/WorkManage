@@ -67,7 +67,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
                 @Override
                 public void onClick(View view) {
                     mDialog.dismiss();
-                    clearMemory();
+//                    clearMemory();
                     EventBus.getDefault().post(new EventBusMessage(LoginActivity.TAG));
                 }
             }, view1 -> mDialog.dismiss());

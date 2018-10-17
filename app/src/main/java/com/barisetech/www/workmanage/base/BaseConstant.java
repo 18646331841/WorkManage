@@ -79,8 +79,8 @@ public class BaseConstant {
     public static final String SP_COMPANY = "company";
     //用户token
     public static final String SP_TOKEN = "token";
-    //登录时间
-    public static final String SP_LOGIN_TIME = "login_time";
+    //第一次登录时间
+    public static final String SP_FIRST_LOGIN_TIME = "first_login_time";
     //access token
     public static final String SP_ACCESS_TOKEN = "access_token";
     //refresh token
