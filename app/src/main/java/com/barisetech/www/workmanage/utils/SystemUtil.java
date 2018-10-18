@@ -46,4 +46,8 @@ public class SystemUtil {
             return false;
         }
     }
+
+    public static String getBearer() {
+        return "Bearer " + SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_ACCESS_TOKEN, "");
+    }
 }

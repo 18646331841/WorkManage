@@ -1,5 +1,6 @@
 package com.barisetech.www.workmanage.http.api;
 
+import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseResponse;
 import com.barisetech.www.workmanage.bean.map.pipe.PipeTrackInfo;
 import com.barisetech.www.workmanage.bean.map.pipe.ReqPipeTrack;
@@ -8,6 +9,7 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 
 /**
@@ -21,5 +23,6 @@ public interface MapService {
      * @return
      */
     @POST("/api/MapPath")
-    Observable<BaseResponse<List<PipeTrackInfo>>> getPipeTrack(@Body ReqPipeTrack reqPipeTrack);
+    Observable<BaseResponse<List<PipeTrackInfo>>> getPipeTrack(@Header(BaseConstant.AUTH_HEADER) String Bearer, @Body
+            ReqPipeTrack reqPipeTrack);
 }

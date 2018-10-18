@@ -45,7 +45,7 @@ public class PipeModel extends BaseModel {
      * @return
      */
     public Disposable reqPipeNum() {
-        Disposable disposable = pipeService.getPipeNum(mToken)
+        Disposable disposable = pipeService.getPipeNum(getBearer(), mToken)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<Integer>() {
@@ -86,7 +86,7 @@ public class PipeModel extends BaseModel {
         if (reqAddPipe == null) {
             return null;
         }
-        Disposable disposable = pipeService.addOrModifyPipe(mToken, reqAddPipe)
+        Disposable disposable = pipeService.addOrModifyPipe(getBearer(), mToken, reqAddPipe)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<String>() {
@@ -128,7 +128,7 @@ public class PipeModel extends BaseModel {
             return null;
         }
 
-        Disposable disposable = pipeService.deletePipe(mToken, reqDeletePipe)
+        Disposable disposable = pipeService.deletePipe(getBearer(), mToken, reqDeletePipe)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<Boolean>() {
@@ -170,7 +170,7 @@ public class PipeModel extends BaseModel {
             return null;
         }
         reqAllPipe.setMachineCode(mToken);
-        Disposable disposable = pipeService.getAllPipe(reqAllPipe)
+        Disposable disposable = pipeService.getAllPipe(getBearer(), reqAllPipe)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<List<PipeInfo>>() {

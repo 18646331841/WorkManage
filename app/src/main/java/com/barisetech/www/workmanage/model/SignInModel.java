@@ -57,7 +57,7 @@ public class SignInModel extends BaseModel {
             return null;
         }
         reqGetSite.setMachineCode(mToken);
-        Disposable disposable = signInService.getSite(reqGetSite)
+        Disposable disposable = signInService.getSite(getBearer(), reqGetSite)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<TaskSiteBean>() {
@@ -99,7 +99,7 @@ public class SignInModel extends BaseModel {
         if (null == reqSignIn) {
             return null;
         }
-        Disposable disposable = signInService.checkIn(mToken, reqSignIn)
+        Disposable disposable = signInService.checkIn(getBearer(), mToken, reqSignIn)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<TaskSiteBean>() {
@@ -178,7 +178,7 @@ public class SignInModel extends BaseModel {
         Observable<List<ReqSignIn>> signObservable = Observable.fromIterable(reqSignIns)
                 .flatMap((Function<ReqSignIn, ObservableSource<BaseResponse<TaskSiteBean>>>) reqSignIn -> {
                     id = reqSignIn.id;
-                    return signInService.checkIn(mToken, reqSignIn);
+                    return signInService.checkIn(getBearer(), mToken, reqSignIn);
                 }).map(new Function<BaseResponse<TaskSiteBean>, ReqSignIn>() {
                     @Override
                     public ReqSignIn apply(BaseResponse<TaskSiteBean> taskSiteBeanBaseResponse) throws Exception {

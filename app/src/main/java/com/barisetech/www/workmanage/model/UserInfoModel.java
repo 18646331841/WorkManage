@@ -47,7 +47,7 @@ public class UserInfoModel extends BaseModel {
             return null;
         }
         reqModifyPwd.setMachineCode(mToken);
-        Disposable disposable = userInfoService.modifyPwd(reqModifyPwd)
+        Disposable disposable = userInfoService.modifyPwd(getBearer(), reqModifyPwd)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<Boolean>() {
@@ -90,7 +90,7 @@ public class UserInfoModel extends BaseModel {
             return null;
         }
         reqModifyUser.setMachineCode(mToken);
-        Disposable disposable = userInfoService.modifyUser(reqModifyUser)
+        Disposable disposable = userInfoService.modifyUser(getBearer(), reqModifyUser)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<Boolean>() {

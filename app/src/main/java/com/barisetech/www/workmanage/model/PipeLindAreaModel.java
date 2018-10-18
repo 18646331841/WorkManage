@@ -42,7 +42,7 @@ public class PipeLindAreaModel extends BaseModel {
      * @return
      */
     public Disposable reqPipeLindAreaNum() {
-        Disposable disposable = pipeblindAreaService.getPipelindAreaNum(mToken)
+        Disposable disposable = pipeblindAreaService.getPipelindAreaNum(getBearer(), mToken)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<Integer>() {
@@ -83,7 +83,7 @@ public class PipeLindAreaModel extends BaseModel {
         if (reqAddPipelindArea == null) {
             return null;
         }
-        Disposable disposable = pipeblindAreaService.addOrModifyPipelindArea(mToken, reqAddPipelindArea)
+        Disposable disposable = pipeblindAreaService.addOrModifyPipelindArea(getBearer(), mToken, reqAddPipelindArea)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<String>() {
@@ -124,7 +124,7 @@ public class PipeLindAreaModel extends BaseModel {
             return null;
         }
 
-        Disposable disposable = pipeblindAreaService.deletePipeLindArea(mToken, reqDeletePipeLindArea)
+        Disposable disposable = pipeblindAreaService.deletePipeLindArea(getBearer(), mToken, reqDeletePipeLindArea)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<Boolean>() {
@@ -166,7 +166,7 @@ public class PipeLindAreaModel extends BaseModel {
             return null;
         }
         reqAllPipelindArea.setMachineCode(mToken);
-        Disposable disposable = pipeblindAreaService.getAllPipeLindArea(reqAllPipelindArea)
+        Disposable disposable = pipeblindAreaService.getAllPipeLindArea(getBearer(), reqAllPipelindArea)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<List<PipeLindAreaInfo>>() {

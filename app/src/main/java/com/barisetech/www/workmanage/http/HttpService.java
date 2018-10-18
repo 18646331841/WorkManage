@@ -70,8 +70,8 @@ public class HttpService {
      * @return
      */
     public HttpService buildRetrofit(Map<String, String> headerMap) {
-        headerMap.put(BaseConstant.AUTH_HEADER, "Bearer " + SharedPreferencesUtil.getInstance().getString(BaseConstant
-                .SP_ACCESS_TOKEN, ""));
+//        headerMap.put(BaseConstant.AUTH_HEADER, "Bearer " + SharedPreferencesUtil.getInstance().getString(BaseConstant
+//                .SP_ACCESS_TOKEN, ""));
 
         // 创建 OKHttpClient
         OkHttpClient.Builder builder = new OkHttpClient.Builder();

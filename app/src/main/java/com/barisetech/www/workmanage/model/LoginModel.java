@@ -180,7 +180,8 @@ public class LoginModel {
                                 .getAccessToken());
                         reqAuth.Token = accessTokenInfo.getRefreshToken();
                         return HttpService.getInstance().buildRetrofit(headerMap).create
-                                (TokenService.class).getTokenInfo(accessTokenInfo.getRefreshToken(), reqAuth)
+                                (TokenService.class).getTokenInfo("Bearer " + accessTokenInfo.getAccessToken(),
+                                accessTokenInfo.getRefreshToken(), reqAuth)
                                 .onErrorReturnItem(new BaseResponse<>(-1, "", null));
                     }
                     return null;

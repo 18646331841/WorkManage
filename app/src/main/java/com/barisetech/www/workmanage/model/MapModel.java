@@ -43,7 +43,7 @@ public class MapModel extends BaseModel {
 
     public Disposable pipeTrack(ReqPipeTrack reqPipeTrack) {
         reqPipeTrack.setMachineCode(mToken);
-        ObserverCallBack<List<PipeTrackInfo>> disposable = mapService.getPipeTrack(reqPipeTrack)
+        ObserverCallBack<List<PipeTrackInfo>> disposable = mapService.getPipeTrack(getBearer(), reqPipeTrack)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<List<PipeTrackInfo>>() {
@@ -96,7 +96,7 @@ public class MapModel extends BaseModel {
                     reqPipeTrack.setMachineCode(mToken);
                     reqPipeTrack.setPipeId(pipeId);
                     key = pipeId;
-                    return mapService.getPipeTrack(reqPipeTrack).onErrorReturnItem(new
+                    return mapService.getPipeTrack(getBearer(), reqPipeTrack).onErrorReturnItem(new
                             BaseResponse<>(-1, "", null));
                 }).map((Function<BaseResponse<List<PipeTrackInfo>>, Integer>) listBaseResponse -> {
                     if (listBaseResponse != null) {

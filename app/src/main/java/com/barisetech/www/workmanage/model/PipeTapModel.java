@@ -43,7 +43,7 @@ public class PipeTapModel extends BaseModel {
 
     public Disposable getAll(ReqAllPipeTap reqAllPipeTap) {
         reqAllPipeTap.MachineCode = mToken;
-        ObserverCallBack<List<PipeTapInfo>> disposable = pipeTapService.getAll(reqAllPipeTap)
+        ObserverCallBack<List<PipeTapInfo>> disposable = pipeTapService.getAll(getBearer(), reqAllPipeTap)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<List<PipeTapInfo>>() {
@@ -76,7 +76,7 @@ public class PipeTapModel extends BaseModel {
     }
 
     public Disposable modify(ReqModifyPipeTap reqModifyPipeTap) {
-        ObserverCallBack<String> disposable = pipeTapService.modify(mToken, reqModifyPipeTap)
+        ObserverCallBack<String> disposable = pipeTapService.modify(getBearer(), mToken, reqModifyPipeTap)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<String>() {

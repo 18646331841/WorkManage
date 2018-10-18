@@ -1,5 +1,6 @@
 package com.barisetech.www.workmanage.http.api;
 
+import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseResponse;
 import com.barisetech.www.workmanage.bean.site.ReqAddSite;
 import com.barisetech.www.workmanage.bean.site.ReqDelSiteInfo;
@@ -16,6 +17,7 @@ import io.reactivex.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.HTTP;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -31,7 +33,8 @@ public interface TaskService {
      * @return
      */
     @POST("/api/PipeWorkTask")
-    Observable<BaseResponse<List<TaskBean>>> getAllTask(@Body ReqAllTask reqAllTask);
+    Observable<BaseResponse<List<TaskBean>>> getAllTask(@Header(BaseConstant.AUTH_HEADER) String Bearer, @Body
+            ReqAllTask reqAllTask);
 
     /**
      * 获取任务数量
@@ -40,7 +43,8 @@ public interface TaskService {
      * @return
      */
     @GET("/api/PipeWorkTask/{reqTaskNum}")
-    Observable<BaseResponse<Integer>> getTaskNum(@Path("reqTaskNum") String reqTaskNum);
+    Observable<BaseResponse<Integer>> getTaskNum(@Header(BaseConstant.AUTH_HEADER) String Bearer, @Path("reqTaskNum")
+            String reqTaskNum);
 
     /**
      * 添加任务
@@ -50,7 +54,8 @@ public interface TaskService {
      * @return
      */
     @PUT("/api/PipeWorkTask/{token}")
-    Observable<BaseResponse<String>> addTask(@Path("token") String token, @Body ReqAddTask reqAddTask);
+    Observable<BaseResponse<String>> addTask(@Header(BaseConstant.AUTH_HEADER) String Bearer, @Path("token") String
+            token, @Body ReqAddTask reqAddTask);
 
     /**
      * 删除站点
@@ -60,5 +65,6 @@ public interface TaskService {
      * @return
      */
     @HTTP(method = "DELETE", path = "/api/PipeWorkTask/{token}", hasBody = true)
-    Observable<BaseResponse<Boolean>> deleteTask(@Path("token") String token, @Body ReqDeleteTask reqDeleteTask);
+    Observable<BaseResponse<Boolean>> deleteTask(@Header(BaseConstant.AUTH_HEADER) String Bearer, @Path("token")
+            String token, @Body ReqDeleteTask reqDeleteTask);
 }

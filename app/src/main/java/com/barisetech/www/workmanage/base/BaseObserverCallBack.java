@@ -26,7 +26,7 @@ public abstract class BaseObserverCallBack<T> extends DisposableObserver<T> {
     public void onError(final Throwable e) {
         mDelivery.post(() -> {
             if (e instanceof SocketTimeoutException) {
-                ToastUtil.showToast("网络连接超时");
+//                ToastUtil.showToast("网络连接超时");
             } else if (e instanceof SocketException) {
                 if (e instanceof ConnectException) {
                     ToastUtil.showToast("网络未连接");

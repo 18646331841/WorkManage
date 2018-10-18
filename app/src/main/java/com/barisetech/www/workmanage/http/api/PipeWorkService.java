@@ -1,5 +1,6 @@
 package com.barisetech.www.workmanage.http.api;
 
+import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseResponse;
 import com.barisetech.www.workmanage.bean.pipecollections.PipeCollections;
 import com.barisetech.www.workmanage.bean.pipecollections.ReqAddPC;
@@ -17,6 +18,7 @@ import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.HTTP;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -33,7 +35,8 @@ public interface PipeWorkService {
      * @return
      */
     @POST("/api/PipeWork")
-    Observable<BaseResponse<List<PipeWork>>> getAllPw(@Body ReqAllPW reqAllPW);
+    Observable<BaseResponse<List<PipeWork>>> getAllPw(@Header(BaseConstant.AUTH_HEADER) String Bearer, @Body ReqAllPW
+            reqAllPW);
 
     /**
      * 获取管线工况数量
@@ -42,7 +45,8 @@ public interface PipeWorkService {
      * @return
      */
     @GET("/api/PipeWork/{token}")
-    Observable<BaseResponse<Integer>> getPwNum(@Path("token") String token);
+    Observable<BaseResponse<Integer>> getPwNum(@Header(BaseConstant.AUTH_HEADER) String Bearer, @Path("token") String
+            token);
 
     /**
      * 添加或修改管线工况
@@ -52,14 +56,17 @@ public interface PipeWorkService {
      * @return
      */
     @PUT("/api/PipeWork/{token}")
-    Observable<BaseResponse<String>> addOrModifyPw(@Path("token") String token, @Body ReqAddPW reqAddPW);
+    Observable<BaseResponse<String>> addOrModifyPw(@Header(BaseConstant.AUTH_HEADER) String Bearer, @Path("token")
+            String token, @Body ReqAddPW reqAddPW);
 
     /**
      * 删除管线工况
+     *
      * @param token
      * @param reqDeletePW
      * @return
      */
-    @HTTP(method = "DELETE",path = "/api/PipeWork/{token}",hasBody = true)
-    Observable<BaseResponse<Boolean>> deletePw(@Path("token") String token, @Body ReqDeletePW reqDeletePW);
+    @HTTP(method = "DELETE", path = "/api/PipeWork/{token}", hasBody = true)
+    Observable<BaseResponse<Boolean>> deletePw(@Header(BaseConstant.AUTH_HEADER) String Bearer, @Path("token") String
+            token, @Body ReqDeletePW reqDeletePW);
 }

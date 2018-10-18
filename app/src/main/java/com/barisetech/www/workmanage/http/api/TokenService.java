@@ -1,5 +1,6 @@
 package com.barisetech.www.workmanage.http.api;
 
+import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseResponse;
 import com.barisetech.www.workmanage.bean.AccessTokenInfo;
 import com.barisetech.www.workmanage.bean.TokenInfo;
@@ -11,6 +12,7 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.HTTP;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 
@@ -50,7 +52,7 @@ public interface TokenService {
      * @return
      */
     @POST("/api/Login/{refresh_token}")
-    Observable<BaseResponse<TokenInfo>> getTokenInfo(@Path("refresh_token") String refreshToken, @Body ReqAuth reqAuth);
+    Observable<BaseResponse<TokenInfo>> getTokenInfo(@Header(BaseConstant.AUTH_HEADER) String Bearer, @Path("refresh_token") String refreshToken, @Body ReqAuth reqAuth);
 
     /**
      * 刷新凭据接口

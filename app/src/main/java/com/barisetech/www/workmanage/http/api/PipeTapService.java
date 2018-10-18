@@ -1,5 +1,6 @@
 package com.barisetech.www.workmanage.http.api;
 
+import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseResponse;
 import com.barisetech.www.workmanage.bean.auth.AuthInfo;
 import com.barisetech.www.workmanage.bean.auth.ReqAllAuth;
@@ -12,6 +13,7 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -28,14 +30,17 @@ public interface PipeTapService {
      * @return
      */
     @POST("/api/PipeTapAuthorization")
-    Observable<BaseResponse<List<PipeTapInfo>>> getAll(@Body ReqAllPipeTap reqAllPipeTap);
+    Observable<BaseResponse<List<PipeTapInfo>>> getAll(@Header(BaseConstant.AUTH_HEADER) String Bearer, @Body
+            ReqAllPipeTap reqAllPipeTap);
 
     /**
      * 修改阀门授权
+     *
      * @param token
      * @param reqModifyPipeTap
      * @return
      */
     @PUT("/api/PipeTapAuthorization/{token}")
-    Observable<BaseResponse<String>> modify(@Path("token") String token, @Body ReqModifyPipeTap reqModifyPipeTap);
+    Observable<BaseResponse<String>> modify(@Header(BaseConstant.AUTH_HEADER) String Bearer, @Path("token") String
+            token, @Body ReqModifyPipeTap reqModifyPipeTap);
 }

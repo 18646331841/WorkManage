@@ -1,5 +1,6 @@
 package com.barisetech.www.workmanage.http.api;
 
+import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseResponse;
 import com.barisetech.www.workmanage.bean.contacts.ContactsBean;
 import com.barisetech.www.workmanage.bean.contacts.ReqAllContacts;
@@ -15,6 +16,7 @@ import io.reactivex.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.HTTP;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -30,14 +32,16 @@ public interface ContactsService {
      * @return
      */
     @POST("/api/Contacts")
-    Observable<BaseResponse<List<ContactsBean>>> getAll(@Body ReqAllContacts reqAllContacts);
+    Observable<BaseResponse<List<ContactsBean>>> getAll(@Header(BaseConstant.AUTH_HEADER) String Bearer, @Body
+            ReqAllContacts reqAllContacts);
 
     /**
      * 联系人数量
      *
-     * @return
      * @param reqContactsNum
+     * @return
      */
     @PUT("/api/Contacts")
-    Observable<BaseResponse<Integer>> getNum(@Body ReqContactsNum reqContactsNum);
+    Observable<BaseResponse<Integer>> getNum(@Header(BaseConstant.AUTH_HEADER) String Bearer, @Body ReqContactsNum
+            reqContactsNum);
 }

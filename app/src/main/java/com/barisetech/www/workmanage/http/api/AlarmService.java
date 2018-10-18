@@ -1,5 +1,6 @@
 package com.barisetech.www.workmanage.http.api;
 
+import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseResponse;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.bean.alarm.AlarmInfoNewest;
@@ -13,6 +14,7 @@ import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.HTTP;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -29,7 +31,8 @@ public interface AlarmService {
      * @return
      */
     @POST("/api/ALarms")
-    Observable<BaseResponse<List<AlarmInfo>>> getAllAlarm(@Body ReqAllAlarm reqAllAlarm);
+    Observable<BaseResponse<List<AlarmInfo>>> getAllAlarm(@Header(BaseConstant.AUTH_HEADER) String Bearer, @Body
+            ReqAllAlarm reqAllAlarm);
 
     /**
      * 获取警报数量
@@ -38,7 +41,8 @@ public interface AlarmService {
      * @return
      */
     @GET("/api/ALarms/{token}")
-    Observable<BaseResponse<Integer>> getAlarmNum(@Path("token") String token);
+    Observable<BaseResponse<Integer>> getAlarmNum(@Header(BaseConstant.AUTH_HEADER) String Bearer, @Path("token")
+            String token);
 
     /**
      * 获取最新警报信息
@@ -47,15 +51,18 @@ public interface AlarmService {
      * @return
      */
     @PUT("/api/ALarms/{token}")
-    Observable<BaseResponse<AlarmInfoNewest>> getAlarmInfoNewest(@Path("token") String token);
+    Observable<BaseResponse<AlarmInfoNewest>> getAlarmInfoNewest(@Header(BaseConstant.AUTH_HEADER) String Bearer,
+                                                                 @Path("token") String token);
 
     /**
      * 解除警报
+     *
      * @param token
      * @param reqLiftAlarm
      * @return
      */
-    @HTTP(method = "DELETE",path = "/api/ALarms/{token}",hasBody = true)
+    @HTTP(method = "DELETE", path = "/api/ALarms/{token}", hasBody = true)
 //    @DELETE("/api/ALarms/{token}", hasBody = true)
-    Observable<BaseResponse<Boolean>> reqLiftAlarm(@Path("token") String token, @Body ReqLiftAlarm reqLiftAlarm);
+    Observable<BaseResponse<Boolean>> reqLiftAlarm(@Header(BaseConstant.AUTH_HEADER) String Bearer, @Path("token")
+            String token, @Body ReqLiftAlarm reqLiftAlarm);
 }

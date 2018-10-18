@@ -48,7 +48,7 @@ public class DigitalizerModel extends BaseModel {
      * @return
      */
     public Disposable reqNum() {
-        Disposable disposable = digitalizerService.getNum(mToken)
+        Disposable disposable = digitalizerService.getNum(getBearer(), mToken)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<Integer>() {
@@ -89,7 +89,7 @@ public class DigitalizerModel extends BaseModel {
         if (reqModifyDigitalizer == null) {
             return null;
         }
-        Disposable disposable = digitalizerService.addOrModify(mToken, reqModifyDigitalizer)
+        Disposable disposable = digitalizerService.addOrModify(getBearer(), mToken, reqModifyDigitalizer)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<DigitalizerBean>() {
@@ -130,7 +130,7 @@ public class DigitalizerModel extends BaseModel {
         if (null == reqAllDigitalizer) {
             return null;
         }
-        Disposable disposable = digitalizerService.getAll(mToken, reqAllDigitalizer)
+        Disposable disposable = digitalizerService.getAll(getBearer(), mToken, reqAllDigitalizer)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<List<DigitalizerBean>>() {

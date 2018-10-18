@@ -1,5 +1,6 @@
 package com.barisetech.www.workmanage.http.api;
 
+import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseResponse;
 import com.barisetech.www.workmanage.bean.pipe.PipeInfo;
 import com.barisetech.www.workmanage.bean.pipe.ReqAllPipe;
@@ -13,6 +14,7 @@ import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.HTTP;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -28,8 +30,10 @@ public interface PipeService {
      * @param reqAllPipe
      * @return
      */
-    @POST("/api/Pipes")//TODO 返回对象需要修改
-    Observable<BaseResponse<List<PipeInfo>>> getAllPipe(@Body ReqAllPipe reqAllPipe);
+    @POST("/api/Pipes")
+//TODO 返回对象需要修改
+    Observable<BaseResponse<List<PipeInfo>>> getAllPipe(@Header(BaseConstant.AUTH_HEADER) String Bearer, @Body
+            ReqAllPipe reqAllPipe);
 
     /**
      * 获取管线数量
@@ -38,7 +42,8 @@ public interface PipeService {
      * @return
      */
     @GET("/api/Pipes/{token}")
-    Observable<BaseResponse<Integer>> getPipeNum(@Path("token") String token);
+    Observable<BaseResponse<Integer>> getPipeNum(@Header(BaseConstant.AUTH_HEADER) String Bearer, @Path("token")
+            String token);
 
     /**
      * 添加或修改管线
@@ -48,14 +53,17 @@ public interface PipeService {
      * @return
      */
     @PUT("/api/Pipes/{token}")
-    Observable<BaseResponse<String>> addOrModifyPipe(@Path("token") String token, @Body ReqAddPipe reqPipeInfo);
+    Observable<BaseResponse<String>> addOrModifyPipe(@Header(BaseConstant.AUTH_HEADER) String Bearer, @Path("token")
+            String token, @Body ReqAddPipe reqPipeInfo);
 
     /**
      * 删除管线
+     *
      * @param token
      * @param reqDeletePipe
      * @return
      */
-    @HTTP(method = "DELETE",path = "/api/Pipes/{token}",hasBody = true)
-    Observable<BaseResponse<Boolean>> deletePipe(@Path("token") String token, @Body ReqDeletePipe reqDeletePipe);
+    @HTTP(method = "DELETE", path = "/api/Pipes/{token}", hasBody = true)
+    Observable<BaseResponse<Boolean>> deletePipe(@Header(BaseConstant.AUTH_HEADER) String Bearer, @Path("token")
+            String token, @Body ReqDeletePipe reqDeletePipe);
 }

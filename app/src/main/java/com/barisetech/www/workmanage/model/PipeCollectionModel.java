@@ -46,7 +46,7 @@ public class PipeCollectionModel extends BaseModel {
      * @return
      */
     public Disposable reqPcNum() {
-        Disposable disposable = pipeCollectionsService.getPcNum(mToken)
+        Disposable disposable = pipeCollectionsService.getPcNum(getBearer(), mToken)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<Integer>() {
@@ -87,7 +87,7 @@ public class PipeCollectionModel extends BaseModel {
         if (reqAddPC == null) {
             return null;
         }
-        Disposable disposable = pipeCollectionsService.addOrModifyPc(mToken, reqAddPC)
+        Disposable disposable = pipeCollectionsService.addOrModifyPc(getBearer(), mToken, reqAddPC)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<String>() {
@@ -129,7 +129,7 @@ public class PipeCollectionModel extends BaseModel {
             return null;
         }
 
-        Disposable disposable = pipeCollectionsService.deletePc(mToken, reqDeletePc)
+        Disposable disposable = pipeCollectionsService.deletePc(getBearer(), mToken, reqDeletePc)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<Boolean>() {
@@ -171,7 +171,7 @@ public class PipeCollectionModel extends BaseModel {
             return null;
         }
         reqAllPc.setMachineCode(mToken);
-        Disposable disposable = pipeCollectionsService.getAllPc(reqAllPc)
+        Disposable disposable = pipeCollectionsService.getAllPc(getBearer(), reqAllPc)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<List<PipeCollections>>() {

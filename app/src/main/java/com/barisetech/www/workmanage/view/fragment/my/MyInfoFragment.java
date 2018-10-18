@@ -41,8 +41,6 @@ public class MyInfoFragment extends BaseFragment {
     private List<ContactsBean> contactsBeanList;
     private Disposable disposable;
     private String user;
-    private String email;
-    private String phone;
 
     public static MyInfoFragment newInstance() {
         MyInfoFragment fragment = new MyInfoFragment();
@@ -51,11 +49,11 @@ public class MyInfoFragment extends BaseFragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
+            savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_my_info, container, false);
         setToolBarHeight(mBinding.toolbar.getRoot());
         mBinding.setFragment(this);
-        userInfo = new UserInfo();
         ToolbarInfo toolbarInfo = new ToolbarInfo();
         toolbarInfo.setTitle(getString(R.string.personal_info));
         observableToolbar.set(toolbarInfo);
@@ -65,8 +63,12 @@ public class MyInfoFragment extends BaseFragment {
 
     private void initView() {
         user = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_ACCOUNT, "");
+        mBinding.tvAccount.setText(user);
 
         mBinding.itemPhone.setOnClickListener(view -> {
+            if (userInfo == null) {
+                return;
+            }
             EventBusMessage eventBusMessage = new EventBusMessage(ModifyPhoneFragment.TAG);
             eventBusMessage.setArg1(userInfo);
             EventBus.getDefault().post(eventBusMessage);
@@ -74,6 +76,9 @@ public class MyInfoFragment extends BaseFragment {
 
 
         mBinding.itemEmail.setOnClickListener(view -> {
+            if (userInfo == null) {
+                return;
+            }
             EventBusMessage eventBusMessage = new EventBusMessage(ModifyEmailFragment.TAG);
             eventBusMessage.setArg1(userInfo);
             EventBus.getDefault().post(eventBusMessage);
@@ -102,11 +107,12 @@ public class MyInfoFragment extends BaseFragment {
                         contactsBeanList.addAll(contactsBeans);
                         for (ContactsBean contactsBean : contactsBeanList) {
                             if (contactsBean.getName().equals(user)) {
-                                email = contactsBean.getEmail();
-                                phone = contactsBean.getTelephone();
-                                mBinding.tvAccount.setText(user);
-                                mBinding.tvEmail.setText(email);
-                                mBinding.tvPhone.setText(phone);
+                                userInfo = new UserInfo();
+                                userInfo.setEmail(contactsBean.getEmail());
+                                userInfo.setTel(contactsBean.getTelephone());
+
+                                mBinding.tvEmail.setText(userInfo.getEmail());
+                                mBinding.tvPhone.setText(userInfo.getTel());
                             }
                         }
 
@@ -116,25 +122,26 @@ public class MyInfoFragment extends BaseFragment {
         }
 
 
-        if (!contactsViewModel.getObservableNum().hasObservers()) {
-            contactsViewModel.getObservableNum().observe(this, integer -> {
-                if (MyInfoFragment.this.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
-                    if (null != integer) {
-                        getDatas(0, integer);
-                    }
-                }
-            });
-        }
+//        if (!contactsViewModel.getObservableNum().hasObservers()) {
+//            contactsViewModel.getObservableNum().observe(this, integer -> {
+//                if (MyInfoFragment.this.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+//                    if (null != integer) {
+//                        getDatas(0, integer);
+//                    }
+//                }
+//            });
+//        }
 
-        getContactsNum();
-
-
+//        getContactsNum();
+        getDatas(0, 1);
     }
 
     private void getContactsNum() {
         ReqContactsNum reqContactsNum = new ReqContactsNum();
         reqContactsNum.setSelectItem("0");
-        reqContactsNum.setSearchString("");
+        reqContactsNum.setSearchString(SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_ACCOUNT, ""));
+
+        EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_SHOW));
         contactsViewModel.reqNum(reqContactsNum);
     }
 
@@ -144,7 +151,7 @@ public class MyInfoFragment extends BaseFragment {
         }
         ReqAllContacts reqAllContacts = new ReqAllContacts();
         reqAllContacts.setSelectItem("0");
-        reqAllContacts.setSearchString("");
+        reqAllContacts.setSearchString(SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_ACCOUNT, ""));
         reqAllContacts.setStartIndex(String.valueOf(fromIndex));
         reqAllContacts.setNumberOfRecords(String.valueOf(toIndex));
 

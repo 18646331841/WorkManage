@@ -47,7 +47,7 @@ public class ContactsModel extends BaseModel {
             return null;
         }
         reqContactsNum.setMachineCode(mToken);
-        Disposable disposable = contactsService.getNum(reqContactsNum)
+        Disposable disposable = contactsService.getNum(getBearer(), reqContactsNum)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<Integer>() {
@@ -89,7 +89,7 @@ public class ContactsModel extends BaseModel {
             return null;
         }
         reqAllContacts.setMachineCode(mToken);
-        Disposable disposable = contactsService.getAll(reqAllContacts)
+        Disposable disposable = contactsService.getAll(getBearer(), reqAllContacts)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<List<ContactsBean>>() {

@@ -29,7 +29,7 @@ public class SecondPublishFragment extends BaseFragment {
     private DatePickerDialog endDatePicker;
 //    private TimePickerDialog endTimePicker;
     private String endTime = "";
-    private String time = "24:00:00";
+    private String time = "23:59:59";
     private int curTime = 0;
     private static final int TIME_ONE_MONTH = 1;
     private static final int TIME_ONE_QUARTER = 2;

@@ -52,7 +52,7 @@ public class WaveModel extends BaseModel {
             return null;
         }
         reqWave.MachineCode = mToken;
-        Disposable disposable = waveService.getAll(reqWave)
+        Disposable disposable = waveService.getAll(getBearer(), reqWave)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<WaveBean>() {
@@ -110,7 +110,7 @@ public class WaveModel extends BaseModel {
                     siteId = reqWave.siteId;
                     type = reqWave.sensorType;
                     reqWave.MachineCode = mToken;
-                    return waveService.getAll(reqWave).onErrorReturnItem(new
+                    return waveService.getAll(getBearer(), reqWave).onErrorReturnItem(new
                             BaseResponse<>(-1, "", null));
                 })
                 .map(new Function<BaseResponse<WaveBean>, Integer>() {

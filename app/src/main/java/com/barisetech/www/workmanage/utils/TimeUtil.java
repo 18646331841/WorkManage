@@ -3,6 +3,7 @@ package com.barisetech.www.workmanage.utils;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.text.TextUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -94,5 +95,20 @@ public class TimeUtil {
         cal.set(Calendar.MINUTE, minute);
         cal.set(Calendar.MILLISECOND, milliSecond);
         return cal.getTimeInMillis();
+    }
+
+    /**
+     * 替换时间中的T字符
+     * @param time
+     * @return
+     */
+    public static String replaceTimeT(String time) {
+        if (TextUtils.isEmpty(time)) {
+            return "";
+        }
+        if (time.contains("T")) {
+            time = time.replace("T", " ");
+        }
+        return time;
     }
 }

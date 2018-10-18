@@ -45,7 +45,7 @@ public class PipeWorkModel extends BaseModel {
      * @return
      */
     public Disposable reqPipeWorkNum() {
-        Disposable disposable = pipeWorkService.getPwNum(mToken)
+        Disposable disposable = pipeWorkService.getPwNum(getBearer(), mToken)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<Integer>() {
@@ -86,7 +86,7 @@ public class PipeWorkModel extends BaseModel {
         if (reqAddPW == null) {
             return null;
         }
-        Disposable disposable = pipeWorkService.addOrModifyPw(mToken, reqAddPW)
+        Disposable disposable = pipeWorkService.addOrModifyPw(getBearer(), mToken, reqAddPW)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<String>() {
@@ -128,7 +128,7 @@ public class PipeWorkModel extends BaseModel {
             return null;
         }
 
-        Disposable disposable = pipeWorkService.deletePw(mToken, reqDeletePW)
+        Disposable disposable = pipeWorkService.deletePw(getBearer(), mToken, reqDeletePW)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<Boolean>() {
@@ -170,7 +170,7 @@ public class PipeWorkModel extends BaseModel {
             return null;
         }
         reqAllPW.setMachineCode(mToken);
-        Disposable disposable = pipeWorkService.getAllPw(reqAllPW)
+        Disposable disposable = pipeWorkService.getAllPw(getBearer(), reqAllPW)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<List<PipeWork>>() {

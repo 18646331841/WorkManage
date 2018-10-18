@@ -48,7 +48,7 @@ public class PluginModel extends BaseModel {
         }
         reqAllPlugin.setMachineCode(mToken);
         reqAllPlugin.setCompanyName(company);
-        Disposable disposable = plugService.getAllPlugin(reqAllPlugin)
+        Disposable disposable = plugService.getAllPlugin(getBearer(), reqAllPlugin)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<List<PluginInfo>>() {

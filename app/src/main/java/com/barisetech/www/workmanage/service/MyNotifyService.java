@@ -345,7 +345,7 @@ public class MyNotifyService extends Service {
                     reqAllAlarm.setEndTime(TimeUtil.ms2Date(endTime));
 
                     AlarmService alarmService = HttpService.getInstance().buildJsonRetrofit().create(AlarmService.class);
-                    alarmService.getAllAlarm(reqAllAlarm)
+                    alarmService.getAllAlarm(SystemUtil.getBearer(), reqAllAlarm)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribeWith(new ObserverCallBack<List<AlarmInfo>>() {
@@ -406,7 +406,7 @@ public class MyNotifyService extends Service {
                     reqAllIncident.setIncidentSelectItem(reqIncidentSelectItem);
 
                     IncidentService incidentService = HttpService.getInstance().buildJsonRetrofit().create(IncidentService.class);
-                    incidentService.getAllIncident(reqAllIncident)
+                    incidentService.getAllIncident(SystemUtil.getBearer(), reqAllIncident)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribeWith(new ObserverCallBack<List<IncidentInfo>>() {
@@ -478,7 +478,7 @@ public class MyNotifyService extends Service {
                     reqAllAlarmAnalysis.setType("0");
                     AlarmAnalysisService alarmAnalysisService = HttpService.getInstance().buildJsonRetrofit().create
                             (AlarmAnalysisService.class);
-                    alarmAnalysisService.getAllAnalysis(reqAllAlarmAnalysis)
+                    alarmAnalysisService.getAllAnalysis(SystemUtil.getBearer(), reqAllAlarmAnalysis)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribeWith(new ObserverCallBack<List<AlarmAnalysis>>() {
@@ -539,7 +539,7 @@ public class MyNotifyService extends Service {
                     }
 
                     PlanService planService = HttpService.getInstance().buildJsonRetrofit().create(PlanService.class);
-                    planService.getAllPlan(reqAllPlan)
+                    planService.getAllPlan(SystemUtil.getBearer(), reqAllPlan)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribeWith(new ObserverCallBack<List<PlanBean>>() {
@@ -668,7 +668,8 @@ public class MyNotifyService extends Service {
                     AuthService authService = HttpService.getInstance().buildJsonRetrofit().create(AuthService.class);
                     PipeTapService pipeTapService = HttpService.getInstance().buildJsonRetrofit().create
                             (PipeTapService.class);
-                    Observable.zip(pipeTapService.getAll(reqAllPipeTap), authService.getAll(reqAllAuth),
+                    Observable.zip(pipeTapService.getAll(SystemUtil.getBearer(), reqAllPipeTap), authService.getAll
+                                    (SystemUtil.getBearer(), reqAllAuth),
                             (BiFunction<BaseResponse<List<PipeTapInfo>>, BaseResponse<List<AuthInfo>>, String>)
                                     (listBaseResponse, listBaseResponse2) -> {
                                         StringBuilder sb = new StringBuilder();

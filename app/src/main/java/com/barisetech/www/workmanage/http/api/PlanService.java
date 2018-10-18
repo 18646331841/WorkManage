@@ -1,5 +1,6 @@
 package com.barisetech.www.workmanage.http.api;
 
+import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseResponse;
 import com.barisetech.www.workmanage.bean.workplan.PlanBean;
 import com.barisetech.www.workmanage.bean.workplan.ReqAddPlan;
@@ -16,6 +17,7 @@ import io.reactivex.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.HTTP;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -31,7 +33,8 @@ public interface PlanService {
      * @return
      */
     @POST("/api/PipeWorkPlan")
-    Observable<BaseResponse<List<PlanBean>>> getAllPlan(@Body ReqAllPlan reqAllPlan);
+    Observable<BaseResponse<List<PlanBean>>> getAllPlan(@Header(BaseConstant.AUTH_HEADER) String Bearer, @Body
+            ReqAllPlan reqAllPlan);
 
     /**
      * 获取计划数量
@@ -40,7 +43,8 @@ public interface PlanService {
      * @return
      */
     @GET("/api/PipeWorkPlan/{reqPlanNum}")
-    Observable<BaseResponse<Integer>> getPlanNum(@Path("reqPlanNum") String reqPlanNum);
+    Observable<BaseResponse<Integer>> getPlanNum(@Header(BaseConstant.AUTH_HEADER) String Bearer, @Path("reqPlanNum")
+            String reqPlanNum);
 
     /**
      * 添加计划
@@ -50,7 +54,8 @@ public interface PlanService {
      * @return
      */
     @PUT("/api/PipeWorkPlan/{token}")
-    Observable<BaseResponse<String>> addPlan(@Path("token") String token, @Body ReqAddPlan reqAddPlan);
+    Observable<BaseResponse<String>> addPlan(@Header(BaseConstant.AUTH_HEADER) String Bearer, @Path("token") String
+            token, @Body ReqAddPlan reqAddPlan);
 
     /**
      * 删除计划
@@ -60,5 +65,6 @@ public interface PlanService {
      * @return
      */
     @HTTP(method = "DELETE", path = "/api/PipeWorkPlan/{token}", hasBody = true)
-    Observable<BaseResponse<Boolean>> deletePlan(@Path("token") String token, @Body ReqDeletePlan reqDeletePlan);
+    Observable<BaseResponse<Boolean>> deletePlan(@Header(BaseConstant.AUTH_HEADER) String Bearer, @Path("token")
+            String token, @Body ReqDeletePlan reqDeletePlan);
 }

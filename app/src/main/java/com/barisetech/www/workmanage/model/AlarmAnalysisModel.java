@@ -45,7 +45,7 @@ public class AlarmAnalysisModel extends BaseModel {
      * @return
      */
     public Disposable reqAnalysisNum() {
-        Disposable disposable = AlarmAnalysisService.getAnalysisNum(mToken)
+        Disposable disposable = AlarmAnalysisService.getAnalysisNum(getBearer(), mToken)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<Integer>() {
@@ -86,7 +86,7 @@ public class AlarmAnalysisModel extends BaseModel {
         if (reqAddAlarmAnalysis == null) {
             return null;
         }
-        Disposable disposable = AlarmAnalysisService.addOrModifyAnalysis(mToken, reqAddAlarmAnalysis)
+        Disposable disposable = AlarmAnalysisService.addOrModifyAnalysis(getBearer(), mToken, reqAddAlarmAnalysis)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<Integer>() {
@@ -128,7 +128,7 @@ public class AlarmAnalysisModel extends BaseModel {
             return null;
         }
 
-        Disposable disposable = AlarmAnalysisService.deleteAnalysis(mToken, reqDeleteAlarmAnalysis)
+        Disposable disposable = AlarmAnalysisService.deleteAnalysis(getBearer(), mToken, reqDeleteAlarmAnalysis)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<Boolean>() {
@@ -170,7 +170,7 @@ public class AlarmAnalysisModel extends BaseModel {
             return null;
         }
         reqAllAlarmAnalysis.setMachineCode(mToken);
-        Disposable disposable = AlarmAnalysisService.getAllAnalysis(reqAllAlarmAnalysis)
+        Disposable disposable = AlarmAnalysisService.getAllAnalysis(getBearer(), reqAllAlarmAnalysis)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<List<AlarmAnalysis>>() {

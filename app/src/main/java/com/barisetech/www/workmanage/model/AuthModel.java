@@ -40,7 +40,7 @@ public class AuthModel extends BaseModel {
 
     public Disposable getAll(ReqAllAuth reqAllAuth) {
         reqAllAuth.MachineCode = mToken;
-        ObserverCallBack<List<AuthInfo>> disposable = authService.getAll(reqAllAuth)
+        ObserverCallBack<List<AuthInfo>> disposable = authService.getAll(getBearer(), reqAllAuth)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<List<AuthInfo>>() {
@@ -73,7 +73,7 @@ public class AuthModel extends BaseModel {
     }
 
     public Disposable modify(ReqModifyAuth reqModifyAuth) {
-        ObserverCallBack<String> disposable = authService.modify(mToken, reqModifyAuth)
+        ObserverCallBack<String> disposable = authService.modify(getBearer(), mToken, reqModifyAuth)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<String>() {

@@ -1,11 +1,13 @@
 package com.barisetech.www.workmanage.http.api;
 
+import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseResponse;
 import com.barisetech.www.workmanage.bean.wave.ReqWave;
 import com.barisetech.www.workmanage.bean.wave.WaveBean;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 
 public interface WaveService {
@@ -17,5 +19,5 @@ public interface WaveService {
      * @return
      */
     @POST("/api/Waveform")
-    Observable<BaseResponse<WaveBean>> getAll(@Body ReqWave reqWave);
+    Observable<BaseResponse<WaveBean>> getAll(@Header(BaseConstant.AUTH_HEADER) String Bearer, @Body ReqWave reqWave);
 }

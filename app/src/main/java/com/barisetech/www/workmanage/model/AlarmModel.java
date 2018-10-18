@@ -66,7 +66,7 @@ public class AlarmModel extends BaseModel {
      */
     public Disposable reqAlarmNum() {
         AlarmService alarmService = HttpService.getInstance().buildUrlencodedRetrofit().create(AlarmService.class);
-        Disposable disposable = alarmService.getAlarmNum(mToken)
+        Disposable disposable = alarmService.getAlarmNum(getBearer(), mToken)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<Integer>() {
@@ -110,7 +110,7 @@ public class AlarmModel extends BaseModel {
         reqAllAlarm.setNumberOfRecords("1");
 
         AlarmService alarmService = HttpService.getInstance().buildJsonRetrofit().create(AlarmService.class);
-        Disposable disposable = alarmService.getAllAlarm(reqAllAlarm)
+        Disposable disposable = alarmService.getAllAlarm(getBearer(), reqAllAlarm)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<List<AlarmInfo>>() {
@@ -148,7 +148,7 @@ public class AlarmModel extends BaseModel {
     public Disposable reqAllAlarm(ReqAllAlarm reqAllAlarm) {
         reqAllAlarm.setMachineCode(mToken);
         AlarmService alarmService = HttpService.getInstance().buildJsonRetrofit().create(AlarmService.class);
-        Disposable disposable = alarmService.getAllAlarm(reqAllAlarm)
+        Disposable disposable = alarmService.getAllAlarm(getBearer(), reqAllAlarm)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<List<AlarmInfo>>() {
@@ -186,7 +186,7 @@ public class AlarmModel extends BaseModel {
     public Disposable reqAllAlarmAndToDB(ReqAllAlarm reqAllAlarm) {
         reqAllAlarm.setMachineCode(mToken);
         AlarmService alarmService = HttpService.getInstance().buildJsonRetrofit().create(AlarmService.class);
-        Disposable disposable = alarmService.getAllAlarm(reqAllAlarm)
+        Disposable disposable = alarmService.getAllAlarm(getBearer(), reqAllAlarm)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<List<AlarmInfo>>() {
@@ -231,7 +231,7 @@ public class AlarmModel extends BaseModel {
      */
     public Disposable reqAlarmNewest() {
         AlarmService alarmService = HttpService.getInstance().buildUrlencodedRetrofit().create(AlarmService.class);
-        Disposable disposable = alarmService.getAlarmInfoNewest(mToken)
+        Disposable disposable = alarmService.getAlarmInfoNewest(getBearer(), mToken)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<AlarmInfoNewest>() {
@@ -267,7 +267,7 @@ public class AlarmModel extends BaseModel {
         reqLiftAlarm.setLiftUser(user);
 
         AlarmService alarmService = HttpService.getInstance().buildJsonRetrofit().create(AlarmService.class);
-        Disposable disposable = alarmService.reqLiftAlarm(mToken, reqLiftAlarm)
+        Disposable disposable = alarmService.reqLiftAlarm(getBearer(), mToken, reqLiftAlarm)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<Boolean>() {

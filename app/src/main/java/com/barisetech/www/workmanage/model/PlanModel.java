@@ -51,7 +51,7 @@ public class PlanModel extends BaseModel {
             return null;
         }
         reqPlanNum.guid = mToken;
-        Disposable disposable = planService.getPlanNum(reqPlanNum.toUrlString())
+        Disposable disposable = planService.getPlanNum(getBearer(), reqPlanNum.toUrlString())
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<Integer>() {
@@ -92,7 +92,7 @@ public class PlanModel extends BaseModel {
         if (reqAddPlan == null) {
             return null;
         }
-        Disposable disposable = planService.addPlan(mToken, reqAddPlan)
+        Disposable disposable = planService.addPlan(getBearer(), mToken, reqAddPlan)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<String>() {
@@ -134,7 +134,7 @@ public class PlanModel extends BaseModel {
             return null;
         }
 
-        Disposable disposable = planService.deletePlan(mToken, reqDeletePlan)
+        Disposable disposable = planService.deletePlan(getBearer(), mToken, reqDeletePlan)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<Boolean>() {
@@ -176,7 +176,7 @@ public class PlanModel extends BaseModel {
             return null;
         }
         reqAllPlan.MachineCode = mToken;
-        Disposable disposable = planService.getAllPlan(reqAllPlan)
+        Disposable disposable = planService.getAllPlan(getBearer(), reqAllPlan)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<List<PlanBean>>() {

@@ -51,7 +51,7 @@ public class TaskModel extends BaseModel {
             return null;
         }
         reqTaskNum.guid = mToken;
-        Disposable disposable = taskService.getTaskNum(reqTaskNum.toUrlString())
+        Disposable disposable = taskService.getTaskNum(getBearer(), reqTaskNum.toUrlString())
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<Integer>() {
@@ -92,7 +92,7 @@ public class TaskModel extends BaseModel {
         if (reqAddTask == null) {
             return null;
         }
-        Disposable disposable = taskService.addTask(mToken, reqAddTask)
+        Disposable disposable = taskService.addTask(getBearer(), mToken, reqAddTask)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<String>() {
@@ -134,7 +134,7 @@ public class TaskModel extends BaseModel {
             return null;
         }
 
-        Disposable disposable = taskService.deleteTask(mToken, reqDeleteTask)
+        Disposable disposable = taskService.deleteTask(getBearer(), mToken, reqDeleteTask)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<Boolean>() {
@@ -176,7 +176,7 @@ public class TaskModel extends BaseModel {
             return null;
         }
         reqAllTask.MachineCode = mToken;
-        Disposable disposable = taskService.getAllTask(reqAllTask)
+        Disposable disposable = taskService.getAllTask(getBearer(), reqAllTask)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<List<TaskBean>>() {

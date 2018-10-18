@@ -1,5 +1,6 @@
 package com.barisetech.www.workmanage.http.api;
 
+import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseResponse;
 import com.barisetech.www.workmanage.bean.digitalizer.DigitalizerBean;
 import com.barisetech.www.workmanage.bean.digitalizer.ReqAllDigitalizer;
@@ -15,6 +16,7 @@ import io.reactivex.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.HTTP;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -28,7 +30,8 @@ public interface DigitalizerService {
      * @return
      */
     @POST("/api/Digitalizer/{token}")
-    Observable<BaseResponse<List<DigitalizerBean>>> getAll(@Path("token") String token, @Body ReqAllDigitalizer
+    Observable<BaseResponse<List<DigitalizerBean>>> getAll(@Header(BaseConstant.AUTH_HEADER) String Bearer, @Path
+            ("token") String token, @Body ReqAllDigitalizer
             reqAllDigitalizer);
 
     /**
@@ -38,7 +41,8 @@ public interface DigitalizerService {
      * @return
      */
     @GET("/api/Digitalizer/{token}")
-    Observable<BaseResponse<Integer>> getNum(@Path("token") String token);
+    Observable<BaseResponse<Integer>> getNum(@Header(BaseConstant.AUTH_HEADER) String Bearer, @Path("token") String
+            token);
 
     /**
      * 修改数字化仪
@@ -48,6 +52,7 @@ public interface DigitalizerService {
      * @return
      */
     @PUT("/api/Digitalizer/{token}")
-    Observable<BaseResponse<DigitalizerBean>> addOrModify(@Path("token") String token, @Body ReqModifyDigitalizer
+    Observable<BaseResponse<DigitalizerBean>> addOrModify(@Header(BaseConstant.AUTH_HEADER) String Bearer, @Path
+            ("token") String token, @Body ReqModifyDigitalizer
             reqModifyDigitalizer);
 }

@@ -44,11 +44,13 @@ public class IncidentModel extends BaseModel {
     public static final int TYPE_ADD = 3;
     public static final int TYPE_ALL = 4;
     public static final int TYPE_ALL_DB = 5;
+    private IncidentService incidentService;
 
     public IncidentModel(AppDatabase appDatabase, ModelCallBack callBack) {
         super(callBack);
         this.appDatabase = appDatabase;
         modelCallBack = callBack;
+        incidentService = HttpService.getInstance().buildJsonRetrofit().create(IncidentService.class);
     }
 
     /**
@@ -58,8 +60,7 @@ public class IncidentModel extends BaseModel {
      */
     public Disposable reqAllIncidentToDB(ReqAllIncident reqAllIncident) {
         reqAllIncident.setMachineCode(mToken);
-        IncidentService incidentService = HttpService.getInstance().buildJsonRetrofit().create(IncidentService.class);
-        Disposable disposable = incidentService.getAllIncident(reqAllIncident)
+        Disposable disposable = incidentService.getAllIncident(getBearer(), reqAllIncident)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<List<IncidentInfo>>() {
@@ -107,8 +108,7 @@ public class IncidentModel extends BaseModel {
      */
     public Disposable reqAllIncident(ReqAllIncident reqAllIncident) {
         reqAllIncident.setMachineCode(mToken);
-        IncidentService incidentService = HttpService.getInstance().buildJsonRetrofit().create(IncidentService.class);
-        Disposable disposable = incidentService.getAllIncident(reqAllIncident)
+        Disposable disposable = incidentService.getAllIncident(getBearer(), reqAllIncident)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<List<IncidentInfo>>() {
@@ -146,8 +146,7 @@ public class IncidentModel extends BaseModel {
      * @return
      */
     public Disposable reqIncidentNum(ReqIncidentSelectItem reqIncidentSelectItem) {
-        IncidentService incidentService = HttpService.getInstance().buildJsonRetrofit().create(IncidentService.class);
-        Disposable disposable = incidentService.getIncidentNum(mToken, reqIncidentSelectItem)
+        Disposable disposable = incidentService.getIncidentNum(getBearer(), mToken, reqIncidentSelectItem)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<Integer>() {
@@ -188,8 +187,7 @@ public class IncidentModel extends BaseModel {
         ReqLiftIncident reqLiftIncident = new ReqLiftIncident();
         reqLiftIncident.setIncidentId(incidentId);
 
-        IncidentService incidentService = HttpService.getInstance().buildJsonRetrofit().create(IncidentService.class);
-        Disposable disposable = incidentService.liftIncident(mToken, reqLiftIncident)
+        Disposable disposable = incidentService.liftIncident(getBearer(), mToken, reqLiftIncident)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<Boolean>() {

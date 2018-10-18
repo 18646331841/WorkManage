@@ -45,7 +45,7 @@ public class OnlineUserModel extends BaseModel {
     }
 
     public Disposable getAll() {
-        ObserverCallBack<List<String>> disposable = onlineUserService.getOnlineUser(mToken)
+        ObserverCallBack<List<String>> disposable = onlineUserService.getOnlineUser(getBearer(), mToken)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<List<String>>() {
@@ -78,7 +78,7 @@ public class OnlineUserModel extends BaseModel {
     }
 
     public Disposable offlineUser(ReqOffline reqOffline) {
-        ObserverCallBack<Boolean> disposable = onlineUserService.offlineUser(mToken, reqOffline)
+        ObserverCallBack<Boolean> disposable = onlineUserService.offlineUser(getBearer(), mToken, reqOffline)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<Boolean>() {

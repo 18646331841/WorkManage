@@ -45,7 +45,7 @@ public class SiteModel extends BaseModel{
 
 
     public Disposable reqSiteNum(){
-        Disposable disposable = siteService.getSiteNum(mToken)
+        Disposable disposable = siteService.getSiteNum(getBearer(), mToken)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<Integer>() {
@@ -82,7 +82,7 @@ public class SiteModel extends BaseModel{
             return null;
         }
 
-        Disposable disposable =siteService.deleteSite(mToken, reqDelSiteInfo)
+        Disposable disposable =siteService.deleteSite(getBearer(), mToken, reqDelSiteInfo)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<Boolean>() {
@@ -118,7 +118,7 @@ public class SiteModel extends BaseModel{
         if (reqAddSite == null) {
             return null;
         }
-        Disposable disposable = siteService.addOrModifySite(mToken,reqAddSite)
+        Disposable disposable = siteService.addOrModifySite(getBearer(), mToken,reqAddSite)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<String>() {
@@ -154,7 +154,7 @@ public class SiteModel extends BaseModel{
             return null;
         }
         reqSiteInfos.setMachineCode(mToken);
-        Disposable disposable = siteService.getAllSite(reqSiteInfos)
+        Disposable disposable = siteService.getAllSite(getBearer(), reqSiteInfos)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribeWith(new ObserverCallBack<List<SiteBean>>() {
