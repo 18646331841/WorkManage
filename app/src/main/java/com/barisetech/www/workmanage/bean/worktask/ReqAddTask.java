@@ -1,5 +1,8 @@
 package com.barisetech.www.workmanage.bean.worktask;
 
+import com.barisetech.www.workmanage.bean.workplan.PlanSiteBean;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,5 +31,19 @@ public class ReqAddTask {
     public String NumberOfTransfers;
     public String Deadline;
     public String isAdd;
-    public List<TaskSiteBean> TaskSiteList;
+    public List<TaskSiteBeanAdd> TaskSiteList;
+
+    public void toSiteList(List<PlanSiteBean> planSiteBeanList) {
+        if (planSiteBeanList != null && planSiteBeanList.size() > 0) {
+            TaskSiteList = new ArrayList<>();
+            for (PlanSiteBean planSiteBean : planSiteBeanList) {
+                TaskSiteBeanAdd taskSiteBeanAdd = new TaskSiteBeanAdd();
+                taskSiteBeanAdd.SiteId = planSiteBean.SiteId;
+                taskSiteBeanAdd.Name = planSiteBean.Name;
+                taskSiteBeanAdd.Latitude = planSiteBean.Latitude;
+                taskSiteBeanAdd.Longitude = planSiteBean.Longitude;
+                TaskSiteList.add(taskSiteBeanAdd);
+            }
+        }
+    }
 }

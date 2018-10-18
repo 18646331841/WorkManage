@@ -21,13 +21,6 @@ public class TaskSiteBeanAdd {
 
     public String Name;
     public String SiteId;
-    public String DateTime;
     public String Longitude;
     public String Latitude;
-    public String Remark;
-    public String State;
-    public String SiteState;
-    public String UserLongitude;
-    public String UserLatitude;
-    public List<ImageInfo> WorkImageList;
 }

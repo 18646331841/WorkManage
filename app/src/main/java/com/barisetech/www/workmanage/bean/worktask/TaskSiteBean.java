@@ -49,6 +49,11 @@ public class TaskSiteBean implements Serializable {
      */
     public double range;
 
+    /**
+     * 所属任务ID
+     */
+    public int taskId;
+
     public String showStatus(String role) {
         String result = BaseConstant.STATUS_TASK[2];
         if (State > 0) {

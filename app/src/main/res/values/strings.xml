@@ -50,6 +50,7 @@
     <string name="plan_publish_second_please_num">请输入数字</string>
 
     <string name="title_plan_task">巡线任务</string>
+    <string name="plan_task_add">新增任务</string>
     <string name="title_plan_task_item_site">站点</string>
     <string name="title_plan_task_item_time">时间</string>
     <string name="title_plan_task_item_person">巡线人</string>

@@ -94,6 +94,11 @@ public class SignInFragment extends BaseFragment {
     private List<String> curImgPaths = new ArrayList<>();
     private ImgSelectAdapter alarmImgAdapter;
 
+    /**
+     * 用户是否点击了打卡按钮
+     */
+    private boolean isClick = false;
+
     private static final String SITE = "site";
     private TaskSiteBean curSiteBean;
     private static final int NORMAL = 1;
@@ -141,11 +146,6 @@ public class SignInFragment extends BaseFragment {
             if (aMapLocation.getErrorCode() == 0) {
                 latitude = aMapLocation.getLatitude();
                 longitude = aMapLocation.getLongitude();
-
-                //TODO
-                curSiteBean.Latitude = 39.889871;
-                curSiteBean.Longitude = 116.355843;
-                curSiteBean.range = 50;
 
                 boolean inArea = isInArea(latitude, longitude, curSiteBean.Latitude, curSiteBean.Longitude);
                 if (inArea) {

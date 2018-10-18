@@ -26,8 +26,10 @@ import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.bean.contacts.ContactsBean;
 import com.barisetech.www.workmanage.bean.contacts.ReqAllContacts;
 import com.barisetech.www.workmanage.bean.contacts.ReqContactsNum;
+import com.barisetech.www.workmanage.bean.site.SiteBean;
 import com.barisetech.www.workmanage.bean.workplan.PlanBean;
 import com.barisetech.www.workmanage.bean.workplan.ReqAddPlan;
+import com.barisetech.www.workmanage.bean.worktask.ReqAddTask;
 import com.barisetech.www.workmanage.bean.worktask.ReqAllTask;
 import com.barisetech.www.workmanage.bean.worktask.TaskBean;
 import com.barisetech.www.workmanage.bean.worktask.TaskSiteBean;
@@ -36,6 +38,7 @@ import com.barisetech.www.workmanage.databinding.FragmentPlanTaskListBinding;
 import com.barisetech.www.workmanage.utils.DisplayUtil;
 import com.barisetech.www.workmanage.utils.LogUtil;
 import com.barisetech.www.workmanage.utils.TimeUtil;
+import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.view.fragment.SignInFragment;
 import com.barisetech.www.workmanage.view.fragment.workplan.SecondPublishFragment;
 import com.barisetech.www.workmanage.viewmodel.ContactsViewModel;
@@ -55,14 +58,16 @@ public class TaskListFragment extends BaseFragment {
     FragmentPlanTaskListBinding mBinding;
     private Disposable curDisposable;
     private Disposable numDisposable;
+    private Disposable addDisposable;
     private TaskBean curTaskBean;
     private List<TaskSiteBean> curSiteList;
+    private List<TaskBean> curTaskList;
     private PlanTaskListAdapter planTaskListAdapter;
     private TaskViewModel taskViewModel;
 
     //每次加载个数
     private static final int PAGE_COUNT = 10;
-    private int maxNum;
+    private int maxNum = 100;
     private BaseLoadMoreWrapper loadMoreWrapper;
 
     private static final String PLAN_ID = "plan";
@@ -85,6 +90,7 @@ public class TaskListFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         curSiteList = new ArrayList<>();
+        curTaskList = new ArrayList<>();
         if (getArguments() != null) {
             curPlanBean = (PlanBean) getArguments().getSerializable(PLAN_ID);
         }
@@ -98,6 +104,7 @@ public class TaskListFragment extends BaseFragment {
         mBinding.setFragment(this);
         ToolbarInfo toolbarInfo = new ToolbarInfo();
         toolbarInfo.setTitle(getString(R.string.title_plan_task));
+        toolbarInfo.setOneText(getString(R.string.plan_task_add));
         observableToolbar.set(toolbarInfo);
 
         initView();
@@ -107,10 +114,14 @@ public class TaskListFragment extends BaseFragment {
     private void initView() {
         StringBuilder sb = new StringBuilder();
         sb.append("巡线次数：").append(curPlanBean.TotalNumberOfTimes)
-                .append(" 完成时间：").append(curPlanBean.EndTime)
+                .append(" 完成时间：").append(TimeUtil.replaceTimeT(curPlanBean.EndTime))
                 .append(" 责任人：").append(curPlanBean.PersonLiable);
 
         mBinding.planTaskListTitle.setText(sb.toString());
+
+        mBinding.toolbar.tvOne.setOnClickListener(view -> {
+            addTask();
+        });
 
         initRecyclerView();
     }
@@ -180,14 +191,35 @@ public class TaskListFragment extends BaseFragment {
         reqAllTask.workTaskID = "-1";
         reqAllTask.workPlanID = String.valueOf(curPlanBean.Id);
 
+        EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_SHOW));
         curDisposable = taskViewModel.reqAll(reqAllTask);
     }
 
     private void getListNums() {
         loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING);
+    }
 
+    /**
+     * 增加任务
+     */
+    private void addTask() {
+        if (addDisposable != null) {
+            addDisposable.dispose();
+        }
+        ReqAddTask reqAddTask = new ReqAddTask();
+        reqAddTask.Id = "0";
+        reqAddTask.Name = "第" + (curTaskList.size() + 1) + "次巡线";
+        reqAddTask.WorkPlanId = String.valueOf(curPlanBean.Id);
+        reqAddTask.PersonLiable = curPlanBean.PersonLiable;
+        reqAddTask.Transferor = "";
+        reqAddTask.State = "2";
+        reqAddTask.NumberOfTransfers = "1";
+        reqAddTask.Deadline = TimeUtil.ms2YMD(System.currentTimeMillis()) + " 23:59:59";
+        reqAddTask.isAdd = "true";
+        reqAddTask.toSiteList(curPlanBean.PlanSiteList);
 
-//        numDisposable = contactsViewModel.reqNum(reqContactsNum);
+        EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_SHOW));
+        addDisposable = taskViewModel.reqAdd(reqAddTask);
     }
 
     private ItemCallBack itemCallBack = item -> {
@@ -195,16 +227,17 @@ public class TaskListFragment extends BaseFragment {
             TaskSiteBean taskSiteBean = (TaskSiteBean) item;
             taskSiteBean.range = curPlanBean.Range;
 
+            List<TaskSiteBean> curSites = new ArrayList<>();
+            for (TaskBean taskBean : curTaskList) {
+                if (taskBean.Id == taskSiteBean.taskId) {
+                    curSites = taskBean.TaskSiteList;
+                }
+            }
             //判断是否该完成每次的最后一个打卡
             boolean isEnd = false;
             int numUnComplete = 0;
-            int start = curPlanBean.TimesOfCompletion * siteNum + curPlanBean.TimesOfCompletion;
-            int total = start + siteNum + 1;
-            for(int i = start; i < total; i++) {
-                if (curSiteList.get(i).SiteId == -1) {
-                    continue;
-                }
-                if (curSiteList.get(i).State != BaseConstant.STATUS_COMPLETED) {
+            for (TaskSiteBean site : curSites) {
+                if (site.State != BaseConstant.STATUS_COMPLETED) {
                     numUnComplete++;
                 }
             }
@@ -226,47 +259,46 @@ public class TaskListFragment extends BaseFragment {
 
     @Override
     public void subscribeToModel() {
+        if (!taskViewModel.getObservableAdd().hasObservers()) {
+            taskViewModel.getObservableAdd().observe(this, s -> {
+                if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                    if (s != null) {
+                        if (s.equals("成功添加")) {
+                            getDatas(0, maxNum);
+                        } else {
+                            ToastUtil.showToast(s);
+                        }
+                    } else {
+                        ToastUtil.showToast("失败添加");
+                    }
+                }
+            });
+        }
+
         if (!taskViewModel.getObservableAllTask().hasObservers()) {
             taskViewModel.getObservableAllTask().observe(this, taskBeans -> {
                 if (this.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
                     if (null != taskBeans) {
                         if (taskBeans.size() > 0) {
-                            List<TaskSiteBean> taskSiteBeans = taskBeans.get(0).TaskSiteList;
-                            if (taskSiteBeans != null && taskSiteBeans.size() > 0) {
-                                siteNum = taskSiteBeans.size();
-                                for(int i = 1; i <= curPlanBean.TotalNumberOfTimes; i++) {
+                            curTaskList.clear();
+                            curSiteList.clear();
+                            curTaskList.addAll(taskBeans);
+                            for (TaskBean taskBean : curTaskList) {
+                                List<TaskSiteBean> taskSiteBeans = taskBean.TaskSiteList;
+                                if (taskSiteBeans != null && taskSiteBeans.size() > 0) {
                                     TaskSiteBean titleSiteBean = new TaskSiteBean();//占位标题类
                                     titleSiteBean.SiteId = -1;
-                                    titleSiteBean.Name = String.valueOf(i);
+                                    titleSiteBean.Name = taskBean.Name;
                                     curSiteList.add(titleSiteBean);
-                                    for (TaskSiteBean taskSiteBean : taskSiteBeans) {
-                                        if (i > 1) {
-                                            try {
-                                                taskSiteBean = (TaskSiteBean) taskSiteBean.deepClone();
-                                            } catch (IOException e) {
-                                                e.printStackTrace();
-                                            } catch (ClassNotFoundException e) {
-                                                e.printStackTrace();
-                                            }
-                                        }
-//                                        if (i == curPlanBean.TimesOfCompletion) {
-//                                            taskSiteBean.State = 1;
-//                                        } else if (i > curPlanBean.TimesOfCompletion) {
-//                                            taskSiteBean.State = 3;
-//                                        }
-                                        if (i > curPlanBean.TimesOfCompletion) {
-                                            taskSiteBean.State = 3;
-                                        }
-                                        curSiteList.add(taskSiteBean);
+                                    for (TaskSiteBean sites : taskSiteBeans) {
+                                        sites.taskId = taskBean.Id;
                                     }
+                                    curSiteList.addAll(taskSiteBeans);
                                 }
-
-//                                curSiteList.addAll(taskSiteBeans);
-                                LogUtil.d(TAG, "load complete = " + taskBeans);
-                                loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_COMPLETE);
-                            } else {
-                                loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_END);
                             }
+
+                            LogUtil.d(TAG, "load complete = " + taskBeans);
+                            loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_COMPLETE);
                         } else {
                             loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_END);
                         }
@@ -296,8 +328,7 @@ public class TaskListFragment extends BaseFragment {
 
         if (null == curSiteList || curSiteList.size() <= 0) {
 //            getListNums();
-            maxNum = 1;
-            getDatas(0, 1);
+            getDatas(0, maxNum);
         }
     }
 }

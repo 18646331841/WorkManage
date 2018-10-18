@@ -16,6 +16,7 @@ import com.barisetech.www.workmanage.bean.worktask.TaskSiteBean;
 import com.barisetech.www.workmanage.databinding.ItemPlanContactsListBinding;
 import com.barisetech.www.workmanage.databinding.ItemPlanTaskListBinding;
 import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
+import com.barisetech.www.workmanage.utils.TimeUtil;
 
 import java.util.List;
 
@@ -58,8 +59,8 @@ public class PlanTaskListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 StringBuilder sb = new StringBuilder();
 //                int num = position / (mList.size() + 1);
 //                sb.append("第").append(num + 1).append("次巡线");
-                sb.append("第").append(mList.get(position).Name).append("次巡线");
-                myHolder.binding.planTaskItemNum.setText(sb.toString());
+//                sb.append("第").append(mList.get(position).Name).append("次巡线");
+                myHolder.binding.planTaskItemNum.setText(mList.get(position).Name);
             } else {
                 myHolder.binding.planTaskItemTitle.setVisibility(View.GONE);
                 myHolder.binding.planTaskItemContent.setVisibility(View.VISIBLE);
@@ -67,7 +68,7 @@ public class PlanTaskListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 TaskSiteBean taskSiteBean = mList.get(position);
 
                 myHolder.binding.planTaskItemSite.setText(taskSiteBean.Name);
-                myHolder.binding.planTaskItemTime.setText(taskSiteBean.DateTime);
+                myHolder.binding.planTaskItemTime.setText(TimeUtil.replaceTimeT(taskSiteBean.DateTime));
                 if (taskSiteBean.SiteState != 1) {
                     myHolder.binding.planTaskItemException.setBackgroundResource(R.drawable.icon_arrow_right);
                 } else {
