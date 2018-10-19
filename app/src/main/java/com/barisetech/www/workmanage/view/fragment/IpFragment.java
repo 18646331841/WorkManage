@@ -66,7 +66,11 @@ public class IpFragment extends BaseFragment {
             } else {
                 String spValue = account + "_" + password;
                 SharedPreferencesUtil.getInstance().setString(BaseConstant.SP_IP_PORT, spValue);
-                EventBus.getDefault().post(new EventBusMessage(LoginFragment.TAG));
+                if (SharedPreferencesUtil.getInstance().getBoolean(BaseConstant.SP_LOGIN_FP, false)) {
+                    EventBus.getDefault().post(new EventBusMessage(FingerFragment.TAG));
+                } else {
+                    EventBus.getDefault().post(new EventBusMessage(LoginFragment.TAG));
+                }
             }
         });
     }

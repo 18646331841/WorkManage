@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioGroup;
 
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.base.BaseFragment;
@@ -16,6 +17,8 @@ import com.barisetech.www.workmanage.bean.pipelindarea.PipeLindAreaInfo;
 import com.barisetech.www.workmanage.bean.pipelindarea.ReqAddPipelindArea;
 import com.barisetech.www.workmanage.databinding.FragmentPipeLindAreaAddBinding;
 import com.barisetech.www.workmanage.utils.ToastUtil;
+import com.barisetech.www.workmanage.view.dialog.CommonDialogFragment;
+import com.barisetech.www.workmanage.view.dialog.DialogFragmentHelper;
 import com.barisetech.www.workmanage.viewmodel.PipeblindAreaViewModel;
 
 public class PipeLindAreaAddFragment extends BaseFragment{
@@ -25,6 +28,7 @@ public class PipeLindAreaAddFragment extends BaseFragment{
     private PipeblindAreaViewModel pipeblindAreaViewModel;
     private static final String PIPE_ID = "pipeId";
     private int pipeId = -1;
+    private CommonDialogFragment commonDialogFragment;
 
     public static PipeLindAreaAddFragment newInstance(){
         PipeLindAreaAddFragment fragment = new PipeLindAreaAddFragment();
@@ -65,6 +69,21 @@ public class PipeLindAreaAddFragment extends BaseFragment{
             mBinding.lindPipeId.setText(String.valueOf(pipeId));
         }
 
+        mBinding.lindIsenable.setOnItemClickListener(()->{
+            showDialog(getString(R.string.is_enable), true, (radioGroup, i) -> {
+                closeDialog();
+                switch (i) {
+                    case R.id.dialog_yes_rb:
+                        mBinding.lindIsenable.setText("是");
+                        break;
+                    case R.id.dialog_no_rb:
+                        mBinding.lindIsenable.setText("否");
+                        break;
+                }
+
+            });
+        });
+
         mBinding.addLindArea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,6 +99,24 @@ public class PipeLindAreaAddFragment extends BaseFragment{
                 pipeblindAreaViewModel.reqAddOrModifyPipeLindArea(info);
             }
         });
+    }
+
+    private void showDialog(String title, boolean defaultV, RadioGroup.OnCheckedChangeListener
+            onCheckedChangeListener) {
+        int value;
+        if (!defaultV) {
+            value = DialogFragmentHelper.DIALOG_NO;
+        } else {
+            value = DialogFragmentHelper.DIALOG_YES;
+        }
+        commonDialogFragment = DialogFragmentHelper.showYesDialog(getFragmentManager(), title, value,
+                onCheckedChangeListener, true);
+    }
+
+    private void closeDialog() {
+        if (commonDialogFragment != null) {
+            commonDialogFragment.dismiss();
+        }
     }
 
     @Override

@@ -86,7 +86,7 @@ public class NewsListFragment extends BaseFragment {
         mBinding.setFragment(this);
         ToolbarInfo toolbarInfo = new ToolbarInfo();
         toolbarInfo.setTitle(getString(R.string.title_news));
-        toolbarInfo.setTwoText("新增");
+        toolbarInfo.setTwoText(getString(R.string.news_release));
         observableToolbar.set(toolbarInfo);
 
         initView();

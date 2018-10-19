@@ -143,6 +143,12 @@ public class PipeblindAreaViewModel extends BaseViewModel implements ModelCallBa
                     case PipeLindAreaModel.TYPE_ALL:
                         mObservableAllPipeLindArea.setValue(null);
                         break;
+                    case PipeLindAreaModel.TYPE_ADD:
+                        meObservableAddOrModifyLindArea.setValue(null);
+                        break;
+                    case PipeLindAreaModel.TYPE_DELETE:
+                        mObservableLindAreaDel.setValue(false);
+                        break;
                 }
             });
         }

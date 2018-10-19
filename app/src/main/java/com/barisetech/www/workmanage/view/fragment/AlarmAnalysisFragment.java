@@ -259,6 +259,7 @@ public class AlarmAnalysisFragment extends BaseFragment {
         reqAddAlarmAnalysis.setIsNewReader("false");
         reqAddAlarmAnalysis.setReadLV(String.valueOf(curReadLv));
         reqAddAlarmAnalysis.setTittle(titleS);
+        reqAddAlarmAnalysis.setAbstractContent(abstractS);
         reqAddAlarmAnalysis.setReleaseTime(TimeUtil.ms2Date(System.currentTimeMillis()));
         reqAddAlarmAnalysis.setAlarmID(String.valueOf(curAlarmInfo.getKey()));
         reqAddAlarmAnalysis.setAlarmCause(String.valueOf(curReason));

@@ -86,17 +86,20 @@ public class NewsModel {
                 .subscribeWith(new ObserverCallBack<NewsInfo>() {
                     @Override
                     protected void onThrowable(Throwable e) {
-                        modelCallBack.fail(Config.ERROR_NETWORK);
+                        FailResponse failResponse = new FailResponse(TYPE_GET_NEWS, Config.ERROR_NETWORK);
+                        modelCallBack.fail(failResponse);
 
                     }
 
                     @Override
                     protected void onFailure(BaseResponse response) {
+                        FailResponse failResponse;
                         if (response.Code == 401) {
-                            modelCallBack.fail(Config.ERROR_UNAUTHORIZED);
+                            failResponse = new FailResponse(TYPE_GET_NEWS, Config.ERROR_UNAUTHORIZED);
+                        } else {
+                            failResponse = new FailResponse(TYPE_GET_NEWS, Config.ERROR_FAIL);
                         }
-                        modelCallBack.fail(Config.ERROR_FAIL);
-
+                        modelCallBack.fail(failResponse);
                     }
 
                     @Override
@@ -121,16 +124,19 @@ public class NewsModel {
                 .subscribeWith(new ObserverCallBack<List<NewsInfo>>() {
                     @Override
                     protected void onThrowable(Throwable e) {
-                        modelCallBack.fail(Config.ERROR_NETWORK);
-
+                        FailResponse failResponse = new FailResponse(TYPE_QUERY_NEWS, Config.ERROR_NETWORK);
+                        modelCallBack.fail(failResponse);
                     }
 
                     @Override
                     protected void onFailure(BaseResponse response) {
+                        FailResponse failResponse;
                         if (response.Code == 401) {
-                            modelCallBack.fail(Config.ERROR_UNAUTHORIZED);
+                            failResponse = new FailResponse(TYPE_QUERY_NEWS, Config.ERROR_UNAUTHORIZED);
+                        } else {
+                            failResponse = new FailResponse(TYPE_QUERY_NEWS, Config.ERROR_FAIL);
                         }
-                        modelCallBack.fail(Config.ERROR_FAIL);
+                        modelCallBack.fail(failResponse);
 
                     }
 
@@ -156,16 +162,19 @@ public class NewsModel {
                 .subscribeWith(new ObserverCallBack<Integer>() {
                     @Override
                     protected void onThrowable(Throwable e) {
-                        modelCallBack.fail(Config.ERROR_NETWORK);
-
+                        FailResponse failResponse = new FailResponse(TYPE_ADD, Config.ERROR_NETWORK);
+                        modelCallBack.fail(failResponse);
                     }
 
                     @Override
                     protected void onFailure(BaseResponse response) {
+                        FailResponse failResponse;
                         if (response.Code == 401) {
-                            modelCallBack.fail(Config.ERROR_UNAUTHORIZED);
+                            failResponse = new FailResponse(TYPE_ADD, Config.ERROR_UNAUTHORIZED);
+                        } else {
+                            failResponse = new FailResponse(TYPE_ADD, Config.ERROR_FAIL);
                         }
-                        modelCallBack.fail(Config.ERROR_FAIL);
+                        modelCallBack.fail(failResponse);
                     }
 
                     @Override

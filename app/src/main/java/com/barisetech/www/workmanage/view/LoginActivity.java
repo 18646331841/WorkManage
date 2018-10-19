@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 
 import com.barisetech.www.workmanage.R;
@@ -12,10 +13,12 @@ import com.barisetech.www.workmanage.base.BaseActivity;
 import com.barisetech.www.workmanage.base.BaseApplication;
 import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
+import com.barisetech.www.workmanage.bean.incident.IncidentInfo;
 import com.barisetech.www.workmanage.service.MyNotifyService;
 import com.barisetech.www.workmanage.utils.FragmentUtil;
 import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
 import com.barisetech.www.workmanage.view.fragment.FingerFragment;
+import com.barisetech.www.workmanage.view.fragment.IncidentDetailsFragment;
 import com.barisetech.www.workmanage.view.fragment.IpFragment;
 import com.barisetech.www.workmanage.view.fragment.LoginFragment;
 
@@ -85,8 +88,12 @@ public class LoginActivity extends BaseActivity {
         String tag = eventBusMessage.message;
         switch (tag) {
             case LoginFragment.TAG:
-                FragmentUtil.replaceSupportFragment(this, R.id.login_container, LoginFragment.class, LoginFragment.TAG,
-                        false, false);
+//                FragmentUtil.replaceSupportFragment(this, R.id.login_container, LoginFragment.class, LoginFragment.TAG,
+//                        false, false);
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction
+                        .replace(R.id.login_container, LoginFragment.newInstance(eventBusMessage), tag)
+                        .commit();
                 break;
             case IpFragment.TAG:
                 FragmentUtil.replaceSupportFragment(this, R.id.login_container, IpFragment.class, IpFragment.TAG,

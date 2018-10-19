@@ -26,6 +26,7 @@ import com.barisetech.www.workmanage.widget.CustomDialog;
 import com.barisetech.www.workmanage.widget.SwitchView;
 
 import static com.barisetech.www.workmanage.utils.ToastUtil.showToast;
+import static com.barisetech.www.workmanage.utils.ToastUtil.showToastLong;
 
 public class FingerOpenFragment extends BaseFragment {
 
@@ -204,7 +205,10 @@ public class FingerOpenFragment extends BaseFragment {
 
         @Override
         public void onAuthenticationError(int errMsgId, CharSequence errString) {
-            showToast(errString);
+            showToastLong(errString);
+            if (mDialog != null) {
+                mDialog.dismiss();
+            }
         }
 
         @Override

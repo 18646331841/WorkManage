@@ -69,10 +69,12 @@ public class BaseConstant {
     /**
      * SharedPreferences keys
      */
-    //指纹登录
+    //指纹登录 boolean true 启用指纹
     public static final String SP_LOGIN_FP = "login_FP";
     //登录用户account
     public static final String SP_ACCOUNT = "account";
+    //登录用户account 需求设计如此，只能本地保存密码
+    public static final String SP_PASSWORD = "password";
     //登录用户权限
     public static final String SP_ROLE = "role";
     //账户所属公司

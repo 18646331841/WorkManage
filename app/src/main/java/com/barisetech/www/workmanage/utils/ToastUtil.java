@@ -21,4 +21,16 @@ public class ToastUtil {
         }
         mToast.show();
     }
+
+    /**
+     * 长时间显示Toast
+     */
+    public static void showToastLong(CharSequence text) {
+        if (mToast == null) {
+            mToast = Toast.makeText(BaseApplication.getInstance(), text, Toast.LENGTH_LONG);
+        } else {
+            mToast.setText(text);
+        }
+        mToast.show();
+    }
 }

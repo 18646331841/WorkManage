@@ -53,15 +53,27 @@ public class LoginFragment extends BaseFragment {
     private boolean isFirst = true;
 
     private Disposable curDisposable;
-    private boolean fingerFlag;
     private boolean fingerOpen = true;
+    private static final String EVENT_MESSAGE = "message";
+    private EventBusMessage curMessage;
 
     public LoginFragment() {
 
     }
 
-    public static LoginFragment newInstance() {
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (null != getArguments()) {
+            curMessage = (EventBusMessage) getArguments().getSerializable(EVENT_MESSAGE);
+        }
+    }
+
+    public static LoginFragment newInstance(EventBusMessage eventBusMessage) {
         LoginFragment fragment = new LoginFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(EVENT_MESSAGE, eventBusMessage);
+        fragment.setArguments(bundle);
         return fragment;
     }
 
@@ -213,17 +225,19 @@ public class LoginFragment extends BaseFragment {
                         SharedPreferencesUtil.getInstance().setString(BaseConstant.SP_TOKEN, tokenInfo.getToken());
                         EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_CLOSE));
                         if (fingerOpen) {
-                            fingerFlag = SharedPreferencesUtil.getInstance().getBoolean(BaseConstant.SP_LOGIN_FP, true);
-                            if (fingerFlag) {
-                                EventBus.getDefault().post(new EventBusMessage(FingerFragment.TAG));
+                            if (curMessage != null && curMessage.getArg1() != null) {
+                                String arg1 = (String) curMessage.getArg1();
+                                if (arg1.equals(FingerFragment.TAG)) {
+                                    EventBus.getDefault().post(new EventBusMessage(NavigationFragment.TAG));
+                                } else {
+                                    EventBus.getDefault().post(new EventBusMessage(FingerFragment.TAG));
+                                }
                             } else {
-                                EventBus.getDefault().post(new EventBusMessage(NavigationFragment.TAG));
+                                EventBus.getDefault().post(new EventBusMessage(FingerFragment.TAG));
                             }
                         } else {
                             EventBus.getDefault().post(new EventBusMessage(NavigationFragment.TAG));
                         }
-
-
                     }
                 }
             });

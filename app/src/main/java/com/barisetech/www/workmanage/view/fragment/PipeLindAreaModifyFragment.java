@@ -1,5 +1,6 @@
 package com.barisetech.www.workmanage.view.fragment;
 
+import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -11,7 +12,9 @@ import android.view.ViewGroup;
 import android.widget.RadioGroup;
 
 import com.barisetech.www.workmanage.R;
+import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseFragment;
+import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.bean.pipelindarea.PipeLindAreaInfo;
 import com.barisetech.www.workmanage.bean.pipelindarea.ReqAddPipelindArea;
@@ -22,16 +25,17 @@ import com.barisetech.www.workmanage.view.dialog.CommonDialogFragment;
 import com.barisetech.www.workmanage.view.dialog.DialogFragmentHelper;
 import com.barisetech.www.workmanage.viewmodel.PipeblindAreaViewModel;
 
-public class PipeLindAreaModifyFragment extends BaseFragment{
+import org.greenrobot.eventbus.EventBus;
 
-    public static final String TAG="PipeLindAreaModifyFragment";
+public class PipeLindAreaModifyFragment extends BaseFragment {
+
+    public static final String TAG = "PipeLindAreaModifyFragment";
     FragmentPipeLindAreaModifyBinding mBinding;
     private static final String LIND_AREA_ID = "pipeLindAreaInfo";
     private PipeLindAreaInfo pipeLindAreaInfo;
     private PipeblindAreaViewModel pipeblindAreaViewModel;
     private CommonDialogFragment commonDialogFragment;
     private ReqAddPipelindArea info = new ReqAddPipelindArea();
-
 
 
     public static PipeLindAreaModifyFragment newInstance(PipeLindAreaInfo pipeLindAreaInfo) {
@@ -53,7 +57,8 @@ public class PipeLindAreaModifyFragment extends BaseFragment{
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
+            savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_pipe_lind_area_modify, container, false);
         setToolBarHeight(mBinding.toolbar.getRoot());
         mBinding.setFragment(this);
@@ -67,13 +72,13 @@ public class PipeLindAreaModifyFragment extends BaseFragment{
     private void initView() {
         mBinding.modifyLindId.setText(String.valueOf(pipeLindAreaInfo.getId()));
         mBinding.modifyLindPipeId.setText(String.valueOf(pipeLindAreaInfo.getPipeId()));
-        mBinding.modifyLindIsenable.setText(pipeLindAreaInfo.isIsEnabled()?"是":"否");
+        mBinding.modifyLindIsenable.setText(pipeLindAreaInfo.isIsEnabled() ? "是" : "否");
         mBinding.modifyLindType.setText(String.valueOf(pipeLindAreaInfo.getType()));
         mBinding.modifyLindStart.setText(String.valueOf(pipeLindAreaInfo.getStartDistance()));
         mBinding.modifyLindEnd.setText(String.valueOf(pipeLindAreaInfo.getEndDistance()));
         mBinding.modifyLindRemark.setText(pipeLindAreaInfo.getRemark());
 
-        mBinding.modifyLindIsenable.setOnItemClickListener(()->{
+        mBinding.modifyLindIsenable.setOnItemClickListener(() -> {
             showDialog(getString(R.string.is_enable), Boolean.valueOf(info.getIsEnabled()), (radioGroup, i) -> {
                 closeDialog();
                 switch (i) {
@@ -99,7 +104,9 @@ public class PipeLindAreaModifyFragment extends BaseFragment{
                 info.setType(mBinding.modifyLindType.getText().toString());
                 info.setEndDistance(mBinding.modifyLindEnd.getText().toString());
                 info.setStartDistance(mBinding.modifyLindStart.getText().toString());
-                info.setIsEnabled(mBinding.modifyLindIsenable.getText().toString().equals("是")?"true":"false");
+                info.setIsEnabled(mBinding.modifyLindIsenable.getText().toString().equals("是") ? "true" : "false");
+
+                EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_SHOW));
                 pipeblindAreaViewModel.reqAddOrModifyPipeLindArea(info);
             }
         });
@@ -109,6 +116,8 @@ public class PipeLindAreaModifyFragment extends BaseFragment{
             public void onClick(View v) {
                 ReqDeletePipeLindArea info = new ReqDeletePipeLindArea();
                 info.setPipeBlindAreaId(String.valueOf(pipeLindAreaInfo.getId()));
+
+                EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_SHOW));
                 pipeblindAreaViewModel.reqDeletePipeLindArea(info);
             }
         });
@@ -121,28 +130,39 @@ public class PipeLindAreaModifyFragment extends BaseFragment{
 
     @Override
     public void subscribeToModel() {
-        pipeblindAreaViewModel.getMeObservableAddOrModifyLindArea().observe(this,s -> {
-            if (null!=s){
-                if (s.equals("成功修改")){
-                    ToastUtil.showToast("成功修改");
-                    getActivity().onBackPressed();
-                }else if (s.equals("失败修改")){
-                    ToastUtil.showToast("失败修改");
+        if (!pipeblindAreaViewModel.getMeObservableAddOrModifyLindArea().hasObservers()) {
+            pipeblindAreaViewModel.getMeObservableAddOrModifyLindArea().observe(this, s -> {
+                if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                    if (null != s) {
+                        if (s.equals("成功修改")) {
+                            ToastUtil.showToast("成功修改");
+                            getActivity().onBackPressed();
+                        } else {
+                            ToastUtil.showToast(s);
+                        }
+                    } else {
+                        ToastUtil.showToast("失败修改");
+                    }
                 }
-            }
-        });
+            });
+        }
 
-
-        pipeblindAreaViewModel.getmObservableLindAreaDel().observe(this,flag->{
-            if (null!=flag){
-                if (flag){
-                    ToastUtil.showToast("删除成功");
-                    getActivity().onBackPressed();
-                }else {
-                    ToastUtil.showToast("删除失败");
+        if (!pipeblindAreaViewModel.getmObservableLindAreaDel().hasObservers()) {
+            pipeblindAreaViewModel.getmObservableLindAreaDel().observe(this, flag -> {
+                if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                    if (null != flag) {
+                        if (flag) {
+                            ToastUtil.showToast("删除成功");
+                            getActivity().onBackPressed();
+                        } else {
+                            ToastUtil.showToast("删除失败");
+                        }
+                    } else {
+                        ToastUtil.showToast("删除失败");
+                    }
                 }
-            }
-        });
+            });
+        }
 
     }
 

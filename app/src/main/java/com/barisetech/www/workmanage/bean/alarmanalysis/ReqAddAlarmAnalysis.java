@@ -31,6 +31,7 @@ public class ReqAddAlarmAnalysis {
     private String ReleaseTime;
     private String AlarmID;
     private String AlarmCause;
+    private String AbstractContent;
     private String AlarmDetail;
     private String Analyst;
     private String ReadQuantity;
@@ -140,5 +141,13 @@ public class ReqAddAlarmAnalysis {
 
     public void setImageList(List<ImageInfo> ImageInfos) {
         this.ImageList = ImageInfos;
+    }
+
+    public String getAbstractContent() {
+        return AbstractContent;
+    }
+
+    public void setAbstractContent(String abstractContent) {
+        AbstractContent = abstractContent;
     }
 }

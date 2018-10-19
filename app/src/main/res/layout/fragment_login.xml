@@ -49,13 +49,13 @@
                 android:layout_width="@dimen/dp_233"
                 android:layout_height="@dimen/dp_45"
                 android:layout_marginLeft="@dimen/dp_10"
-                android:paddingLeft="@dimen/dp_10"
                 android:background="@drawable/layout_corners"
+                android:paddingLeft="@dimen/dp_10"
+                android:singleLine="true"
                 app:layout_constraintBottom_toBottomOf="@id/tv_account"
                 app:layout_constraintLeft_toRightOf="@id/tv_account"
                 app:layout_constraintRight_toRightOf="@id/rl_pwd"
-                app:layout_constraintTop_toTopOf="@id/tv_account"
-                />
+                app:layout_constraintTop_toTopOf="@id/tv_account"/>
 
 
             <RelativeLayout
@@ -121,7 +121,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dp_40"
+                android:layout_marginBottom="@dimen/dp_20"
                 android:text="@string/copyright"
                 android:textSize="@dimen/sp_12"
                 app:layout_constraintBottom_toBottomOf="parent"

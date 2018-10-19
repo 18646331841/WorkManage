@@ -2,6 +2,7 @@ package com.barisetech.www.workmanage.view.fragment;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -213,16 +214,20 @@ public class NewsAddFragment extends BaseFragment {
 
     @Override
     public void subscribeToModel() {
-        newsViewModel.getmObservableAddResult().observe(this, integer -> {
-            if (null != integer) {
-                if (integer > 0) {
-                    ToastUtil.showToast("新闻添加成功");
-                    getActivity().onBackPressed();
-                } else {
-                    ToastUtil.showToast("新闻添加失败");
+        if (!newsViewModel.getmObservableAddResult().hasObservers()) {
+            newsViewModel.getmObservableAddResult().observe(this, integer -> {
+                if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                    if (null != integer) {
+                        if (integer > 0) {
+                            ToastUtil.showToast("新闻添加成功");
+                            getActivity().onBackPressed();
+                        } else {
+                            ToastUtil.showToast("新闻添加失败");
+                        }
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     @Override

@@ -78,13 +78,14 @@
     <string name="incident_detail_to_pipe">转到管线</string>
 
     <string name="title_news">新闻</string>
+    <string name="news_release">发布</string>
     <string name="title_news_details">新闻详情</string>
     <string name="news_list_noLink">没有新闻连接</string>
 
     <string name="title_news_add">添加新闻</string>
     <string name="news_add_input_title">请输入新闻标题</string>
     <string name="news_add_input_describe">请输入新闻描述（20个字以内）</string>
-    <string name="news_add_input_link">请输入新闻链接</string>
+    <string name="news_add_input_link">请输入新闻链接，网址请以http或https开头</string>
     <string name="news_add_select_type">请选择新闻类别</string>
     <string name="news_add_type_company">公司</string>
     <string name="news_add_type_industry">行业</string>
@@ -379,6 +380,7 @@
     <string name="ip_null">IP或端口为空</string>
     <string name="login_success">登录成功</string>
     <string name="login_fail">登录失败</string>
+    <string name="login_fail_finger">登录失败,请重新登录</string>
 
     <string name="time_picker_confirm">确认</string>
     <string name="all_select">全选</string>

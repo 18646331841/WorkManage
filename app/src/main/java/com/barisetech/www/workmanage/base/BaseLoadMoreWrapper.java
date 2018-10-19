@@ -111,8 +111,9 @@ public class BaseLoadMoreWrapper extends RecyclerView.Adapter<RecyclerView.ViewH
                         // Custom loading end view
                         loadMoreViewHolder.rlLoadingFooter.addView(mLoadingEndView);
                     } else {
-                        // Default loading end view
-                        View loadingEndView = View.inflate(mContext, R.layout.layout_loading_end, null);
+                        // Default loading end view 根据需求,改成和加载成功一样的样子
+//                        View loadingEndView = View.inflate(mContext, R.layout.layout_loading_end, null);
+                        View loadingEndView = View.inflate(mContext, R.layout.layout_loading_complete, null);
                         loadMoreViewHolder.rlLoadingFooter.addView(loadingEndView);
                     }
                     break;
