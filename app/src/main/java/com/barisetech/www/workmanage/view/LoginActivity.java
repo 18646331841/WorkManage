@@ -40,6 +40,7 @@ public class LoginActivity extends BaseActivity {
             bindService(upserviceintent, serviceConnection, BIND_AUTO_CREATE);
             myBinder.startInterval();
         }
+        unbindService(serviceConnection);
     }
 
     @Override
@@ -59,7 +60,6 @@ public class LoginActivity extends BaseActivity {
 
         @Override
         public void onServiceDisconnected(ComponentName componentName) {
-            myBinder = null;
         }
     };
 
@@ -68,6 +68,8 @@ public class LoginActivity extends BaseActivity {
         String ipPort = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_IP_PORT, "");
         if (TextUtils.isEmpty(ipPort)) {
             showActivityOrFragment(new EventBusMessage(IpFragment.TAG), true);
+        } else if (SharedPreferencesUtil.getInstance().getBoolean(BaseConstant.SP_LOGIN_FP, false)) {
+            showActivityOrFragment(new EventBusMessage(FingerFragment.TAG), true);
         } else {
             showActivityOrFragment(new EventBusMessage(LoginFragment.TAG), true);
         }
@@ -85,22 +87,28 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void showActivityOrFragment(EventBusMessage eventBusMessage, boolean isActivity) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
         String tag = eventBusMessage.message;
         switch (tag) {
             case LoginFragment.TAG:
-//                FragmentUtil.replaceSupportFragment(this, R.id.login_container, LoginFragment.class, LoginFragment.TAG,
+//                FragmentUtil.replaceSupportFragment(this, R.id.login_container, LoginFragment.class, LoginFragment
+// .TAG,
 //                        false, false);
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 transaction
                         .replace(R.id.login_container, LoginFragment.newInstance(eventBusMessage), tag)
                         .commit();
                 break;
             case IpFragment.TAG:
-                FragmentUtil.replaceSupportFragment(this, R.id.login_container, IpFragment.class, IpFragment.TAG,
-                        false, false);
+//                FragmentUtil.replaceSupportFragment(this, R.id.login_container, IpFragment.class, IpFragment.TAG,
+//                        false, false);
+                transaction
+                        .replace(R.id.login_container, IpFragment.newInstance(eventBusMessage), tag)
+                        .commit();
                 break;
             case FingerFragment.TAG:
-                FragmentUtil.replaceSupportFragment(this, R.id.login_container, FingerFragment.class, FingerFragment.TAG,
+                FragmentUtil.replaceSupportFragment(this, R.id.login_container, FingerFragment.class, FingerFragment
+                                .TAG,
                         false, false);
                 break;
             default:

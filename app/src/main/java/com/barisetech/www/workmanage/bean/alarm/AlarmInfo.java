@@ -103,6 +103,9 @@ public class AlarmInfo extends MessageInfo implements Serializable{
     }
 
     public void setTimeStamp(String TimeStamp) {
+        if (TimeStamp != null && TimeStamp.contains("T")) {
+            TimeStamp = TimeStamp.replace("T", " ");
+        }
         this.TimeStamp = TimeStamp;
         time = TimeStamp;//设置父类时间
     }
@@ -207,6 +210,9 @@ public class AlarmInfo extends MessageInfo implements Serializable{
     }
 
     public void toSuper() {
+        if (TimeStamp != null && TimeStamp.contains("T")) {
+            TimeStamp = TimeStamp.replace("T", " ");
+        }
         id = Key;
         read = isRead;//设置父类read
         content = toContent();//设置父类content

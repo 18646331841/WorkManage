@@ -59,7 +59,6 @@
                     android:id="@+id/pw_mark_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:setText="@{pw.RecordDate}"
                     order:ddd_content_enable="true"
                     order:ddd_is_bottom_line="false"
                     order:ddd_is_indicate="false"
@@ -97,7 +96,7 @@
                     order:ddd_is_bottom_line="false"
                     order:ddd_is_indicate="false"
                     app:ddd_content_hint="@string/pipe_work_name_i"
-                    order:ddd_label="@string/pipe_work_name"/>
+                    order:ddd_label="@string/pipe_work_pipe_name"/>
 
                 <com.barisetech.www.workmanage.widget.FormView
                     android:id="@+id/pw_pipe_diameter"

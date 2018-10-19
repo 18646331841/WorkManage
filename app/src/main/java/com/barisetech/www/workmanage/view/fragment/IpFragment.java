@@ -3,6 +3,7 @@ package com.barisetech.www.workmanage.view.fragment;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -26,13 +27,26 @@ public class IpFragment extends BaseFragment {
     public static final String TAG = "IpFragment";
 
     private FragmentIpBinding mBinding;
+    private static final String EVENT_MESSAGE = "message";
+    private EventBusMessage curMessage;
 
     public IpFragment() {
         // Required empty public constructor
     }
 
-    public static IpFragment newInstance() {
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (null != getArguments()) {
+            curMessage = (EventBusMessage) getArguments().getSerializable(EVENT_MESSAGE);
+        }
+    }
+
+    public static IpFragment newInstance(EventBusMessage eventBusMessage) {
         IpFragment fragment = new IpFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(EVENT_MESSAGE, eventBusMessage);
+        fragment.setArguments(bundle);
         return fragment;
     }
 
@@ -66,7 +80,8 @@ public class IpFragment extends BaseFragment {
             } else {
                 String spValue = account + "_" + password;
                 SharedPreferencesUtil.getInstance().setString(BaseConstant.SP_IP_PORT, spValue);
-                if (SharedPreferencesUtil.getInstance().getBoolean(BaseConstant.SP_LOGIN_FP, false)) {
+                Object arg1 = curMessage.getArg1();
+                if (arg1 != null && arg1.equals(FingerFragment.TAG)) {
                     EventBus.getDefault().post(new EventBusMessage(FingerFragment.TAG));
                 } else {
                     EventBus.getDefault().post(new EventBusMessage(LoginFragment.TAG));

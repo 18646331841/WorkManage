@@ -105,6 +105,9 @@ public class IncidentInfo extends MessageInfo implements Serializable {
     }
 
     public void setTimeStamp(String TimeStamp) {
+        if (TimeStamp != null && TimeStamp.contains("T")) {
+            TimeStamp = TimeStamp.replace("T", " ");
+        }
         this.TimeStamp = TimeStamp;
         time = TimeStamp;//设置父类时间
     }
@@ -173,6 +176,9 @@ public class IncidentInfo extends MessageInfo implements Serializable {
     }
 
     public void toSuper() {
+        if (TimeStamp != null && TimeStamp.contains("T")) {
+            TimeStamp = TimeStamp.replace("T", " ");
+        }
         id = Key;//设置父类id
         messageType = TYPE_INCIDENT;//设置父类类型
         time = TimeStamp;//设置父类时间

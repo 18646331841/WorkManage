@@ -21,6 +21,7 @@ import com.barisetech.www.workmanage.bean.pipework.PipeWork;
 import com.barisetech.www.workmanage.bean.pipework.ReqAddPW;
 import com.barisetech.www.workmanage.databinding.FragmentPipeWorkAddBinding;
 import com.barisetech.www.workmanage.databinding.FragmentPipeWorkModifyBinding;
+import com.barisetech.www.workmanage.utils.TimeUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.view.dialog.CommonDialogFragment;
 import com.barisetech.www.workmanage.view.dialog.DialogFragmentHelper;
@@ -94,6 +95,8 @@ public class PipeWorkAddFragment extends BaseFragment {
 
     private void initView() {
         mBinding.setPw(curPipeWork);
+
+        mBinding.pwMarkTime.setText(TimeUtil.ms2Date(System.currentTimeMillis()));
 
         mBinding.addPw.setOnClickListener(view -> {
             closeDisposable();

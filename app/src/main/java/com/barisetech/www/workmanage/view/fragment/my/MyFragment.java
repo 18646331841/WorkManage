@@ -67,6 +67,8 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
                 @Override
                 public void onClick(View view) {
                     mDialog.dismiss();
+                    SharedPreferencesUtil.getInstance().setString(BaseConstant.SP_TOKEN, "");
+                    SharedPreferencesUtil.getInstance().setBoolean(BaseConstant.SP_LOGIN_FP, false);
 //                    clearMemory();
                     EventBus.getDefault().post(new EventBusMessage(LoginActivity.TAG));
                 }

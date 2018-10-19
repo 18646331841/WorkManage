@@ -49,4 +49,12 @@ public class PlanBean implements Serializable{
         }
         view.setText(sb.toString());
     }
+
+    @BindingAdapter("setTime")
+    public static void setTime(TextView view, String time) {
+        if (time != null && time.contains("T")) {
+            time = time.replace("T", " ");
+            view.setText(time);
+        }
+    }
 }

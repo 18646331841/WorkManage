@@ -118,7 +118,7 @@
                 android:layout_width="@dimen/dp_238"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/sp_15"
-                android:text="@{String.valueOf(planbean.EndTime)}"
+                app:setTime="@{String.valueOf(planbean.EndTime)}"
                 android:layout_marginLeft="@dimen/dp_17"
                 android:layout_marginRight="@dimen/dp_31"
                 app:layout_constraintTop_toTopOf="@id/plan_list_item_competed_time"

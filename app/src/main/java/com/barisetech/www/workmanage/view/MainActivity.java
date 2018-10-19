@@ -101,9 +101,10 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void loadViewLayout() {
+        String token = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_TOKEN, "");
         String account = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_ACCOUNT, "");
         String ipPort = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_IP_PORT, "");
-        if (TextUtils.isEmpty(account) || TextUtils.isEmpty(ipPort)) {
+        if (TextUtils.isEmpty(token) || TextUtils.isEmpty(account) || TextUtils.isEmpty(ipPort)) {
             //没有登录过,跳转到登录界面
             EventBusMessage eventBusMessage = new EventBusMessage(LoginActivity.TAG);
             showActivityOrFragment(eventBusMessage, true);

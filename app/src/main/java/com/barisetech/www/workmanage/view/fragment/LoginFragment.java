@@ -99,7 +99,9 @@ public class LoginFragment extends BaseFragment {
         checkFingerPrint();
         mBinding.revealPassword.setOnClickListener(v -> revealPassword());
         mBinding.toolbar.tvTwo.setOnClickListener(view -> {
-            EventBus.getDefault().post(new EventBusMessage(IpFragment.TAG));
+            EventBusMessage eventBusMessage = new EventBusMessage(IpFragment.TAG);
+            eventBusMessage.setArg1(TAG);
+            EventBus.getDefault().post(eventBusMessage);
         });
         mBinding.login.setOnClickListener(view -> {
             String account = mBinding.etAccount.getText().toString().trim();

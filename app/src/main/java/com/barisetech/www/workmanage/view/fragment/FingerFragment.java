@@ -66,7 +66,12 @@ public class FingerFragment extends BaseFragment {
         mBinding.setFragment(this);
         ToolbarInfo toolbarInfo = new ToolbarInfo();
         toolbarInfo.setTitle(getString(R.string.finger_manager));
-        toolbarInfo.setTwoText(getString(R.string.skip));
+        if (SharedPreferencesUtil.getInstance().getBoolean(BaseConstant.SP_LOGIN_FP, false)) {
+//            mBinding.toolbar.tvTwo.setVisibility(View.GONE);
+            toolbarInfo.setTwoText(getString(R.string.toolbar_setting));
+        } else {
+            toolbarInfo.setTwoText(getString(R.string.skip));
+        }
         observableToolbar.set(toolbarInfo);
         initView();
         return mBinding.getRoot();
@@ -85,15 +90,8 @@ public class FingerFragment extends BaseFragment {
     }
 
     private void initView() {
-        if (SharedPreferencesUtil.getInstance().getBoolean(BaseConstant.SP_LOGIN_FP, false)) {
-//            mBinding.toolbar.tvTwo.setVisibility(View.GONE);
-            mBinding.toolbar.tvTwo.setText(getString(R.string.toolbar_setting));
-        } else {
-            mBinding.toolbar.tvTwo.setVisibility(View.VISIBLE);
-        }
-
         mBinding.toolbar.tvTwo.setOnClickListener(view -> {
-            if (mBinding.toolbar.tvTwo.getText().toString().equals(R.string.skip)) {
+            if (mBinding.toolbar.tvTwo.getText().toString().equals(getString(R.string.skip))) {
                 FingerprintUtil.getInstance().cancel();
                 EventBus.getDefault().post(new EventBusMessage(NavigationFragment.TAG));
                 SharedPreferencesUtil.getInstance().setBoolean(BaseConstant.SP_LOGIN_FP, false);
@@ -152,16 +150,18 @@ public class FingerFragment extends BaseFragment {
 
         @Override
         public void onAuthenticationError(int errMsgId, CharSequence errString) {
-            if (mBinding.toolbar.tvTwo.getText().toString().equals(R.string.skip)) {
-                showToastLong(errString);
-                FingerprintUtil.getInstance().cancel();
-                EventBus.getDefault().post(new EventBusMessage(NavigationFragment.TAG));
-                SharedPreferencesUtil.getInstance().setBoolean(BaseConstant.SP_LOGIN_FP, false);
-            } else {
-                showToastLong("指纹识别失败，使用账号密码登陆");
-                EventBusMessage eventBusMessage = new EventBusMessage(LoginFragment.TAG);
-                eventBusMessage.setArg1(TAG);
-                EventBus.getDefault().post(eventBusMessage);
+            if (errMsgId == 7) {
+
+                if (mBinding.toolbar.tvTwo.getText().toString().equals(getString(R.string.skip))) {
+                    showToastLong(errString);
+                    EventBus.getDefault().post(new EventBusMessage(NavigationFragment.TAG));
+                    SharedPreferencesUtil.getInstance().setBoolean(BaseConstant.SP_LOGIN_FP, false);
+                } else {
+                    showToastLong("指纹识别失败，使用账号密码登陆");
+                    EventBusMessage eventBusMessage = new EventBusMessage(LoginFragment.TAG);
+                    eventBusMessage.setArg1(TAG);
+                    EventBus.getDefault().post(eventBusMessage);
+                }
             }
         }
 
@@ -179,7 +179,7 @@ public class FingerFragment extends BaseFragment {
         @Override
         public void onAuthenticationSucceeded(FingerprintManagerCompat.AuthenticationResult result) {
             showToast("指纹识别成功");
-            if (mBinding.toolbar.tvTwo.getText().toString().equals(R.string.skip)) {
+            if (mBinding.toolbar.tvTwo.getText().toString().equals(getString(R.string.skip))) {
                 SharedPreferencesUtil.getInstance().setBoolean(BaseConstant.SP_LOGIN_FP, true);
                 EventBus.getDefault().post(new EventBusMessage(NavigationFragment.TAG));
             } else {
@@ -249,6 +249,7 @@ public class FingerFragment extends BaseFragment {
         }
         reqAuth.IMEIList = imeiListBeans;
 
+        EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_SHOW));
         loginViewModel.login(reqAuth, account, password);
     }
 }
