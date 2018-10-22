@@ -388,7 +388,6 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
         }
 
         if (!alarmViewModel.getmObservableLiftAlarm().hasObservers()) {
-
             alarmViewModel.getmObservableLiftAlarm().observe(this, aBoolean -> {
                 if (null != aBoolean) {
                     if (aBoolean) {

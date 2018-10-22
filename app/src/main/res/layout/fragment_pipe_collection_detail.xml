@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:order="http://schemas.android.com/apk/res-auto">
 
     <data>
 
         <variable
             name="pc"
             type="com.barisetech.www.workmanage.bean.pipecollections.PipeCollections"/>
-        
+
         <variable
             name="fragment"
-            type="com.barisetech.www.workmanage.base.BaseFragment" />
+            type="com.barisetech.www.workmanage.base.BaseFragment"/>
     </data>
 
     <LinearLayout
@@ -21,191 +22,108 @@
         <include
             android:id="@+id/toolbar"
             layout="@layout/layout_toolbar"
-            app:toolbar="@{fragment.observableToolbar}" />
+            app:toolbar="@{fragment.observableToolbar}"/>
 
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_15"
-            android:layout_marginRight="@dimen/dp_15"
             android:layout_marginTop="@dimen/dp_30"
+            android:layout_marginRight="@dimen/dp_15"
             app:cardCornerRadius="6dp"
             app:cardElevation="@dimen/dp_10">
 
-            <android.support.constraint.ConstraintLayout
+            <LinearLayout
                 android:id="@+id/normal_setting"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/pc_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/shape_title_top"
-                    android:paddingBottom="@dimen/dp_8"
                     android:paddingLeft="@dimen/dp_15"
                     android:paddingTop="@dimen/dp_9"
+                    android:paddingBottom="@dimen/dp_8"
                     android:text="@string/normal_setting"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/sp_14"
-                    app:layout_constraintLeft_toLeftOf="@id/normal_setting"
-                    app:layout_constraintRight_toRightOf="@id/normal_setting"
-                    app:layout_constraintTop_toTopOf="@id/normal_setting"/>
+                    android:textSize="@dimen/sp_14"/>
 
-
-                <TextView
-                    android:id="@+id/title_id"
-                    android:layout_width="wrap_content"
+                <com.barisetech.www.workmanage.widget.LineView
+                    android:id="@+id/pc_id"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingRight="@dimen/dp_20"
-                    android:text="@string/pc_detail_id"
-                    android:textSize="@dimen/sp_14"
-                    app:layout_constraintRight_toLeftOf="@id/tv_id"
-                    app:layout_constraintTop_toTopOf="@id/tv_id"/>
+                    app:setText="@{pc.Id}"
+                    order:ddd_content_enable="false"
+                    order:ddd_is_bottom_line="false"
+                    order:ddd_is_indicate="false"
+                    order:ddd_label="@string/pc_detail_id"/>
 
-                <TextView
-                    android:id="@+id/tv_id"
-                    android:layout_width="@dimen/dp_238"
+                <com.barisetech.www.workmanage.widget.LineView
+                    android:id="@+id/pc_name"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:text="@{pc.Id}"
-                    android:textSize="@dimen/sp_14"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/pc_title"/>
+                    app:setText="@{pc.Name}"
+                    order:ddd_content_enable="false"
+                    order:ddd_is_bottom_line="false"
+                    order:ddd_is_indicate="false"
+                    order:ddd_label="@string/pc_detail_name"/>
 
-
-                <TextView
-                    android:id="@+id/title_name"
-                    android:layout_width="wrap_content"
+                <com.barisetech.www.workmanage.widget.LineView
+                    android:id="@+id/pc_sort_id"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingRight="@dimen/dp_20"
-                    android:text="@string/pc_detail_name"
-                    android:textSize="@dimen/sp_14"
-                    app:layout_constraintRight_toRightOf="@id/title_id"
-                    app:layout_constraintTop_toBottomOf="@id/title_id"
-                    app:layout_constraintTop_toTopOf="@id/tv_name"/>
+                    app:setText="@{pc.sortID}"
+                    order:ddd_content_enable="false"
+                    order:ddd_is_bottom_line="false"
+                    order:ddd_is_indicate="false"
+                    order:ddd_label="@string/pc_detail_sort_id"/>
 
-                <TextView
-                    android:id="@+id/tv_name"
-                    android:layout_width="@dimen/dp_238"
+                <com.barisetech.www.workmanage.widget.LineView
+                    android:id="@+id/pc_manager"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:text="@{pc.Name}"
-                    android:textSize="@dimen/sp_14"
-                    app:layout_constraintLeft_toLeftOf="@id/tv_id"
-                    app:layout_constraintTop_toBottomOf="@id/tv_id"/>
+                    app:setText="@{pc.Manager}"
+                    order:ddd_content_enable="false"
+                    order:ddd_is_bottom_line="false"
+                    order:ddd_is_indicate="false"
+                    order:ddd_label="@string/pc_detail_manager"/>
 
-
-                <TextView
-                    android:id="@+id/title_sort_id"
-                    android:layout_width="wrap_content"
+                <com.barisetech.www.workmanage.widget.LineView
+                    android:id="@+id/pc_phone"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingRight="@dimen/dp_20"
-                    android:text="@string/pc_detail_sort_id"
-                    android:textSize="@dimen/sp_14"
-                    app:layout_constraintRight_toRightOf="@id/title_name"
-                    app:layout_constraintTop_toBottomOf="@id/title_name"
-                    app:layout_constraintTop_toTopOf="@id/tv_sort_id"/>
+                    app:setText="@{pc.Telephone}"
+                    order:ddd_content_enable="false"
+                    order:ddd_is_bottom_line="false"
+                    order:ddd_is_indicate="false"
+                    order:ddd_label="@string/pc_detail_phone"/>
 
-                <TextView
-                    android:id="@+id/tv_sort_id"
-                    android:layout_width="@dimen/dp_238"
+                <com.barisetech.www.workmanage.widget.LineView
+                    android:id="@+id/pc_email"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:text="@{pc.sortID}"
-                    android:textSize="@dimen/sp_14"
-                    app:layout_constraintLeft_toLeftOf="@id/tv_name"
-                    app:layout_constraintTop_toBottomOf="@id/tv_name"/>
+                    app:setText="@{pc.Email}"
+                    order:ddd_content_enable="false"
+                    order:ddd_is_bottom_line="false"
+                    order:ddd_is_indicate="false"
+                    order:ddd_label="@string/pc_detail_email"/>
 
-
-                <TextView
-                    android:id="@+id/title_manager"
-                    android:layout_width="wrap_content"
+                <com.barisetech.www.workmanage.widget.LineView
+                    android:id="@+id/pc_remark"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingRight="@dimen/dp_20"
-                    android:text="@string/pc_detail_manager"
-                    android:textSize="@dimen/sp_14"
-                    app:layout_constraintRight_toRightOf="@id/title_sort_id"
-                    app:layout_constraintTop_toBottomOf="@id/title_sort_id"
-                    app:layout_constraintTop_toTopOf="@id/tv_manager"/>
+                    android:layout_marginBottom="@dimen/dp_5"
+                    app:setText="@{pc.Remark}"
+                    order:ddd_content_enable="false"
+                    order:ddd_is_bottom_line="false"
+                    order:ddd_is_indicate="false"
+                    order:ddd_label="@string/pc_detail_remark"/>
 
-                <TextView
-                    android:id="@+id/tv_manager"
-                    android:layout_width="@dimen/dp_238"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:textSize="@dimen/sp_14"
-                    android:text="@{pc.Manager}"
-                    app:layout_constraintLeft_toLeftOf="@id/tv_sort_id"
-                    app:layout_constraintTop_toBottomOf="@id/tv_sort_id"/>
-
-                <TextView
-                    android:id="@+id/title_phone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingRight="@dimen/dp_20"
-                    android:text="@string/pc_detail_phone"
-                    android:textSize="@dimen/sp_14"
-                    app:layout_constraintRight_toRightOf="@id/title_manager"
-                    app:layout_constraintTop_toBottomOf="@id/title_manager"
-                    app:layout_constraintTop_toTopOf="@id/tv_phone"/>
-
-                <TextView
-                    android:id="@+id/tv_phone"
-                    android:layout_width="@dimen/dp_238"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:text="@{pc.Telephone}"
-                    android:textSize="@dimen/sp_14"
-                    app:layout_constraintLeft_toLeftOf="@id/tv_manager"
-                    app:layout_constraintTop_toBottomOf="@id/tv_manager"/>
-
-                <TextView
-                    android:id="@+id/title_email"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingRight="@dimen/dp_20"
-                    android:text="@string/pc_detail_email"
-                    android:textSize="@dimen/sp_14"
-                    app:layout_constraintRight_toRightOf="@id/title_phone"
-                    app:layout_constraintTop_toBottomOf="@id/title_phone"
-                    app:layout_constraintTop_toTopOf="@id/tv_email"/>
-
-                <TextView
-                    android:id="@+id/tv_email"
-                    android:layout_width="@dimen/dp_238"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:text="@{pc.Email}"
-                    android:textSize="@dimen/sp_14"
-                    app:layout_constraintLeft_toLeftOf="@id/tv_phone"
-                    app:layout_constraintTop_toBottomOf="@id/tv_phone"/>
-
-
-                <TextView
-                    android:id="@+id/title_remark"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingRight="@dimen/dp_20"
-                    android:text="@string/pc_detail_remark"
-                    android:textSize="@dimen/sp_14"
-                    app:layout_constraintRight_toRightOf="@id/title_email"
-                    app:layout_constraintTop_toBottomOf="@id/title_email"
-                    app:layout_constraintTop_toTopOf="@id/tv_remark"/>
-
-                <TextView
-                    android:id="@+id/tv_remark"
-                    android:layout_width="@dimen/dp_238"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:textSize="@dimen/sp_14"
-                    android:text="@{pc.Remark}"
-                    android:paddingBottom="@dimen/dp_9"
-                    app:layout_constraintLeft_toLeftOf="@id/tv_email"
-                    app:layout_constraintTop_toBottomOf="@id/tv_email"/>
-
-            </android.support.constraint.ConstraintLayout>
+            </LinearLayout>
 
         </android.support.v7.widget.CardView>
 

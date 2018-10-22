@@ -85,4 +85,14 @@ public class ReqAddPipelindArea {
     public void setRemark(String Remark) {
         this.Remark = Remark;
     }
+
+    public void toBean(PipeLindAreaInfo info) {
+        id = String.valueOf(info.getId());
+        IsEnabled = String.valueOf(info.isIsEnabled());
+        Type = String.valueOf(info.getType());
+        StartDistance = String.valueOf(info.getStartDistance());
+        EndDistance = String.valueOf(info.getEndDistance());
+        PipeId = String.valueOf(info.getPipeId());
+        Remark = info.getRemark();
+    }
 }

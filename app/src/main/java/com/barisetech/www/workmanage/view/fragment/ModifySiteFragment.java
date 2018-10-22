@@ -85,6 +85,18 @@ public class ModifySiteFragment extends BaseFragment implements View.OnClickList
         mBinding.siteLineWhether.setText(siteBean.IsOnLine ? "是" : "否");
         mBinding.siteDoubleSensor.setText(siteBean.IsDualSensor ? "是" : "否");
         mBinding.siteDoubleFilter.setText(siteBean.IsDirFilterEnabled ? "是" : "否");
+
+        mBinding.siteA.setText(siteBean.IsDwtEnabled ? "是" : "否");
+        mBinding.siteB.setText(siteBean.IsAvgEnabled ? "是" : "否");
+        mBinding.siteC.setText(String.valueOf(siteBean.EnergyRatio));
+        mBinding.siteD.setText(String.valueOf(siteBean.NegPeakThreshold));
+        mBinding.siteE.setText(String.valueOf(siteBean.FreqStart));
+        mBinding.siteF.setText(String.valueOf(siteBean.FreqEnd));
+        mBinding.siteG.setText(String.valueOf(siteBean.FreqStep));
+        mBinding.siteH.setText(String.valueOf(siteBean.TimeNum));
+        mBinding.siteI.setText(String.valueOf(siteBean.ShieldingRange));
+        mBinding.siteJ.setText(String.valueOf(siteBean.TimeOffset));
+
         mBinding.siteLineWhether.setOnItemClickListener(() -> {
             showDialog(getString(R.string.line_whether), Boolean.valueOf(siteBean.IsOnLine), (radioGroup, i) -> {
                 closeDialog();
@@ -129,6 +141,39 @@ public class ModifySiteFragment extends BaseFragment implements View.OnClickList
                     case R.id.dialog_no_rb:
                         siteBean.IsDirFilterEnabled = false;
                         mBinding.siteDoubleFilter.setText("否");
+                        break;
+                }
+
+            });
+        });
+
+        mBinding.siteA.setOnItemClickListener(()->{
+            showDialog(getString(R.string.site_a) + "    ", siteBean.IsDwtEnabled, (radioGroup, i) -> {
+                closeDialog();
+                switch (i) {
+                    case R.id.dialog_yes_rb:
+                        siteBean.IsDwtEnabled=true;
+                        mBinding.siteA.setText("是");
+                        break;
+                    case R.id.dialog_no_rb:
+                        siteBean.IsDwtEnabled=false;
+                        mBinding.siteA.setText("否");
+                        break;
+                }
+
+            });
+        });
+        mBinding.siteB.setOnItemClickListener(()->{
+            showDialog(getString(R.string.site_b) + "    ", siteBean.IsAvgEnabled, (radioGroup, i) -> {
+                closeDialog();
+                switch (i) {
+                    case R.id.dialog_yes_rb:
+                        siteBean.IsAvgEnabled=true;
+                        mBinding.siteB.setText("是");
+                        break;
+                    case R.id.dialog_no_rb:
+                        siteBean.IsAvgEnabled=false;
+                        mBinding.siteB.setText("否");
                         break;
                 }
 
@@ -220,9 +265,19 @@ public class ModifySiteFragment extends BaseFragment implements View.OnClickList
                 siteBean.Latitude = Double.valueOf(mBinding.siteLatitude.getText().toString());
                 siteBean.Telephone = mBinding.sitePhone.getText().toString();
                 siteBean.Manager = mBinding.sitePrincipal.getText().toString();
-                siteBean.IsOnLine = (mBinding.siteLineWhether.getText().equals("是") ? true : false);
-                siteBean.IsDualSensor = (mBinding.siteDoubleSensor.getText().equals("是") ? true : false);
-                siteBean.IsDirFilterEnabled = (mBinding.siteDoubleFilter.getText().equals("是") ? true : false);
+                siteBean.IsOnLine = (mBinding.siteLineWhether.getText().equals("是"));
+                siteBean.IsDualSensor = (mBinding.siteDoubleSensor.getText().equals("是"));
+                siteBean.IsDirFilterEnabled = (mBinding.siteDoubleFilter.getText().equals("是"));
+
+                siteBean.EnergyRatio = Double.valueOf(mBinding.siteC.getText());
+                siteBean.NegPeakThreshold = Integer.valueOf(mBinding.siteD.getText());
+                siteBean.FreqStart = Double.valueOf(mBinding.siteE.getText());
+                siteBean.FreqEnd = Double.valueOf(mBinding.siteF.getText());
+                siteBean.FreqStep = Double.valueOf(mBinding.siteG.getText());
+                siteBean.TimeNum = Integer.valueOf(mBinding.siteH.getText());
+                siteBean.ShieldingRange = Double.valueOf(mBinding.siteI.getText());
+                siteBean.TimeOffset = Integer.valueOf(mBinding.siteJ.getText());
+
                 for (PluginInfo pluginInfo : pluginInfoList) {
                     if (pluginInfo.getName().equals(mBinding.spSelectPlugin.getText().toString())) {
                         siteBean.LdPluginId = pluginInfo.getId();

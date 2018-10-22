@@ -23,288 +23,524 @@
             layout="@layout/layout_toolbar"
             app:toolbar="@{fragment.observableToolbar}" />
 
-
-        <android.support.v7.widget.CardView
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_15"
-            android:layout_marginRight="@dimen/dp_15"
-            android:layout_marginTop="@dimen/dp_30"
-            app:cardCornerRadius="6dp"
-            app:cardElevation="@dimen/dp_10">
+            android:layout_height="wrap_content">
 
-            <android.support.constraint.ConstraintLayout
-                android:id="@+id/normal_setting"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tv_normal_setting"
+                <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/shape_title_top"
-                    android:paddingBottom="@dimen/dp_8"
-                    android:paddingLeft="@dimen/dp_15"
-                    android:paddingTop="@dimen/dp_9"
-                    android:text="@string/normal_setting"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/sp_14"
-                    app:layout_constraintLeft_toLeftOf="@+id/normal_setting"
-                    app:layout_constraintRight_toRightOf="@+id/normal_setting"
-                    app:layout_constraintTop_toTopOf="@+id/normal_setting" />
+                    android:layout_marginLeft="@dimen/dp_15"
+                    android:layout_marginRight="@dimen/dp_15"
+                    android:layout_marginTop="@dimen/dp_30"
+                    android:layout_marginBottom="@dimen/dp_10"
+                    app:cardCornerRadius="6dp"
+                    app:cardElevation="@dimen/dp_10">
+
+                    <android.support.constraint.ConstraintLayout
+                        android:id="@+id/normal_setting"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/tv_normal_setting"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/shape_title_top"
+                            android:paddingBottom="@dimen/dp_8"
+                            android:paddingLeft="@dimen/dp_15"
+                            android:paddingTop="@dimen/dp_9"
+                            android:text="@string/normal_setting"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/sp_14"
+                            app:layout_constraintLeft_toLeftOf="@+id/normal_setting"
+                            app:layout_constraintRight_toRightOf="@+id/normal_setting"
+                            app:layout_constraintTop_toTopOf="@+id/normal_setting" />
 
 
-                <TextView
-                    android:id="@+id/title_id"
-                    android:layout_width="wrap_content"
+                        <TextView
+                            android:id="@+id/title_id"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/dp_80"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:text="@string/tv_id"
+                            app:layout_constraintLeft_toLeftOf="@+id/tv_normal_setting"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_normal_setting" />
+
+                        <TextView
+                            android:id="@+id/tv_id"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="28dp"
+                            android:text="@{String.valueOf(siteBean.SiteId)}"
+                            app:layout_constraintBottom_toBottomOf="@+id/title_id"
+                            app:layout_constraintLeft_toRightOf="@+id/title_id"
+                            app:layout_constraintTop_toTopOf="@+id/title_id" />
+
+
+                        <TextView
+                            android:id="@+id/title_company"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:text="@string/along_company"
+                            app:layout_constraintRight_toRightOf="@+id/title_id"
+                            app:layout_constraintTop_toBottomOf="@+id/title_id" />
+
+                        <TextView
+                            android:id="@+id/tv_company"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:text="@{siteBean.Company}"
+                            app:layout_constraintLeft_toLeftOf="@+id/tv_id"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_id" />
+
+
+                        <TextView
+                            android:id="@+id/title_longitude"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:text="@string/longitude"
+                            app:layout_constraintRight_toRightOf="@+id/title_company"
+                            app:layout_constraintTop_toBottomOf="@+id/title_company" />
+
+                        <TextView
+                            android:id="@+id/tv_longitude"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{String.valueOf(siteBean.Longitude)}"
+                            android:layout_marginTop="@dimen/dp_10"
+                            app:layout_constraintLeft_toLeftOf="@+id/tv_company"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_company" />
+
+
+                        <TextView
+                            android:id="@+id/title_latitude"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:text="@string/latitude"
+                            app:layout_constraintRight_toRightOf="@+id/title_longitude"
+                            app:layout_constraintTop_toBottomOf="@+id/title_longitude" />
+
+                        <TextView
+                            android:id="@+id/tv_latitude"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:text="@{String.valueOf(siteBean.Latitude)}"
+                            app:layout_constraintLeft_toLeftOf="@+id/tv_longitude"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_longitude" />
+
+                        <TextView
+                            android:id="@+id/title_phone_num"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:text="@string/phone_num"
+                            app:layout_constraintRight_toRightOf="@+id/title_latitude"
+                            app:layout_constraintTop_toBottomOf="@+id/title_latitude" />
+
+                        <TextView
+                            android:id="@+id/tv_phone_num"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:text="@{siteBean.Telephone}"
+                            app:layout_constraintLeft_toLeftOf="@+id/tv_latitude"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_latitude" />
+
+                        <TextView
+                            android:id="@+id/title_principal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:text="@string/principal"
+                            app:layout_constraintRight_toRightOf="@+id/title_phone_num"
+                            app:layout_constraintTop_toBottomOf="@+id/title_phone_num" />
+
+                        <TextView
+                            android:id="@+id/tv_principal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:text="@{siteBean.Manager}"
+                            app:layout_constraintLeft_toLeftOf="@+id/tv_phone_num"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_phone_num" />
+
+
+                        <TextView
+                            android:id="@+id/title_line_whether"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:text="@string/line_whether"
+                            app:layout_constraintRight_toRightOf="@+id/title_principal"
+                            app:layout_constraintTop_toBottomOf="@+id/title_principal" />
+
+                        <TextView
+                            android:id="@+id/tv_line_whether"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10"
+                            app:showBool="@{siteBean.IsOnLine}"
+                            app:layout_constraintLeft_toLeftOf="@+id/tv_principal"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_principal" />
+
+
+                        <TextView
+                            android:id="@+id/title_double_snesor"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:text="@string/double_snesor"
+                            app:layout_constraintRight_toRightOf="@+id/title_line_whether"
+                            app:layout_constraintTop_toBottomOf="@+id/title_line_whether" />
+
+                        <TextView
+                            android:id="@+id/tv_double_snesor"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10"
+                            app:showBool="@{siteBean.IsDualSensor}"
+                            app:layout_constraintLeft_toLeftOf="@+id/tv_line_whether"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_line_whether" />
+
+                        <TextView
+                            android:id="@+id/title_double_filter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:text="@string/double_filter"
+                            app:layout_constraintRight_toRightOf="@+id/title_double_snesor"
+                            app:layout_constraintTop_toBottomOf="@+id/title_double_snesor" />
+
+                        <TextView
+                            android:id="@+id/tv_double_filter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10"
+                            app:showBool="@{siteBean.IsDirFilterEnabled}"
+                            app:layout_constraintLeft_toLeftOf="@+id/tv_double_snesor"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_double_snesor" />
+
+
+                        <TextView
+                            android:id="@+id/title_leak_plugin"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:text="@string/leak_plugin"
+                            app:layout_constraintRight_toRightOf="@+id/title_double_filter"
+                            app:layout_constraintTop_toBottomOf="@+id/title_double_filter" />
+
+                        <TextView
+                            android:id="@+id/tv_leak_plugin"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:text="@{siteBean.LdPluginName}"
+                            app:layout_constraintLeft_toLeftOf="@+id/tv_double_filter"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_double_filter" />
+
+
+                        <TextView
+                            android:id="@+id/title_contacts_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:text="@string/contacts_name"
+                            app:layout_constraintRight_toRightOf="@+id/title_leak_plugin"
+                            app:layout_constraintTop_toBottomOf="@+id/title_leak_plugin" />
+
+                        <TextView
+                            android:id="@+id/tv_contacts_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{siteBean.Manager}"
+                            android:layout_marginTop="@dimen/dp_10"
+                            app:layout_constraintLeft_toLeftOf="@+id/tv_leak_plugin"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_leak_plugin" />
+
+
+                        <TextView
+                            android:id="@+id/title_contacts_phone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:layout_marginBottom="@dimen/dp_20"
+                            android:text="@string/contacts_phone"
+                            app:layout_constraintRight_toRightOf="@+id/title_contacts_name"
+                            app:layout_constraintTop_toBottomOf="@+id/title_contacts_name" />
+
+                        <TextView
+                            android:id="@+id/tv_contacts_phone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:text="@{siteBean.Telephone}"
+                            app:layout_constraintLeft_toLeftOf="@+id/tv_contacts_name"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_contacts_name" />
+
+                        <!--<TextView-->
+                        <!--android:id="@+id/title_contacts_email"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginBottom="@dimen/dp_20"-->
+                        <!--android:layout_marginTop="@dimen/dp_10"-->
+                        <!--android:text="@string/contacts_email"-->
+                        <!--app:layout_constraintBottom_toBottomOf="@+id/normal_setting"-->
+                        <!--app:layout_constraintRight_toRightOf="@+id/title_contacts_phone"-->
+                        <!--app:layout_constraintTop_toBottomOf="@+id/title_contacts_phone" />-->
+
+                        <!--<TextView-->
+                        <!--android:id="@+id/tv_contacts_email"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginBottom="@dimen/dp_20"-->
+                        <!--android:layout_marginTop="@dimen/dp_10"-->
+                        <!--app:layout_constraintBottom_toBottomOf="@+id/normal_setting"-->
+                        <!--app:layout_constraintLeft_toLeftOf="@+id/tv_contacts_phone"-->
+                        <!--app:layout_constraintTop_toBottomOf="@+id/title_contacts_phone" />-->
+
+                    </android.support.constraint.ConstraintLayout>
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/leak_card"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dp_80"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:text="@string/tv_id"
-                    app:layout_constraintLeft_toLeftOf="@+id/tv_normal_setting"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_normal_setting" />
+                    android:layout_marginLeft="@dimen/dp_15"
+                    android:layout_marginRight="@dimen/dp_15"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:layout_marginBottom="@dimen/dp_10"
+                    app:cardCornerRadius="6dp"
+                    app:cardElevation="@dimen/dp_10">
 
-                <TextView
-                    android:id="@+id/tv_id"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="28dp"
-                    android:text="@{String.valueOf(siteBean.SiteId)}"
-                    app:layout_constraintBottom_toBottomOf="@+id/title_id"
-                    app:layout_constraintLeft_toRightOf="@+id/title_id"
-                    app:layout_constraintTop_toTopOf="@+id/title_id" />
+                    <android.support.constraint.ConstraintLayout
+                        android:id="@+id/leak_setting"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-
-                <TextView
-                    android:id="@+id/title_company"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:text="@string/along_company"
-                    app:layout_constraintRight_toRightOf="@+id/title_id"
-                    app:layout_constraintTop_toBottomOf="@+id/title_id" />
-
-                <TextView
-                    android:id="@+id/tv_company"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:text="@{siteBean.Company}"
-                    app:layout_constraintLeft_toLeftOf="@+id/tv_id"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_id" />
+                        <TextView
+                            android:id="@+id/tv_leak_setting"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/shape_title_top"
+                            android:paddingBottom="@dimen/dp_8"
+                            android:paddingLeft="@dimen/dp_15"
+                            android:paddingTop="@dimen/dp_9"
+                            android:text="@string/leak_setting"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/sp_14"
+                            app:layout_constraintLeft_toLeftOf="@+id/leak_setting"
+                            app:layout_constraintRight_toRightOf="@+id/leak_setting"
+                            app:layout_constraintTop_toTopOf="@+id/leak_setting" />
 
 
-                <TextView
-                    android:id="@+id/title_longitude"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:text="@string/longitude"
-                    app:layout_constraintRight_toRightOf="@+id/title_company"
-                    app:layout_constraintTop_toBottomOf="@+id/title_company" />
+                        <TextView
+                            android:id="@+id/title_a"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/dp_80"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:text="@string/site_a"
+                            app:layout_constraintLeft_toLeftOf="@+id/tv_leak_setting"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_leak_setting" />
 
-                <TextView
-                    android:id="@+id/tv_longitude"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{String.valueOf(siteBean.Longitude)}"
-                    android:layout_marginTop="@dimen/dp_10"
-                    app:layout_constraintLeft_toLeftOf="@+id/tv_company"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_company" />
-
-
-                <TextView
-                    android:id="@+id/title_latitude"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:text="@string/latitude"
-                    app:layout_constraintRight_toRightOf="@+id/title_longitude"
-                    app:layout_constraintTop_toBottomOf="@+id/title_longitude" />
-
-                <TextView
-                    android:id="@+id/tv_latitude"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:text="@{String.valueOf(siteBean.Latitude)}"
-                    app:layout_constraintLeft_toLeftOf="@+id/tv_longitude"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_longitude" />
-
-                <TextView
-                    android:id="@+id/title_phone_num"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:text="@string/phone_num"
-                    app:layout_constraintRight_toRightOf="@+id/title_latitude"
-                    app:layout_constraintTop_toBottomOf="@+id/title_latitude" />
-
-                <TextView
-                    android:id="@+id/tv_phone_num"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:text="@{siteBean.Telephone}"
-                    app:layout_constraintLeft_toLeftOf="@+id/tv_latitude"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_latitude" />
-
-                <TextView
-                    android:id="@+id/title_principal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:text="@string/principal"
-                    app:layout_constraintRight_toRightOf="@+id/title_phone_num"
-                    app:layout_constraintTop_toBottomOf="@+id/title_phone_num" />
-
-                <TextView
-                    android:id="@+id/tv_principal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:text="@{siteBean.Manager}"
-                    app:layout_constraintLeft_toLeftOf="@+id/tv_phone_num"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_phone_num" />
+                        <TextView
+                            android:id="@+id/tv_a"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="28dp"
+                            app:showBool="@{siteBean.IsDwtEnabled}"
+                            app:layout_constraintBottom_toBottomOf="@+id/title_a"
+                            app:layout_constraintLeft_toRightOf="@+id/title_a"
+                            app:layout_constraintTop_toTopOf="@+id/title_a" />
 
 
-                <TextView
-                    android:id="@+id/title_line_whether"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:text="@string/line_whether"
-                    app:layout_constraintRight_toRightOf="@+id/title_principal"
-                    app:layout_constraintTop_toBottomOf="@+id/title_principal" />
+                        <TextView
+                            android:id="@+id/title_b"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:text="@string/site_b"
+                            app:layout_constraintRight_toRightOf="@+id/title_a"
+                            app:layout_constraintTop_toBottomOf="@+id/title_a" />
 
-                <TextView
-                    android:id="@+id/tv_line_whether"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_10"
-                    app:showBool="@{siteBean.IsOnLine}"
-                    app:layout_constraintLeft_toLeftOf="@+id/tv_principal"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_principal" />
-
-
-                <TextView
-                    android:id="@+id/title_double_snesor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:text="@string/double_snesor"
-                    app:layout_constraintRight_toRightOf="@+id/title_line_whether"
-                    app:layout_constraintTop_toBottomOf="@+id/title_line_whether" />
-
-                <TextView
-                    android:id="@+id/tv_double_snesor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_10"
-                    app:showBool="@{siteBean.IsDualSensor}"
-                    app:layout_constraintLeft_toLeftOf="@+id/tv_line_whether"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_line_whether" />
-
-                <TextView
-                    android:id="@+id/title_double_filter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:text="@string/double_filter"
-                    app:layout_constraintRight_toRightOf="@+id/title_double_snesor"
-                    app:layout_constraintTop_toBottomOf="@+id/title_double_snesor" />
-
-                <TextView
-                    android:id="@+id/tv_double_filter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_10"
-                    app:showBool="@{siteBean.IsDirFilterEnabled}"
-                    app:layout_constraintLeft_toLeftOf="@+id/tv_double_snesor"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_double_snesor" />
+                        <TextView
+                            android:id="@+id/tv_b"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10"
+                            app:showBool="@{siteBean.IsAvgEnabled}"
+                            app:layout_constraintLeft_toLeftOf="@+id/tv_a"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_a" />
 
 
-                <TextView
-                    android:id="@+id/title_leak_plugin"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:text="@string/leak_plugin"
-                    app:layout_constraintRight_toRightOf="@+id/title_double_filter"
-                    app:layout_constraintTop_toBottomOf="@+id/title_double_filter" />
+                        <TextView
+                            android:id="@+id/title_c"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:text="@string/site_c"
+                            app:layout_constraintRight_toRightOf="@+id/title_b"
+                            app:layout_constraintTop_toBottomOf="@+id/title_b" />
 
-                <TextView
-                    android:id="@+id/tv_leak_plugin"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:text="@{siteBean.LdPluginName}"
-                    app:layout_constraintLeft_toLeftOf="@+id/tv_double_filter"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_double_filter" />
-
-
-                <TextView
-                    android:id="@+id/title_contacts_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:text="@string/contacts_name"
-                    app:layout_constraintRight_toRightOf="@+id/title_leak_plugin"
-                    app:layout_constraintTop_toBottomOf="@+id/title_leak_plugin" />
-
-                <TextView
-                    android:id="@+id/tv_contacts_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_10"
-                    app:layout_constraintLeft_toLeftOf="@+id/tv_leak_plugin"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_leak_plugin" />
+                        <TextView
+                            android:id="@+id/tv_c"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{String.valueOf(siteBean.EnergyRatio)}"
+                            android:layout_marginTop="@dimen/dp_10"
+                            app:layout_constraintLeft_toLeftOf="@+id/tv_b"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_b"/>
 
 
-                <TextView
-                    android:id="@+id/title_contacts_phone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:text="@string/contacts_phone"
-                    app:layout_constraintRight_toRightOf="@+id/title_contacts_name"
-                    app:layout_constraintTop_toBottomOf="@+id/title_contacts_name" />
+                        <TextView
+                            android:id="@+id/title_d"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:text="@string/site_d"
+                            app:layout_constraintRight_toRightOf="@+id/title_c"
+                            app:layout_constraintTop_toBottomOf="@+id/title_c" />
 
-                <TextView
-                    android:id="@+id/tv_contacts_phone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_10"
-                    app:layout_constraintLeft_toLeftOf="@+id/tv_contacts_name"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_contacts_name" />
+                        <TextView
+                            android:id="@+id/tv_d"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:text="@{String.valueOf(siteBean.NegPeakThreshold)}"
+                            app:layout_constraintLeft_toLeftOf="@+id/tv_c"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_c" />
+
+                        <TextView
+                            android:id="@+id/title_e"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:text="@string/site_e"
+                            app:layout_constraintRight_toRightOf="@+id/title_d"
+                            app:layout_constraintTop_toBottomOf="@+id/title_d" />
+
+                        <TextView
+                            android:id="@+id/tv_e"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:text="@{String.valueOf(siteBean.FreqStart)}"
+                            app:layout_constraintLeft_toLeftOf="@+id/tv_d"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_d" />
+
+                        <TextView
+                            android:id="@+id/title_f"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:text="@string/site_f"
+                            app:layout_constraintRight_toRightOf="@+id/title_e"
+                            app:layout_constraintTop_toBottomOf="@+id/title_e" />
+
+                        <TextView
+                            android:id="@+id/tv_f"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:text="@{String.valueOf(siteBean.FreqEnd)}"
+                            app:layout_constraintLeft_toLeftOf="@+id/tv_e"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_e" />
 
 
-                <TextView
-                    android:id="@+id/title_contacts_email"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/dp_20"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:text="@string/contacts_email"
-                    app:layout_constraintBottom_toBottomOf="@+id/normal_setting"
-                    app:layout_constraintRight_toRightOf="@+id/title_contacts_phone"
-                    app:layout_constraintTop_toBottomOf="@+id/title_contacts_phone" />
+                        <TextView
+                            android:id="@+id/title_g"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:text="@string/site_g"
+                            app:layout_constraintRight_toRightOf="@+id/title_f"
+                            app:layout_constraintTop_toBottomOf="@+id/title_f" />
 
-                <TextView
-                    android:id="@+id/tv_contacts_email"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/dp_20"
-                    android:layout_marginTop="@dimen/dp_10"
-                    app:layout_constraintBottom_toBottomOf="@+id/normal_setting"
-                    app:layout_constraintLeft_toLeftOf="@+id/tv_contacts_phone"
-                    app:layout_constraintTop_toBottomOf="@+id/title_contacts_phone" />
+                        <TextView
+                            android:id="@+id/tv_g"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:text="@{String.valueOf(siteBean.FreqStep)}"
+                            app:layout_constraintLeft_toLeftOf="@+id/tv_f"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_f" />
 
 
-            </android.support.constraint.ConstraintLayout>
+                        <TextView
+                            android:id="@+id/title_h"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:text="@string/site_h"
+                            app:layout_constraintRight_toRightOf="@+id/title_g"
+                            app:layout_constraintTop_toBottomOf="@+id/title_g" />
 
-        </android.support.v7.widget.CardView>
+                        <TextView
+                            android:id="@+id/tv_h"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:text="@{String.valueOf(siteBean.TimeNum)}"
+                            app:layout_constraintLeft_toLeftOf="@+id/tv_g"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_g" />
 
+                        <TextView
+                            android:id="@+id/title_i"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:text="@string/site_i"
+                            app:layout_constraintRight_toRightOf="@+id/title_h"
+                            app:layout_constraintTop_toBottomOf="@+id/title_h" />
+
+                        <TextView
+                            android:id="@+id/tv_i"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:text="@{String.valueOf(siteBean.ShieldingRange)}"
+                            app:layout_constraintLeft_toLeftOf="@+id/tv_h"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_h" />
+
+
+                        <TextView
+                            android:id="@+id/title_j"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:text="@string/site_j"
+                            app:layout_constraintRight_toRightOf="@+id/title_i"
+                            app:layout_constraintTop_toBottomOf="@+id/title_i" />
+
+                        <TextView
+                            android:id="@+id/tv_j"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:text="@{String.valueOf(siteBean.TimeOffset)}"
+                            app:layout_constraintLeft_toLeftOf="@+id/tv_i"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_i" />
+
+                    </android.support.constraint.ConstraintLayout>
+
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+
+        </ScrollView>
 
         <Button
             android:id="@+id/add_site"

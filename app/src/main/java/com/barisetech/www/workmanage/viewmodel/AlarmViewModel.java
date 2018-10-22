@@ -199,6 +199,9 @@ public class AlarmViewModel extends BaseViewModel implements ModelCallBack {
                     case AlarmModel.TYPE_NUM:
                         mObservableNum.setValue(null);
                         break;
+                    case AlarmModel.TYPE_LIFT_ALARM:
+                        mObservableLiftAlarm.setValue(false);
+                        break;
                 }
             });
         }

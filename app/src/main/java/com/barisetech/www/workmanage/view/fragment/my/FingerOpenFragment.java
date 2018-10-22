@@ -62,10 +62,10 @@ public class FingerOpenFragment extends BaseFragment {
         boolean fp = SharedPreferencesUtil.getInstance().getBoolean(BaseConstant.SP_LOGIN_FP, false);
         if (fp) {
             flag = false;
-            mBinding.fingerSwitch.setBackgroundResource(R.drawable.shape_button_corners);
+            mBinding.fingerSwitch.setBackgroundResource(R.drawable.button_on);
         } else {
             flag = true;
-            mBinding.fingerSwitch.setBackgroundResource(R.drawable.item_shape);
+            mBinding.fingerSwitch.setBackgroundResource(R.drawable.button_off);
         }
 
         builder = new CustomDialog.Builder(getContext());
@@ -87,7 +87,7 @@ public class FingerOpenFragment extends BaseFragment {
                     @Override
                     public void onClick(View view) {
                         mDialog.dismiss();
-                        mBinding.fingerSwitch.setBackgroundResource(R.drawable.item_shape);
+                        mBinding.fingerSwitch.setBackgroundResource(R.drawable.button_off);
                         SharedPreferencesUtil.getInstance().setBoolean(BaseConstant.SP_LOGIN_FP, false);
                         flag = true;
                     }
@@ -229,7 +229,7 @@ public class FingerOpenFragment extends BaseFragment {
             if (null != mDialog) {
                 mDialog.dismiss();
                 FingerprintUtil.getInstance().cancel();
-                mBinding.fingerSwitch.setBackgroundResource(R.drawable.shape_button_corners);
+                mBinding.fingerSwitch.setBackgroundResource(R.drawable.button_on);
                 flag = false;
             }
         }

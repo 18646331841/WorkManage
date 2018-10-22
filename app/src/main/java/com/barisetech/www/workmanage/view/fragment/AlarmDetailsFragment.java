@@ -1,6 +1,7 @@
 package com.barisetech.www.workmanage.view.fragment;
 
 
+import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableField;
@@ -21,6 +22,7 @@ import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.bean.pipe.PipeInfo;
 import com.barisetech.www.workmanage.databinding.FragmentAlarmDetailsBinding;
 import com.barisetech.www.workmanage.utils.LogUtil;
+import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.viewmodel.AlarmViewModel;
 
 import org.greenrobot.eventbus.EventBus;
@@ -96,12 +98,33 @@ public class AlarmDetailsFragment extends BaseFragment implements View.OnClickLi
 
     @Override
     public void subscribeToModel() {
-        alarmViewModel.getmObservableAlarmInfo().observe(this, alarmInfo -> {
-            if (null != alarmInfo) {
-                LogUtil.d(TAG, alarmInfo.getDetails());
-                this.alarmInfo.set(alarmInfo);
-            }
-        });
+        if (!alarmViewModel.getmObservableAlarmInfo().hasObservers()) {
+            alarmViewModel.getmObservableAlarmInfo().observe(this, alarmInfo -> {
+                if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                    if (null != alarmInfo) {
+                        LogUtil.d(TAG, alarmInfo.getDetails());
+                        this.alarmInfo.set(alarmInfo);
+                    }
+                }
+            });
+        }
+
+        if (!alarmViewModel.getmObservableLiftAlarm().hasObservers()) {
+            alarmViewModel.getmObservableLiftAlarm().observe(this, aBoolean -> {
+                if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                    if (null != aBoolean) {
+                        if (aBoolean) {
+                            ToastUtil.showToast(getString(R.string.alarm_lift_success));
+                            if (curAlarmInfo != null) {
+                                alarmViewModel.setLiftAlarm(curAlarmInfo);
+                            }
+                        } else {
+                            ToastUtil.showToast(getString(R.string.alarm_lift_fail));
+                        }
+                    }
+                }
+            });
+        }
     }
 
     @Override

@@ -7,6 +7,7 @@ import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.base.BaseApplication;
 import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.bean.ImageInfo;
+import com.barisetech.www.workmanage.widget.LineView;
 
 import java.io.Serializable;
 import java.util.List;
@@ -43,6 +44,11 @@ public class AlarmAnalysis implements Serializable{
     private String ReadPeopleList;
     private int ReadLV;
 
+    @BindingAdapter("setText")
+    public static void setText(LineView view, int s) {
+        view.setText(s);
+    }
+
     @BindingAdapter("showId")
     public static void showId(TextView view, int id) {
         view.setText("ID:" + id);
@@ -54,7 +60,7 @@ public class AlarmAnalysis implements Serializable{
     }
 
     @BindingAdapter("showLevel")
-    public static void showLevel(TextView view, int level) {
+    public static void showLevel(LineView view, int level) {
         BaseApplication application = BaseApplication.getInstance();
         switch (level) {
             case BaseConstant.LEVEL_SUPER_ADMINS:
@@ -70,7 +76,7 @@ public class AlarmAnalysis implements Serializable{
     }
 
     @BindingAdapter("showReason")
-    public static void showReason(TextView view, int alarmCause) {
+    public static void showReason(LineView view, int alarmCause) {
         BaseApplication application = BaseApplication.getInstance();
         switch (alarmCause) {
             case BaseConstant.REASON_WAIT:

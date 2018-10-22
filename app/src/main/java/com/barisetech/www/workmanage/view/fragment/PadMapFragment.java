@@ -162,6 +162,7 @@ public class PadMapFragment extends BaseFragment {
         mBinding.setFragment(this);
         ToolbarInfo toolbarInfo = new ToolbarInfo();
         toolbarInfo.setTitle(getString(R.string.title_map));
+        toolbarInfo.setOneText("卫星图");
         observableToolbar.set(toolbarInfo);
 
         initView(savedInstanceState);
@@ -222,6 +223,16 @@ public class PadMapFragment extends BaseFragment {
         mAMapNaviView.onCreate(savedInstanceState);
         setAmapNaviViewOptions();
         initMap();
+
+        mBinding.toolbar.tvOne.setOnClickListener(view -> {
+            if (mBinding.toolbar.tvOne.getText().equals("卫星图")) {
+                mAMap.setMapType(AMap.MAP_TYPE_SATELLITE);
+                mBinding.toolbar.tvOne.setText("普通图");
+            } else {
+                mAMap.setMapType(AMap.MAP_TYPE_NORMAL);
+                mBinding.toolbar.tvOne.setText("卫星图");
+            }
+        });
     }
 
     private void initMap() {

@@ -74,13 +74,20 @@ public class AddSiteFragment extends BaseFragment{
                 siteBean.Latitude = Double.valueOf(mBinding.siteLatitude.getText().toString());
                 siteBean.Telephone  = mBinding.sitePhone.getText().toString();
                 siteBean.Manager = mBinding.sitePrincipal.getText().toString();
-                siteBean.IsOnLine = (mBinding.siteLineWhether.getText().equals("是")?true:false);
-                siteBean.IsDualSensor = (mBinding.siteDoubleSensor.getText().equals("是")?true:false);
-                siteBean.IsDirFilterEnabled = (mBinding.siteDoubleFilter.getText().equals("是")?true:false);
+                siteBean.IsOnLine = (mBinding.siteLineWhether.getText().equals("是"));
+                siteBean.IsDualSensor = (mBinding.siteDoubleSensor.getText().equals("是"));
+                siteBean.IsDirFilterEnabled = (mBinding.siteDoubleFilter.getText().equals("是"));
                 siteBean.Name = mBinding.siteName.getText().toString();
-                //TODO：设置参数
-                siteBean.SensorCode1 = null;
-                siteBean.SensorCode2 = null;
+
+                siteBean.EnergyRatio = Double.valueOf(mBinding.siteC.getText());
+                siteBean.NegPeakThreshold = Integer.valueOf(mBinding.siteD.getText());
+                siteBean.FreqStart = Double.valueOf(mBinding.siteE.getText());
+                siteBean.FreqEnd = Double.valueOf(mBinding.siteF.getText());
+                siteBean.FreqStep = Double.valueOf(mBinding.siteG.getText());
+                siteBean.TimeNum = Integer.valueOf(mBinding.siteH.getText());
+                siteBean.ShieldingRange = Double.valueOf(mBinding.siteI.getText());
+                siteBean.TimeOffset = Integer.valueOf(mBinding.siteJ.getText());
+
                 for (PluginInfo pluginInfo : pluginInfoList) {
                     if (pluginInfo.getName().equals(mBinding.spSelectPlugin.getText().toString())) {
                         siteBean.LdPluginId = pluginInfo.getId();
@@ -140,6 +147,39 @@ public class AddSiteFragment extends BaseFragment{
                     case R.id.dialog_no_rb:
                         siteBean.IsDirFilterEnabled=false;
                         mBinding.siteDoubleFilter.setText("否");
+                        break;
+                }
+
+            });
+        });
+
+        mBinding.siteA.setOnItemClickListener(()->{
+            showDialog(getString(R.string.site_a) + "    ", siteBean.IsDwtEnabled, (radioGroup, i) -> {
+                closeDialog();
+                switch (i) {
+                    case R.id.dialog_yes_rb:
+                        siteBean.IsDwtEnabled=true;
+                        mBinding.siteA.setText("是");
+                        break;
+                    case R.id.dialog_no_rb:
+                        siteBean.IsDwtEnabled=false;
+                        mBinding.siteA.setText("否");
+                        break;
+                }
+
+            });
+        });
+        mBinding.siteB.setOnItemClickListener(()->{
+            showDialog(getString(R.string.site_b) + "    ", siteBean.IsAvgEnabled, (radioGroup, i) -> {
+                closeDialog();
+                switch (i) {
+                    case R.id.dialog_yes_rb:
+                        siteBean.IsAvgEnabled=true;
+                        mBinding.siteB.setText("是");
+                        break;
+                    case R.id.dialog_no_rb:
+                        siteBean.IsAvgEnabled=false;
+                        mBinding.siteB.setText("否");
                         break;
                 }
 

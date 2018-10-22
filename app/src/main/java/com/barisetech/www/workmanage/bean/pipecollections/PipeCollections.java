@@ -1,6 +1,9 @@
 package com.barisetech.www.workmanage.bean.pipecollections;
 
+import android.databinding.BindingAdapter;
+
 import com.barisetech.www.workmanage.bean.pipe.PipeInfo;
+import com.barisetech.www.workmanage.widget.LineView;
 
 import java.io.Serializable;
 import java.util.List;
@@ -28,6 +31,11 @@ public class PipeCollections implements Serializable{
     private String Email;
     private String Remark;
     private List<PipeInfo> PipeCollects;
+
+    @BindingAdapter("setText")
+    public static void setText(LineView view, String s) {
+        view.setText(s);
+    }
 
     public String getId() {
         return Id;

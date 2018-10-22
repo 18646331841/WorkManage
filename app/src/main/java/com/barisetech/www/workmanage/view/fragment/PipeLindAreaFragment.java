@@ -157,15 +157,15 @@ public class PipeLindAreaFragment extends BaseFragment {
         if (!pipeblindAreaViewModel.getmObservableAllPipeLindArea().hasObservers()){
             pipeblindAreaViewModel.getmObservableAllPipeLindArea().observe(this,pipeLindAreaInfos -> {
                 if (PipeLindAreaFragment.this.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)){
-                    if (null!=pipeLindAreaInfos){
-                        if (pipeLindAreaInfos.size() >0){
+                    if (null != pipeLindAreaInfos) {
+                        if (pipeLindAreaInfos.size() > 0) {
                             pipeLindAreaInfoList.addAll(pipeLindAreaInfos);
                             loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_COMPLETE);
-                        }else {
+                        } else {
                             loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_END);
                         }
-                    }else {
-                        if (null!= pipeLindAreaInfoList&&pipeLindAreaInfoList.size()>0){
+                    } else {
+                        if (null != pipeLindAreaInfoList && pipeLindAreaInfoList.size() > 0) {
                             loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_END);
                         }
                     }
@@ -176,14 +176,14 @@ public class PipeLindAreaFragment extends BaseFragment {
         if (!pipeblindAreaViewModel.getmObservablePipeLindAreaNum().hasObservers()){
             pipeblindAreaViewModel.getmObservablePipeLindAreaNum().observe(this,integer -> {
                 if (PipeLindAreaFragment.this.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)){
-                    if(null!=integer){
+                    if (null != integer && integer > 0) {
                         maxNum = integer;
-                        if (maxNum>= PAGE_COUNT){
-                            getDatas(0,PAGE_COUNT);
-                        }else {
-                            getDatas(0,maxNum);
+                        if (maxNum >= PAGE_COUNT) {
+                            getDatas(0, PAGE_COUNT);
+                        } else {
+                            getDatas(0, maxNum);
                         }
-                    }else {
+                    } else {
                         loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_END);
                     }
                 }

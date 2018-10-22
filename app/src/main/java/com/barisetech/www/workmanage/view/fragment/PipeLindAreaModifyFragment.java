@@ -18,6 +18,7 @@ import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.bean.pipelindarea.PipeLindAreaInfo;
 import com.barisetech.www.workmanage.bean.pipelindarea.ReqAddPipelindArea;
+import com.barisetech.www.workmanage.bean.pipelindarea.ReqAllPipelindArea;
 import com.barisetech.www.workmanage.bean.pipelindarea.ReqDeletePipeLindArea;
 import com.barisetech.www.workmanage.databinding.FragmentPipeLindAreaModifyBinding;
 import com.barisetech.www.workmanage.utils.ToastUtil;
@@ -35,8 +36,6 @@ public class PipeLindAreaModifyFragment extends BaseFragment {
     private PipeLindAreaInfo pipeLindAreaInfo;
     private PipeblindAreaViewModel pipeblindAreaViewModel;
     private CommonDialogFragment commonDialogFragment;
-    private ReqAddPipelindArea info = new ReqAddPipelindArea();
-
 
     public static PipeLindAreaModifyFragment newInstance(PipeLindAreaInfo pipeLindAreaInfo) {
         PipeLindAreaModifyFragment fragment = new PipeLindAreaModifyFragment();
@@ -79,15 +78,15 @@ public class PipeLindAreaModifyFragment extends BaseFragment {
         mBinding.modifyLindRemark.setText(pipeLindAreaInfo.getRemark());
 
         mBinding.modifyLindIsenable.setOnItemClickListener(() -> {
-            showDialog(getString(R.string.is_enable), Boolean.valueOf(info.getIsEnabled()), (radioGroup, i) -> {
+            showDialog(getString(R.string.is_enable), pipeLindAreaInfo.isIsEnabled(), (radioGroup, i) -> {
                 closeDialog();
                 switch (i) {
                     case R.id.dialog_yes_rb:
-                        info.setIsEnabled("true");
+                        pipeLindAreaInfo.setIsEnabled(true);
                         mBinding.modifyLindIsenable.setText("是");
                         break;
                     case R.id.dialog_no_rb:
-                        info.setIsEnabled("false");
+                        pipeLindAreaInfo.setIsEnabled(false);
                         mBinding.modifyLindIsenable.setText("否");
                         break;
                 }
@@ -97,14 +96,17 @@ public class PipeLindAreaModifyFragment extends BaseFragment {
         mBinding.modifyLindArea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                pipeLindAreaInfo.setId(Integer.valueOf(mBinding.modifyLindId.getText().toString()));
+                pipeLindAreaInfo.setPipeId(Integer.valueOf(mBinding.modifyLindPipeId.getText().toString()));
+                pipeLindAreaInfo.setRemark(mBinding.modifyLindRemark.getText().toString());
+                pipeLindAreaInfo.setType(Integer.valueOf(mBinding.modifyLindType.getText().toString()));
+                pipeLindAreaInfo.setEndDistance(Float.valueOf(mBinding.modifyLindEnd.getText().toString()));
+                pipeLindAreaInfo.setStartDistance(Float.valueOf(mBinding.modifyLindStart.getText().toString()));
+                pipeLindAreaInfo.setIsEnabled(mBinding.modifyLindIsenable.getText().toString().equals("是"));
+
+                ReqAddPipelindArea info = new ReqAddPipelindArea();
                 info.setIsAdd("false");
-                info.setId(mBinding.modifyLindId.getText().toString());
-                info.setPipeId(mBinding.modifyLindPipeId.getText().toString());
-                info.setRemark(mBinding.modifyLindRemark.getText().toString());
-                info.setType(mBinding.modifyLindType.getText().toString());
-                info.setEndDistance(mBinding.modifyLindEnd.getText().toString());
-                info.setStartDistance(mBinding.modifyLindStart.getText().toString());
-                info.setIsEnabled(mBinding.modifyLindIsenable.getText().toString().equals("是") ? "true" : "false");
+                info.toBean(pipeLindAreaInfo);
 
                 EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_SHOW));
                 pipeblindAreaViewModel.reqAddOrModifyPipeLindArea(info);

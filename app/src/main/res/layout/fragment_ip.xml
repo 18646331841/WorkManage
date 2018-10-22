@@ -27,7 +27,7 @@
             <ImageView
                 android:id="@+id/img_logo"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/dp_200"
                 android:background="@drawable/toplogo"
                 app:layout_constraintLeft_toRightOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
