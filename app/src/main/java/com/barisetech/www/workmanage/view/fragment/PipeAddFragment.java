@@ -33,6 +33,7 @@ import com.barisetech.www.workmanage.bean.site.ReqSiteInfos;
 import com.barisetech.www.workmanage.bean.site.SiteBean;
 import com.barisetech.www.workmanage.databinding.FragmentPipeAddBinding;
 import com.barisetech.www.workmanage.utils.LogUtil;
+import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.view.dialog.CommonDialogFragment;
 import com.barisetech.www.workmanage.view.dialog.DialogFragmentHelper;
@@ -109,6 +110,9 @@ public class PipeAddFragment extends BaseFragment {
     }
 
     private void initView() {
+        String comp = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_COMPANY, "");
+        mBinding.pipeCompany.setText(comp);
+
         mBinding.spSelectPipePc.attachDataSource(pcName);
 
         mBinding.pipeAlgorithm.setOnItemClickListener(() -> {

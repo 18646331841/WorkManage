@@ -24,6 +24,7 @@ import com.barisetech.www.workmanage.bean.wave.ReqWave;
 import com.barisetech.www.workmanage.bean.wave.WaveBean;
 import com.barisetech.www.workmanage.databinding.FragmentWaveFormBinding;
 import com.barisetech.www.workmanage.utils.ChartUtil;
+import com.barisetech.www.workmanage.utils.TimeUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.viewmodel.PipeViewModel;
 import com.barisetech.www.workmanage.viewmodel.WaveViewModel;
@@ -194,7 +195,8 @@ public class WaveFormFragment extends BaseFragment {
                 for (int i = 0; i < waveBean.Points.size(); i++) {
                     WaveBean.PointsBean pointsBean = waveBean.Points.get(i);
                     float data = (float) pointsBean.Data;
-                    String time = String.valueOf(i);
+//                    String time = String.valueOf(i);
+                    String time = TimeUtil.ms2Hms(pointsBean.TimeStamp);
                     DataRateBean dataRateBean = new DataRateBean(data, time);
                     dataRateBeans.add(dataRateBean);
                 }

@@ -196,6 +196,8 @@ public class PipeFragment extends BaseFragment {
     private void getPipeNums() {
         loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING);
 
+        pipeInfoList.clear();
+        maxNum = 0;
         pipeViewModel.reqPipeNum();
     }
 
@@ -242,9 +244,9 @@ public class PipeFragment extends BaseFragment {
             });
         }
 
-        if (null == pipeInfoList || pipeInfoList.size() <= 0) {
+//        if (null == pipeInfoList || pipeInfoList.size() <= 0) {
             getPipeNums();
-        }
+//        }
 
     }
 

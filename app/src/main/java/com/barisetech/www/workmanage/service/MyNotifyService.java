@@ -79,7 +79,7 @@ import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 public class MyNotifyService extends Service {
     private static final String TAG = "MyNotifyService";
     private TokenService tokenService;
-    private CompositeDisposable mDisposable = new CompositeDisposable();
+    private CompositeDisposable mDisposable;
 
     private NotificationManager notificationManager;
     private String channelId = "work_manager";
@@ -279,6 +279,8 @@ public class MyNotifyService extends Service {
     }
 
     private void startInterval() {
+        LogUtil.d(TAG, "startInterval");
+        mDisposable = new CompositeDisposable();
         refreshTokenInterval();
         alarmInterval();
         incidentInterval();
@@ -289,10 +291,13 @@ public class MyNotifyService extends Service {
     }
 
     private void stopInterval() {
-        if (mDisposable.isDisposed()) {
+        LogUtil.d(TAG, "stopInterval");
+
+        if (!mDisposable.isDisposed()) {
             LogUtil.d(TAG, "dispose disposableSize = " + mDisposable.size());
             mDisposable.dispose();
             mDisposable.clear();
+            mDisposable = null;
         }
     }
 

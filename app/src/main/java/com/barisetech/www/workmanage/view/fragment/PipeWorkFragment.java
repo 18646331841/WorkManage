@@ -167,6 +167,8 @@ public class PipeWorkFragment extends BaseFragment {
     private void getNums() {
         loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING);
 
+        pipeWorkList.clear();
+        maxNum = 0;
         pipeWorkViewModel.reqPwNum();
     }
 
@@ -213,8 +215,8 @@ public class PipeWorkFragment extends BaseFragment {
             });
         }
 
-        if (null == pipeWorkList || pipeWorkList.size() <= 0) {
+//        if (null == pipeWorkList || pipeWorkList.size() <= 0) {
             getNums();
-        }
+//        }
     }
 }

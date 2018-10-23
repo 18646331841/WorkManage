@@ -9,18 +9,14 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.RadioGroup;
-import android.widget.TextView;
 
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.adapter.ContactsAdapter;
 import com.barisetech.www.workmanage.adapter.OnScrollListener;
-import com.barisetech.www.workmanage.adapter.PipeLindAreaAdapter;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.base.BaseLoadMoreWrapper;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
@@ -28,10 +24,8 @@ import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.bean.contacts.ContactsBean;
 import com.barisetech.www.workmanage.bean.contacts.ReqAllContacts;
 import com.barisetech.www.workmanage.bean.contacts.ReqContactsNum;
-import com.barisetech.www.workmanage.bean.pipelindarea.PipeLindAreaInfo;
 import com.barisetech.www.workmanage.databinding.FragmentContactsBinding;
 import com.barisetech.www.workmanage.utils.DisplayUtil;
-import com.barisetech.www.workmanage.view.LoginActivity;
 import com.barisetech.www.workmanage.viewmodel.ContactsViewModel;
 
 import org.greenrobot.eventbus.EventBus;
@@ -56,7 +50,10 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
     private int maxNum;
     private boolean flag = false;
     private String selectItem = "0";
-
+    private String searchS = "";
+    private final String ITEM_PC = "1";
+    private final String ITEM_SITE = "2";
+    private final String ITEM_USER = "3";
 
     public static ContactsFragment newInstance() {
         ContactsFragment fragment = new ContactsFragment();
@@ -97,22 +94,8 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
 
         mBinding.searchLayout.etSearch.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                contactsBeanList.clear();
-                loadMoreWrapper.notifyDataSetChanged();
-                if (flag) {
-                    loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING);
-                    ReqContactsNum reqContactsNum = new ReqContactsNum();
-                    reqContactsNum.setSelectItem(selectItem);
-                    reqContactsNum.setSearchString(mBinding.searchLayout.etSearch.getText().toString());
-                    contactsViewModel.reqNum(reqContactsNum);
-
-                } else {
-                    loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING);
-                    ReqContactsNum reqContactsNum = new ReqContactsNum();
-                    reqContactsNum.setSelectItem("0");
-                    reqContactsNum.setSearchString(mBinding.searchLayout.etSearch.getText().toString());
-                    contactsViewModel.reqNum(reqContactsNum);
-                }
+                searchS = v.getText().toString();
+                getContactsNum();
             }
             return false;
         });
@@ -125,7 +108,6 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
                 contactsBeanList.clear();
                 loadMoreWrapper.notifyDataSetChanged();
                 selectItem = "0";
-                filterFunc(selectItem, mBinding.searchLayout.etSearch.getText().toString());
                 mBinding.pipeCollection.setTextColor(getResources().getColor(R.color.message_item_gray));
                 mBinding.site.setTextColor(getResources().getColor(R.color.message_item_gray));
                 mBinding.user.setTextColor(getResources().getColor(R.color.message_item_gray));
@@ -139,17 +121,6 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
                 flag = true;
             }
         });
-    }
-
-
-    private void filterFunc(String item, String screah) {
-        contactsBeanList.clear();
-        loadMoreWrapper.notifyDataSetChanged();
-        loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING);
-        ReqContactsNum reqContactsNum = new ReqContactsNum();
-        reqContactsNum.setSelectItem(item);
-        reqContactsNum.setSearchString(screah);
-        contactsViewModel.reqNum(reqContactsNum);
     }
 
     private void initRecyclerView() {
@@ -198,8 +169,8 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
         }
         loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING);
         ReqAllContacts reqAllContacts = new ReqAllContacts();
-        reqAllContacts.setSelectItem("0");
-        reqAllContacts.setSearchString("");
+        reqAllContacts.setSelectItem(selectItem);
+        reqAllContacts.setSearchString(searchS);
         reqAllContacts.setStartIndex(String.valueOf(fromIndex));
         reqAllContacts.setNumberOfRecords(String.valueOf(toIndex));
 
@@ -209,17 +180,17 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
 
     private void getContactsNum() {
         loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING);
+        contactsBeanList.clear();
+        maxNum = 0;
         ReqContactsNum reqContactsNum = new ReqContactsNum();
-        reqContactsNum.setSelectItem("0");
-        reqContactsNum.setSearchString("");
+        reqContactsNum.setSelectItem(selectItem);
+        reqContactsNum.setSearchString(searchS);
         contactsViewModel.reqNum(reqContactsNum);
     }
 
     @Override
     public void bindViewModel() {
         contactsViewModel = ViewModelProviders.of(this).get(ContactsViewModel.class);
-
-
     }
 
     @Override
@@ -236,9 +207,9 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
                             loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_END);
                         }
                     } else {
-                        if (null != contactsBeanList && contactsBeans.size() > 0) {
+//                        if (null != contactsBeanList && contactsBeans.size() > 0) {
                             loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_END);
-                        }
+//                        }
                     }
                 }
             });
@@ -247,7 +218,7 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
         if (!contactsViewModel.getObservableNum().hasObservers()) {
             contactsViewModel.getObservableNum().observe(this, integer -> {
                 if (ContactsFragment.this.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
-                    if (null != integer) {
+                    if (null != integer && integer > 0) {
                         maxNum = integer;
                         if (maxNum >= PAGE_COUNT) {
                             getDatas(0, PAGE_COUNT);
@@ -278,17 +249,17 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
             case R.id.pipe_collection:
                 selectItem = "1";
                 buttonStyle(selectItem);
-                filterFunc(selectItem, mBinding.searchLayout.etSearch.getText().toString());
+                getContactsNum();
                 break;
             case R.id.site:
                 selectItem = "2";
                 buttonStyle(selectItem);
-                filterFunc(selectItem, mBinding.searchLayout.etSearch.getText().toString());
+                getContactsNum();
                 break;
             case R.id.user:
                 selectItem = "3";
                 buttonStyle(selectItem);
-                filterFunc(selectItem, mBinding.searchLayout.etSearch.getText().toString());
+                getContactsNum();
                 break;
             default:
                 break;

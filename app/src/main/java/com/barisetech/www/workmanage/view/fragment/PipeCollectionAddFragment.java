@@ -99,6 +99,7 @@ public class PipeCollectionAddFragment extends BaseFragment{
                     if (null != s) {
                         if (s.equals("成功添加")) {
                             ToastUtil.showToast("添加成功");
+                            getActivity().onBackPressed();
                         } else if (s.equals("失败添加")){
                             ToastUtil.showToast("添加失败");
                         }

@@ -29,6 +29,7 @@ public class PipeLindAreaAddFragment extends BaseFragment{
     private static final String PIPE_ID = "pipeId";
     private int pipeId = -1;
     private CommonDialogFragment commonDialogFragment;
+    private ReqAddPipelindArea info = new ReqAddPipelindArea();
 
     public static PipeLindAreaAddFragment newInstance(){
         PipeLindAreaAddFragment fragment = new PipeLindAreaAddFragment();
@@ -70,13 +71,15 @@ public class PipeLindAreaAddFragment extends BaseFragment{
         }
 
         mBinding.lindIsenable.setOnItemClickListener(()->{
-            showDialog(getString(R.string.is_enable), true, (radioGroup, i) -> {
+            showDialog(getString(R.string.is_enable), Boolean.valueOf(info.getIsEnabled()), (radioGroup, i) -> {
                 closeDialog();
                 switch (i) {
                     case R.id.dialog_yes_rb:
+                        info.setIsEnabled("true");
                         mBinding.lindIsenable.setText("是");
                         break;
                     case R.id.dialog_no_rb:
+                        info.setIsEnabled("false");
                         mBinding.lindIsenable.setText("否");
                         break;
                 }
@@ -87,7 +90,6 @@ public class PipeLindAreaAddFragment extends BaseFragment{
         mBinding.addLindArea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ReqAddPipelindArea info = new ReqAddPipelindArea();
                 info.setId(mBinding.lindId.getText().toString());
                 info.setPipeId(mBinding.lindPipeId.getText().toString());
                 info.setType(mBinding.lindType.getText().toString());

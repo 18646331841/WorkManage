@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.base.BaseActivity;
@@ -47,6 +48,7 @@ public class LoginActivity extends BaseActivity {
     protected void loadViewLayout() {
         setContentView(R.layout.activity_login);
         BaseApplication.getInstance().requestPermissions(this);
+        SharedPreferencesUtil.getInstance().setString(BaseConstant.SP_REFRESH_TOKEN, "");
         Intent upserviceintent = new Intent(this, MyNotifyService.class);
         bindService(upserviceintent, serviceConnection, BIND_AUTO_CREATE);
     }
@@ -55,6 +57,7 @@ public class LoginActivity extends BaseActivity {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             myBinder = (MyNotifyService.MyBinder) iBinder;
+            Log.d(TAG, "onServiceConnected");
             myBinder.stopInterval();
         }
 

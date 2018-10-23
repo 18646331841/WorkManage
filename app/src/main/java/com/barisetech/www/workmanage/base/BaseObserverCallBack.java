@@ -2,6 +2,7 @@ package com.barisetech.www.workmanage.base;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import com.barisetech.www.workmanage.base.BaseResponse;
 import com.barisetech.www.workmanage.utils.ToastUtil;
@@ -35,6 +36,10 @@ public abstract class BaseObserverCallBack<T> extends DisposableObserver<T> {
                 }
             }
         });
+        if (e.getMessage().contains("401")) {
+            onFailure(new BaseResponse(401, e.getMessage(), ""));
+            return;
+        }
         onThrowable(e);
     }
 

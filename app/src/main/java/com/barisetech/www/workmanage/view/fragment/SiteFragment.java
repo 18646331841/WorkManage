@@ -211,6 +211,8 @@ public class SiteFragment extends BaseFragment implements View.OnClickListener{
     private void getSiteNums() {
         loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING);
 
+        siteList.clear();
+        maxNum = 0;
         siteViewModel.reqSiteNum();
     }
 
@@ -278,9 +280,9 @@ public class SiteFragment extends BaseFragment implements View.OnClickListener{
             });
         }
 
-        if (null == siteList || siteList.size() <= 0) {
-           getSiteNums();
-        }
+//        if (null == siteList || siteList.size() <= 0) {
+           getSiteNums(); //刷新列表
+//        }
 
     }
 

@@ -143,6 +143,8 @@ public class PipeLindAreaFragment extends BaseFragment {
 
     private void getPipeLindAreaNums(){
         loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING);
+        pipeLindAreaInfoList.clear();
+        maxNum = 0;
         pipeblindAreaViewModel.reqPipeLindAreaNum();
     }
 
@@ -189,9 +191,9 @@ public class PipeLindAreaFragment extends BaseFragment {
                 }
             });
         }
-        if (null== pipeLindAreaInfoList || pipeLindAreaInfoList.size() <=0){
+//        if (null== pipeLindAreaInfoList || pipeLindAreaInfoList.size() <=0){
             getPipeLindAreaNums();
-        }
+//        }
 
     }
 

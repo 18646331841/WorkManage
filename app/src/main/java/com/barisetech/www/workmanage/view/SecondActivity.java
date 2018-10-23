@@ -205,8 +205,14 @@ public class SecondActivity extends BaseActivity {
                         .commit();
                 break;
             case AddSiteFragment.TAG:
-                transaction
-                        .replace(R.id.second_framelayout, AddSiteFragment.newInstance(), tag).commit();
+                if (eventBusMessage.getArg1() != null) {
+                    transaction
+                            .replace(R.id.second_framelayout, AddSiteFragment.newInstance((String) eventBusMessage
+                                    .getArg1()), tag).commit();
+                }else {
+                    transaction
+                            .replace(R.id.second_framelayout, AddSiteFragment.newInstance(null), tag).commit();
+                }
                 if (!isActivity) {
                     transaction.addToBackStack(tag);
                 }

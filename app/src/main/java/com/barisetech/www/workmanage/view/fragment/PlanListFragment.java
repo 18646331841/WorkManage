@@ -379,6 +379,7 @@ public class PlanListFragment extends BaseFragment {
         if (!TextUtils.isEmpty(role)) {
             if (!role.equals(BaseConstant.ROLE_SUPER_ADMINS) && !role.equals(BaseConstant.ROLE_ADMINS)) {
                 reqAllPlan.PersonLiable = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_ACCOUNT, "");
+                reqAllPlan.isGetAll = "false";
             }
         }
 

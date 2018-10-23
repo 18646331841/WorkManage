@@ -244,6 +244,7 @@ public class MainActivity extends BaseActivity {
                     finish();
                     break;
                 case IncidentListFragment.TAG:
+                    clearBackStack();
                     transaction
                             .replace(R.id.fragment_content, IncidentListFragment.newInstance(), tag)
                             .commit();
@@ -257,6 +258,7 @@ public class MainActivity extends BaseActivity {
                     }
                     break;
                 case AlarmListFragment.TAG:
+                    clearBackStack();
                     transaction
                             .replace(R.id.fragment_content, AlarmListFragment.newInstance(), tag)
                             .commit();
@@ -278,6 +280,7 @@ public class MainActivity extends BaseActivity {
                     }
                     break;
                 case AlarmAnalysisListFragment.TAG:
+                    clearBackStack();
                     transaction
                             .replace(R.id.fragment_content, AlarmAnalysisListFragment.newInstance(), tag).commit();
                     break;
@@ -290,6 +293,7 @@ public class MainActivity extends BaseActivity {
                     }
                     break;
                 case MapFragment.TAG:
+                    clearBackStack();
                     EventBusMessage eventBusMessage1 = new EventBusMessage(PadMapListFragment.TAG);
                     eventBusMessage1.setArg1(eventBusMessage.getArg1());
                     transaction.replace(R.id.fragment_navigation, NavigationFragment.newInstance(eventBusMessage1),
@@ -305,9 +309,11 @@ public class MainActivity extends BaseActivity {
                     }
                     break;
                 case NullFragment.TAG:
+                    clearBackStack();
                     transaction.replace(R.id.fragment_content, NullFragment.newInstance(), tag).commit();
                     break;
                 case NewsListFragment.TAG:
+                    clearBackStack();
                     transaction
                             .replace(R.id.fragment_content, NewsListFragment.newInstance(), tag).commit();
                     break;
@@ -327,18 +333,26 @@ public class MainActivity extends BaseActivity {
                     }
                     break;
                 case SiteFragment.TAG:
+                    clearBackStack();
                     transaction
                             .replace(R.id.fragment_content, SiteFragment.newInstance(), tag)
                             .commit();
                     break;
                 case AddSiteFragment.TAG:
-                    transaction
-                            .replace(R.id.fragment_content, AddSiteFragment.newInstance(), tag).commit();
+                    if (eventBusMessage.getArg1() != null) {
+                        transaction
+                                .replace(R.id.fragment_content, AddSiteFragment.newInstance((String) eventBusMessage
+                                        .getArg1()), tag).commit();
+                    } else {
+                        transaction
+                                .replace(R.id.fragment_content, AddSiteFragment.newInstance(null), tag).commit();
+                    }
                     if (!isActivity) {
                         transaction.addToBackStack(tag);
                     }
                     break;
                 case DigitizingFragment.TAG:
+                    clearBackStack();
                     transaction
                             .replace(R.id.fragment_content, DigitizingFragment.newInstance(), tag)
                             .commit();
@@ -360,6 +374,7 @@ public class MainActivity extends BaseActivity {
                     }
                     break;
                 case PipeFragment.TAG:
+                    clearBackStack();
                     transaction
                             .replace(R.id.fragment_content, PipeFragment.newInstance(), tag).commit();
                     break;
@@ -387,6 +402,7 @@ public class MainActivity extends BaseActivity {
                     }
                     break;
                 case PipeCollectionFragment.TAG:
+                    clearBackStack();
                     transaction
                             .replace(R.id.fragment_content, PipeCollectionFragment.newInstance(), tag).commit();
                     break;
@@ -399,6 +415,7 @@ public class MainActivity extends BaseActivity {
                     }
                     break;
                 case PipeCollectionModifyFragment.TAG:
+                    clearBackStack();
                     transaction
                             .replace(R.id.fragment_content, PipeCollectionModifyFragment.newInstance(
                                     (PipeCollections) eventBusMessage.getArg1()), tag).commit();
@@ -411,6 +428,7 @@ public class MainActivity extends BaseActivity {
                     }
                     break;
                 case PipeWorkFragment.TAG:
+                    clearBackStack();
                     transaction
                             .replace(R.id.fragment_content, PipeWorkFragment.newInstance(), tag).commit();
                     break;
@@ -463,6 +481,7 @@ public class MainActivity extends BaseActivity {
                     }
                     break;
                 case PipeLindAreaFragment.TAG:
+                    clearBackStack();
                     transaction
                             .replace(R.id.fragment_content, PipeLindAreaFragment.newInstance(), tag).commit();
                     break;
@@ -548,16 +567,19 @@ public class MainActivity extends BaseActivity {
                     break;
 
                 case SoundFragment.TAG:
+                    clearBackStack();
                     transaction
                             .replace(R.id.fragment_content, SoundFragment.newInstance(), tag).commit();
                     break;
 
                 case AboutFragment.TAG:
+                    clearBackStack();
                     transaction
                             .replace(R.id.fragment_content, AboutFragment.newInstance(), tag).commit();
                     break;
 
                 case MyInfoFragment.TAG:
+                    clearBackStack();
                     transaction
                             .replace(R.id.fragment_content, MyInfoFragment.newInstance(), tag).commit();
                     break;
@@ -579,18 +601,22 @@ public class MainActivity extends BaseActivity {
                     }
                     break;
                 case EventTypeFragment.TAG:
+                    clearBackStack();
                     transaction
                             .replace(R.id.fragment_content, EventTypeFragment.newInstance(), tag).commit();
                     break;
                 case NotDisturbFragment.TAG:
+                    clearBackStack();
                     transaction
                             .replace(R.id.fragment_content, NotDisturbFragment.newInstance(), tag).commit();
                     break;
                 case ContactsFragment.TAG:
+                    clearBackStack();
                     transaction
                             .replace(R.id.fragment_content, ContactsFragment.newInstance(), tag).commit();
                     break;
                 case AuthListFragment.TAG:
+                    clearBackStack();
                     if (eventBusMessage.getArg1() instanceof String) {
                         transaction
                                 .replace(R.id.fragment_content, AuthListFragment.newInstance((String) eventBusMessage
@@ -617,6 +643,13 @@ public class MainActivity extends BaseActivity {
                     }
                     break;
             }
+        }
+    }
+
+    private void clearBackStack() {
+        int backStackEntryCount = getSupportFragmentManager().getBackStackEntryCount();
+        for (int i = 0; i < backStackEntryCount; i++) {
+            getSupportFragmentManager().popBackStack();
         }
     }
 }

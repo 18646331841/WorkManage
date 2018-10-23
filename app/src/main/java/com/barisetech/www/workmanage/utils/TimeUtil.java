@@ -39,6 +39,18 @@ public class TimeUtil {
         return format.format(date);
     }
 
+    /**
+     * 将毫秒转换为标准时分秒
+     *
+     * @param _ms
+     * @return
+     */
+    public static String ms2Hms(long _ms) {
+        Date date = new Date(_ms);
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+        return format.format(date);
+    }
+
     public static long Date2ms(String _data) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         try {

@@ -182,7 +182,8 @@ public class PipeCollectionFragment extends BaseFragment {
 
     private void getNums() {
         loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING);
-
+        pipeCollectionsList.clear();
+        maxNum = 0;
         pipeCollectionsViewModel.reqPcNum();
     }
 
@@ -238,9 +239,9 @@ public class PipeCollectionFragment extends BaseFragment {
             });
         }
 
-        if (null == pipeCollectionsList || pipeCollectionsList.size() <= 0) {
+//        if (null == pipeCollectionsList || pipeCollectionsList.size() <= 0) {
             getNums();
-        }
+//        }
 
         if (!pipeCollectionsViewModel.getmObservableDelete().hasObservers()) {
             pipeCollectionsViewModel.getmObservableDelete().observe(this, aBoolean -> {

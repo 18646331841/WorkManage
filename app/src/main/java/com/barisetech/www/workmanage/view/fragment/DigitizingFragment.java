@@ -154,6 +154,8 @@ public class DigitizingFragment extends BaseFragment {
     private void getNums() {
         loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING);
 
+        digitalizerBeanList.clear();
+        maxNum = 0;
         digitalizerViewModel.reqNum();
     }
 
@@ -221,8 +223,8 @@ public class DigitizingFragment extends BaseFragment {
             });
         }
 
-        if (null == digitalizerBeanList || digitalizerBeanList.size() <= 0) {
+//        if (null == digitalizerBeanList || digitalizerBeanList.size() <= 0) {
             getNums();
-        }
+//        }
     }
 }

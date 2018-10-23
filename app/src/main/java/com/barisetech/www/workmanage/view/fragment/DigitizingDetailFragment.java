@@ -79,7 +79,9 @@ public class DigitizingDetailFragment extends BaseFragment {
         });
 
         mBinding.addSite.setOnClickListener(view -> {
-            EventBus.getDefault().post(new EventBusMessage(AddSiteFragment.TAG));
+            EventBusMessage eventBusMessage = new EventBusMessage(AddSiteFragment.TAG);
+            eventBusMessage.setArg1(String.valueOf(digitalizerBean.ID));
+            EventBus.getDefault().post(eventBusMessage);
         });
 
         mBinding.openPipeTab.setOnClickListener(view -> {

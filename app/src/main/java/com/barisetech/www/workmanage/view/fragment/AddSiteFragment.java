@@ -16,6 +16,7 @@ import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
+import com.barisetech.www.workmanage.bean.digitalizer.DigitalizerBean;
 import com.barisetech.www.workmanage.bean.plugin.PluginInfo;
 import com.barisetech.www.workmanage.bean.plugin.ReqAllPlugin;
 import com.barisetech.www.workmanage.bean.site.ReqAddSite;
@@ -37,15 +38,29 @@ public class AddSiteFragment extends BaseFragment{
     private FragmentAddSiteBinding mBinding;
     private SiteViewModel siteViewModel;
     private CommonDialogFragment commonDialogFragment;
-    private  SiteBean siteBean = new SiteBean();
+    private SiteBean siteBean = new SiteBean();
+
+    private static final String SITE_ID = "siteId";
+    private String siteId;
 
     private PluginViewModel pluginViewModel;
     private List<PluginInfo> pluginInfoList = new ArrayList<>();
     private List<String> pluginName = new ArrayList<>();
 
-    public static AddSiteFragment newInstance() {
+    public static AddSiteFragment newInstance(String siteId) {
         AddSiteFragment fragment = new AddSiteFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(SITE_ID, siteId);
+        fragment.setArguments(bundle);
         return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (null != getArguments()) {
+            siteId = (String) getArguments().getString(SITE_ID);
+        }
     }
 
     @Nullable
@@ -62,6 +77,10 @@ public class AddSiteFragment extends BaseFragment{
     }
 
     private void initView() {
+        if (!TextUtils.isEmpty(siteId)) {
+            mBinding.siteId.setText(siteId);
+        }
+
         String company = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_COMPANY, "");
         mBinding.siteCompany.setText(company);
 

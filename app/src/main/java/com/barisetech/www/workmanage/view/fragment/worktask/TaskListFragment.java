@@ -37,6 +37,7 @@ import com.barisetech.www.workmanage.databinding.FragmentPlanContactsListBinding
 import com.barisetech.www.workmanage.databinding.FragmentPlanTaskListBinding;
 import com.barisetech.www.workmanage.utils.DisplayUtil;
 import com.barisetech.www.workmanage.utils.LogUtil;
+import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
 import com.barisetech.www.workmanage.utils.TimeUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.view.fragment.SignInFragment;
@@ -112,6 +113,13 @@ public class TaskListFragment extends BaseFragment {
     }
 
     private void initView() {
+        String account = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_ACCOUNT, "");
+        if (curPlanBean.PersonLiable.equals(account)) {
+            mBinding.toolbar.tvOne.setVisibility(View.VISIBLE);
+        } else {
+            mBinding.toolbar.tvOne.setVisibility(View.GONE);
+        }
+
         StringBuilder sb = new StringBuilder();
         sb.append("巡线次数：").append(curPlanBean.TotalNumberOfTimes)
                 .append(" 完成时间：").append(TimeUtil.replaceTimeT(curPlanBean.EndTime))
