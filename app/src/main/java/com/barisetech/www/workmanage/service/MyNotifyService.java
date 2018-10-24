@@ -534,7 +534,7 @@ public class MyNotifyService extends Service {
                     reqAllPlan.mStartTime = TimeUtil.ms2Date(startTime);
                     reqAllPlan.mEndTime = TimeUtil.ms2Date(endTime);
                     reqAllPlan.PesonChecked = "true";
-                    reqAllPlan.Publisher = "admin";
+                    reqAllPlan.Publisher = "";
                     String role = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_ROLE, "");
                     if (!TextUtils.isEmpty(role)) {
                         if (!role.equals(BaseConstant.ROLE_SUPER_ADMINS) && !role.equals(BaseConstant.ROLE_ADMINS)) {

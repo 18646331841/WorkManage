@@ -162,6 +162,21 @@ public class IncidentListFragment extends BaseFragment {
             selectType = BaseConstant.TYPE_INCIDENT_UNKNOWN;
             showDateRadio();
         });
+        mBinding.incidentListAll.setOnClickListener(view -> {
+            RadioButton radioButton = (RadioButton) view;
+            cleanFilterGruop();
+            radioButton.setChecked(true);
+            selectType = BaseConstant.TYPE_INCIDENT_ALL;
+
+            transFilterLayout();
+            curType = selectType;
+            closeDisposable();
+            startTime = "";
+            endTime = "";
+            mBinding.incidentListStartTime.setText(startTime);
+            mBinding.incidentListEndTime.setText(endTime);
+            getListNums();
+        });
 
         mBinding.incidentListConfirm.setOnClickListener(view -> {
             if (TextUtils.isEmpty(startTime)) {
@@ -301,6 +316,7 @@ public class IncidentListFragment extends BaseFragment {
         mBinding.incidentListSensorOffline.setChecked(false);
         mBinding.incidentListIsolatorOffline.setChecked(false);
         mBinding.incidentListUnknown.setChecked(false);
+        mBinding.incidentListAll.setChecked(false);
     }
 
     /**
@@ -383,7 +399,8 @@ public class IncidentListFragment extends BaseFragment {
 
     private void getListNums() {
         loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING);
-
+        incidentInfoList.clear();
+        maxNum = 0;
         ReqIncidentSelectItem reqIncidentSelectItem = new ReqIncidentSelectItem();
         reqIncidentSelectItem.setSiteIdQueryChecked("false");
         reqIncidentSelectItem.setSiteID("0");

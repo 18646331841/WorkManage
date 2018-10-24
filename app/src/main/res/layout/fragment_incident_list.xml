@@ -28,9 +28,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:visibility="gone"
             android:paddingBottom="@dimen/dp_13"
-            android:paddingLeft="@dimen/dp_30"
-            android:visibility="gone">
+            android:paddingLeft="@dimen/dp_30">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -120,6 +120,18 @@
                     android:textColor="@drawable/font_gray_blue_selector"
                     android:textSize="14sp"/>
             </LinearLayout>
+
+            <RadioButton
+                android:id="@+id/incident_list_all"
+                android:layout_width="@dimen/dp_145"
+                android:layout_height="@dimen/dp_30"
+                android:layout_marginTop="@dimen/dp_13"
+                android:background="@drawable/filter_button_style"
+                android:button="@null"
+                android:gravity="center"
+                android:text="@string/incident_list_all"
+                android:textColor="@drawable/font_gray_blue_selector"
+                android:textSize="14sp"/>
 
             <LinearLayout
                 android:id="@+id/incident_list_date_layout"

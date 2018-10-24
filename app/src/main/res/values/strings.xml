@@ -72,6 +72,7 @@
     <string name="incident_list_sensor_offline">传感器不在线</string>
     <string name="incident_list_isolator_offline">隔离器不在线</string>
     <string name="incident_list_unknown">查无数据</string>
+    <string name="incident_list_all">全部</string>
 
     <string name="title_incident_detail">事件详情</string>
     <string name="incident_detail_to_site">转到站点</string>
@@ -110,6 +111,7 @@
     <string name="alarm_analysis_misinformation">误报</string>
     <string name="alarm_analysis_device_fault">设备故障</string>
     <string name="alarm_analysis_net_fault">网络故障</string>
+    <string name="alarm_analysis_all">全部</string>
     <string name="alarm_analysis_add_abstract">添加摘要</string>
     <string name="alarm_analysis_input_abstract">请输入摘要内容</string>
     <string name="alarm_analysis_read_level">阅读等级</string>

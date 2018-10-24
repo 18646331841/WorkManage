@@ -438,14 +438,11 @@ public class AlarmAnalysisFragment extends BaseFragment {
         if (!alarmAnalysisViewModel.getmObservableAdd().hasObservers()) {
             alarmAnalysisViewModel.getmObservableAdd().observe(this, integer -> {
                 if (this.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
-                    if (null != integer) {
-                        if (integer > 0) {
-                            ToastUtil.showToast(getString(R.string.alarm_analysis_upload_success));
-                            getActivity().onBackPressed();
-                        } else {
-                            ToastUtil.showToast(getString(R.string.alarm_analysis_upload_fail));
-
-                        }
+                    if (null != integer && integer > 0) {
+                        ToastUtil.showToast(getString(R.string.alarm_analysis_upload_success));
+                        getActivity().onBackPressed();
+                    } else {
+                        ToastUtil.showToast(getString(R.string.alarm_analysis_upload_fail));
                     }
                 }
             });

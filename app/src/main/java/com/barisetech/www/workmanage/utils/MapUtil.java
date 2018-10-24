@@ -20,7 +20,7 @@ public class MapUtil {
         //添加纹理图片
         List<BitmapDescriptor> textureList = new ArrayList<>();
         BitmapDescriptor mRedTexture = BitmapDescriptorFactory
-                .fromAsset("map_line_red.png");
+                .fromAsset("map_line_green.png");
 //        BitmapDescriptor mBlueTexture = BitmapDescriptorFactory
 //                .fromAsset("map_line_blue.png");
 //        BitmapDescriptor mGreenTexture = BitmapDescriptorFactory

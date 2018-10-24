@@ -146,6 +146,20 @@ public class AlarmAnalysisListFragment extends BaseFragment {
             selectType = BaseConstant.REASON_NET_FAULT;
             showDateRadio();
         });
+        mBinding.analysisListAll.setOnClickListener(view -> {
+            RadioButton radioButton = (RadioButton) view;
+            cleanFilterGruop();
+            radioButton.setChecked(true);
+            selectType = 0;
+            closeDisposable();
+            transFilterLayout();
+            curType = selectType;
+            startTime = "";
+            endTime = "";
+            mBinding.analysisListStartTime.setText(startTime);
+            mBinding.analysisListEndTime.setText(endTime);
+            getListNums();
+        });
 
         mBinding.analysisListStartTime.setOnClickListener(view -> {
             //显示开始日期选择器
@@ -219,6 +233,7 @@ public class AlarmAnalysisListFragment extends BaseFragment {
         mBinding.analysisListMisinformation.setChecked(false);
         mBinding.analysisListDeviceFault.setChecked(false);
         mBinding.analysisListNetFault.setChecked(false);
+        mBinding.analysisListAll.setChecked(false);
     }
 
     /**
@@ -384,7 +399,8 @@ public class AlarmAnalysisListFragment extends BaseFragment {
 
     private void getListNums() {
         loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING);
-
+        alarmAnalysisList.clear();
+        maxNum = 0;
         alarmAnalysisViewModel.reqAnalysisNum();
     }
 
