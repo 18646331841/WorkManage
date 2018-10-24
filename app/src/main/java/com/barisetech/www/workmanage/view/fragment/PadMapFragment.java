@@ -28,6 +28,7 @@ import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.TextureMapView;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
+import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
@@ -272,6 +273,7 @@ public class PadMapFragment extends BaseFragment {
                     pipeLine.show(true);
                     curStartMarker = pipeLine.startSiteMarker;
                     curEndMarker = pipeLine.endSiteMarker;
+                    setMapCenter(curStartMarker.getPosition());
                     curStartMarker.setInfoWindowEnable(true);
                     curEndMarker.setInfoWindowEnable(true);
                 } else {
@@ -279,6 +281,17 @@ public class PadMapFragment extends BaseFragment {
                 }
             }
         }
+    }
+
+    /**
+     * 设置地图中心点
+     * @param latLng
+     */
+    private void setMapCenter(LatLng latLng) {
+        if (latLng == null) {
+            return;
+        }
+        mAMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(latLng, 5, 0, 0)));
     }
 
     AMap.OnMarkerClickListener markerClickListener = marker -> {
