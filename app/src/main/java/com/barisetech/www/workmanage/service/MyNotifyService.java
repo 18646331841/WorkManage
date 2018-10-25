@@ -293,7 +293,7 @@ public class MyNotifyService extends Service {
     private void stopInterval() {
         LogUtil.d(TAG, "stopInterval");
 
-        if (!mDisposable.isDisposed()) {
+        if (mDisposable != null && !mDisposable.isDisposed()) {
             LogUtil.d(TAG, "dispose disposableSize = " + mDisposable.size());
             mDisposable.dispose();
             mDisposable.clear();

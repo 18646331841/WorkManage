@@ -35,6 +35,7 @@ public class BaseApplication extends MultiDexApplication {
         super.onCreate();
         Instance = this;
         dataDir = getFilesDir().getAbsolutePath() + appDir;
+        CrashHandler.getInstance();
 
         //5.0以上系统使用jobService保活
         JobSchedulerManager jobSchedulerInstance = JobSchedulerManager.getJobSchedulerInstance(this);
