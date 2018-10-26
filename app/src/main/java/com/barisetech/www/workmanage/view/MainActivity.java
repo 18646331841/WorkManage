@@ -1,6 +1,7 @@
 package com.barisetech.www.workmanage.view;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -114,6 +115,7 @@ public class MainActivity extends BaseActivity {
         if (null != get(R.id.fragment_content)) {
             BaseApplication.getInstance().isTwoPanel = true;
             isTwoPanel = true;
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
 
         Bundle bundle = getIntent().getExtras();

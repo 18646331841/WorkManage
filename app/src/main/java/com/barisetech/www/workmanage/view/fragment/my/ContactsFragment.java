@@ -48,7 +48,7 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
 
     private static final int PAGE_COUNT = 10;
     private int maxNum;
-    private boolean flag = false;
+//    private boolean flag = false;
     private String selectItem = "0";
     private String searchS = "";
     private final String ITEM_PC = "1";
@@ -83,17 +83,24 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
 
     private void initView() {
         initRecyclerView();
-        if (flag) {
-            mBinding.searchLayout.tvFilter.setTextColor(getResources().getColor(R.color.blue_text));
-            mBinding.lSelect.setVisibility(View.VISIBLE);
-            buttonStyle(selectItem);
-        }
+//        if (flag) {
+//            mBinding.searchLayout.tvFilter.setTextColor(getResources().getColor(R.color.blue_text));
+//            mBinding.lSelect.setVisibility(View.VISIBLE);
+//            buttonStyle(selectItem);
+//        }
         mBinding.pipeCollection.setOnClickListener(this);
         mBinding.site.setOnClickListener(this);
         mBinding.user.setOnClickListener(this);
 
         mBinding.searchLayout.etSearch.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                selectItem = "0";
+                mBinding.pipeCollection.setTextColor(getResources().getColor(R.color.message_item_gray));
+                mBinding.site.setTextColor(getResources().getColor(R.color.message_item_gray));
+                mBinding.user.setTextColor(getResources().getColor(R.color.message_item_gray));
+                mBinding.site.setBackgroundResource(R.drawable.shape_button_corners_line_gray);
+                mBinding.user.setBackgroundResource(R.drawable.shape_button_corners_line_gray);
+                mBinding.pipeCollection.setBackgroundResource(R.drawable.shape_button_corners_line_gray);
                 searchS = v.getText().toString();
                 getContactsNum();
             }
@@ -102,25 +109,36 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
 
 
         mBinding.searchLayout.tvFilter.setOnClickListener(v -> {
-            if (flag) {
-                mBinding.searchLayout.tvFilter.setTextColor(getResources().getColor(R.color.text_black));
-                mBinding.lSelect.setVisibility(View.GONE);
-                contactsBeanList.clear();
-                loadMoreWrapper.notifyDataSetChanged();
-                selectItem = "0";
-                mBinding.pipeCollection.setTextColor(getResources().getColor(R.color.message_item_gray));
-                mBinding.site.setTextColor(getResources().getColor(R.color.message_item_gray));
-                mBinding.user.setTextColor(getResources().getColor(R.color.message_item_gray));
-                mBinding.site.setBackgroundResource(R.drawable.shape_button_corners_line_gray);
-                mBinding.user.setBackgroundResource(R.drawable.shape_button_corners_line_gray);
-                mBinding.pipeCollection.setBackgroundResource(R.drawable.shape_button_corners_line_gray);
-                flag = false;
-            } else {
-                mBinding.searchLayout.tvFilter.setTextColor(getResources().getColor(R.color.blue_text));
-                mBinding.lSelect.setVisibility(View.VISIBLE);
-                flag = true;
-            }
+//            if (flag) {
+//                mBinding.searchLayout.tvFilter.setTextColor(getResources().getColor(R.color.text_black));
+//                mBinding.lSelect.setVisibility(View.GONE);
+//                contactsBeanList.clear();
+//                loadMoreWrapper.notifyDataSetChanged();
+//                selectItem = "0";
+//                mBinding.pipeCollection.setTextColor(getResources().getColor(R.color.message_item_gray));
+//                mBinding.site.setTextColor(getResources().getColor(R.color.message_item_gray));
+//                mBinding.user.setTextColor(getResources().getColor(R.color.message_item_gray));
+//                mBinding.site.setBackgroundResource(R.drawable.shape_button_corners_line_gray);
+//                mBinding.user.setBackgroundResource(R.drawable.shape_button_corners_line_gray);
+//                mBinding.pipeCollection.setBackgroundResource(R.drawable.shape_button_corners_line_gray);
+//                flag = false;
+//            } else {
+//                mBinding.searchLayout.tvFilter.setTextColor(getResources().getColor(R.color.blue_text));
+//                mBinding.lSelect.setVisibility(View.VISIBLE);
+//                flag = true;
+//            }
+            transferFilter();
         });
+    }
+
+    private void transferFilter() {
+        if (mBinding.lSelect.getVisibility() == View.VISIBLE) {
+            mBinding.searchLayout.tvFilter.setTextColor(getResources().getColor(R.color.text_black));
+            mBinding.lSelect.setVisibility(View.GONE);
+        } else {
+            mBinding.searchLayout.tvFilter.setTextColor(getResources().getColor(R.color.blue_text));
+            mBinding.lSelect.setVisibility(View.VISIBLE);
+        }
     }
 
     private void initRecyclerView() {
@@ -250,22 +268,24 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
                 selectItem = "1";
                 buttonStyle(selectItem);
                 getContactsNum();
+                transferFilter();
                 break;
             case R.id.site:
                 selectItem = "2";
                 buttonStyle(selectItem);
                 getContactsNum();
+                transferFilter();
                 break;
             case R.id.user:
                 selectItem = "3";
                 buttonStyle(selectItem);
                 getContactsNum();
+                transferFilter();
                 break;
             default:
                 break;
 
         }
-
     }
 
 

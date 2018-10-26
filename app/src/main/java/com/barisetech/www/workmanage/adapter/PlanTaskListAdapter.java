@@ -69,7 +69,7 @@ public class PlanTaskListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
                 myHolder.binding.planTaskItemSite.setText(taskSiteBean.Name);
                 myHolder.binding.planTaskItemTime.setText(TimeUtil.replaceTimeT(taskSiteBean.DateTime));
-                if (taskSiteBean.SiteState != 1) {
+                if (taskSiteBean.SiteState == 2) {
                     myHolder.binding.planTaskItemException.setBackgroundResource(R.drawable.img_warn);
                 } else {
                     myHolder.binding.planTaskItemException.setBackgroundColor(Color.TRANSPARENT);

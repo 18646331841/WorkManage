@@ -3,6 +3,7 @@ package com.barisetech.www.workmanage.view;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.FragmentTransaction;
@@ -46,6 +47,9 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void loadViewLayout() {
+        if (BaseApplication.getInstance().isTwoPanel) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
         setContentView(R.layout.activity_login);
         BaseApplication.getInstance().requestPermissions(this);
         SharedPreferencesUtil.getInstance().setString(BaseConstant.SP_REFRESH_TOKEN, "");
