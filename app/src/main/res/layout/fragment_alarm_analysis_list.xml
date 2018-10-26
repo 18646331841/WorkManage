@@ -27,6 +27,7 @@
             android:id="@+id/analysis_list_filter_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:orientation="vertical"
             android:paddingBottom="@dimen/dp_13"
             android:paddingLeft="@dimen/dp_30">
