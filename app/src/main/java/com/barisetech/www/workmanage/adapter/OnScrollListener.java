@@ -3,6 +3,8 @@ package com.barisetech.www.workmanage.adapter;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.barisetech.www.workmanage.utils.LogUtil;
+
 /**
  * RecyclerView scroll listener.
  * <p>
@@ -26,7 +28,8 @@ public abstract class OnScrollListener extends RecyclerView.OnScrollListener {
             int itemCount = manager.getItemCount();
 
             // Scroll to the last item, and it's scroll up.
-            if (lastItemPosition == (itemCount - 1) && mIsScrollUp) {
+//            if (lastItemPosition == (itemCount - 1) && mIsScrollUp) {
+            if (lastItemPosition == (itemCount - 1)) {
                 // Load More
                 onLoadMore();
             }

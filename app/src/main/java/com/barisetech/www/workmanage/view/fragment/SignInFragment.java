@@ -222,7 +222,7 @@ public class SignInFragment extends BaseFragment {
         String date = TimeUtil.ms2YMD(System.currentTimeMillis());
         mBinding.signDate.setText(date);
 
-        mBinding.radioNo.setChecked(true);//默认否
+//        mBinding.radioNo.setChecked(true);//默认否
         mBinding.radioNo.setOnCheckedChangeListener((compoundButton, b) -> {
             if (b) {
                 curSiteState = NORMAL;

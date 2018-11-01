@@ -24,6 +24,7 @@ import com.barisetech.www.workmanage.bean.wave.ReqWave;
 import com.barisetech.www.workmanage.bean.wave.WaveBean;
 import com.barisetech.www.workmanage.databinding.FragmentWaveFormBinding;
 import com.barisetech.www.workmanage.utils.ChartUtil;
+import com.barisetech.www.workmanage.utils.LogUtil;
 import com.barisetech.www.workmanage.utils.TimeUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.viewmodel.PipeViewModel;
@@ -37,8 +38,11 @@ import java.util.List;
 import java.util.Map;
 
 import io.reactivex.disposables.Disposable;
+import lecho.lib.hellocharts.animation.ChartAnimationListener;
+import lecho.lib.hellocharts.listener.ViewportChangeListener;
 import lecho.lib.hellocharts.model.Line;
 import lecho.lib.hellocharts.model.LineChartData;
+import lecho.lib.hellocharts.model.Viewport;
 
 public class WaveFormFragment extends BaseFragment {
 
@@ -122,6 +126,14 @@ public class WaveFormFragment extends BaseFragment {
                 curType = 1;
                 getSubsonicDatas();
             }
+        });
+
+        mBinding.chartStartSite.setViewportChangeListener(viewport -> {
+            LogUtil.d(TAG, "onViewportChanged");
+            EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_CLOSE));
+        });
+        mBinding.chartEndSite.setViewportChangeListener(viewport -> {
+            EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_CLOSE));
         });
     }
 

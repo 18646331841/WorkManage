@@ -79,7 +79,7 @@ public class WaveViewModel extends BaseViewModel implements ModelCallBack {
 
     @Override
     public void netResult(Object object) {
-        EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_CLOSE));
+//        EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_CLOSE));
         if (object instanceof TypeResponse) {
             TypeResponse typeResponse = (TypeResponse) object;
             mDelivery.post(() -> {

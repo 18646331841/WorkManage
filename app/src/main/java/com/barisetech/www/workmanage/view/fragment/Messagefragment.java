@@ -319,7 +319,6 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
         }
 
         if (!alarmViewModel.getNotReadAlarmInfos().hasObservers()) {
-
             alarmViewModel.getNotReadAlarmInfos().observe(this, alarmInfos -> {
                 if (null != alarmInfos && alarmInfos.size() != 0) {
                     LogUtil.d(TAG, "observe alarmInfos = " + alarmInfos.size());
@@ -348,7 +347,6 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
         }
 
         if (!incidentViewModel.getmObservableAllIncidentByRead().hasObservers()) {
-
             incidentViewModel.getmObservableAllIncidentByRead().observe(this, incidentInfos -> {
                 if (null != incidentInfos && incidentInfos.size() != 0) {
                     LogUtil.d(TAG, "observe incidentInfos = " + incidentInfos.size());
@@ -401,6 +399,12 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
                 }
             });
         }
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
 
         //先获取上次请求的时间，没有就去取登录时间
         String startTime;
@@ -432,8 +436,8 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
         reqIncidentSelectItem.setMIncidentType("1");
 
         ReqAllIncident reqAllIncident = new ReqAllIncident();
-        reqAllIncident.setStartIndex("1");
-        reqAllIncident.setNumberOfRecord("10");
+        reqAllIncident.setStartIndex("0");
+        reqAllIncident.setNumberOfRecord("50");
         reqAllIncident.setIncidentSelectItem(reqIncidentSelectItem);
         incidentViewModel.reqAllIncidentToDB(reqAllIncident);
     }
