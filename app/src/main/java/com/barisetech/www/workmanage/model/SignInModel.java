@@ -171,7 +171,7 @@ public class SignInModel extends BaseModel {
                 reqSignIns.addAll(signs);
                 e.onComplete();
             } else {
-                e.onNext(null);
+                e.onNext(new ArrayList<>());
             }
         });
 

@@ -150,7 +150,7 @@ public class MyInfoFragment extends BaseFragment {
             return;
         }
         ReqAllContacts reqAllContacts = new ReqAllContacts();
-        reqAllContacts.setSelectItem("0");
+        reqAllContacts.setSelectItem("3");
         reqAllContacts.setSearchString(SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_ACCOUNT, ""));
         reqAllContacts.setStartIndex(String.valueOf(fromIndex));
         reqAllContacts.setNumberOfRecords(String.valueOf(toIndex));

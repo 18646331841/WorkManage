@@ -35,6 +35,7 @@
                     android:layout_height="wrap_content"
                     order:ddd_content_enable="true"
                     order:ddd_content_hint="@string/pipe_detail_id_i"
+                    order:dddInputType="number"
                     order:ddd_is_bottom_line="false"
                     order:ddd_is_indicate="false"
                     order:ddd_label="@string/pipe_detail_id"/>
@@ -54,6 +55,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     order:ddd_content_enable="true"
+                    order:dddInputType="number"
                     order:ddd_content_hint="@string/pipe_detail_sort_id_i"
                     order:ddd_is_bottom_line="false"
                     order:ddd_is_indicate="false"
@@ -101,6 +103,7 @@
                     android:layout_height="wrap_content"
                     order:ddd_content_enable="true"
                     order:ddd_content_hint="@string/pipe_detail_length_i"
+                    order:dddInputType="numberDecimal"
                     order:ddd_is_bottom_line="false"
                     order:ddd_is_indicate="false"
                     order:ddd_label="@string/pipe_detail_length"/>
@@ -189,6 +192,7 @@
                     android:layout_height="wrap_content"
                     order:ddd_content_enable="true"
                     order:ddd_content_hint="@string/pipe_detail_speed_i"
+                    order:dddInputType="numberDecimal"
                     order:ddd_is_bottom_line="false"
                     order:ddd_is_indicate="false"
                     order:ddd_label="@string/pipe_detail_speed"/>

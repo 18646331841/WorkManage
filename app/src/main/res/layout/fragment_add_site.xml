@@ -82,7 +82,7 @@
                     order:ddd_content_hint="@string/hint_phone"
                     order:ddd_is_bottom_line="true"
                     order:ddd_label="@string/phone_num"
-                    order:dddInputType="number"/>
+                    order:dddInputType="phone"/>
 
                 <com.barisetech.www.workmanage.widget.FormView
                     android:id="@+id/site_principal"
@@ -190,7 +190,7 @@
                         android:layout_height="wrap_content"
                         order:ddd_content_enable="true"
                         order:ddd_content_hint="@string/site_c_please"
-                        order:dddInputType="number"
+                        order:dddInputType="numberDecimal"
                         order:ddd_is_bottom_line="true"
                         order:ddd_label="@string/site_c" />
 
@@ -210,7 +210,7 @@
                         android:layout_height="wrap_content"
                         order:ddd_content_enable="true"
                         order:ddd_content_hint="@string/site_e_please"
-                        order:dddInputType="number"
+                        order:dddInputType="numberDecimal"
                         order:ddd_is_bottom_line="true"
                         order:ddd_label="@string/site_e" />
 
@@ -220,7 +220,7 @@
                         android:layout_height="wrap_content"
                         order:ddd_content_enable="true"
                         order:ddd_content_hint="@string/site_f_please"
-                        order:dddInputType="number"
+                        order:dddInputType="numberDecimal"
                         order:ddd_is_bottom_line="true"
                         order:ddd_label="@string/site_f" />
 
@@ -230,7 +230,7 @@
                         android:layout_height="wrap_content"
                         order:ddd_content_enable="true"
                         order:ddd_content_hint="@string/site_g_please"
-                        order:dddInputType="number"
+                        order:dddInputType="numberDecimal"
                         order:ddd_is_bottom_line="true"
                         order:ddd_label="@string/site_g" />
 
@@ -250,7 +250,7 @@
                         android:layout_height="wrap_content"
                         order:ddd_content_enable="true"
                         order:ddd_content_hint="@string/site_i_please"
-                        order:dddInputType="number"
+                        order:dddInputType="numberDecimal"
                         order:ddd_is_bottom_line="true"
                         order:ddd_label="@string/site_i" />
 

@@ -40,6 +40,7 @@
                     android:layout_height="wrap_content"
                     order:ddd_content_enable="true"
                     order:ddd_content_hint="@string/hint_pc_id"
+                    order:dddInputType="number"
                     order:ddd_is_bottom_line="true"
                     order:ddd_label="@string/pc_detail_id"/>
 
@@ -58,6 +59,7 @@
                     android:layout_height="wrap_content"
                     order:ddd_content_enable="true"
                     order:ddd_content_hint="@string/hint_pc_sort_id"
+                    order:dddInputType="number"
                     order:ddd_is_bottom_line="true"
                     order:ddd_label="@string/pc_detail_sort_id"/>
 
@@ -76,6 +78,7 @@
                     android:layout_height="wrap_content"
                     order:ddd_content_enable="true"
                     order:ddd_content_hint="@string/hint_pc_phone"
+                    order:dddInputType="phone"
                     order:ddd_is_bottom_line="true"
                     order:ddd_label="@string/pc_detail_phone"/>
 

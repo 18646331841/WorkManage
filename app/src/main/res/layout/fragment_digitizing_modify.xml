@@ -61,6 +61,7 @@
                             order:ddd_is_bottom_line="true"
                             order:ddd_is_indicate="false"
                             app:ddd_content_hint="@string/digitizing_detail_id_please"
+                            order:dddInputType="number"
                             order:ddd_label="@string/digitizing_detail_id"/>
 
                         <com.barisetech.www.workmanage.widget.FormView
@@ -82,6 +83,7 @@
                             order:ddd_content_enable="true"
                             order:ddd_is_bottom_line="true"
                             order:ddd_is_indicate="false"
+                            order:dddInputType="numberDecimal"
                             app:ddd_content_hint="@string/digitizing_detail_longitude_please"
                             order:ddd_label="@string/digitizing_detail_longitude"/>
 
@@ -93,6 +95,7 @@
                             order:ddd_content_enable="true"
                             order:ddd_is_bottom_line="true"
                             order:ddd_is_indicate="false"
+                            order:dddInputType="numberDecimal"
                             app:ddd_content_hint="@string/digitizing_detail_latitude_please"
                             order:ddd_label="@string/digitizing_detail_latitude"/>
 
@@ -176,6 +179,7 @@
                             order:ddd_content_enable="true"
                             order:ddd_is_bottom_line="true"
                             order:ddd_is_indicate="false"
+                            order:dddInputType="number"
                             app:ddd_content_hint="@string/digitizing_detail_primary_sensor_channel_please"
                             order:ddd_label="@string/digitizing_detail_primary_sensor_channel"/>
 
@@ -187,6 +191,7 @@
                             order:ddd_content_enable="true"
                             order:ddd_is_bottom_line="true"
                             order:ddd_is_indicate="false"
+                            order:dddInputType="numberDecimal"
                             app:ddd_content_hint="@string/digitizing_detail_sub_sensor_channel_please"
                             order:ddd_label="@string/digitizing_detail_sub_sensor_channel"/>
 
@@ -198,6 +203,7 @@
                             order:ddd_content_enable="true"
                             order:ddd_is_bottom_line="true"
                             order:ddd_is_indicate="false"
+                            order:dddInputType="numberDecimal"
                             app:ddd_content_hint="@string/digitizing_detail_inner_temperature_please"
                             order:ddd_label="@string/digitizing_detail_inner_temperature"/>
 
@@ -209,6 +215,7 @@
                             order:ddd_content_enable="true"
                             order:ddd_is_bottom_line="true"
                             order:ddd_is_indicate="false"
+                            order:dddInputType="number"
                             app:ddd_content_hint="@string/digitizing_detail_input_tension_please"
                             order:ddd_label="@string/digitizing_detail_input_tension"/>
 

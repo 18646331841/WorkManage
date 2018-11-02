@@ -19,19 +19,18 @@ public class PlanSiteListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private List<SiteBean> mList;
     private Context ctx;
-    private ItemCallBack itemCallBack;
+    private ItemOnChecked itemOnChecked;
 
-    public PlanSiteListAdapter(List<SiteBean> list, Context context, @NonNull ItemCallBack itemCallBack) {
+    public PlanSiteListAdapter(List<SiteBean> list, Context context, @NonNull ItemOnChecked itemOnChecked) {
         this.mList = list;
         this.ctx = context;
-        this.itemCallBack = itemCallBack;
+        this.itemOnChecked = itemOnChecked;
     }
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         ItemPlanSiteListBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout
                 .item_plan_site_list, parent, false);
-        binding.setCallback(itemCallBack);
         return new MyHolder(binding);
     }
 
@@ -42,9 +41,7 @@ public class PlanSiteListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             SiteBean siteBean = mList.get(position);
             myHolder.binding.planPublishThirdSite.setText(siteBean.Name);
             myHolder.binding.planPublishThirdSite.setOnCheckedChangeListener(((compoundButton, b) -> {
-                if (b) {
-                    itemCallBack.onClick(siteBean);
-                }
+                itemOnChecked.onChange(b, siteBean);
             }));
         }
     }
@@ -61,4 +58,9 @@ public class PlanSiteListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             this.binding = binding;
         }
     }
+
+    public interface ItemOnChecked {
+        void onChange(boolean b, Object object);
+    }
+
 }

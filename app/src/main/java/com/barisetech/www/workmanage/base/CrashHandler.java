@@ -49,29 +49,29 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
     public void uncaughtException(Thread t, Throwable ex) {
         try {
 
-            new Thread() {
-
-                @Override
-                public void run() {
-                    Looper.prepare();
-                    Toast.makeText(BaseApplication.getInstance(), BaseApplication.getInstance().getString(R.string
-                            .crash_notice), Toast.LENGTH_SHORT).show();
-                    Looper.loop();
-                }
-
-            }.start();
+//            new Thread() {
+//
+//                @Override
+//                public void run() {
+//                    Looper.prepare();
+//                    Toast.makeText(BaseApplication.getInstance(), BaseApplication.getInstance().getString(R.string
+//                            .crash_notice), Toast.LENGTH_SHORT).show();
+//                    Looper.loop();
+//                }
+//
+//            }.start();
 
             Map<String, String> infos = collectDeviceInfo();
             saveCrash2File(infos, ex);
 
             try {
-                Thread.sleep(3000);
+                Thread.sleep(2000);
             } catch (Exception e) {
 
             }
 
-            android.os.Process.killProcess(android.os.Process.myPid());
             System.exit(1);
+            android.os.Process.killProcess(android.os.Process.myPid());
 
         } catch (Exception e) {
 

@@ -40,6 +40,7 @@
                     app:setText="@{myFragment.pipeInfoField.PipeId}"
                     order:ddd_content_enable="true"
                     order:ddd_content_hint="@string/pipe_detail_id_i"
+                    order:dddInputType="number"
                     order:ddd_is_bottom_line="false"
                     order:ddd_is_indicate="false"
                     order:ddd_label="@string/pipe_detail_id"/>
@@ -62,6 +63,7 @@
                     app:setText="@{myFragment.pipeInfoField.SortID}"
                     order:ddd_content_enable="true"
                     order:ddd_content_hint="@string/pipe_detail_sort_id_i"
+                    order:dddInputType="number"
                     order:ddd_is_bottom_line="false"
                     order:ddd_is_indicate="false"
                     order:ddd_label="@string/pipe_detail_sort_id"/>
@@ -110,6 +112,7 @@
                     app:setText="@{myFragment.pipeInfoField.Length}"
                     order:ddd_content_enable="true"
                     order:ddd_content_hint="@string/pipe_detail_length_i"
+                    order:dddInputType="numberDecimal"
                     order:ddd_is_bottom_line="false"
                     order:ddd_is_indicate="false"
                     order:ddd_label="@string/pipe_detail_length"/>
@@ -199,6 +202,7 @@
                     app:setText="@{myFragment.pipeInfoField.Speed}"
                     order:ddd_content_enable="true"
                     order:ddd_content_hint="@string/pipe_detail_speed_i"
+                    order:dddInputType="numberDecimal"
                     order:ddd_is_bottom_line="false"
                     order:ddd_is_indicate="false"
                     order:ddd_label="@string/pipe_detail_speed"/>

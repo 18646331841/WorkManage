@@ -171,6 +171,7 @@
     <string name="tv_pipeline_blind_area">管线盲区</string>
     <string name="tv_pipeline_work_status">管线工况</string>
     <string name="tv_contacts">联系人</string>
+    <string name="contacts_type_all">全部</string>
 
     <string name="title_auth_manager">授权管理</string>
     <string name="auth_offline_user">下线用户</string>
@@ -259,11 +260,11 @@
     <string name="pipe_work_pipe_id">管线ID</string>
     <string name="pipe_work_company">公司名称</string>
     <string name="pipe_work_pipe_name">管线名称</string>
-    <string name="pipe_work_diameter">管道直径</string>
-    <string name="pipe_work_thickness">管道厚度</string>
+    <string name="pipe_work_diameter">管道直径(mm)</string>
+    <string name="pipe_work_thickness">管道厚度(mm)</string>
     <string name="pipe_work_material">管道材质</string>
-    <string name="pipe_work_length">管道长度</string>
-    <string name="pipe_work_speed">管道声速</string>
+    <string name="pipe_work_length">管道长度(km)</string>
+    <string name="pipe_work_speed">管道声速(m/s)</string>
     <string name="pipe_work_branch">分支情况</string>
     <string name="pipe_work_medium">管道介质</string>
     <string name="pipe_work_medium_temperature">介质温度</string>

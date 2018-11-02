@@ -44,6 +44,7 @@
                     android:layout_height="wrap_content"
                     order:ddd_content_enable="true"
                     order:ddd_content_hint="@string/hint_lind_pipe_id"
+                    order:dddInputType="number"
                     order:ddd_is_bottom_line="true"
                     order:ddd_label="@string/lind_pipe_id" />
 

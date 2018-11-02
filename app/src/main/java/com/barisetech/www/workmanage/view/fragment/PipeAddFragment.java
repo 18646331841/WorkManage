@@ -77,7 +77,7 @@ public class PipeAddFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        pcName.add(0, "单独管线");
+//        pcName.add(0, "单独管线");
     }
 
     @Nullable
@@ -113,7 +113,7 @@ public class PipeAddFragment extends BaseFragment {
         String comp = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_COMPANY, "");
         mBinding.pipeCompany.setText(comp);
 
-        mBinding.spSelectPipePc.attachDataSource(pcName);
+//        mBinding.spSelectPipePc.attachDataSource(pcName);
 
         mBinding.pipeAlgorithm.setOnItemClickListener(() -> {
             showDialog(getString(R.string.pipe_detail_is_algorithm), Boolean.valueOf(reqPipeInfo.Algorithm),
@@ -207,13 +207,13 @@ public class PipeAddFragment extends BaseFragment {
 //            PipeCollections pc = new PipeCollections();
 ////            pc.setId(pcId);
             List<PipeCollections> pcList = new ArrayList<>();
-            if (!mBinding.spSelectPipePc.getText().toString().equals("单独管线")) {
+//            if (!mBinding.spSelectPipePc.getText().toString().equals("单独管线")) {
                 for (PipeCollections pipeCollections : pipeCollectionsList) {
                     if (pipeCollections.getName().equals(mBinding.spSelectPipePc.getText().toString())) {
                         pcList.add(pipeCollections);
                     }
                 }
-            }
+//            }
             reqPipeInfo.PipeCollectID = pcList;
             reqPipeInfo.Length = length;
             reqPipeInfo.PipeMaterial = materail;
@@ -228,7 +228,9 @@ public class PipeAddFragment extends BaseFragment {
                     ReqSiteBean reqSiteBean = new ReqSiteBean();
                     reqSiteBean.toSiteBean(bean);
                     reqSiteBeans.add(reqSiteBean);
-                } else if (bean.Name.equals(mBinding.spSelectEndSite.getText().toString())) {
+                }
+
+                if (bean.Name.equals(mBinding.spSelectEndSite.getText().toString())) {
                     ReqSiteBean reqSiteBean = new ReqSiteBean();
                     reqSiteBean.toSiteBean(bean);
                     reqSiteBeans.add(reqSiteBean);
@@ -364,7 +366,7 @@ public class PipeAddFragment extends BaseFragment {
                             for (PipeCollections pipeCollections1 : pipeCollections) {
                                 pcName.add(pipeCollections1.getName());
                             }
-//                            mBinding.spSelectPipePc.attachDataSource(pcName);
+                            mBinding.spSelectPipePc.attachDataSource(pcName);
                         }
                     }
                 }

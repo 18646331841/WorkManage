@@ -73,45 +73,45 @@ public class PipeWork implements Serializable{
     public String PipeDiameter;
     public String PipeThickness;
     public String PipeMaterial;
-    public int PipeLength;
-    public int Speed;
+    public double PipeLength;
+    public double Speed;
     public String BranchConditions;
     public String PipeMedium;
-    public int MediumTemperature;
+    public double MediumTemperature;
     public int OriginId;
     public String OriginName;
     public String OriginSoftVersion;
     public String OriginHardVersion;
-    public int OriginSensorNoiseAmplitude;
-    public int OriginSensorNoiseLevel;
+    public long OriginSensorNoiseAmplitude;
+    public long OriginSensorNoiseLevel;
     public String OriginSensorType;
     public int OriginAdcChannelPrimary;
-    public int OriginExtFirPrimary;
-    public int OriginIsolatorNoiseAmplitude;
-    public int OriginIsolatorNoiseLevel;
+    public double OriginExtFirPrimary;
+    public long OriginIsolatorNoiseAmplitude;
+    public long OriginIsolatorNoiseLevel;
     public String OriginIsolatorType;
     public int OriginAdcChannelIsolator;
-    public int OriginExtFirIsolator;
-    public int OriginPressure;
-    public int OriginMomentFlow;
-    public int OriginCumulativeFlow;
+    public double OriginExtFirIsolator;
+    public double OriginPressure;
+    public double OriginMomentFlow;
+    public double OriginCumulativeFlow;
     public int SlaveId;
     public String SlaveName;
     public String SlaveSoftVersion;
     public String SlaveHardVersion;
-    public int SlaveSensorNoiseAmplitude;
-    public int SlaveSensorNoiseLevel;
+    public long SlaveSensorNoiseAmplitude;
+    public long SlaveSensorNoiseLevel;
     public String SlaveSensorType;
     public int SlaveAdcChannelPrimary;
-    public int SlaveExtFirPrimary;
-    public int SlaveIsolatorNoiseAmplitude;
-    public int SlaveIsolatorNoiseLevel;
+    public double SlaveExtFirPrimary;
+    public long SlaveIsolatorNoiseAmplitude;
+    public long SlaveIsolatorNoiseLevel;
     public String SlaveIsolatorType;
     public int SlaveAdcChannelIsolator;
-    public int SlaveExtFirIsolator;
-    public int SlavePressure;
-    public int SlaveMomentFlow;
-    public int SlaveCumulativeFlow;
+    public double SlaveExtFirIsolator;
+    public double SlavePressure;
+    public double SlaveMomentFlow;
+    public double SlaveCumulativeFlow;
     public String Remark;
 
     @BindingAdapter("setText")
@@ -121,6 +121,11 @@ public class PipeWork implements Serializable{
 
     @BindingAdapter("setText")
     public static void setText(LineView view, int text) {
+        view.setText(String.valueOf(text));
+    }
+
+    @BindingAdapter("setText")
+    public static void setText(LineView view, double text) {
         view.setText(String.valueOf(text));
     }
 
@@ -136,6 +141,10 @@ public class PipeWork implements Serializable{
 
     @BindingAdapter("setText")
     public static void setText(FormView view, int text) {
+        view.setText(String.valueOf(text));
+    }
+    @BindingAdapter("setText")
+    public static void setText(FormView view, double text) {
         view.setText(String.valueOf(text));
     }
 

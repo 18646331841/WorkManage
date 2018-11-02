@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
         <variable
             name="fragment"
-            type="com.barisetech.www.workmanage.base.BaseFragment" />
+            type="com.barisetech.www.workmanage.base.BaseFragment"/>
     </data>
 
     <LinearLayout
@@ -17,7 +17,7 @@
         <include
             android:id="@+id/toolbar"
             layout="@layout/layout_toolbar"
-            app:toolbar="@{fragment.observableToolbar}" />
+            app:toolbar="@{fragment.observableToolbar}"/>
 
         <include
             android:id="@+id/searchLayout"
@@ -26,18 +26,31 @@
         <LinearLayout
             android:id="@+id/l_select"
             android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:weightSum="3"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_10"
+            android:orientation="horizontal"
             android:visibility="gone"
-            android:layout_margin="@dimen/dp_10">
+            android:weightSum="4">
 
 
             <Button
-                android:id="@+id/pipe_collection"
-                android:layout_weight="1"
+                android:id="@+id/all"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_30"
+                android:layout_weight="1"
+                android:background="@drawable/filter_button_style"
+                android:button="@null"
+                android:gravity="center"
+                android:text="@string/contacts_type_all"
+                android:textColor="@drawable/font_gray_blue_selector"
+                android:textSize="14sp"/>
+
+            <Button
+                android:id="@+id/pipe_collection"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_30"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_weight="1"
                 android:background="@drawable/filter_button_style"
                 android:button="@null"
                 android:gravity="center"
@@ -45,36 +58,33 @@
                 android:textColor="@drawable/font_gray_blue_selector"
                 android:textSize="14sp"/>
 
+            <Button
+                android:id="@+id/site"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_30"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_weight="1"
+                android:background="@drawable/filter_button_style"
+                android:button="@null"
+                android:gravity="center"
+                android:text="@string/tv_site"
+                android:textColor="@drawable/font_gray_blue_selector"
+                android:textSize="14sp"/>
 
 
-                <Button
-                    android:id="@+id/site"
-                    android:layout_width="match_parent"
-                    android:layout_weight="1"
-                    android:layout_height="@dimen/dp_30"
-                    android:layout_marginLeft="@dimen/dp_10"
-                    android:background="@drawable/filter_button_style"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:text="@string/tv_site"
-                    android:textColor="@drawable/font_gray_blue_selector"
-                    android:textSize="14sp"/>
-
-
-                <Button
-                    android:id="@+id/user"
-                    android:layout_width="match_parent"
-                    android:layout_weight="1"
-                    android:layout_height="@dimen/dp_30"
-                    android:layout_marginLeft="@dimen/dp_10"
-                    android:background="@drawable/filter_button_style"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:text="@string/alarm_analysis_user"
-                    android:textColor="@drawable/font_gray_blue_selector"
-                    android:textSize="14sp"/>
+            <Button
+                android:id="@+id/user"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_30"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_weight="1"
+                android:background="@drawable/filter_button_style"
+                android:button="@null"
+                android:gravity="center"
+                android:text="@string/alarm_analysis_user"
+                android:textColor="@drawable/font_gray_blue_selector"
+                android:textSize="14sp"/>
         </LinearLayout>
-
 
 
         <android.support.v7.widget.RecyclerView

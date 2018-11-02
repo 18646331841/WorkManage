@@ -49,11 +49,13 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
     private static final int PAGE_COUNT = 10;
     private int maxNum;
 //    private boolean flag = false;
-    private String selectItem = "0";
+    private static final String ITEM_ALL = "0";
+    private static final String ITEM_PC = "1";
+    private static final String ITEM_SITE = "2";
+    private static final String ITEM_USER = "3";
+
+    private String selectItem = ITEM_ALL;
     private String searchS = "";
-    private final String ITEM_PC = "1";
-    private final String ITEM_SITE = "2";
-    private final String ITEM_USER = "3";
 
     public static ContactsFragment newInstance() {
         ContactsFragment fragment = new ContactsFragment();
@@ -91,16 +93,17 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
         mBinding.pipeCollection.setOnClickListener(this);
         mBinding.site.setOnClickListener(this);
         mBinding.user.setOnClickListener(this);
+        mBinding.all.setOnClickListener(this);
 
         mBinding.searchLayout.etSearch.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                selectItem = "0";
-                mBinding.pipeCollection.setTextColor(getResources().getColor(R.color.message_item_gray));
-                mBinding.site.setTextColor(getResources().getColor(R.color.message_item_gray));
-                mBinding.user.setTextColor(getResources().getColor(R.color.message_item_gray));
-                mBinding.site.setBackgroundResource(R.drawable.shape_button_corners_line_gray);
-                mBinding.user.setBackgroundResource(R.drawable.shape_button_corners_line_gray);
-                mBinding.pipeCollection.setBackgroundResource(R.drawable.shape_button_corners_line_gray);
+//                selectItem = ITEM_ALL;
+//                mBinding.pipeCollection.setTextColor(getResources().getColor(R.color.message_item_gray));
+//                mBinding.site.setTextColor(getResources().getColor(R.color.message_item_gray));
+//                mBinding.user.setTextColor(getResources().getColor(R.color.message_item_gray));
+//                mBinding.site.setBackgroundResource(R.drawable.shape_button_corners_line_gray);
+//                mBinding.user.setBackgroundResource(R.drawable.shape_button_corners_line_gray);
+//                mBinding.pipeCollection.setBackgroundResource(R.drawable.shape_button_corners_line_gray);
                 searchS = v.getText().toString();
                 getContactsNum();
             }
@@ -263,21 +266,28 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
 
     @Override
     public void onClick(View view) {
+        searchS = "";
         switch (view.getId()) {
+            case R.id.all:
+                selectItem = ITEM_ALL;
+                buttonStyle(selectItem);
+                getContactsNum();
+                transferFilter();
+                break;
             case R.id.pipe_collection:
-                selectItem = "1";
+                selectItem = ITEM_PC;
                 buttonStyle(selectItem);
                 getContactsNum();
                 transferFilter();
                 break;
             case R.id.site:
-                selectItem = "2";
+                selectItem = ITEM_SITE;
                 buttonStyle(selectItem);
                 getContactsNum();
                 transferFilter();
                 break;
             case R.id.user:
-                selectItem = "3";
+                selectItem = ITEM_USER;
                 buttonStyle(selectItem);
                 getContactsNum();
                 transferFilter();
@@ -291,33 +301,51 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
 
     private void buttonStyle(String str) {
         switch (str) {
-            case "1":
+            case ITEM_PC:
                 mBinding.pipeCollection.setTextColor(getResources().getColor(R.color.filter_blue));
                 mBinding.site.setTextColor(getResources().getColor(R.color.message_item_gray));
                 mBinding.user.setTextColor(getResources().getColor(R.color.message_item_gray));
+                mBinding.all.setTextColor(getResources().getColor(R.color.message_item_gray));
+
                 mBinding.site.setBackgroundResource(R.drawable.shape_button_corners_line_gray);
                 mBinding.user.setBackgroundResource(R.drawable.shape_button_corners_line_gray);
+                mBinding.all.setBackgroundResource(R.drawable.shape_button_corners_line_gray);
                 mBinding.pipeCollection.setBackgroundResource(R.drawable.shape_button_corners_line_blue);
                 break;
 
-            case "2":
+            case ITEM_SITE:
                 mBinding.pipeCollection.setTextColor(getResources().getColor(R.color.message_item_gray));
                 mBinding.site.setTextColor(getResources().getColor(R.color.filter_blue));
                 mBinding.user.setTextColor(getResources().getColor(R.color.message_item_gray));
+                mBinding.all.setTextColor(getResources().getColor(R.color.message_item_gray));
+
                 mBinding.site.setBackgroundResource(R.drawable.shape_button_corners_line_blue);
                 mBinding.user.setBackgroundResource(R.drawable.shape_button_corners_line_gray);
+                mBinding.all.setBackgroundResource(R.drawable.shape_button_corners_line_gray);
                 mBinding.pipeCollection.setBackgroundResource(R.drawable.shape_button_corners_line_gray);
                 break;
 
-            case "3":
+            case ITEM_USER:
                 mBinding.pipeCollection.setTextColor(getResources().getColor(R.color.message_item_gray));
                 mBinding.site.setTextColor(getResources().getColor(R.color.message_item_gray));
+                mBinding.all.setTextColor(getResources().getColor(R.color.message_item_gray));
                 mBinding.user.setTextColor(getResources().getColor(R.color.filter_blue));
+
                 mBinding.site.setBackgroundResource(R.drawable.shape_button_corners_line_gray);
                 mBinding.user.setBackgroundResource(R.drawable.shape_button_corners_line_blue);
+                mBinding.all.setBackgroundResource(R.drawable.shape_button_corners_line_gray);
                 mBinding.pipeCollection.setBackgroundResource(R.drawable.shape_button_corners_line_gray);
                 break;
-            case "0":
+            case ITEM_ALL:
+                mBinding.pipeCollection.setTextColor(getResources().getColor(R.color.message_item_gray));
+                mBinding.site.setTextColor(getResources().getColor(R.color.message_item_gray));
+                mBinding.user.setTextColor(getResources().getColor(R.color.message_item_gray));
+                mBinding.all.setTextColor(getResources().getColor(R.color.filter_blue));
+
+                mBinding.site.setBackgroundResource(R.drawable.shape_button_corners_line_gray);
+                mBinding.user.setBackgroundResource(R.drawable.shape_button_corners_line_gray);
+                mBinding.pipeCollection.setBackgroundResource(R.drawable.shape_button_corners_line_gray);
+                mBinding.all.setBackgroundResource(R.drawable.shape_button_corners_line_blue);
                 break;
             default:
                 break;

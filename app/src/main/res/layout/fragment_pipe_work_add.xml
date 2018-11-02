@@ -42,6 +42,7 @@
                     order:ddd_is_bottom_line="false"
                     order:ddd_is_indicate="false"
                     app:ddd_content_hint="@string/pipe_work_id_i"
+                    order:dddInputType="number"
                     order:ddd_label="@string/pipe_work_id"/>
 
                 <com.barisetech.www.workmanage.widget.FormView
@@ -85,6 +86,7 @@
                     order:ddd_is_bottom_line="false"
                     order:ddd_is_indicate="false"
                     app:ddd_content_hint="@string/pipe_work_pipe_id_i"
+                    order:dddInputType="number"
                     order:ddd_label="@string/pipe_work_pipe_id"/>
 
                 <com.barisetech.www.workmanage.widget.FormView
@@ -139,6 +141,7 @@
                     order:ddd_content_enable="true"
                     order:ddd_is_bottom_line="false"
                     order:ddd_is_indicate="false"
+                    order:dddInputType="numberDecimal"
                     app:ddd_content_hint="@string/pipe_work_length_i"
                     order:ddd_label="@string/pipe_work_length"/>
 
@@ -150,6 +153,7 @@
                     order:ddd_content_enable="true"
                     order:ddd_is_bottom_line="false"
                     order:ddd_is_indicate="false"
+                    order:dddInputType="numberDecimal"
                     app:ddd_content_hint="@string/pipe_work_speed_i"
                     order:ddd_label="@string/pipe_work_speed"/>
 
@@ -183,6 +187,7 @@
                     order:ddd_content_enable="true"
                     order:ddd_is_bottom_line="false"
                     order:ddd_is_indicate="false"
+                    order:dddInputType="numberDecimal"
                     app:ddd_content_hint="@string/pipe_work_medium_temperature_i"
                     order:ddd_label="@string/pipe_work_medium_temperature"/>
 
@@ -268,6 +273,7 @@
                         order:ddd_content_enable="true"
                         order:ddd_is_bottom_line="false"
                         order:ddd_is_indicate="false"
+                        order:dddInputType="number"
                         app:ddd_content_hint="@string/pipe_work_sensor_noise_amplitude_i"
                         order:ddd_label="@string/pipe_work_sensor_noise_amplitude"/>
 
@@ -279,6 +285,7 @@
                         order:ddd_content_enable="true"
                         order:ddd_is_bottom_line="false"
                         order:ddd_is_indicate="false"
+                        order:dddInputType="number"
                         app:ddd_content_hint="@string/pipe_work_sensor_noise_level_i"
                         order:ddd_label="@string/pipe_work_sensor_noise_level"/>
 
@@ -301,6 +308,7 @@
                         order:ddd_content_enable="true"
                         order:ddd_is_bottom_line="false"
                         order:ddd_is_indicate="false"
+                        order:dddInputType="number"
                         app:ddd_content_hint="@string/pipe_work_sensor_channel_i"
                         order:ddd_label="@string/pipe_work_sensor_channel"/>
 
@@ -312,6 +320,7 @@
                         order:ddd_content_enable="true"
                         order:ddd_is_bottom_line="false"
                         order:ddd_is_indicate="false"
+                        order:dddInputType="numberDecimal"
                         app:ddd_content_hint="@string/pipe_work_sensor_hz_i"
                         order:ddd_label="@string/pipe_work_sensor_hz"/>
 
@@ -323,6 +332,7 @@
                         order:ddd_content_enable="true"
                         order:ddd_is_bottom_line="false"
                         order:ddd_is_indicate="false"
+                        order:dddInputType="number"
                         app:ddd_content_hint="@string/pipe_work_isolator_noise_amplitude_i"
                         order:ddd_label="@string/pipe_work_isolator_noise_amplitude"/>
 
@@ -334,6 +344,7 @@
                         order:ddd_content_enable="true"
                         order:ddd_is_bottom_line="false"
                         order:ddd_is_indicate="false"
+                        order:dddInputType="number"
                         app:ddd_content_hint="@string/pipe_work_isolator_noise_level_i"
                         order:ddd_label="@string/pipe_work_isolator_noise_level"/>
 
@@ -356,6 +367,7 @@
                         order:ddd_content_enable="true"
                         order:ddd_is_bottom_line="false"
                         order:ddd_is_indicate="false"
+                        order:dddInputType="number"
                         app:ddd_content_hint="@string/pipe_work_isolator_channel_i"
                         order:ddd_label="@string/pipe_work_isolator_channel"/>
 
@@ -367,6 +379,7 @@
                         order:ddd_content_enable="true"
                         order:ddd_is_bottom_line="false"
                         order:ddd_is_indicate="false"
+                        order:dddInputType="numberDecimal"
                         app:ddd_content_hint="@string/pipe_work_isolator_hz_i"
                         order:ddd_label="@string/pipe_work_isolator_hz"/>
 
@@ -378,6 +391,7 @@
                         order:ddd_content_enable="true"
                         order:ddd_is_bottom_line="false"
                         order:ddd_is_indicate="false"
+                        order:dddInputType="numberDecimal"
                         app:ddd_content_hint="@string/pipe_work_pressure_i"
                         order:ddd_label="@string/pipe_work_pressure"/>
 
@@ -389,6 +403,7 @@
                         order:ddd_content_enable="true"
                         order:ddd_is_bottom_line="false"
                         order:ddd_is_indicate="false"
+                        order:dddInputType="numberDecimal"
                         app:ddd_content_hint="@string/pipe_work_moment_flow_i"
                         order:ddd_label="@string/pipe_work_moment_flow"/>
 
@@ -400,6 +415,7 @@
                         order:ddd_content_enable="true"
                         order:ddd_is_bottom_line="false"
                         order:ddd_is_indicate="false"
+                        order:dddInputType="numberDecimal"
                         app:ddd_content_hint="@string/pipe_work_cumulative_flow_i"
                         order:ddd_label="@string/pipe_work_cumulative_flow"/>
 
@@ -432,6 +448,7 @@
                         order:ddd_content_enable="true"
                         order:ddd_is_bottom_line="false"
                         order:ddd_is_indicate="false"
+                        order:dddInputType="number"
                         app:ddd_content_hint="@string/pipe_work_site_id_i"
                         order:ddd_label="@string/pipe_work_site_id"/>
 
@@ -476,6 +493,7 @@
                         order:ddd_content_enable="true"
                         order:ddd_is_bottom_line="false"
                         order:ddd_is_indicate="false"
+                        order:dddInputType="number"
                         app:ddd_content_hint="@string/pipe_work_sensor_noise_amplitude_i"
                         order:ddd_label="@string/pipe_work_sensor_noise_amplitude"/>
 
@@ -487,6 +505,7 @@
                         order:ddd_content_enable="true"
                         order:ddd_is_bottom_line="false"
                         order:ddd_is_indicate="false"
+                        order:dddInputType="number"
                         app:ddd_content_hint="@string/pipe_work_sensor_noise_level_i"
                         order:ddd_label="@string/pipe_work_sensor_noise_level"/>
 
@@ -509,6 +528,7 @@
                         order:ddd_content_enable="true"
                         order:ddd_is_bottom_line="false"
                         order:ddd_is_indicate="false"
+                        order:dddInputType="number"
                         app:ddd_content_hint="@string/pipe_work_sensor_channel_i"
                         order:ddd_label="@string/pipe_work_sensor_channel"/>
 
@@ -520,6 +540,7 @@
                         order:ddd_content_enable="true"
                         order:ddd_is_bottom_line="false"
                         order:ddd_is_indicate="false"
+                        order:dddInputType="numberDecimal"
                         app:ddd_content_hint="@string/pipe_work_sensor_hz_i"
                         order:ddd_label="@string/pipe_work_sensor_hz"/>
 
@@ -531,6 +552,7 @@
                         order:ddd_content_enable="true"
                         order:ddd_is_bottom_line="false"
                         order:ddd_is_indicate="false"
+                        order:dddInputType="number"
                         app:ddd_content_hint="@string/pipe_work_isolator_noise_amplitude_i"
                         order:ddd_label="@string/pipe_work_isolator_noise_amplitude"/>
 
@@ -542,6 +564,7 @@
                         order:ddd_content_enable="true"
                         order:ddd_is_bottom_line="false"
                         order:ddd_is_indicate="false"
+                        order:dddInputType="number"
                         app:ddd_content_hint="@string/pipe_work_isolator_noise_level_i"
                         order:ddd_label="@string/pipe_work_isolator_noise_level"/>
 
@@ -564,6 +587,7 @@
                         order:ddd_content_enable="true"
                         order:ddd_is_bottom_line="false"
                         order:ddd_is_indicate="false"
+                        order:dddInputType="number"
                         app:ddd_content_hint="@string/pipe_work_isolator_channel_i"
                         order:ddd_label="@string/pipe_work_isolator_channel"/>
 
@@ -575,6 +599,7 @@
                         order:ddd_content_enable="true"
                         order:ddd_is_bottom_line="false"
                         order:ddd_is_indicate="false"
+                        order:dddInputType="numberDecimal"
                         app:ddd_content_hint="@string/pipe_work_isolator_hz_i"
                         order:ddd_label="@string/pipe_work_isolator_hz"/>
 
@@ -586,6 +611,7 @@
                         order:ddd_content_enable="true"
                         order:ddd_is_bottom_line="false"
                         order:ddd_is_indicate="false"
+                        order:dddInputType="numberDecimal"
                         app:ddd_content_hint="@string/pipe_work_pressure_i"
                         order:ddd_label="@string/pipe_work_pressure"/>
 
@@ -597,6 +623,7 @@
                         order:ddd_content_enable="true"
                         order:ddd_is_bottom_line="false"
                         order:ddd_is_indicate="false"
+                        order:dddInputType="numberDecimal"
                         app:ddd_content_hint="@string/pipe_work_moment_flow_i"
                         order:ddd_label="@string/pipe_work_moment_flow"/>
 
@@ -608,6 +635,7 @@
                         order:ddd_content_enable="true"
                         order:ddd_is_bottom_line="false"
                         order:ddd_is_indicate="false"
+                        order:dddInputType="numberDecimal"
                         app:ddd_content_hint="@string/pipe_work_cumulative_flow_i"
                         order:ddd_label="@string/pipe_work_cumulative_flow"/>
 

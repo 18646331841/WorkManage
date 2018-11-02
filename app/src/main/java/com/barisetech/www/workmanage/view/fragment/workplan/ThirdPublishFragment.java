@@ -214,10 +214,16 @@ public class ThirdPublishFragment extends BaseFragment {
         numDisposable = siteViewModel.reqSiteNum();
     }
 
-    private ItemCallBack itemCallBack = item -> {
+    private PlanSiteListAdapter.ItemOnChecked itemCallBack = (b, item) -> {
         if (item instanceof SiteBean) {
             SiteBean siteBean = (SiteBean) item;
-            siteBeanMap.put(String.valueOf(siteBean.SiteId), siteBean);
+            if (b) {
+                siteBeanMap.put(String.valueOf(siteBean.SiteId), siteBean);
+            } else {
+                if (siteBeanMap.containsKey(String.valueOf(siteBean.SiteId))) {
+                    siteBeanMap.remove(String.valueOf(siteBean.SiteId));
+                }
+            }
         }
     };
 

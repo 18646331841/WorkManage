@@ -81,7 +81,7 @@ public class PipeModifyFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        pcName.add(0, "单独管线");
+//        pcName.add(0, "单独管线");
         if (null != getArguments()) {
             curPipeInfo = (PipeInfo) getArguments().getSerializable(PIPE_ID);
         }
@@ -122,7 +122,7 @@ public class PipeModifyFragment extends BaseFragment {
         pipeInfoField.set(curPipeInfo);
         mBinding.setMyFragment(this);
 
-        mBinding.spSelectPipePc.attachDataSource(pcName);
+//        mBinding.spSelectPipePc.attachDataSource(pcName);
 
         mBinding.pipeAlgorithm.setOnItemClickListener(() -> {
             showDialog(getString(R.string.pipe_detail_is_algorithm), curPipeInfo.Algorithm, (radioGroup, i) -> {
@@ -206,15 +206,16 @@ public class PipeModifyFragment extends BaseFragment {
             curPipeInfo.SortID = Integer.valueOf(sortId);
 //            PipeCollections pc = new PipeCollections();
 //            pc.setId(pcId);
-            if (!mBinding.spSelectPipePc.getText().toString().equals("单独管线")) {
+
+//            if (!mBinding.spSelectPipePc.getText().toString().equals("单独管线")) {
                 for (PipeCollections pipeCollections : pipeCollectionsList) {
                     if (pipeCollections.getName().equals(mBinding.spSelectPipePc.getText().toString())) {
                         curPipeInfo.PipeCollectID = pipeCollections;
                     }
                 }
-            } else {
-                curPipeInfo.PipeCollectID = null;
-            }
+//            } else {
+//                curPipeInfo.PipeCollectID = null;
+//            }
 
             curPipeInfo.Length = Integer.valueOf(length);
             curPipeInfo.PipeMaterial = materail;
@@ -421,7 +422,7 @@ public class PipeModifyFragment extends BaseFragment {
                                     }
                                 }
                             }
-//                            mBinding.spSelectPipePc.attachDataSource(pcName);
+                            mBinding.spSelectPipePc.attachDataSource(pcName);
                             mBinding.spSelectPipePc.setSelectedIndex(selectIndex);
 
                         }

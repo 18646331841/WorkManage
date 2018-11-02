@@ -388,6 +388,8 @@ public class PlanListFragment extends BaseFragment {
 
     private void getListNums() {
         loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING);
+        planBeanList.clear();
+        maxNum = 0;
 
         ReqPlanNum reqPlanNum = new ReqPlanNum();
         reqPlanNum.status = String.valueOf(curType);
@@ -496,8 +498,8 @@ public class PlanListFragment extends BaseFragment {
             });
         }
 
-        if (null == planBeanList || planBeanList.size() <= 0) {
+//        if (null == planBeanList || planBeanList.size() <= 0) {
             getListNums();
-        }
+//        }
     }
 }
