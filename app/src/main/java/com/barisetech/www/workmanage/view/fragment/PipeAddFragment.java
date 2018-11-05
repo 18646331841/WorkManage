@@ -133,8 +133,7 @@ public class PipeAddFragment extends BaseFragment {
         });
 
         mBinding.pipeTest.setOnItemClickListener(() -> {
-            showDialog(getString(R.string.pipe_detail_is_test), Boolean.valueOf(reqPipeInfo.IsTestMode), (radioGroup,
-                                                                                                          i) -> {
+            showDialog(getString(R.string.pipe_detail_is_test), Boolean.valueOf(reqPipeInfo.IsTestMode), (radioGroup, i) -> {
                 closeDialog();
 
                 switch (i) {
@@ -208,11 +207,11 @@ public class PipeAddFragment extends BaseFragment {
 ////            pc.setId(pcId);
             List<PipeCollections> pcList = new ArrayList<>();
 //            if (!mBinding.spSelectPipePc.getText().toString().equals("单独管线")) {
-                for (PipeCollections pipeCollections : pipeCollectionsList) {
-                    if (pipeCollections.getName().equals(mBinding.spSelectPipePc.getText().toString())) {
-                        pcList.add(pipeCollections);
-                    }
+            for (PipeCollections pipeCollections : pipeCollectionsList) {
+                if (pipeCollections.getName().equals(mBinding.spSelectPipePc.getText().toString())) {
+                    pcList.add(pipeCollections);
                 }
+            }
 //            }
             reqPipeInfo.PipeCollectID = pcList;
             reqPipeInfo.Length = length;
@@ -245,6 +244,14 @@ public class PipeAddFragment extends BaseFragment {
                     break;
                 }
             }
+
+            reqPipeInfo.OriginSlaveFlowCumulativeTime = "0";
+            reqPipeInfo.OriginSlaveFlowThresholdAmend = "0";
+            reqPipeInfo.OriginSlaveFlowThresholdHighLimit = "0";
+            reqPipeInfo.OriginSlaveFlowThresholdLowLimit = "0";
+            reqPipeInfo.OriginSlavePressureDifferenceAmend = "0";
+            reqPipeInfo.OriginSlavePressureDifferenceHighLimit = "0";
+            reqPipeInfo.OriginSlavePressureDifferenceLowLimit = "0";
 
             ReqAddPipe reqAddPipe = new ReqAddPipe();
             reqAddPipe.setOperation("1");

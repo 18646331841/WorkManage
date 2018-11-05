@@ -190,12 +190,13 @@ public class IncidentListFragment extends BaseFragment {
             closeDisposable();
             transFilterLayout();
             curType = selectType;
-            incidentInfoList.clear();
-            if (maxNum >= PAGE_COUNT) {
-                getDatas(0, PAGE_COUNT);
-            } else {
-                getDatas(0, maxNum);
-            }
+            getListNums();
+//            incidentInfoList.clear();
+//            if (maxNum >= PAGE_COUNT) {
+//                getDatas(0, PAGE_COUNT);
+//            } else {
+//                getDatas(0, maxNum);
+//            }
         });
     }
 
@@ -406,8 +407,25 @@ public class IncidentListFragment extends BaseFragment {
         reqIncidentSelectItem.setSiteID("0");
         reqIncidentSelectItem.setMIncidentType(String.valueOf(curType));
         reqIncidentSelectItem.setTimeQueryChecked("true");
-        reqIncidentSelectItem.setMStartTime("1970-01-01 00:00:00");
-        reqIncidentSelectItem.setMEndTime(TimeUtil.ms2Date(System.currentTimeMillis()));
+
+        if (curType == BaseConstant.TYPE_INCIDENT_ALL) {
+            reqIncidentSelectItem.setMStartTime("1970-01-01 00:00:00");
+            reqIncidentSelectItem.setMEndTime(TimeUtil.ms2Date(System.currentTimeMillis()));
+        } else {
+            if (TextUtils.isEmpty(startTime)) {
+                //接口设计原因，默认使用最小时间
+                reqIncidentSelectItem.setMStartTime("1970-01-01 00:00:00");
+            } else {
+                reqIncidentSelectItem.setMStartTime(startTime);
+            }
+            if (TextUtils.isEmpty(endTime)) {
+                //默认使用当前时间
+                reqIncidentSelectItem.setMEndTime(TimeUtil.ms2Date(System.currentTimeMillis()));
+            } else {
+                reqIncidentSelectItem.setMEndTime(endTime);
+            }
+        }
+
 
         incidentViewModel.reqIncidentNum(reqIncidentSelectItem);
     }
