@@ -125,6 +125,11 @@ public class PipeWork implements Serializable{
     }
 
     @BindingAdapter("setText")
+    public static void setText(LineView view, long text) {
+        view.setText(String.valueOf(text));
+    }
+
+    @BindingAdapter("setText")
     public static void setText(LineView view, double text) {
         view.setText(String.valueOf(text));
     }
@@ -141,6 +146,11 @@ public class PipeWork implements Serializable{
 
     @BindingAdapter("setText")
     public static void setText(FormView view, int text) {
+        view.setText(String.valueOf(text));
+    }
+
+    @BindingAdapter("setText")
+    public static void setText(FormView view, long text) {
         view.setText(String.valueOf(text));
     }
     @BindingAdapter("setText")

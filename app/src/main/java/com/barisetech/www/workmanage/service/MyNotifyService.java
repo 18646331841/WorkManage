@@ -224,7 +224,7 @@ public class MyNotifyService extends Service {
             case authId:
                 bundle.putString(BaseConstant.NOTIFY_TAG, AuthListFragment.TAG);
                 if (arg instanceof String) {
-                    bundle.putString("arg2", (String) arg);
+                    bundle.putString("arg1", (String) arg);
                 }
                 break;
         }

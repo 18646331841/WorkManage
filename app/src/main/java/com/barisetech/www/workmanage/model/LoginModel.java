@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseResponse;
 import com.barisetech.www.workmanage.bean.AccessTokenInfo;
+import com.barisetech.www.workmanage.bean.FailResponse;
 import com.barisetech.www.workmanage.bean.TokenInfo;
 import com.barisetech.www.workmanage.bean.auth.ReqAuth;
 import com.barisetech.www.workmanage.callback.ModelCallBack;
@@ -36,6 +37,9 @@ public class LoginModel {
 
     private AppDatabase appDatabase;
     private ModelCallBack modelCallBack;
+
+    public static final int LOGIN_FAIL = 1;
+
     public LoginModel(AppDatabase appDatabase, ModelCallBack modelCallBack) {
         this.appDatabase = appDatabase;
         this.modelCallBack = modelCallBack;
@@ -220,17 +224,17 @@ public class LoginModel {
                                         .ms2Date(System.currentTimeMillis()));
                             }
                         } else {
-                            modelCallBack.fail(Config.ERROR_LOGIN_FAILED);
+                            modelCallBack.fail(new FailResponse(LOGIN_FAIL, Config.ERROR_LOGIN_FAILED));
                             LogUtil.d(TAG, "网络获取token失败---" + tokenInfo.toString());
                         }
                     } else {
-                        modelCallBack.fail(Config.ERROR_LOGIN_FAILED);
+                        modelCallBack.fail(new FailResponse(LOGIN_FAIL, Config.ERROR_LOGIN_FAILED));
                     }
                 }, throwable -> {
                     if (throwable.getMessage().contains("400")) {
-                        modelCallBack.fail(Config.ERROR_LOGIN_FAILED);
+                        modelCallBack.fail(new FailResponse(LOGIN_FAIL, Config.ERROR_LOGIN_FAILED));
                     } else {
-                        modelCallBack.fail(Config.ERROR_NETWORK);
+                        modelCallBack.fail(new FailResponse(LOGIN_FAIL, Config.ERROR_LOGIN_FAILED));
                     }
                     LogUtil.e(TAG, "网络获取token失败---throwable" + throwable.getMessage());
                 });

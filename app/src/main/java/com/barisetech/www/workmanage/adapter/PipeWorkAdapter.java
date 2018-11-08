@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.barisetech.www.workmanage.R;
-import com.barisetech.www.workmanage.bean.pipecollections.PipeCollections;
 import com.barisetech.www.workmanage.bean.pipework.PipeWork;
 
 import java.util.List;
@@ -21,6 +20,7 @@ public class PipeWorkAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private List<PipeWork> mList;
     private Context ctx;
     private ItemCallBack callBack;
+    private OnItemLongClickListener mOnItemClickListener;
 
     public PipeWorkAdapter(List<PipeWork> list, Context context, ItemCallBack itemCallBack){
         this.mList = list;
@@ -47,6 +47,14 @@ public class PipeWorkAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }
         });
 
+        viewHolder.l_item.setOnLongClickListener(view -> {
+            mOnItemClickListener.onItemClick(view, position);
+            return true;
+        });
+    }
+
+    public void setOnItemLongClickListener(OnItemLongClickListener onItemClickListener) {
+        mOnItemClickListener = onItemClickListener;
     }
 
     @Override
@@ -64,5 +72,9 @@ public class PipeWorkAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             tv_pipe_name = itemView.findViewById(R.id.item_data);
             l_item = itemView.findViewById(R.id.l_item);
         }
+    }
+
+    public interface OnItemLongClickListener {
+        void onItemClick(View view, int position);
     }
 }

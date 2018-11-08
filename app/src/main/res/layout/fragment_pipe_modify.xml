@@ -41,6 +41,7 @@
                     order:ddd_content_enable="true"
                     order:ddd_content_hint="@string/pipe_detail_id_i"
                     order:dddInputType="number"
+                    android:visibility="gone"
                     order:ddd_is_bottom_line="false"
                     order:ddd_is_indicate="false"
                     order:ddd_label="@string/pipe_detail_id"/>
@@ -135,6 +136,7 @@
                     app:setText="@{myFragment.pipeInfoField.Company}"
                     order:ddd_content_enable="true"
                     order:ddd_content_hint="@string/pipe_detail_company_i"
+                    android:visibility="gone"
                     order:ddd_is_bottom_line="false"
                     order:ddd_is_indicate="false"
                     order:ddd_label="@string/pipe_detail_company"/>
@@ -145,6 +147,7 @@
                     android:background="@color/white"
                     android:gravity="center_vertical"
                     android:orientation="vertical"
+                    android:visibility="gone"
                     android:paddingLeft="@dimen/dp_28">
 
                     <RelativeLayout

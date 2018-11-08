@@ -3,6 +3,7 @@ package com.barisetech.www.workmanage.view.fragment;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,17 +16,23 @@ import android.view.ViewGroup;
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.adapter.OnScrollListener;
 import com.barisetech.www.workmanage.adapter.PipeLindAreaAdapter;
+import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.base.BaseLoadMoreWrapper;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.bean.pipelindarea.PipeLindAreaInfo;
 import com.barisetech.www.workmanage.bean.pipelindarea.ReqAllPipelindArea;
+import com.barisetech.www.workmanage.bean.pipelindarea.ReqDeletePipeLindArea;
 import com.barisetech.www.workmanage.databinding.FragmentPipeLindAreaBinding;
 import com.barisetech.www.workmanage.utils.DisplayUtil;
+import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.viewmodel.PipeblindAreaViewModel;
+import com.barisetech.www.workmanage.widget.QPopuWindow;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +49,7 @@ public class PipeLindAreaFragment extends BaseFragment {
     private PipeblindAreaViewModel pipeblindAreaViewModel;
     private Disposable disposable;
     FragmentPipeLindAreaBinding mBinding;
+    private Point mPoint = new Point();
 
     private static final int PAGE_COUNT = 10;
     private int maxNum;
@@ -70,6 +78,11 @@ public class PipeLindAreaFragment extends BaseFragment {
         toolbarInfo.setTitle(getString(R.string.tv_pipeline_blind_area));
         toolbarInfo.setTwoText("新增");
         observableToolbar.set(toolbarInfo);
+
+        if (!EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().register(this);
+        }
+
         initView();
         return mBinding.getRoot();
     }
@@ -117,6 +130,37 @@ public class PipeLindAreaFragment extends BaseFragment {
             }
         });
 
+        pipeLindAreaAdapter.setOnItemLongClickListener((view, position) -> {
+            PipeLindAreaInfo pipeLindAreaInfo = pipeLindAreaInfoList.get(position);
+            QPopuWindow.getInstance(getActivity()).builder
+                    .bindView(view,0)
+                    .setPopupItemList(new String[]{"编辑管线盲区", "删除管线盲区"})
+                    .setPointers(mPoint.x,mPoint.y)
+                    .setOnPopuListItemClickListener(new QPopuWindow.OnPopuListItemClickListener() {
+                        @Override
+                        public void onPopuListItemClick(View anchorView, int anchorViewPosition, int p) {
+                            switch (p){
+                                case 0:
+                                    EventBusMessage eventBusMessage = new EventBusMessage(PipeLindAreaModifyFragment.TAG);
+                                    eventBusMessage.setArg1(pipeLindAreaInfo);
+                                    EventBus.getDefault().post(eventBusMessage);
+                                    break;
+                                case 1:
+                                    ReqDeletePipeLindArea info = new ReqDeletePipeLindArea();
+                                    info.setPipeBlindAreaId(String.valueOf(pipeLindAreaInfo.getId()));
+
+                                    EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_SHOW));
+                                    pipeblindAreaViewModel.reqDeletePipeLindArea(info);
+                                    break;
+                            }
+                        }
+                    }).show();
+        });
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void PointEventBus(Point point) {
+        mPoint = point;
     }
 
     private void updateRecyclerView(int fromIndex,int toIndex){
@@ -195,11 +239,33 @@ public class PipeLindAreaFragment extends BaseFragment {
             getPipeLindAreaNums();
 //        }
 
+        if (!pipeblindAreaViewModel.getmObservableLindAreaDel().hasObservers()) {
+            pipeblindAreaViewModel.getmObservableLindAreaDel().observe(this, flag -> {
+                if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                    if (null != flag) {
+                        if (flag) {
+                            ToastUtil.showToast("删除成功");
+                            getActivity().onBackPressed();
+                        } else {
+                            ToastUtil.showToast("删除失败");
+                        }
+                    } else {
+                        ToastUtil.showToast("删除失败");
+                    }
+                }
+            });
+        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
         pipeblindAreaViewModel.getmObservableAllPipeLindArea().setValue(null);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

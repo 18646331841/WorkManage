@@ -6,6 +6,7 @@ import android.app.TimePickerDialog;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -25,13 +26,18 @@ import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.bean.pipework.PipeWork;
 import com.barisetech.www.workmanage.bean.pipework.ReqAllPW;
+import com.barisetech.www.workmanage.bean.pipework.ReqDeletePW;
 import com.barisetech.www.workmanage.databinding.FragmentPipeWorkBinding;
 import com.barisetech.www.workmanage.utils.DisplayUtil;
 import com.barisetech.www.workmanage.utils.LogUtil;
 import com.barisetech.www.workmanage.utils.TimeUtil;
+import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.viewmodel.PipeWorkViewModel;
+import com.barisetech.www.workmanage.widget.QPopuWindow;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,6 +67,7 @@ public class PipeWorkFragment extends BaseFragment {
     private int maxNum;
     private int curType = BaseConstant.TYPE_INCIDENT_ALL;
     private int selectType;//选择的类型
+    private Point mPoint = new Point();
 
     public PipeWorkFragment() {
         // Required empty public constructor
@@ -88,6 +95,10 @@ public class PipeWorkFragment extends BaseFragment {
         toolbarInfo.setTitle(getString(R.string.title_pipe_work));
         toolbarInfo.setOneText("新增");
         observableToolbar.set(toolbarInfo);
+
+        if (!EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().register(this);
+        }
 
         initView();
 
@@ -131,6 +142,38 @@ public class PipeWorkFragment extends BaseFragment {
                 }
             }
         });
+
+        pipeWorkAdapter.setOnItemLongClickListener((view, position) -> {
+            PipeWork pipeWork = pipeWorkList.get(position);
+            QPopuWindow.getInstance(getActivity()).builder
+                    .bindView(view,0)
+                    .setPopupItemList(new String[]{"编辑管线工况", "删除管线工况"})
+                    .setPointers(mPoint.x,mPoint.y)
+                    .setOnPopuListItemClickListener(new QPopuWindow.OnPopuListItemClickListener() {
+                        @Override
+                        public void onPopuListItemClick(View anchorView, int anchorViewPosition, int p) {
+                            switch (p){
+                                case 0:
+                                    EventBusMessage eventBusMessage = new EventBusMessage(PipeWorkModifyFragment.TAG);
+                                    eventBusMessage.setArg1(pipeWork);
+                                    EventBus.getDefault().post(eventBusMessage);
+                                    break;
+                                case 1:
+                                    ReqDeletePW reqDeletePW = new ReqDeletePW();
+                                    reqDeletePW.setPipeWorkId(String.valueOf(pipeWork.Id));
+
+                                    EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_SHOW));
+                                    pipeWorkViewModel.reqDeletePw(reqDeletePW);
+                                    break;
+                            }
+                        }
+                    }).show();
+        });
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void PointEventBus(Point point) {
+        mPoint = point;
     }
 
     private ItemCallBack itemCallBack = item -> {
@@ -218,5 +261,28 @@ public class PipeWorkFragment extends BaseFragment {
 //        if (null == pipeWorkList || pipeWorkList.size() <= 0) {
             getNums();
 //        }
+
+        if (!pipeWorkViewModel.getmObservableDel().hasObservers()) {
+            pipeWorkViewModel.getmObservableDel().observe(this, aBoolean -> {
+                if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                    if (null != aBoolean) {
+                        if (aBoolean) {
+                            ToastUtil.showToast("删除成功");
+                            getActivity().onBackPressed();
+                        } else {
+                            ToastUtil.showToast("删除失败");
+                        }
+                    } else {
+                        ToastUtil.showToast("删除失败");
+                    }
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

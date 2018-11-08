@@ -37,6 +37,8 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import io.reactivex.disposables.Disposable;
@@ -210,6 +212,21 @@ public class PipeCollectionFragment extends BaseFragment {
                     if (null != pipeCollections) {
                         if (pipeCollections.size() > 0) {
                             pipeCollectionsList.addAll(pipeCollections);
+
+                            //用SortID排序
+                            Collections.sort(pipeCollectionsList, (o1, o2) -> {
+                                int s1 = Integer.valueOf(o1.getSortID());
+                                int s2 = Integer.valueOf(o2.getSortID());
+
+                                if (s2 < s1) {
+                                    return 1;
+                                } else if (s2 == s1) {
+                                    return 0;
+                                }
+
+                                return -1;
+                            });
+
                             LogUtil.d(TAG, "load complete = " + pipeCollections);
                             loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_COMPLETE);
                         } else {

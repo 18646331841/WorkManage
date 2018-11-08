@@ -23,6 +23,7 @@ import com.barisetech.www.workmanage.bean.pipe.ReqPipeInfo;
 import com.barisetech.www.workmanage.bean.pipecollections.PipeCollections;
 import com.barisetech.www.workmanage.bean.pipework.PipeWork;
 import com.barisetech.www.workmanage.bean.pipework.ReqAddPW;
+import com.barisetech.www.workmanage.bean.pipework.ReqDeletePW;
 import com.barisetech.www.workmanage.databinding.FragmentPipeModifyBinding;
 import com.barisetech.www.workmanage.databinding.FragmentPipeWorkModifyBinding;
 import com.barisetech.www.workmanage.utils.ToastUtil;
@@ -154,6 +155,56 @@ public class PipeWorkModifyFragment extends BaseFragment {
             String sCumulativeFlow = mBinding.pwSlaveCumulativeFlow.getText();
             String remark = mBinding.pwRemark.getText();
 
+            curPipeWork.Id = Integer.valueOf(id);
+            curPipeWork.Name = name;
+            curPipeWork.RecordDate = record;
+            curPipeWork.User = user;
+            curPipeWork.PipeId = Integer.valueOf(pipeId);
+            curPipeWork.PipeName = pipeName;
+            curPipeWork.PipeThickness = thickness;
+            curPipeWork.PipeDiameter = diameter;
+            curPipeWork.PipeMaterial = material;
+            curPipeWork.PipeLength = Double.valueOf(length);
+            curPipeWork.Speed = Double.valueOf(speed);
+            curPipeWork.BranchConditions = branch;
+            curPipeWork.PipeMedium = medium;
+            curPipeWork.MediumTemperature = Double.valueOf(temperature);
+            curPipeWork.OriginId = Integer.valueOf(originId);
+            curPipeWork.OriginName = originName;
+            curPipeWork.OriginSoftVersion = oSoftVersion;
+            curPipeWork.OriginHardVersion = oHardVersion;
+            curPipeWork.OriginSensorNoiseAmplitude = Long.valueOf(oSAmplitude);
+            curPipeWork.OriginSensorNoiseLevel = Long.valueOf(oSLevel);
+            curPipeWork.OriginSensorType = oSType;
+            curPipeWork.OriginAdcChannelPrimary = Integer.valueOf(oSChannel);
+            curPipeWork.OriginExtFirPrimary = Double.valueOf(oSHz);
+            curPipeWork.OriginIsolatorNoiseAmplitude = Long.valueOf(oIAmplitude);
+            curPipeWork.OriginIsolatorNoiseLevel = Long.valueOf(oILevel);
+            curPipeWork.OriginIsolatorType = oIType;
+            curPipeWork.OriginAdcChannelIsolator = Integer.valueOf(oIChannel);
+            curPipeWork.OriginExtFirIsolator = Double.valueOf(oIHz);
+            curPipeWork.OriginPressure = Double.valueOf(oIPressure);
+            curPipeWork.OriginMomentFlow = Double.valueOf(oMomentFlow);
+            curPipeWork.OriginCumulativeFlow = Double.valueOf(oCumulativeFlow);
+            curPipeWork.SlaveId = Integer.valueOf(slaveId);
+            curPipeWork.SlaveName = slaveName;
+            curPipeWork.SlaveSoftVersion = sSoftVersion;
+            curPipeWork.SlaveHardVersion = sHardVersion;
+            curPipeWork.SlaveSensorNoiseAmplitude = Long.valueOf(sSAmplitude);
+            curPipeWork.SlaveSensorNoiseLevel = Long.valueOf(sSLevel);
+            curPipeWork.SlaveSensorType = sSType;
+            curPipeWork.SlaveAdcChannelPrimary = Integer.valueOf(sSChannel);
+            curPipeWork.SlaveExtFirPrimary = Double.valueOf(sSHz);
+            curPipeWork.SlaveIsolatorNoiseAmplitude = Long.valueOf(sIAmplitude);
+            curPipeWork.SlaveIsolatorNoiseLevel = Long.valueOf(sILevel);
+            curPipeWork.SlaveIsolatorType = sIType;
+            curPipeWork.SlaveAdcChannelIsolator = Integer.valueOf(sIChannel);
+            curPipeWork.SlaveExtFirIsolator = Double.valueOf(sIHz);
+            curPipeWork.SlavePressure = Double.valueOf(sIPressure);
+            curPipeWork.SlaveMomentFlow = Double.valueOf(sMomentFlow);
+            curPipeWork.SlaveCumulativeFlow = Double.valueOf(sCumulativeFlow);
+            curPipeWork.Remark = remark;
+
             ReqAddPW reqAddPw = new ReqAddPW();
             reqAddPw.isAdd = "false";
             reqAddPw.id = id;
@@ -209,6 +260,14 @@ public class PipeWorkModifyFragment extends BaseFragment {
             EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_SHOW));
             curDisposable = pipeWorkViewModel.reqAddOrModifyPw(reqAddPw);
         });
+
+        mBinding.delPw.setOnClickListener(view -> {
+            ReqDeletePW reqDeletePW = new ReqDeletePW();
+            reqDeletePW.setPipeWorkId(String.valueOf(curPipeWork.Id));
+
+            EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_SHOW));
+            pipeWorkViewModel.reqDeletePw(reqDeletePW);
+        });
     }
 
     private void showDialog(String title, boolean defaultV, RadioGroup.OnCheckedChangeListener
@@ -248,6 +307,23 @@ public class PipeWorkModifyFragment extends BaseFragment {
                         }
                     } else {
                         ToastUtil.showToast("失败修改");
+                    }
+                }
+            });
+        }
+
+        if (!pipeWorkViewModel.getmObservableDel().hasObservers()) {
+            pipeWorkViewModel.getmObservableDel().observe(this, aBoolean -> {
+                if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                    if (null != aBoolean) {
+                        if (aBoolean) {
+                            ToastUtil.showToast("删除成功");
+                            getActivity().onBackPressed();
+                        } else {
+                            ToastUtil.showToast("删除失败");
+                        }
+                    } else {
+                        ToastUtil.showToast("删除失败");
                     }
                 }
             });

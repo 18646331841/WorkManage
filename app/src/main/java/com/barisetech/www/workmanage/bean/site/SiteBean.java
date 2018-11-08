@@ -102,7 +102,7 @@ public class SiteBean implements Serializable{
     public float SensitivityOrg1;
     public float HardwareGain1;
     public float Sensitivity1;
-    public String SensorCode1 = "";
+    public String SensorCode1 = "0";
     public int FilterType2;
     public int IirType2;
     public int IirBandtype2;
@@ -117,7 +117,7 @@ public class SiteBean implements Serializable{
     public float SensitivityOrg2;
     public float HardwareGain2;
     public float Sensitivity2;
-    public String SensorCode2 = "";
+    public String SensorCode2 = "0";
     public float PressureRange;
     public float PressureLowLimit;
     public float PressureHighLimit;

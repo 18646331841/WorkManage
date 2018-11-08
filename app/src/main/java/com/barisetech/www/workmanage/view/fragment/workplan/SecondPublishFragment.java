@@ -137,6 +137,7 @@ public class SecondPublishFragment extends BaseFragment {
             }
 
             String num = mBinding.planPublishSecondPleaseNum.getText().toString();
+            String range = mBinding.planPublishPleaseRange.getText().toString();
 
             if (TextUtils.isEmpty(title)) {
                 ToastUtil.showToast("请输入标题");
@@ -153,11 +154,17 @@ public class SecondPublishFragment extends BaseFragment {
                 return;
             }
 
+            if (TextUtils.isEmpty(range)) {
+                ToastUtil.showToast("请输入打卡范围");
+                return;
+            }
+
             if (curPlanAdd != null) {
                 curPlanAdd.Name = title;
                 curPlanAdd.EndTime = date;
                 curPlanAdd.TotalNumberOfTimes = num;
                 curPlanAdd.TimesOfCompletion = "0";
+                curPlanAdd.Range = range;
 
                 EventBusMessage eventBusMessage = new EventBusMessage(ThirdPublishFragment.TAG);
                 eventBusMessage.setArg1(curPlanAdd);

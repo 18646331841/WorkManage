@@ -57,6 +57,7 @@
                     order:ddd_content_enable="true"
                     order:dddInputType="number"
                     order:ddd_content_hint="@string/pipe_detail_sort_id_i"
+                    order:ddd_content="0"
                     order:ddd_is_bottom_line="false"
                     order:ddd_is_indicate="false"
                     order:ddd_label="@string/pipe_detail_sort_id"/>
@@ -103,6 +104,7 @@
                     android:layout_height="wrap_content"
                     order:ddd_content_enable="true"
                     order:ddd_content_hint="@string/pipe_detail_length_i"
+                    order:ddd_content="0"
                     order:dddInputType="numberDecimal"
                     order:ddd_is_bottom_line="false"
                     order:ddd_is_indicate="false"
@@ -192,6 +194,7 @@
                     android:layout_height="wrap_content"
                     order:ddd_content_enable="true"
                     order:ddd_content_hint="@string/pipe_detail_speed_i"
+                    order:ddd_content="400"
                     order:dddInputType="numberDecimal"
                     order:ddd_is_bottom_line="false"
                     order:ddd_is_indicate="false"
@@ -203,6 +206,7 @@
                     android:layout_height="wrap_content"
                     order:ddd_content_enable="true"
                     order:ddd_content_hint="@string/pipe_detail_min_time_i"
+                    order:ddd_content="0"
                     order:ddd_is_bottom_line="false"
                     order:ddd_is_indicate="false"
                     order:ddd_label="@string/pipe_detail_min_time"/>

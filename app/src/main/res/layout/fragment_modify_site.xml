@@ -37,6 +37,7 @@
                     order:ddd_content_hint="@string/hint_site_id"
                     order:dddInputType="number"
                     order:ddd_is_bottom_line="true"
+                    android:visibility="gone"
                     order:ddd_label="@string/tv_id" />
 
                 <com.barisetech.www.workmanage.widget.FormView
@@ -46,6 +47,7 @@
                     order:ddd_content_enable="true"
                     order:ddd_content_hint="@string/hint_company"
                     order:ddd_is_bottom_line="true"
+                    android:visibility="gone"
                     order:ddd_label="@string/along_company" />
                 <com.barisetech.www.workmanage.widget.FormView
                     android:id="@+id/site_longitude"
@@ -83,6 +85,7 @@
                     order:ddd_content_hint="@string/hint_name"
                     order:ddd_is_bottom_line="true"
                     order:ddd_label="@string/principal" />
+
                 <com.barisetech.www.workmanage.widget.FormView
                     android:id="@+id/site_line_whether"
                     android:layout_width="match_parent"
@@ -90,7 +93,9 @@
                     order:ddd_content_hint=""
                     order:ddd_is_bottom_line="true"
                     order:ddd_is_indicate="true"
+                    android:visibility="gone"
                     order:ddd_label="@string/line_whether"/>
+
                 <com.barisetech.www.workmanage.widget.FormView
                     android:id="@+id/site_double_sensor"
                     android:layout_width="match_parent"
@@ -277,7 +282,7 @@
                     android:text="@string/delete_site"
                     android:textColor="@color/white"
                     android:textSize="@dimen/sp_18"
-                    android:layout_marginBottom="@dimen/dp_20"/>
+                    android:layout_marginBottom="@dimen/dp_25"/>
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

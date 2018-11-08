@@ -99,8 +99,7 @@ public class PipeCollectionModifyFragment extends BaseFragment{
 
             ReqAddPC reqAddPC = new ReqAddPC();
             reqAddPC.setOperation("0");
-            PipeCollections pipeCollections = new PipeCollections();
-            pipeCollections.setId(id);
+//            pipeCollections.setId(id);
             pipeCollections.setName(name);
             pipeCollections.setSortID(sortId);
             pipeCollections.setManager(manager);

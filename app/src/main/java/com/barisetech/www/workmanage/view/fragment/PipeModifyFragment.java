@@ -201,7 +201,7 @@ public class PipeModifyFragment extends BaseFragment {
             String speed = mBinding.pipeSpeed.getText();
             String minTime = mBinding.pipeMinTime.getText();
 
-            curPipeInfo.PipeId = Integer.valueOf(id);
+//            curPipeInfo.PipeId = Integer.valueOf(id);
             curPipeInfo.Name = name;
             curPipeInfo.SortID = Integer.valueOf(sortId);
 //            PipeCollections pc = new PipeCollections();
@@ -219,19 +219,19 @@ public class PipeModifyFragment extends BaseFragment {
 
             curPipeInfo.Length = Integer.valueOf(length);
             curPipeInfo.PipeMaterial = materail;
-            curPipeInfo.Company = company;
+//            curPipeInfo.Company = company;
             curPipeInfo.Speed = Integer.valueOf(speed);
             curPipeInfo.LeakCheckGap = Integer.valueOf(minTime);
-            List<SiteBean> siteBeans = new ArrayList<>();
-            for (SiteBean bean : siteList) {
-                if (bean.Name.equals(mBinding.spSelectStartSite.getText().toString())) {
-                    curPipeInfo.StartSiteId = bean.SiteId;
-                    siteBeans.add(bean);
-                } else if (bean.Name.equals(mBinding.spSelectEndSite.getText().toString())) {
-                    siteBeans.add(bean);
-                }
-            }
-            curPipeInfo.Sites = siteBeans;
+//            List<SiteBean> siteBeans = new ArrayList<>();
+//            for (SiteBean bean : siteList) {
+//                if (bean.Name.equals(mBinding.spSelectStartSite.getText().toString())) {
+//                    curPipeInfo.StartSiteId = bean.SiteId;
+//                    siteBeans.add(bean);
+//                } else if (bean.Name.equals(mBinding.spSelectEndSite.getText().toString())) {
+//                    siteBeans.add(bean);
+//                }
+//            }
+//            curPipeInfo.Sites = siteBeans;
             for (PluginInfo pluginInfo : pluginInfoList) {
                 if (pluginInfo.getName().equals(mBinding.spSelectPlugin.getText().toString())) {
                     curPipeInfo.LlPluginId = pluginInfo.getId();

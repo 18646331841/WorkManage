@@ -259,13 +259,13 @@ public class ModifySiteFragment extends BaseFragment implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.sumbit_modify:
-                siteBean.SiteId = Integer.valueOf(mBinding.siteId.getText().toString());
-                siteBean.Company = mBinding.siteCompany.getText().toString();
+//                siteBean.SiteId = Integer.valueOf(mBinding.siteId.getText().toString());
+//                siteBean.Company = mBinding.siteCompany.getText().toString();
                 siteBean.Longitude = Double.valueOf(mBinding.siteLongitude.getText().toString());
                 siteBean.Latitude = Double.valueOf(mBinding.siteLatitude.getText().toString());
                 siteBean.Telephone = mBinding.sitePhone.getText().toString();
                 siteBean.Manager = mBinding.sitePrincipal.getText().toString();
-                siteBean.IsOnLine = (mBinding.siteLineWhether.getText().equals("是"));
+//                siteBean.IsOnLine = (mBinding.siteLineWhether.getText().equals("是"));
                 siteBean.IsDualSensor = (mBinding.siteDoubleSensor.getText().equals("是"));
                 siteBean.IsDirFilterEnabled = (mBinding.siteDoubleFilter.getText().equals("是"));
 

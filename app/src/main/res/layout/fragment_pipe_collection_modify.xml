@@ -42,6 +42,7 @@
                     order:ddd_content_hint="@string/hint_pc_id"
                     order:dddInputType="number"
                     order:ddd_is_bottom_line="true"
+                    android:visibility="gone"
                     order:ddd_label="@string/pc_detail_id"/>
 
                 <com.barisetech.www.workmanage.widget.FormView
@@ -117,6 +118,7 @@
                     android:layout_height="@dimen/dp_50"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/dp_20"
+                    android:layout_marginBottom="@dimen/dp_25"
                     android:background="@drawable/shane_button_corners_red"
                     android:text="@string/pipe_collection_delete"
                     android:textColor="@color/white"

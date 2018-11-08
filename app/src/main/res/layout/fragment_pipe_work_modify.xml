@@ -654,6 +654,17 @@
                         android:textColor="@color/white"
                         android:textSize="@dimen/sp_18"/>
 
+                    <Button
+                        android:id="@+id/del_pw"
+                        android:layout_width="@dimen/dp_315"
+                        android:layout_height="@dimen/dp_50"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/dp_20"
+                        android:layout_marginBottom="@dimen/dp_25"
+                        android:background="@drawable/shane_button_corners_red"
+                        android:text="@string/pipe_work_del"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/sp_18"/>
                 </LinearLayout>
 
             </LinearLayout>

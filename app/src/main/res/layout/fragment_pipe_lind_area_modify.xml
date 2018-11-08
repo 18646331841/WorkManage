@@ -24,8 +24,8 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <LinearLayout
-                android:layout_marginTop="@dimen/dp_50"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -36,6 +36,7 @@
                     android:layout_height="wrap_content"
                     order:ddd_content_enable="true"
                     order:ddd_content_hint="@string/hint_lind_id"
+                    android:visibility="gone"
                     order:ddd_is_bottom_line="true"
                     order:ddd_label="@string/lind_area_id"
                     order:dddInputType="number"/>
@@ -110,6 +111,7 @@
                     android:layout_height="@dimen/dp_50"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/dp_20"
+                    android:layout_marginBottom="@dimen/dp_25"
                     android:background="@drawable/shane_button_corners_red"
                     android:text="@string/del_lind_area"
                     android:textColor="@color/white"

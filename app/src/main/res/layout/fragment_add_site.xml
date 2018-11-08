@@ -190,6 +190,7 @@
                         android:layout_height="wrap_content"
                         order:ddd_content_enable="true"
                         order:ddd_content_hint="@string/site_c_please"
+                        order:ddd_content="-10"
                         order:dddInputType="numberDecimal"
                         order:ddd_is_bottom_line="true"
                         order:ddd_label="@string/site_c" />
@@ -200,6 +201,7 @@
                         android:layout_height="wrap_content"
                         order:ddd_content_enable="true"
                         order:ddd_content_hint="@string/site_d_please"
+                        order:ddd_content="60000"
                         order:dddInputType="number"
                         order:ddd_is_bottom_line="true"
                         order:ddd_label="@string/site_d" />
@@ -210,6 +212,7 @@
                         android:layout_height="wrap_content"
                         order:ddd_content_enable="true"
                         order:ddd_content_hint="@string/site_e_please"
+                        order:ddd_content="-60000"
                         order:dddInputType="numberDecimal"
                         order:ddd_is_bottom_line="true"
                         order:ddd_label="@string/site_e" />
@@ -220,6 +223,7 @@
                         android:layout_height="wrap_content"
                         order:ddd_content_enable="true"
                         order:ddd_content_hint="@string/site_f_please"
+                        order:ddd_content="15000"
                         order:dddInputType="numberDecimal"
                         order:ddd_is_bottom_line="true"
                         order:ddd_label="@string/site_f" />
@@ -230,6 +234,7 @@
                         android:layout_height="wrap_content"
                         order:ddd_content_enable="true"
                         order:ddd_content_hint="@string/site_g_please"
+                        order:ddd_content="15"
                         order:dddInputType="numberDecimal"
                         order:ddd_is_bottom_line="true"
                         order:ddd_label="@string/site_g" />
@@ -240,6 +245,7 @@
                         android:layout_height="wrap_content"
                         order:ddd_content_enable="true"
                         order:ddd_content_hint="@string/site_h_please"
+                        order:ddd_content="2000"
                         order:dddInputType="number"
                         order:ddd_is_bottom_line="true"
                         order:ddd_label="@string/site_h" />
@@ -250,6 +256,7 @@
                         android:layout_height="wrap_content"
                         order:ddd_content_enable="true"
                         order:ddd_content_hint="@string/site_i_please"
+                        order:ddd_content="50"
                         order:dddInputType="numberDecimal"
                         order:ddd_is_bottom_line="true"
                         order:ddd_label="@string/site_i" />
@@ -260,6 +267,7 @@
                         android:layout_height="wrap_content"
                         order:ddd_content_enable="true"
                         order:ddd_content_hint="@string/site_j_please"
+                        order:ddd_content="10"
                         order:dddInputType="number"
                         order:ddd_is_bottom_line="true"
                         order:ddd_label="@string/site_j" />

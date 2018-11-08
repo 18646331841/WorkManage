@@ -96,7 +96,7 @@ public class PipeLindAreaModifyFragment extends BaseFragment {
         mBinding.modifyLindArea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pipeLindAreaInfo.setId(Integer.valueOf(mBinding.modifyLindId.getText().toString()));
+//                pipeLindAreaInfo.setId(Integer.valueOf(mBinding.modifyLindId.getText().toString()));
                 pipeLindAreaInfo.setPipeId(Integer.valueOf(mBinding.modifyLindPipeId.getText().toString()));
                 pipeLindAreaInfo.setRemark(mBinding.modifyLindRemark.getText().toString());
                 pipeLindAreaInfo.setType(Integer.valueOf(mBinding.modifyLindType.getText().toString()));

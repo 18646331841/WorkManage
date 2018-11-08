@@ -189,12 +189,46 @@
                 app:layout_constraintTop_toTopOf="@id/plan_publish_second_num"/>
 
             <View
-                android:id="@+id/end_line"
+                android:id="@+id/third_line"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_1"
                 android:layout_marginTop="@dimen/dp_15"
                 android:background="@color/line_gray"
                 app:layout_constraintTop_toBottomOf="@id/plan_publish_second_please_num"/>
+
+            <TextView
+                android:id="@+id/plan_publish_range"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_24"
+                android:text="@string/plan_publish_range"
+                android:textColor="@color/text_black"
+                android:textSize="@dimen/sp_18"
+                app:layout_constraintStart_toStartOf="@id/plan_publish_second_num"
+                app:layout_constraintTop_toBottomOf="@id/third_line"/>
+
+            <EditText
+                android:id="@+id/plan_publish_please_range"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dp_30"
+                android:background="@null"
+                android:hint="@string/plan_publish_range_please"
+                android:inputType="numberDecimal"
+                android:textColor="@color/text_black"
+                android:textColorHint="@color/message_item_gray"
+                android:textSize="@dimen/sp_18"
+                app:layout_constraintBottom_toBottomOf="@id/plan_publish_range"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/plan_publish_range"/>
+
+            <View
+                android:id="@+id/end_line"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_1"
+                android:layout_marginTop="@dimen/dp_15"
+                android:background="@color/line_gray"
+                app:layout_constraintTop_toBottomOf="@id/plan_publish_range"/>
 
         </android.support.constraint.ConstraintLayout>
 

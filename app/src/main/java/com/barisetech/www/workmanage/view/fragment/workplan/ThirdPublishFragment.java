@@ -59,7 +59,7 @@ public class ThirdPublishFragment extends BaseFragment {
     private PlanViewModel planViewModel;
 
     //每次加载个数
-    private static final int PAGE_COUNT = 10;
+    private static final int PAGE_COUNT = 48;
     private int maxNum;
     private BaseLoadMoreWrapper loadMoreWrapper;
 
@@ -140,8 +140,6 @@ public class ThirdPublishFragment extends BaseFragment {
             curPlanAdd.Publisher = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_ACCOUNT, "");
             curPlanAdd.State = "2";//未完成状态
             curPlanAdd.PlanSiteList = siteBeans;
-            //TODO 界面没有给设置的地方，默认使用50米
-            curPlanAdd.Range = "50";
 
             planViewModel.reqAdd(curPlanAdd);
         });
@@ -171,7 +169,7 @@ public class ThirdPublishFragment extends BaseFragment {
                 if (siteBeanList.size() == maxNum) {
 //                    if (maxNum != 0) {
                     //已加载到最大，不再加载
-                    loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_END);
+//                    loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_END);
 //                    }
                 } else {
                     int count = maxNum - siteBeanList.size();

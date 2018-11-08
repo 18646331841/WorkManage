@@ -48,6 +48,8 @@
     <string name="plan_publish_second_one_year">一年</string>
     <string name="plan_publish_second_num">巡线次数</string>
     <string name="plan_publish_second_please_num">请输入数字</string>
+    <string name="plan_publish_range">打卡范围(m)</string>
+    <string name="plan_publish_range_please">请输入打卡范围</string>
 
     <string name="title_plan_task">巡线任务</string>
     <string name="plan_task_add">新增任务</string>
@@ -323,6 +325,7 @@
     <string name="pipe_work_pressure_i">请输入当前压力</string>
     <string name="pipe_work_moment_flow_i">请输入瞬时流量</string>
     <string name="pipe_work_cumulative_flow_i">请输入累计流量</string>
+    <string name="pipe_work_del">删除管线工况</string>
 
     <string name="digitizing_detail">数字化仪详情</string>
     <string name="digitizing_modify">数字化仪修改</string>

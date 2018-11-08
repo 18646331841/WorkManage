@@ -252,7 +252,7 @@ public class LoginFragment extends BaseFragment {
                     if (null != errorCode) {
 
                         if (errorCode == Config.ERROR_LOGIN_FAILED) {
-                            ToastUtil.showToast(getString(R.string.account_mistake));
+                            ToastUtil.showToast(getString(R.string.login_fail));
                         } else if (errorCode == Config.ERROR_NETWORK) {
                             if (!NetworkUtil.isNetworkAvailable(BaseApplication.getInstance().getApplicationContext()
                             )) {

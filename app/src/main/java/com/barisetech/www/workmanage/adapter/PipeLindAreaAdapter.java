@@ -23,6 +23,7 @@ public class PipeLindAreaAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private List<PipeLindAreaInfo> mList;
     private Context ctx;
     private ItemCallBack callBack;
+    private SiteAdapter.OnItemLongClickListener mOnItemClickListener;
 
     public PipeLindAreaAdapter(List<PipeLindAreaInfo> list, Context context){
         this.mList = list;
@@ -55,6 +56,14 @@ public class PipeLindAreaAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
         });
 
+        viewHolder.l_item.setOnLongClickListener(view -> {
+            mOnItemClickListener.onItemClick(view, position);
+            return true;
+        });
+    }
+
+    public void setOnItemLongClickListener(SiteAdapter.OnItemLongClickListener onItemClickListener) {
+        mOnItemClickListener = onItemClickListener;
     }
 
     @Override
@@ -74,5 +83,9 @@ public class PipeLindAreaAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             tv_pipelindarea_name = itemView.findViewById(R.id.item_data);
             l_item = itemView.findViewById(R.id.l_item);
         }
+    }
+
+    public interface OnItemLongClickListener {
+        void onItemClick(View view, int position);
     }
 }
