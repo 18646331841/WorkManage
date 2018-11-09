@@ -254,6 +254,8 @@ public class AlarmAnalysisFragment extends BaseFragment {
             return;
         }
 
+        EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_SHOW));
+
         ReqAddAlarmAnalysis reqAddAlarmAnalysis = new ReqAddAlarmAnalysis();
         reqAddAlarmAnalysis.setId("0");
         reqAddAlarmAnalysis.setIsNewReader("false");
@@ -270,24 +272,8 @@ public class AlarmAnalysisFragment extends BaseFragment {
 
         reqAddAlarmAnalysis.setReadPeopleList(new ArrayList<>());
         reqAddAlarmAnalysis.setIsAdd("true");
-        List<ImageInfo> imageInfos = new ArrayList<>();
-        if (null != curImgPaths && curImgPaths.size() > 0) {
-            for (int i = 0; i < curImgPaths.size(); i++) {
-                String path = curImgPaths.get(i);
 
-                Bitmap imgB = BitmapUtil.compressImage(BitmapFactory.decodeFile(path), 300);
-                String imgS = BitmapUtil.bitmapToBase64(imgB);
-
-                ImageInfo imageInfo = new ImageInfo();
-                imageInfo.setCreatUser(account);
-                imageInfo.setData(imgS);
-                imageInfos.add(imageInfo);
-            }
-        }
-        reqAddAlarmAnalysis.setImageList(imageInfos);
-
-        EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_SHOW));
-        alarmAnalysisViewModel.reqAddOrModifyAnalysis(reqAddAlarmAnalysis);
+        alarmAnalysisViewModel.reqAddOrModifyAnalysis(reqAddAlarmAnalysis, curImgPaths);
     }
 
     @Override

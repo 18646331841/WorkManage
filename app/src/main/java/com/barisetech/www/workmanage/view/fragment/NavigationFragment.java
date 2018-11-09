@@ -73,9 +73,11 @@ public class NavigationFragment extends Fragment {
                     //授权通知信息
                     auth = (String) eventBusMessage.getArg1();
                     if (!TextUtils.isEmpty(auth)) {
-                        String[] count = auth.split(",");
-                        authCount.setText(String.valueOf(count.length));
-                        authCount.setVisibility(View.VISIBLE);
+                        if (auth.contains(",")) {
+                            String[] count = auth.split(",");
+                            authCount.setText(String.valueOf(count.length));
+                            authCount.setVisibility(View.VISIBLE);
+                        }
                     }
                 }
                 return root;

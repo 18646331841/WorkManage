@@ -58,10 +58,16 @@ public class PipeLine {
     }
 
     public void show(boolean isShow) {
-        startSiteMarker.setVisible(isShow);
-        endSiteMarker.setVisible(isShow);
-        startSiteText.setVisible(isShow);
-        endSiteText.setVisible(isShow);
-        polyline.setVisible(isShow);
+        if (startSiteMarker != null) {
+            startSiteMarker.setVisible(isShow);
+            endSiteMarker.setVisible(isShow);
+        }
+        if (endSiteMarker != null) {
+            startSiteText.setVisible(isShow);
+            endSiteText.setVisible(isShow);
+        }
+        if (polyline != null) {
+            polyline.setVisible(isShow);
+        }
     }
 }
