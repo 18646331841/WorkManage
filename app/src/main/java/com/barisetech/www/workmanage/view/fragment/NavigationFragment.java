@@ -75,6 +75,7 @@ public class NavigationFragment extends Fragment {
                     if (!TextUtils.isEmpty(auth)) {
                         if (auth.contains(",")) {
                             String[] count = auth.split(",");
+                            LogUtil.d(TAG, "auth = " + count.length);
                             authCount.setText(String.valueOf(count.length));
                             authCount.setVisibility(View.VISIBLE);
                         }

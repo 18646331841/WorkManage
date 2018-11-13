@@ -142,7 +142,7 @@ public class PipeDetailFragment extends BaseFragment {
         ReqAllPipe reqAllPipe = new ReqAllPipe();
         reqAllPipe.setPipeId(String.valueOf(pipeInfo.PipeId));
         reqAllPipe.setStartIndex("0");
-        reqAllPipe.setNumberOfRecords("1");
+        reqAllPipe.setNumberOfRecords("0");
 
         pipeViewModel.reqAllPipe(reqAllPipe);
     }

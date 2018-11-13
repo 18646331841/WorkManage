@@ -16,6 +16,7 @@ import com.barisetech.www.workmanage.bean.worktask.TaskSiteBean;
 import com.barisetech.www.workmanage.databinding.ItemPlanContactsListBinding;
 import com.barisetech.www.workmanage.databinding.ItemPlanTaskListBinding;
 import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
+import com.barisetech.www.workmanage.utils.SystemUtil;
 import com.barisetech.www.workmanage.utils.TimeUtil;
 
 import java.util.List;
@@ -74,20 +75,27 @@ public class PlanTaskListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 } else {
                     myHolder.binding.planTaskItemException.setBackgroundColor(Color.TRANSPARENT);
                 }
-
                 myHolder.binding.planTaskItemPerson.setText(curPerson);
-                String status = taskSiteBean.showStatus(role);
-                myHolder.binding.planTaskItemStatus.setText(status);
-                if (status.equals(BaseConstant.STATUS_TASK[0]) || status.equals(BaseConstant.STATUS_TASK[1])) {
-                    myHolder.binding.planTaskItemStatus.setTextColor(ctx.getResources().getColor(R.color.filter_blue));
+                if (TimeUtil.Date2ms(taskSiteBean.deadline) < System.currentTimeMillis()) {
+                    myHolder.binding.planTaskItemStatus.setText("超时");
+                    myHolder.binding.planTaskItemStatus.setTextColor(ctx.getResources().getColor(R.color
+                            .message_item_gray));
+                    myHolder.binding.planTaskItemStatus.setOnClickListener(null);
                 } else {
-                    myHolder.binding.planTaskItemStatus.setTextColor(ctx.getResources().getColor(R.color.message_item_gray));
-                }
-                myHolder.binding.planTaskItemStatus.setOnClickListener(view -> {
+                    String status = taskSiteBean.showStatus(role);
+                    myHolder.binding.planTaskItemStatus.setText(status);
                     if (status.equals(BaseConstant.STATUS_TASK[0]) || status.equals(BaseConstant.STATUS_TASK[1])) {
-                        itemCallBack.onClick(taskSiteBean);
+                        myHolder.binding.planTaskItemStatus.setTextColor(ctx.getResources().getColor(R.color.filter_blue));
+                    } else {
+                        myHolder.binding.planTaskItemStatus.setTextColor(ctx.getResources().getColor(R.color.message_item_gray));
                     }
-                });
+                    myHolder.binding.planTaskItemStatus.setOnClickListener(view -> {
+                        if (status.equals(BaseConstant.STATUS_TASK[0]) || status.equals(BaseConstant.STATUS_TASK[1])) {
+                            itemCallBack.onClick(taskSiteBean);
+                        }
+                    });
+                }
+
             }
         }
     }

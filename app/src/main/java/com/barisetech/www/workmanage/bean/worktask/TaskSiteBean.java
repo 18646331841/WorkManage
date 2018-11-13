@@ -32,12 +32,17 @@ public class TaskSiteBean implements Serializable {
     public String DateTime;
     public double Longitude;
     public double Latitude;
-    public String Remark;
+    public String Remark = "";
     public int State;
     public int SiteState;
     public double UserLongitude;
     public double UserLatitude;
     public List<ImageInfo> WorkImageList;
+
+    /**
+     * 记录截止时间
+     */
+    public String deadline = "";
 
     /**
      * 标记是否为每次打卡中的最后一个

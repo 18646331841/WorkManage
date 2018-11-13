@@ -122,7 +122,7 @@ public class PipeWorkDetailFragment extends BaseFragment {
         reqAllPW.setMStartTime("1970-1-1 00:00:00");
         reqAllPW.setMEndTime(TimeUtil.ms2Date(System.currentTimeMillis()));
         reqAllPW.setStartIndex("0");
-        reqAllPW.setNumberOfRecords("1");
+        reqAllPW.setNumberOfRecords("0");
 
         pipeWorkViewModel.reqAllPw(reqAllPW);
     }

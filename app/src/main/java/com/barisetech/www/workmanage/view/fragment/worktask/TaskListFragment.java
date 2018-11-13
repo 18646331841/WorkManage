@@ -199,7 +199,7 @@ public class TaskListFragment extends BaseFragment {
         reqAllTask.workTaskID = "-1";
         reqAllTask.workPlanID = String.valueOf(curPlanBean.Id);
 
-        EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_SHOW));
+//        EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_SHOW));
         curDisposable = taskViewModel.reqAll(reqAllTask);
     }
 
@@ -300,6 +300,10 @@ public class TaskListFragment extends BaseFragment {
                                     curSiteList.add(titleSiteBean);
                                     for (TaskSiteBean sites : taskSiteBeans) {
                                         sites.taskId = taskBean.Id;
+                                        if (taskBean.Deadline.contains("T")) {
+                                            taskBean.Deadline = taskBean.Deadline.replace("T", " ");
+                                        }
+                                        sites.deadline = taskBean.Deadline;
                                     }
                                     curSiteList.addAll(taskSiteBeans);
                                 }

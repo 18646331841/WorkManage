@@ -18,6 +18,7 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -287,13 +288,24 @@ public class SignInFragment extends BaseFragment {
                 imageInfo.setData(imgS);
                 imageInfos.add(imageInfo);
             }
-        } else {
-            ToastUtil.showToast("没有照片，请添加照片");
-            return;
+        }
+
+        if (curSiteState == EXCEPTION) {
+            if (imageInfos.size() <= 0) {
+                ToastUtil.showToast("没有照片，请添加照片");
+                return;
+            }
+
+            if (TextUtils.isEmpty(remark)) {
+                ToastUtil.showToast("备注为空，请填写备注");
+                return;
+            }
         }
 
         curSiteBean.DateTime = date;
-        curSiteBean.Remark = remark;
+        if (!TextUtils.isEmpty(remark)) {
+            curSiteBean.Remark = remark;
+        }
         curSiteBean.State = curState;
         curSiteBean.SiteState = curSiteState;
         curSiteBean.UserLatitude = confirmLatitude;

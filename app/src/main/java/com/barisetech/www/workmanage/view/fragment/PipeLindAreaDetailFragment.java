@@ -111,7 +111,7 @@ public class PipeLindAreaDetailFragment extends BaseFragment{
         reqAllPipelindArea.setPipeIdQueryChecked("true");
         reqAllPipelindArea.setType("0");
         reqAllPipelindArea.setStartIndex("0");
-        reqAllPipelindArea.setNumberOfRecords("1");
+        reqAllPipelindArea.setNumberOfRecords("0");
 
         pipeblindAreaViewModel.reqAllPipeLindArea(reqAllPipelindArea);
     }
