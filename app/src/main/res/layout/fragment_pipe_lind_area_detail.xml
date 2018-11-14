@@ -140,7 +140,7 @@
             android:background="@drawable/shane_button_corners"
             android:text="@string/modify_pipe_lind_area"
             android:textColor="@color/white"
-            android:layout_marginBottom="@dimen/dp_30"
+            android:layout_marginBottom="@dimen/dp_45"
             android:textSize="@dimen/sp_18"/>
     </LinearLayout>
     </LinearLayout>

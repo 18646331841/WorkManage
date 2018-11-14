@@ -20,7 +20,7 @@
 
         <EditText
             android:id="@+id/et_content"
-            android:layout_width="@dimen/dp_225"
+            android:layout_width="@dimen/analysis_225"
             android:layout_height="wrap_content"
             android:paddingRight="@dimen/dp_10"
             android:background="@null"

@@ -78,6 +78,9 @@ public class AuthInfo extends AuthBean {
      */
     public void toSuper() {
         type = AuthBean.TYPE_USER;
+        if (ApplicatorTime.contains("T")) {
+            ApplicatorTime = ApplicatorTime.replace("T", " ");
+        }
         title = ApplicatorTime + "  请求授权登录";
         String eType = "手机";
         if (EquipmentType == Integer.valueOf(BaseConstant.TYPE_PAD)) {

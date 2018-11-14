@@ -78,6 +78,9 @@ public class NavigationFragment extends Fragment {
                             LogUtil.d(TAG, "auth = " + count.length);
                             authCount.setText(String.valueOf(count.length));
                             authCount.setVisibility(View.VISIBLE);
+                        } else {
+                            authCount.setText("1");
+                            authCount.setVisibility(View.VISIBLE);
                         }
                     }
                 }

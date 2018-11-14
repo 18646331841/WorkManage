@@ -595,7 +595,7 @@ public class MyNotifyService extends Service {
                     reqAllPipeTap.mStartTime = TimeUtil.ms2Date(startTime);
                     reqAllPipeTap.mEndTime = TimeUtil.ms2Date(endTime);
                     reqAllPipeTap.startIndex = String.valueOf("0");
-                    reqAllPipeTap.numberOfRecords = String.valueOf("1");
+                    reqAllPipeTap.numberOfRecords = String.valueOf("10");
                     reqAllPipeTap.TimeQueryChecked = "true";
                     reqAllPipeTap.PesonChecked = "false";
                     reqAllPipeTap.State = "2";
@@ -641,7 +641,7 @@ public class MyNotifyService extends Service {
                         }
                     }
                     reqAllAuth.startIndex = String.valueOf("0");
-                    reqAllAuth.numberOfRecords = String.valueOf("1");
+                    reqAllAuth.numberOfRecords = String.valueOf("10");
                     reqAllAuth.TimeQueryChecked = "true";
                     reqAllAuth.PesonChecked = "false";
                     reqAllAuth.State = "2";

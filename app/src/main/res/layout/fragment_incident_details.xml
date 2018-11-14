@@ -90,6 +90,7 @@
                     android:layout_height="@dimen/dp_50"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/dp_10"
+                    android:layout_marginBottom="@dimen/dp_45"
                     android:background="@drawable/shane_button_corners"
                     android:text="@string/incident_detail_to_pipe"
                     android:textColor="@color/white"
