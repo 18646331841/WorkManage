@@ -304,6 +304,10 @@ public class TaskListFragment extends BaseFragment {
                                             taskBean.Deadline = taskBean.Deadline.replace("T", " ");
                                         }
                                         sites.deadline = taskBean.Deadline;
+                                        //处理服务器返回0001-00-01格式的日期
+                                        if (sites.DateTime.contains("0001")) {
+                                            sites.DateTime = "--";
+                                        }
                                     }
                                     curSiteList.addAll(taskSiteBeans);
                                 }
