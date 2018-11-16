@@ -115,4 +115,18 @@ public class PipeInfo implements Serializable {
     public static void setText(FormView view, Boolean text) {
         view.setText(text ? "是" : "否");
     }
+
+    @BindingAdapter({"startSiteId", "siteBeans"})
+    public static void setStartSite(LineView view, int startSiteId, List<SiteBean> siteBeans) {
+        if (siteBeans == null || siteBeans.size() <= 0) {
+            view.setText(String.valueOf(startSiteId));
+            return;
+        }
+        for (SiteBean siteBean : siteBeans) {
+            if (siteBean.SiteId == startSiteId) {
+                view.setText(siteBean.Name);
+                return;
+            }
+        }
+    }
 }

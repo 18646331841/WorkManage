@@ -342,9 +342,9 @@ public class TaskListFragment extends BaseFragment {
 //            });
 //        }
 
-        if (null == curSiteList || curSiteList.size() <= 0) {
+//        if (null == curSiteList || curSiteList.size() <= 0) {
 //            getListNums();
             getDatas(0, maxNum);
-        }
+//        }
     }
 }
