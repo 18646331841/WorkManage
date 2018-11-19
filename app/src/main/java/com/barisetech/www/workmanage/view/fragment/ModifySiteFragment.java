@@ -6,6 +6,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -212,7 +213,8 @@ public class ModifySiteFragment extends BaseFragment implements View.OnClickList
                     if (null != flag) {
                         if (flag) {
                             ToastUtil.showToast("删除成功");
-                            getActivity().onBackPressed();
+                            getFragmentManager().popBackStackImmediate(SiteDetailFragment.TAG, FragmentManager
+                                    .POP_BACK_STACK_INCLUSIVE);
                         } else {
                             ToastUtil.showToast("删除失败");
                         }

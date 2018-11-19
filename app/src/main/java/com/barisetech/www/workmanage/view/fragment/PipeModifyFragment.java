@@ -7,6 +7,7 @@ import android.databinding.ObservableField;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +35,7 @@ import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.view.dialog.CommonDialogFragment;
 import com.barisetech.www.workmanage.view.dialog.DialogFragmentHelper;
+import com.barisetech.www.workmanage.view.fragment.workplan.FirstPublishFragment;
 import com.barisetech.www.workmanage.viewmodel.PipeCollectionsViewModel;
 import com.barisetech.www.workmanage.viewmodel.PipeViewModel;
 import com.barisetech.www.workmanage.viewmodel.PluginViewModel;
@@ -311,7 +313,8 @@ public class PipeModifyFragment extends BaseFragment {
                     if (null != aBoolean) {
                         if (aBoolean) {
                             ToastUtil.showToast("删除成功");
-                            getActivity().onBackPressed();
+                            getFragmentManager().popBackStackImmediate(PipeDetailFragment.TAG, FragmentManager
+                                    .POP_BACK_STACK_INCLUSIVE);
                         } else {
                             ToastUtil.showToast("删除失败");
                         }

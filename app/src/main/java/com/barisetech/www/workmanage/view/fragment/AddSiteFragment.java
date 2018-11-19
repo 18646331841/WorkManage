@@ -87,6 +87,15 @@ public class AddSiteFragment extends BaseFragment{
         mBinding.addSite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (TextUtils.isEmpty(mBinding.siteId.getText())) {
+                    ToastUtil.showToast("请填写ID");
+                    return;
+                }
+                if (TextUtils.isEmpty(mBinding.siteLongitude.getText()) || TextUtils.isEmpty(mBinding.siteLatitude
+                        .getText())) {
+                    ToastUtil.showToast("请填写经纬度");
+                    return;
+                }
                 siteBean.SiteId = Integer.valueOf(mBinding.siteId.getText().toString());
                 siteBean.Company = mBinding.siteCompany.getText().toString();
                 siteBean.Longitude = Double.valueOf(mBinding.siteLongitude.getText().toString());
