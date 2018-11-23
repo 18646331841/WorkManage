@@ -401,9 +401,11 @@ public class PipeAddFragment extends BaseFragment {
             return;
         }
         ReqSiteInfos reqSiteInfos = new ReqSiteInfos();
-        reqSiteInfos.setSiteId("0");
-        reqSiteInfos.setStartIndex(String.valueOf(formIndex));
-        reqSiteInfos.setNumberOfRecords(String.valueOf(toIndex));
+        reqSiteInfos.setSiteId("");
+        reqSiteInfos.setStartIndex("0");
+        reqSiteInfos.setNumberOfRecords("0");
+//        reqSiteInfos.setStartIndex(String.valueOf(formIndex));
+//        reqSiteInfos.setNumberOfRecords(String.valueOf(toIndex));
 
         siteViewModel.reqAllSite(reqSiteInfos);
     }
