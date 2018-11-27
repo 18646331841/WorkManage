@@ -113,7 +113,7 @@ public class SiteDetailFragment extends BaseFragment {
         ReqSiteInfos reqSiteInfos = new ReqSiteInfos();
         reqSiteInfos.setSiteId(String.valueOf(siteBean.SiteId));
         reqSiteInfos.setStartIndex("0");
-        reqSiteInfos.setNumberOfRecords("1");
+        reqSiteInfos.setNumberOfRecords("0");
 
         siteViewModel.reqAllSite(reqSiteInfos);
     }

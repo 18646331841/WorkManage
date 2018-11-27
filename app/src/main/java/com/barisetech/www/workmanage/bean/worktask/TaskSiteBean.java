@@ -69,6 +69,8 @@ public class TaskSiteBean implements Serializable {
                 case BaseConstant.STATUS_OFFLINE:
                     if (!role.equals(BaseConstant.ROLE_SUPER_ADMINS) && !role.equals(BaseConstant.ROLE_ADMINS)) {
                         result = BaseConstant.STATUS_TASK[1];
+                    } else {
+                        result = BaseConstant.STATUS_TASK[3];
                     }
                     break;
                 case BaseConstant.STATUS_UNCOMPLETED:

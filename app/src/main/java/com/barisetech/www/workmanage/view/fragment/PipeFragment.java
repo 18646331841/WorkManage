@@ -7,6 +7,7 @@ import android.databinding.DataBindingUtil;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
@@ -26,6 +27,7 @@ import com.barisetech.www.workmanage.bean.pipe.ReqDeletePipe;
 import com.barisetech.www.workmanage.databinding.FragmentPipeBinding;
 import com.barisetech.www.workmanage.utils.DisplayUtil;
 import com.barisetech.www.workmanage.utils.LogUtil;
+import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.viewmodel.PipeViewModel;
 import com.barisetech.www.workmanage.widget.QPopuWindow;
 
@@ -239,6 +241,23 @@ public class PipeFragment extends BaseFragment {
                         }
                     } else {
                         loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_END);
+                    }
+                }
+            });
+        }
+
+        if (!pipeViewModel.getmObservableDelete().hasObservers()) {
+            pipeViewModel.getmObservableDelete().observe(this, aBoolean -> {
+                if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                    if (null != aBoolean) {
+                        if (aBoolean) {
+                            ToastUtil.showToast("删除成功");
+                            getPipeNums();
+                        } else {
+                            ToastUtil.showToast("删除失败");
+                        }
+                    } else {
+                        ToastUtil.showToast("删除失败");
                     }
                 }
             });

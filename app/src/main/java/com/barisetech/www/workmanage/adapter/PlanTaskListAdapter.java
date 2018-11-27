@@ -75,14 +75,18 @@ public class PlanTaskListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 } else {
                     myHolder.binding.planTaskItemException.setBackgroundColor(Color.TRANSPARENT);
                 }
+                String status = taskSiteBean.showStatus(role);
                 myHolder.binding.planTaskItemPerson.setText(curPerson);
                 if (TimeUtil.Date2ms(taskSiteBean.deadline) < System.currentTimeMillis()) {
-                    myHolder.binding.planTaskItemStatus.setText("超时");
+                    if (!status.equals(BaseConstant.STATUS_TASK[0]) && !status.equals(BaseConstant.STATUS_TASK[2])) {
+                        myHolder.binding.planTaskItemStatus.setText(BaseConstant.STATUS_TASK[3]);
+                    } else {
+                        myHolder.binding.planTaskItemStatus.setText("超时");
+                    }
                     myHolder.binding.planTaskItemStatus.setTextColor(ctx.getResources().getColor(R.color
                             .message_item_gray));
                     myHolder.binding.planTaskItemStatus.setOnClickListener(null);
                 } else {
-                    String status = taskSiteBean.showStatus(role);
                     myHolder.binding.planTaskItemStatus.setText(status);
                     if (status.equals(BaseConstant.STATUS_TASK[0]) || status.equals(BaseConstant.STATUS_TASK[1])) {
                         myHolder.binding.planTaskItemStatus.setTextColor(ctx.getResources().getColor(R.color.filter_blue));

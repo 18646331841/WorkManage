@@ -113,6 +113,15 @@ public class PipeAddFragment extends BaseFragment {
         String comp = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_COMPANY, "");
         mBinding.pipeCompany.setText(comp);
 
+        reqPipeInfo.Algorithm = "false";
+        reqPipeInfo.IsTestMode = "false";
+        reqPipeInfo.BallChokLocation = "false";
+        reqPipeInfo.LeakageAssessment = "false";
+
+        mBinding.pipeAlgorithm.setText("否");
+        mBinding.pipeTest.setText("否");
+        mBinding.pipeBall.setText("否");
+        mBinding.pipeLeak.setText("否");
 //        mBinding.spSelectPipePc.attachDataSource(pcName);
 
         mBinding.pipeAlgorithm.setOnItemClickListener(() -> {
