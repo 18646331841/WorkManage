@@ -122,23 +122,23 @@ public class MyInfoFragment extends BaseFragment {
         }
 
 
-//        if (!contactsViewModel.getObservableNum().hasObservers()) {
-//            contactsViewModel.getObservableNum().observe(this, integer -> {
-//                if (MyInfoFragment.this.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
-//                    if (null != integer) {
-//                        getDatas(0, integer);
-//                    }
-//                }
-//            });
-//        }
+        if (!contactsViewModel.getObservableNum().hasObservers()) {
+            contactsViewModel.getObservableNum().observe(this, integer -> {
+                if (MyInfoFragment.this.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                    if (null != integer && integer > 0) {
+                        getDatas(0, integer);
+                    }
+                }
+            });
+        }
 
-//        getContactsNum();
-        getDatas(0, 1);
+        getContactsNum();
+//        getDatas(0, 1);
     }
 
     private void getContactsNum() {
         ReqContactsNum reqContactsNum = new ReqContactsNum();
-        reqContactsNum.setSelectItem("0");
+        reqContactsNum.setSelectItem("3");
         reqContactsNum.setSearchString(SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_ACCOUNT, ""));
 
         EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_SHOW));
