@@ -12,22 +12,15 @@ import android.view.ViewGroup;
 import android.widget.RadioGroup;
 
 import com.barisetech.www.workmanage.R;
-import com.barisetech.www.workmanage.base.BaseConstant;
 import com.barisetech.www.workmanage.base.BaseFragment;
-import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.bean.digitalizer.DigitalizerBean;
 import com.barisetech.www.workmanage.bean.digitalizer.ReqModifyDigitalizer;
-import com.barisetech.www.workmanage.databinding.FragmentDigitizingDetailBinding;
 import com.barisetech.www.workmanage.databinding.FragmentDigitizingModifyBinding;
-import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.view.dialog.CommonDialogFragment;
 import com.barisetech.www.workmanage.view.dialog.DialogFragmentHelper;
 import com.barisetech.www.workmanage.viewmodel.DigitalizerViewModel;
-import com.barisetech.www.workmanage.viewmodel.PipeWorkViewModel;
-
-import org.greenrobot.eventbus.EventBus;
 
 import io.reactivex.disposables.Disposable;
 

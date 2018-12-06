@@ -90,6 +90,8 @@ import com.barisetech.www.workmanage.view.fragment.worktask.TaskListFragment;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.Serializable;
+
 public class MainActivity extends BaseActivity {
     public static final String TAG = "MainActivity";
 
@@ -120,6 +122,7 @@ public class MainActivity extends BaseActivity {
 
         Bundle bundle = getIntent().getExtras();
         String tag = Messagefragment.TAG;
+        Serializable alarmInfo = null;
         String arg1 = null;
         String arg2 = null;
         String notify = null;
@@ -128,6 +131,8 @@ public class MainActivity extends BaseActivity {
             if (!TextUtils.isEmpty(tag1)) {
                 tag = tag1;
             }
+            //警报跳转地图
+            alarmInfo = bundle.getSerializable("arg1");
             arg1 = bundle.getString("arg1");
             arg2 = bundle.getString("arg2");
             notify = bundle.getString(BaseConstant.NOTIFY_TAG);
@@ -143,6 +148,10 @@ public class MainActivity extends BaseActivity {
         EventBusMessage eventBusMessage = new EventBusMessage(tag);
         eventBusMessage.setArg1(arg1);
         eventBusMessage.setArg2(arg2);
+
+        if (alarmInfo != null) {
+            eventBusMessage.setArg1(alarmInfo);
+        }
         LogUtil.d(TAG, "tag = " + tag + " arg1 = " + arg1);
         navigationFragment = NavigationFragment.newInstance(eventBusMessage);
         transaction.add(R.id.fragment_navigation, navigationFragment, NavigationFragment.TAG);

@@ -2,6 +2,11 @@ package com.barisetech.www.workmanage.utils;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.util.Base64;
 
 import java.io.ByteArrayInputStream;
@@ -166,4 +171,37 @@ public class BitmapUtil {
         options.inJustDecodeBounds = false;
         return BitmapFactory.decodeFile(filePath, options);
     }
+
+    /**
+     * 改变bitmap颜色
+     *
+     * @param inBitmap
+     * @param tintColor
+     * @return
+     */
+    public static Bitmap tintBitmap(Bitmap inBitmap , int tintColor) {
+        if (inBitmap == null) {
+            return null;
+        }
+        Bitmap outBitmap = Bitmap.createBitmap (inBitmap.getWidth(), inBitmap.getHeight() , inBitmap.getConfig());
+        Canvas canvas = new Canvas(outBitmap);
+        Paint paint = new Paint();
+        paint.setColorFilter( new PorterDuffColorFilter(tintColor, PorterDuff.Mode.SRC_IN)) ;
+        canvas.drawBitmap(inBitmap , 0, 0, paint) ;
+        return outBitmap ;
+    }
+
+    /**
+     * 放大缩小
+     * @param bitmap
+     * @param scale
+     * @return
+     */
+    public static Bitmap bitMapScale(Bitmap bitmap,float scale) {
+        Matrix matrix = new Matrix();
+        matrix.postScale(scale,scale); //长和宽放大缩小的比例
+        Bitmap resizeBmp = Bitmap.createBitmap(bitmap,0,0,bitmap.getWidth(),bitmap.getHeight(),matrix,true);
+        return resizeBmp;
+    }
+
 }

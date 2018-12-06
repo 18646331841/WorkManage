@@ -16,7 +16,7 @@ import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
-import com.barisetech.www.workmanage.bean.map.pipe.PipeLine;
+import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.bean.pipe.PipeInfo;
 import com.barisetech.www.workmanage.bean.pipecollections.PipeCollections;
 import com.barisetech.www.workmanage.bean.pipecollections.ReqAllPc;
@@ -37,8 +37,10 @@ import java.util.List;
 public class PadMapListFragment extends BaseFragment {
     public static final String TAG = "PadMapListFragment";
 
+    private static final String PIPE_ID = "pipeId";
     private static final String ALARM_ID = "alarmId";
     private String curPipeId;
+    private AlarmInfo curAlarmInfo;
     private List<PipeCollections> pipeCollectionsList = new ArrayList<>();
 
     FragmentPadMapListBinding mBinding;
@@ -48,7 +50,17 @@ public class PadMapListFragment extends BaseFragment {
         PadMapListFragment fragment = new PadMapListFragment();
         if (!TextUtils.isEmpty(pipeId)) {
             Bundle bundle = new Bundle();
-            bundle.putString(ALARM_ID, pipeId);
+            bundle.putString(PIPE_ID, pipeId);
+            fragment.setArguments(bundle);
+        }
+        return fragment;
+    }
+
+    public static PadMapListFragment newInstance(AlarmInfo alarmInfo) {
+        PadMapListFragment fragment = new PadMapListFragment();
+        if (alarmInfo != null) {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(ALARM_ID, alarmInfo);
             fragment.setArguments(bundle);
         }
         return fragment;
@@ -58,7 +70,12 @@ public class PadMapListFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            curPipeId = getArguments().getString(ALARM_ID, "");
+            curAlarmInfo = (AlarmInfo) getArguments().getSerializable(ALARM_ID);
+            if (curAlarmInfo != null) {
+                curPipeId = String.valueOf(curAlarmInfo.getPipeId());
+            } else {
+                curPipeId = getArguments().getString(PIPE_ID, "");
+            }
         }
         initMapFragment();
     }
@@ -91,7 +108,7 @@ public class PadMapListFragment extends BaseFragment {
 
     private void initMapFragment() {
         EventBusMessage eventBusMessage = new EventBusMessage(PadMapFragment.TAG);
-        eventBusMessage.setArg1(curPipeId);
+        eventBusMessage.setArg1(curAlarmInfo);
         EventBus.getDefault().post(eventBusMessage);
     }
 

@@ -12,6 +12,8 @@
 
     <string name="dialog_yes">是</string>
     <string name="dialog_no">否</string>
+    <string name="dialog_open">打开</string>
+    <string name="dialog_close">关闭</string>
 
     <string name="title_map_pipe_list">管线列表</string>
 
@@ -369,7 +371,7 @@
     <string name="digitizing_detail_series_num_please">请输入串号</string>
     <string name="digitizing_detail_sim_num_please">请输入SIM卡号</string>
     <string name="digitizing_detail_add_site">新增站点</string>
-    <string name="digitizing_detail_open_pipe_tab">申请开启阀门</string>
+    <string name="digitizing_detail_open_pipe_tab">申请阀门</string>
     <string name="digitizing_detail_modify">确认修改</string>
 
     <string name="popup_tip_pic">相册</string>

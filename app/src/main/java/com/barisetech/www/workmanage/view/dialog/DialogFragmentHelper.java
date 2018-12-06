@@ -144,6 +144,12 @@ public class DialogFragmentHelper {
         return showYesDialog(fragmentManager, title, defaultValue, onCheckedChangeListener, cancelable, null);
     }
 
+    public static CommonDialogFragment showOpenDialog(FragmentManager fragmentManager, final
+    String title, RadioGroup.OnCheckedChangeListener onCheckedChangeListener, boolean cancelable) {
+
+        return openCloseDialog(fragmentManager, title, onCheckedChangeListener, cancelable, null);
+    }
+
     public static CommonDialogFragment showYesDialog(FragmentManager fragmentManager, final String title, int
             defaultValue, RadioGroup.OnCheckedChangeListener onCheckedChangeListener, boolean cancelable,
                                                      CommonDialogFragment.OnDialogCancelListener cancelListener) {
@@ -159,6 +165,33 @@ public class DialogFragmentHelper {
             } else {
                 no.setChecked(true);
             }
+            radioGroup.setOnCheckedChangeListener(onCheckedChangeListener);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(context, YES_NO_THEME);
+            builder
+                    .setView(viewDialog)
+                    .setTitle(title);
+
+            return builder.create();
+        }, cancelable, cancelListener);
+        dialogFragment.show(fragmentManager, YES_NO_TAG);
+        return dialogFragment;
+    }
+
+    public static CommonDialogFragment openCloseDialog(FragmentManager fragmentManager, final
+    String title, RadioGroup.OnCheckedChangeListener onCheckedChangeListener, boolean cancelable,
+                                                       CommonDialogFragment
+                                                               .OnDialogCancelListener
+                                                               cancelListener) {
+
+        CommonDialogFragment dialogFragment = CommonDialogFragment.newInstance((Context context)
+                -> {
+            LayoutInflater inflater = LayoutInflater.from(context);
+            LinearLayout viewDialog = (LinearLayout) inflater.inflate(R.layout
+                    .dialog_open_close_radio, null);
+            final RadioGroup radioGroup = viewDialog.findViewById(R.id.groupBroadcast);
+            final RadioButton open = viewDialog.findViewById(R.id.dialog_open_rb);
+            final RadioButton close = viewDialog.findViewById(R.id.dialog_close_rb);
             radioGroup.setOnCheckedChangeListener(onCheckedChangeListener);
 
             AlertDialog.Builder builder = new AlertDialog.Builder(context, YES_NO_THEME);

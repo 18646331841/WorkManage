@@ -18,6 +18,7 @@ import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.base.BaseApplication;
 import com.barisetech.www.workmanage.base.BottomNavigationViewHelper;
 import com.barisetech.www.workmanage.bean.EventBusMessage;
+import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.utils.LogUtil;
 import com.barisetech.www.workmanage.view.fragment.my.MyFragment;
 
@@ -188,12 +189,13 @@ public class NavigationFragment extends Fragment {
                 break;
             case MapFragment.TAG:
                 showItem(R.id.navigation_map);
-                if (eventBusMessage.getArg1() != null) {
+                if (eventBusMessage.getArg1() != null && eventBusMessage.getArg1() instanceof String) {
                     transaction.replace(R.id.navigation_content, MapFragment.newInstance((String) eventBusMessage
                             .getArg1()), tag)
                             .commit();
                 } else {
-                    transaction.replace(R.id.navigation_content, MapFragment.newInstance(null), tag)
+                    transaction.replace(R.id.navigation_content, MapFragment.newInstance(
+                            (AlarmInfo) eventBusMessage.getArg1()), tag)
                             .commit();
                 }
                 break;
@@ -204,7 +206,8 @@ public class NavigationFragment extends Fragment {
                             .getArg1()), tag)
                             .commit();
                 } else {
-                    transaction.replace(R.id.navigation_content, PadMapListFragment.newInstance(null), tag)
+                    transaction.replace(R.id.navigation_content, PadMapListFragment.newInstance(
+                            (AlarmInfo) eventBusMessage.getArg1()), tag)
                             .commit();
                 }
                 break;

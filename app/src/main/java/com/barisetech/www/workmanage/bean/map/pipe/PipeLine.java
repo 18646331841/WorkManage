@@ -52,6 +52,11 @@ public class PipeLine {
      */
     public Marker endSiteMarker;
 
+    /**
+     * 警报标记
+     */
+    public Marker alarmMarker;
+
     public PipeLine(String pipeId, LineStation lineStation) {
         this.pipeId = pipeId;
         this.lineStation = lineStation;
@@ -68,6 +73,9 @@ public class PipeLine {
         }
         if (polyline != null) {
             polyline.setVisible(isShow);
+        }
+        if (alarmMarker != null) {
+            alarmMarker.setVisible(isShow);
         }
     }
 }

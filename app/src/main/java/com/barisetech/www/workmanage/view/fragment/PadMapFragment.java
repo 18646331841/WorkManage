@@ -4,16 +4,12 @@ package com.barisetech.www.workmanage.view.fragment;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.TextPaint;
 import android.text.TextUtils;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,9 +21,7 @@ import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdateFactory;
-import com.amap.api.maps.MapView;
 import com.amap.api.maps.TextureMapView;
-import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
@@ -61,8 +55,8 @@ import com.autonavi.tbt.TrafficFacilityInfo;
 import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.adapter.MyMapInfoWindow;
 import com.barisetech.www.workmanage.base.BaseFragment;
-import com.barisetech.www.workmanage.bean.EventBusMessage;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
+import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.bean.map.LineStation;
 import com.barisetech.www.workmanage.bean.map.MapPosition;
 import com.barisetech.www.workmanage.bean.map.MarkerStation;
@@ -70,17 +64,13 @@ import com.barisetech.www.workmanage.bean.map.pipe.PipeLine;
 import com.barisetech.www.workmanage.bean.map.pipe.PipeTrackInfo;
 import com.barisetech.www.workmanage.bean.pipe.PipeInfo;
 import com.barisetech.www.workmanage.bean.pipe.ReqAllPipe;
-import com.barisetech.www.workmanage.bean.pipecollections.PipeCollections;
-import com.barisetech.www.workmanage.bean.pipecollections.ReqAllPc;
 import com.barisetech.www.workmanage.bean.site.SiteBean;
 import com.barisetech.www.workmanage.databinding.FragmentMapBinding;
 import com.barisetech.www.workmanage.utils.LogUtil;
 import com.barisetech.www.workmanage.utils.MapUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.viewmodel.MapViewModel;
-import com.barisetech.www.workmanage.viewmodel.PipeCollectionsViewModel;
 import com.barisetech.www.workmanage.viewmodel.PipeViewModel;
-import com.barisetech.www.workmanage.widget.twomenu.ChildView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -88,7 +78,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -133,14 +122,26 @@ public class PadMapFragment extends BaseFragment {
     private AMapNavi mAMapNavi;
     private Marker curClickMarker;
 
+    private static final String PIPE_ID = "pipeId";
     private static final String ALARM_ID = "alarmId";
+    private AlarmInfo curAlarmInfo;
     private String curPipeId;
 
     public static PadMapFragment newInstance(String pipeId) {
         PadMapFragment fragment = new PadMapFragment();
         if (!TextUtils.isEmpty(pipeId)) {
             Bundle bundle = new Bundle();
-            bundle.putString(ALARM_ID, pipeId);
+            bundle.putString(PIPE_ID, pipeId);
+            fragment.setArguments(bundle);
+        }
+        return fragment;
+    }
+
+    public static PadMapFragment newInstance(AlarmInfo alarmInfo) {
+        PadMapFragment fragment = new PadMapFragment();
+        if (alarmInfo != null) {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(ALARM_ID, alarmInfo);
             fragment.setArguments(bundle);
         }
         return fragment;
@@ -151,7 +152,12 @@ public class PadMapFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
         if (getArguments() != null) {
-            curPipeId = getArguments().getString(ALARM_ID, "");
+            curAlarmInfo = (AlarmInfo) getArguments().getSerializable(ALARM_ID);
+            if (curAlarmInfo != null) {
+                curPipeId = String.valueOf(curAlarmInfo.getPipeId());
+            } else {
+                curPipeId = getArguments().getString(PIPE_ID, "");
+            }
         }
     }
 
@@ -482,6 +488,24 @@ public class PadMapFragment extends BaseFragment {
         }
     }
 
+    /**
+     * 增加警报标记
+     *
+     * @param pipeLine
+     * @param alarmInfo
+     * @param showWindow
+     */
+    private void addAlarmMarker(PipeLine pipeLine, AlarmInfo alarmInfo, boolean showWindow) {
+        if (alarmInfo != null) {
+            MarkerStation markerStation = new MarkerStation();
+            markerStation.position = new MapPosition(alarmInfo.getLatitude(), alarmInfo
+                    .getLongitude());
+            markerStation.title = "警报 ID:" + alarmInfo.getDisplayId();
+            markerStation.snippet = alarmInfo.isLifted() ? "已解除" : "未解除";
+            pipeLine.alarmMarker = addStationMarker(markerStation, showWindow);
+        }
+    }
+
     @Override
     public void subscribeToModel() {
         if (!pipeViewModel.getmObservablePipeNum().hasObservers()) {
@@ -532,6 +556,9 @@ public class PadMapFragment extends BaseFragment {
                                 //如果curPipeid 不为空，只显示这条管线
                                 if (!TextUtils.isEmpty(curPipeId)) {
                                     LogUtil.d(TAG, "curPipeId = " + curPipeId);
+                                    if (curAlarmInfo != null) {
+                                        addAlarmMarker(pipeLine, curAlarmInfo, false);
+                                    }
                                     if (!pipeLine.pipeId.equals(curPipeId)) {
                                         pipeLine.show(false);
                                     }

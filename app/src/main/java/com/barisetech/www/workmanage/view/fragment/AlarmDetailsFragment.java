@@ -134,7 +134,7 @@ public class AlarmDetailsFragment extends BaseFragment implements View.OnClickLi
             case R.id.to_map_bt:
                 eventBusMessage = new EventBusMessage(MapFragment.TAG);
                 Log.d(TAG, "pipeId = " + curAlarmInfo.getPipeId());
-                eventBusMessage.setArg1(String.valueOf(curAlarmInfo.getPipeId()));
+                eventBusMessage.setArg1(curAlarmInfo);
                 EventBus.getDefault().post(eventBusMessage);
                 break;
             case R.id.lift_alarm_bt:

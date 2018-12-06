@@ -24,8 +24,8 @@ import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdateFactory;
-import com.amap.api.maps.MapView;
 import com.amap.api.maps.TextureMapView;
+import com.amap.api.maps.model.BitmapDescriptor;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
@@ -61,6 +61,7 @@ import com.barisetech.www.workmanage.R;
 import com.barisetech.www.workmanage.adapter.MyMapInfoWindow;
 import com.barisetech.www.workmanage.base.BaseFragment;
 import com.barisetech.www.workmanage.bean.ToolbarInfo;
+import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.bean.map.LineStation;
 import com.barisetech.www.workmanage.bean.map.MapPosition;
 import com.barisetech.www.workmanage.bean.map.MarkerStation;
@@ -72,6 +73,7 @@ import com.barisetech.www.workmanage.bean.pipecollections.PipeCollections;
 import com.barisetech.www.workmanage.bean.pipecollections.ReqAllPc;
 import com.barisetech.www.workmanage.bean.site.SiteBean;
 import com.barisetech.www.workmanage.databinding.FragmentMapBinding;
+import com.barisetech.www.workmanage.utils.BitmapUtil;
 import com.barisetech.www.workmanage.utils.LogUtil;
 import com.barisetech.www.workmanage.utils.MapUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
@@ -80,6 +82,7 @@ import com.barisetech.www.workmanage.viewmodel.PipeCollectionsViewModel;
 import com.barisetech.www.workmanage.viewmodel.PipeViewModel;
 import com.barisetech.www.workmanage.widget.twomenu.ChildView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -131,15 +134,27 @@ public class MapFragment extends BaseFragment {
 
     private ArrayList<View> mViewArray = new ArrayList<>();
 
+    private static final String PIPE_ID = "pipeId";
     private static final String ALARM_ID = "alarmId";
     private String curPipeId;
+    private AlarmInfo curAlarmInfo;
     private ToolbarInfo toolbarInfo;
 
     public static MapFragment newInstance(String pipeId) {
         MapFragment fragment = new MapFragment();
         if (!TextUtils.isEmpty(pipeId)) {
             Bundle bundle = new Bundle();
-            bundle.putString(ALARM_ID, pipeId);
+            bundle.putString(PIPE_ID, pipeId);
+            fragment.setArguments(bundle);
+        }
+        return fragment;
+    }
+
+    public static MapFragment newInstance(AlarmInfo alarmInfo) {
+        MapFragment fragment = new MapFragment();
+        if (alarmInfo != null) {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(ALARM_ID, alarmInfo);
             fragment.setArguments(bundle);
         }
         return fragment;
@@ -149,7 +164,12 @@ public class MapFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            curPipeId = getArguments().getString(ALARM_ID, "");
+            curAlarmInfo = (AlarmInfo) getArguments().getSerializable(ALARM_ID);
+            if (curAlarmInfo != null) {
+                curPipeId = String.valueOf(curAlarmInfo.getPipeId());
+            } else {
+                curPipeId = getArguments().getString(PIPE_ID, "");
+            }
         }
     }
 
@@ -329,6 +349,9 @@ public class MapFragment extends BaseFragment {
 
     AMap.OnMarkerClickListener markerClickListener = marker -> {
         LogUtil.d("marker", marker.getTitle());
+        if (marker.getTitle().contains("警报")) {
+            return false;
+        }
         onClickPipeLine(marker);
         curClickMarker = marker;
         return false;
@@ -340,6 +363,21 @@ public class MapFragment extends BaseFragment {
         markerOptions.position(latLng);
         markerOptions.draggable(false);
 //        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(getMyBitmap(markerStation.title)));
+        markerOptions.title(markerStation.title);
+        markerOptions.snippet(markerStation.snippet);
+        Marker marker = mAMap.addMarker(markerOptions);
+        marker.setInfoWindowEnable(showWindow);
+        return marker;
+    }
+
+    private Marker addRedMarker(@NonNull MarkerStation markerStation, boolean showWindow) {
+        MarkerOptions markerOptions = new MarkerOptions();
+        LatLng latLng = new LatLng(markerStation.position.latitude, markerStation.position.longitude);
+        markerOptions.position(latLng);
+        markerOptions.draggable(false);
+        Bitmap bitmap = BitmapDescriptorFactory.fromResource(R.drawable.red_marker).getBitmap();
+        Bitmap red = BitmapUtil.bitMapScale(bitmap, 3);
+        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(red));
         markerOptions.title(markerStation.title);
         markerOptions.snippet(markerStation.snippet);
         Marker marker = mAMap.addMarker(markerOptions);
@@ -402,8 +440,8 @@ public class MapFragment extends BaseFragment {
                 continue;
             }
             if (pipeLine.startSiteMarker.getSnippet().equals(marker.getSnippet()) || pipeLine.endSiteMarker
-                    .getSnippet().equals(marker.getSnippet())) {
-
+                    .getSnippet().equals(marker.getSnippet()) || marker.getTitle().contains("警报")) {
+                endList.clear();
                 endList.add(new NaviLatLng(marker.getPosition().latitude, marker.getPosition().longitude));
                 initLocation();
                 marker.hideInfoWindow();
@@ -541,6 +579,24 @@ public class MapFragment extends BaseFragment {
         }
     }
 
+    /**
+     * 增加警报标记
+     *
+     * @param pipeLine
+     * @param alarmInfo
+     * @param showWindow
+     */
+    private void addAlarmMarker(PipeLine pipeLine, AlarmInfo alarmInfo, boolean showWindow) {
+        if (alarmInfo != null) {
+            MarkerStation markerStation = new MarkerStation();
+            markerStation.position = new MapPosition(alarmInfo.getLatitude(), alarmInfo
+                    .getLongitude());
+            markerStation.title = "警报 " + (alarmInfo.isLifted() ? "已解除" : "未解除");
+            markerStation.snippet = alarmInfo.isLifted() ? "已解除" : "未解除";
+            pipeLine.alarmMarker = addRedMarker(markerStation, showWindow);
+        }
+    }
+
     protected Bitmap getMyBitmap(String pm_val) {
         Bitmap bitmap = BitmapDescriptorFactory.fromResource(
                 R.drawable.icon_news).getBitmap().copy(Bitmap.Config.ARGB_8888, true);
@@ -659,6 +715,10 @@ public class MapFragment extends BaseFragment {
                                     LogUtil.d(TAG, "curPipeId = " + curPipeId);
                                     if (!pipeLine.pipeId.equals(curPipeId)) {
                                         pipeLine.show(false);
+                                    } else {
+                                        if (curAlarmInfo != null) {
+                                            addAlarmMarker(pipeLine, curAlarmInfo, true);
+                                        }
                                     }
                                 }
 
