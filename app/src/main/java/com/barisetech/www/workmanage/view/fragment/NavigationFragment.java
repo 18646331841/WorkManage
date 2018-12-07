@@ -201,7 +201,7 @@ public class NavigationFragment extends Fragment {
                 break;
             case PadMapListFragment.TAG:
                 showItem(R.id.navigation_map);
-                if (eventBusMessage.getArg1() != null) {
+                if (eventBusMessage.getArg1() != null && eventBusMessage.getArg1() instanceof String) {
                     transaction.replace(R.id.navigation_content, PadMapListFragment.newInstance((String) eventBusMessage
                             .getArg1()), tag)
                             .commit();

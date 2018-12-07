@@ -40,9 +40,13 @@ public class PipeTapInfo extends AuthBean {
      * 给父类赋值
      */
     public void toSuper() {
+        if (ApplicationTime.contains("T")) {
+            ApplicationTime = ApplicationTime.replace("T", " ");
+        }
         type = AuthBean.TYPE_PIPETAP;
-        String tapSwitch = TapSwitch ? "打开" : "关闭";
-        title = ApplicationTime + "  请求" + tapSwitch + SiteName + "阀门";
+        String tap = TapSwitch ? "打开" : "关闭";
+        tapSwitch = TapSwitch;
+        title = ApplicationTime + "  请求" + tap + SiteName + "阀门";
         content = "备注：" + Remark;
         completed = !TextUtils.isEmpty(Approver);
         state = ApproverState;

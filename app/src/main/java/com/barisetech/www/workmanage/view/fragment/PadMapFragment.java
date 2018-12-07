@@ -4,6 +4,7 @@ package com.barisetech.www.workmanage.view.fragment;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -22,6 +23,7 @@ import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.TextureMapView;
+import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
@@ -66,6 +68,7 @@ import com.barisetech.www.workmanage.bean.pipe.PipeInfo;
 import com.barisetech.www.workmanage.bean.pipe.ReqAllPipe;
 import com.barisetech.www.workmanage.bean.site.SiteBean;
 import com.barisetech.www.workmanage.databinding.FragmentMapBinding;
+import com.barisetech.www.workmanage.utils.BitmapUtil;
 import com.barisetech.www.workmanage.utils.LogUtil;
 import com.barisetech.www.workmanage.utils.MapUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
@@ -302,6 +305,9 @@ public class PadMapFragment extends BaseFragment {
 
     AMap.OnMarkerClickListener markerClickListener = marker -> {
         LogUtil.d("marker", marker.getTitle());
+        if (marker.getTitle().contains("警报")) {
+            return false;
+        }
         curClickMarker = marker;
         onClickPipeLine(marker);
         return false;
@@ -313,6 +319,21 @@ public class PadMapFragment extends BaseFragment {
         markerOptions.position(latLng);
         markerOptions.draggable(false);
 //        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(getMyBitmap(markerStation.title)));
+        markerOptions.title(markerStation.title);
+        markerOptions.snippet(markerStation.snippet);
+        Marker marker = mAMap.addMarker(markerOptions);
+        marker.setInfoWindowEnable(showWindow);
+        return marker;
+    }
+
+    private Marker addRedMarker(@NonNull MarkerStation markerStation, boolean showWindow) {
+        MarkerOptions markerOptions = new MarkerOptions();
+        LatLng latLng = new LatLng(markerStation.position.latitude, markerStation.position.longitude);
+        markerOptions.position(latLng);
+        markerOptions.draggable(false);
+        Bitmap bitmap = BitmapDescriptorFactory.fromResource(R.drawable.red_marker).getBitmap();
+        Bitmap red = BitmapUtil.bitMapScale(bitmap, 3);
+        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(red));
         markerOptions.title(markerStation.title);
         markerOptions.snippet(markerStation.snippet);
         Marker marker = mAMap.addMarker(markerOptions);
@@ -370,9 +391,12 @@ public class PadMapFragment extends BaseFragment {
         LogUtil.d(TAG, "toHere = " + marker.getTitle());
         for (int i = 0; i < curPipeLines.size(); i++) {
             PipeLine pipeLine = curPipeLines.get(i);
+            if (pipeLine.startSiteMarker == null || pipeLine.endSiteMarker == null) {
+                continue;
+            }
             if (pipeLine.startSiteMarker.getSnippet().equals(marker.getSnippet()) || pipeLine.endSiteMarker
-                    .getSnippet().equals(marker.getSnippet())) {
-
+                    .getSnippet().equals(marker.getSnippet()) || marker.getTitle().contains("警报")) {
+                endList.clear();
                 endList.add(new NaviLatLng(marker.getPosition().latitude, marker.getPosition().longitude));
                 initLocation();
                 marker.hideInfoWindow();
@@ -500,9 +524,9 @@ public class PadMapFragment extends BaseFragment {
             MarkerStation markerStation = new MarkerStation();
             markerStation.position = new MapPosition(alarmInfo.getLatitude(), alarmInfo
                     .getLongitude());
-            markerStation.title = "警报 ID:" + alarmInfo.getDisplayId();
+            markerStation.title = "警报 " + (alarmInfo.isLifted() ? "已解除" : "未解除");
             markerStation.snippet = alarmInfo.isLifted() ? "已解除" : "未解除";
-            pipeLine.alarmMarker = addStationMarker(markerStation, showWindow);
+            pipeLine.alarmMarker = addRedMarker(markerStation, showWindow);
         }
     }
 
@@ -556,11 +580,12 @@ public class PadMapFragment extends BaseFragment {
                                 //如果curPipeid 不为空，只显示这条管线
                                 if (!TextUtils.isEmpty(curPipeId)) {
                                     LogUtil.d(TAG, "curPipeId = " + curPipeId);
-                                    if (curAlarmInfo != null) {
-                                        addAlarmMarker(pipeLine, curAlarmInfo, false);
-                                    }
                                     if (!pipeLine.pipeId.equals(curPipeId)) {
                                         pipeLine.show(false);
+                                    } else {
+                                        if (curAlarmInfo != null) {
+                                            addAlarmMarker(pipeLine, curAlarmInfo, true);
+                                        }
                                     }
                                 }
 

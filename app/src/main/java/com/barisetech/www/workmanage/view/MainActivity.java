@@ -312,9 +312,16 @@ public class MainActivity extends BaseActivity {
                             .TAG).commit();
                     break;
                 case PadMapFragment.TAG:
-                    transaction
-                            .replace(R.id.fragment_content, PadMapFragment.newInstance((String) eventBusMessage
-                                    .getArg1()), tag).commit();
+                    if (eventBusMessage.getArg1() != null && eventBusMessage.getArg1() instanceof
+                            String) {
+                        transaction
+                                .replace(R.id.fragment_content, PadMapFragment.newInstance((String) eventBusMessage
+                                        .getArg1()), tag).commit();
+                    }else {
+                        transaction
+                                .replace(R.id.fragment_content, PadMapFragment.newInstance((AlarmInfo) eventBusMessage
+                                        .getArg1()), tag).commit();
+                    }
                     if (!isActivity) {
                         transaction.addToBackStack(tag);
                     }

@@ -38,6 +38,11 @@ public class AuthBean {
      */
     protected boolean state;
 
+    /**
+     * 审批类型
+     */
+    protected boolean tapSwitch;
+
     public int getType() {
         return type;
     }
@@ -100,22 +105,27 @@ public class AuthBean {
         }
     }
 
-    @BindingAdapter({"completed", "state", "type"})
-    public static void setCompleted(TextView view, boolean completed, boolean state, int type) {
+    @BindingAdapter({"completed", "state", "type", "tap"})
+    public static void setCompleted(TextView view, boolean completed, boolean state, int type, boolean tap) {
         if (type == TYPE_PIPETAP) {
             //只有阀门需要
             if (completed) {
                 view.setVisibility(View.VISIBLE);
+                String tapS = tap ? "打开" : "关闭";
                 if (state) {
-                    view.setText("已允许打开");
+                    view.setText("已允许" + tapS);
                     view.setTextColor(Color.parseColor("#999999"));
                 } else {
-                    view.setText("已禁止打开");
+                    view.setText("已禁止" + tapS);
                     view.setTextColor(Color.parseColor("#f36161"));
                 }
             } else {
                 view.setVisibility(View.GONE);
             }
         }
+    }
+
+    public boolean isTapSwitch() {
+        return tapSwitch;
     }
 }
