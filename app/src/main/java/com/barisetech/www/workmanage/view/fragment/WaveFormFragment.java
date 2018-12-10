@@ -1,11 +1,15 @@
 package com.barisetech.www.workmanage.view.fragment;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,10 +29,12 @@ import com.barisetech.www.workmanage.bean.wave.WaveBean;
 import com.barisetech.www.workmanage.databinding.FragmentWaveFormBinding;
 import com.barisetech.www.workmanage.utils.ChartUtil;
 import com.barisetech.www.workmanage.utils.LogUtil;
+import com.barisetech.www.workmanage.utils.NetworkUtil;
 import com.barisetech.www.workmanage.utils.TimeUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.viewmodel.PipeViewModel;
 import com.barisetech.www.workmanage.viewmodel.WaveViewModel;
+import com.barisetech.www.workmanage.widget.CustomDialog;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -63,6 +69,18 @@ public class WaveFormFragment extends BaseFragment {
     private int endSiteId = -1;
     private Disposable curDisposable;
 
+    private CustomDialog.Builder builder;
+    private CustomDialog mDialog;
+    private DatePickerDialog startDatePicker;
+    private TimePickerDialog startTimePicker;
+    private String startT = "";
+
+    private int timeArea = 60;//默认是1分钟
+    /**
+     * 每秒显示的点数
+     */
+    private int prePoint = 20;
+
     public static WaveFormFragment newInstance(int pipeId) {
         WaveFormFragment fragment = new WaveFormFragment();
         Bundle bundle = new Bundle();
@@ -95,11 +113,44 @@ public class WaveFormFragment extends BaseFragment {
         ToolbarInfo toolbarInfo = new ToolbarInfo();
         toolbarInfo.setTitle(getString(R.string.title_waveform));
         observableToolbar.set(toolbarInfo);
+
+        builder = new CustomDialog.Builder(getContext());
+
         initView();
         return mBinding.getRoot();
     }
 
     private void initView() {
+        startDatePicker = TimeUtil.getDatePicker(getActivity(), onStartDateSetListener);
+        startTimePicker = TimeUtil.getTimePicker(getActivity(), onStartTimeSetListener);
+        startT = TimeUtil.ms2Date(System.currentTimeMillis());
+        mBinding.waveFormStartTime.setText(startT);
+
+        mBinding.waveFormStartTime.setOnClickListener(view -> {
+            //显示开始日期选择器
+            startDatePicker.show();
+        });
+
+        mBinding.waveFormConfirm.setOnClickListener(view -> {
+            if (TextUtils.isEmpty(startT)) {
+                ToastUtil.showToast("请选择开始时间");
+                return;
+            }
+
+            timeArea = 180;
+
+            closeDisposable();
+            if (curPipeInfo == null) {
+                getPipe();
+            } else {
+                if (curType == 1) {
+                    getSubsonicDatas();
+                } else {
+                    getDatas();
+                }
+            }
+        });
+
         mBinding.flow.setOnCheckedChangeListener((compoundButton, b) -> {
             if (b) {
                 mBinding.waveFormInfo.setVisibility(View.GONE);
@@ -137,6 +188,56 @@ public class WaveFormFragment extends BaseFragment {
         });
     }
 
+    private void showTwoButtonDialog(String alertText, int ImgId,String title,String confirmText, String cancelText, View.OnClickListener conFirmListener, View.OnClickListener cancelListener) {
+        mDialog = builder.setMessage(alertText)
+                .setImagView(ImgId)
+                .setTitle(title)
+                .setPositiveButton(confirmText, conFirmListener)
+                .setNegativeButton(cancelText, cancelListener)
+                .createTwoButtonDialog();
+        mDialog.show();
+    }
+
+    /**
+     * 开始日期选择回调
+     */
+    private DatePickerDialog.OnDateSetListener onStartDateSetListener = (datePicker, year, monthOfYear, dayOfMonth) -> {
+        String monthS = String.valueOf(monthOfYear + 1);
+        String dayS = String.valueOf(dayOfMonth);
+        if (monthS.length() == 1) {
+            monthS = "0" + monthS;
+        }
+        if (dayS.length() == 1) {
+            dayS = "0" + dayS;
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append(year).append("-")
+                .append(monthS).append("-")
+                .append(dayS).append(" ");
+        startT = sb.toString();
+        startTimePicker.show();
+    };
+
+    /**
+     * 开始时间选择回调
+     */
+    private TimePickerDialog.OnTimeSetListener onStartTimeSetListener = ((timePicker, hour, minute) -> {
+        String hourS = String.valueOf(hour);
+        String minuteS = String.valueOf(minute);
+        if (hourS.length() == 1) {
+            hourS = "0" + hourS;
+        }
+        if (minuteS.length() == 1) {
+            minuteS = "0" + minuteS;
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append(startT)
+                .append(hourS).append(":")
+                .append(minuteS).append(":00");
+        startT = sb.toString();
+        mBinding.waveFormStartTime.setText(startT);
+    });
+
     private void hideWaveView() {
         mBinding.chartStartSite.setVisibility(View.GONE);
         mBinding.chartEndSite.setVisibility(View.GONE);
@@ -168,6 +269,8 @@ public class WaveFormFragment extends BaseFragment {
                             }
                         }
                         getSubsonicDatas();
+                    } else {
+                        ToastUtil.showToast("未查找到管线");
                     }
                 }
             });
@@ -186,7 +289,17 @@ public class WaveFormFragment extends BaseFragment {
         }
 
         if (curPipeInfo == null) {
-            getPipe();
+            if (!NetworkUtil.isWifi(getContext())) {
+                showTwoButtonDialog("正在使用移动流量，查看波形图可能消耗较多流量，是否继续", 0, null, "继续", "退出", v -> {
+                    mDialog.dismiss();
+                    getPipe();
+                }, v -> {
+                    mDialog.dismiss();
+                    getActivity().onBackPressed();
+                });
+            } else {
+                getPipe();
+            }
         }
     }
 
@@ -194,8 +307,9 @@ public class WaveFormFragment extends BaseFragment {
         ReqAllPipe reqAllPipe = new ReqAllPipe();
         reqAllPipe.setPipeId(String.valueOf(curPipeId));
         reqAllPipe.setStartIndex("0");
-        reqAllPipe.setNumberOfRecords("1");
+        reqAllPipe.setNumberOfRecords("0");
 
+        EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_SHOW));
         pipeViewModel.reqAllPipe(reqAllPipe);
     }
 
@@ -204,7 +318,11 @@ public class WaveFormFragment extends BaseFragment {
             if (waveBean.Points != null && waveBean.Points.size() > 0) {
                 String key = waveBean.siteId + "_" + waveBean.type;
                 List<DataRateBean> dataRateBeans = new ArrayList<>();
-                for (int i = 0; i < waveBean.Points.size(); i++) {
+                int size = waveBean.Points.size();
+                int pointAdd = (size / timeArea) / prePoint;
+                LogUtil.d(TAG, "waveBean size = " + size + " pointAdd = " + pointAdd);
+
+                for (int i = 0; i < waveBean.Points.size(); i = i + pointAdd) {
                     WaveBean.PointsBean pointsBean = waveBean.Points.get(i);
                     float data = (float) pointsBean.Data;
 //                    String time = String.valueOf(i);
@@ -212,6 +330,8 @@ public class WaveFormFragment extends BaseFragment {
                     DataRateBean dataRateBean = new DataRateBean(data, time);
                     dataRateBeans.add(dataRateBean);
                 }
+                LogUtil.d(TAG, "dataRateBean size = " + dataRateBeans.size());
+
                 if (waveBean.siteId.equals(String.valueOf(startSiteId))) {
                     startMapData.put(key, dataRateBeans);
                 } else {
@@ -269,11 +389,20 @@ public class WaveFormFragment extends BaseFragment {
         EventBusMessage eventBusMessage = new EventBusMessage(BaseConstant.PROGRESS_SHOW);
         EventBus.getDefault().post(eventBusMessage);
 
-//        String startTime = TimeUtil.ms2Date(System.currentTimeMillis() - 30000);
-//        String endTime = TimeUtil.ms2Date(System.currentTimeMillis() + 30000);
-        //TODO 测试使用
-        String startTime = "2018-10-14 00:00:00";
-        String endTime = "2018-10-14 00:01:00";
+        long start = TimeUtil.Date2ms(startT);
+        String startTime;
+        String endTime;
+        if (timeArea == 60) {
+            startTime = TimeUtil.ms2Date(start - 30000);
+            endTime = TimeUtil.ms2Date(start + 30000);
+        } else {
+            startTime = startT;
+            endTime = TimeUtil.ms2Date(start + 180000);
+        }
+
+        //测试使用
+//        String startTime = "2018-10-14 00:00:00";
+//        String endTime = "2018-10-14 00:03:00";
 
         //首站两个波
         ReqWave startWave = new ReqWave();
@@ -307,11 +436,20 @@ public class WaveFormFragment extends BaseFragment {
         EventBusMessage eventBusMessage = new EventBusMessage(BaseConstant.PROGRESS_SHOW);
         EventBus.getDefault().post(eventBusMessage);
 
-//        String startTime = TimeUtil.ms2Date(System.currentTimeMillis() - 30000);
-//        String endTime = TimeUtil.ms2Date(System.currentTimeMillis() + 30000);
-        //TODO 测试使用
-        String startTime = "2018-10-14 00:00:00";
-        String endTime = "2018-10-14 00:01:00";
+        long start = TimeUtil.Date2ms(startT);
+        String startTime;
+        String endTime;
+        if (timeArea == 60) {
+            startTime = TimeUtil.ms2Date(start - 30000);
+            endTime = TimeUtil.ms2Date(start + 30000);
+        } else {
+            startTime = startT;
+            endTime = TimeUtil.ms2Date(start + 180000);
+        }
+
+        //测试数据
+//        String startTime = "2018-10-14 00:00:00";
+//        String endTime = "2018-10-14 00:03:00";
 
         //首站两个波
         ReqWave startWave1 = new ReqWave();

@@ -30,4 +30,23 @@ public class NetworkUtil {
         }
         return false;
     }
+
+    /**
+     * 检测当前网络是否在wifi环境下
+     *
+     * @param mContext
+     * @return
+     */
+    public static boolean isWifi(Context mContext) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) mContext
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager != null) {
+            NetworkInfo info= connectivityManager.getActiveNetworkInfo();
+            if (info!= null && info.isConnected()
+                    && info.getType() == ConnectivityManager.TYPE_WIFI) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
