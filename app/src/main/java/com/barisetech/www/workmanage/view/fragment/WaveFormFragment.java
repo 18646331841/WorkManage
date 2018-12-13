@@ -8,7 +8,9 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -137,7 +139,7 @@ public class WaveFormFragment extends BaseFragment {
                 return;
             }
 
-            timeArea = 180;
+//            timeArea = 180;
 
             closeDisposable();
             if (curPipeInfo == null) {
@@ -148,6 +150,30 @@ public class WaveFormFragment extends BaseFragment {
                 } else {
                     getDatas();
                 }
+            }
+        });
+
+        mBinding.waveFormInputTime.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (!TextUtils.isEmpty(charSequence)) {
+                    int num = Integer.valueOf(charSequence.toString().trim());
+                    if (num > 0 && num <= 180) {
+                        timeArea = num;
+                    } else {
+                        mBinding.waveFormInputTime.setText("180");
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
             }
         });
 
@@ -397,7 +423,7 @@ public class WaveFormFragment extends BaseFragment {
             endTime = TimeUtil.ms2Date(start + 30000);
         } else {
             startTime = startT;
-            endTime = TimeUtil.ms2Date(start + 180000);
+            endTime = TimeUtil.ms2Date(start + timeArea * 1000);
         }
 
         //测试使用
@@ -444,7 +470,7 @@ public class WaveFormFragment extends BaseFragment {
             endTime = TimeUtil.ms2Date(start + 30000);
         } else {
             startTime = startT;
-            endTime = TimeUtil.ms2Date(start + 180000);
+            endTime = TimeUtil.ms2Date(start + timeArea * 1000);
         }
 
         //测试数据

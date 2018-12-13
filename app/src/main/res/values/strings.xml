@@ -450,6 +450,7 @@
     <string name="flow">流量</string>
     <string name="main_wave">主波</string>
     <string name="sub_wave">次波</string>
+    <string name="wave_input_time">输入查询时间(s)</string>
     <string name="normal_setting">常用设置</string>
     <string name="contacts_name">联系人姓名</string>
     <string name="contacts_phone">联系人电话</string>
