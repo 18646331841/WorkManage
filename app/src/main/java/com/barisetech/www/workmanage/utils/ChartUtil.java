@@ -183,6 +183,9 @@ public class ChartUtil {
         //底部时间
         List<AxisValue> axisXBottomValues = new ArrayList<>();
         int dataSize = 0;
+        //获取list中最大最小值
+        int maxPoint = 0;
+        int minPoint = Integer.MAX_VALUE;
 
         for (Map.Entry<String, List<DataRateBean>> entry : mapData.entrySet()) {
             List<DataRateBean> dataRateBeanList = entry.getValue();
@@ -197,9 +200,15 @@ public class ChartUtil {
                     //数据点
                     mPointValues.add(new PointValue(i, dataRateBean.getData()));
                     if (axisXBottomValues.size() < dataSize) {
-                        if (i % 500 == 0) {
+                        if (i % 100 == 0) {
                             axisXBottomValues.add(new AxisValue(i).setLabel(dataRateBean.getTime()));
                         }
+                    }
+                    if (dataRateBean.getData() > maxPoint) {
+                        maxPoint = (int) dataRateBean.getData();
+                    }
+                    if (dataRateBean.getData() < minPoint) {
+                        minPoint = (int) dataRateBean.getData();
                     }
                 }
                 Line line = new Line(mPointValues);
@@ -315,9 +324,9 @@ public class ChartUtil {
         lineChart.setViewportCalculationEnabled(true);
         Viewport v = new Viewport(lineChart.getMaximumViewport());
         //Y轴最大值为 加上20、防止显示不全
-//        v.top = maxPoint + 20;
+        v.top = maxPoint + Math.abs(maxPoint * 20);
         //最小值 Y轴最低点就为0
-//        v.bottom = minPoint + 20;//最小值
+        v.bottom = minPoint - Math.abs(minPoint * 20);//最小值
         //设置最大化的viewport （chartdata）后再调用
         //这2个属性的设置一定要在lineChart.setMaximumViewport(v);这个方法之后,
         // 不然显示的坐标数据是不能左右滑动查看更多数据的
