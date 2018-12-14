@@ -1,5 +1,6 @@
 package com.barisetech.www.workmanage.view.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.arch.lifecycle.Lifecycle;
@@ -13,6 +14,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
@@ -122,6 +124,7 @@ public class WaveFormFragment extends BaseFragment {
         return mBinding.getRoot();
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void initView() {
         startDatePicker = TimeUtil.getDatePicker(getActivity(), onStartDateSetListener);
         startTimePicker = TimeUtil.getTimePicker(getActivity(), onStartTimeSetListener);
@@ -175,6 +178,34 @@ public class WaveFormFragment extends BaseFragment {
             public void afterTextChanged(Editable editable) {
 
             }
+        });
+
+        mBinding.chartStartSite.setOnTouchListener((view, motionEvent) -> {
+
+            switch (motionEvent.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    mBinding.waveFormScrollview.setScrollDisable(true);
+                    break;
+                case MotionEvent.ACTION_UP:
+                    mBinding.waveFormScrollview.setScrollDisable(false);
+                    break;
+            }
+
+            return false;
+        });
+
+        mBinding.chartEndSite.setOnTouchListener((view, motionEvent) -> {
+
+            switch (motionEvent.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    mBinding.waveFormScrollview.setScrollDisable(true);
+                    break;
+                case MotionEvent.ACTION_UP:
+                    mBinding.waveFormScrollview.setScrollDisable(false);
+                    break;
+            }
+
+            return false;
         });
 
         mBinding.flow.setOnCheckedChangeListener((compoundButton, b) -> {

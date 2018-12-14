@@ -270,7 +270,7 @@ public class ChartUtil {
         //设置行为属性，支持缩放、滑动以及平移
         lineChart.setInteractive(true);
         //水平缩放
-        lineChart.setZoomType(ZoomType.HORIZONTAL);
+        lineChart.setZoomType(ZoomType.HORIZONTAL_AND_VERTICAL);
         //是否可滑动
         lineChart.setScrollEnabled(true);
         //放入数据源至控件中
