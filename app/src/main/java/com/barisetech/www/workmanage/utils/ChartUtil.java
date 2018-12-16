@@ -323,10 +323,19 @@ public class ChartUtil {
         //设置是否允许在动画进行中或设置完表格数据后，自动计算viewport的大小。如果禁止，则需要可以手动设置。
         lineChart.setViewportCalculationEnabled(true);
         Viewport v = new Viewport(lineChart.getMaximumViewport());
+
+        float midPoint = (maxPoint - minPoint) / 2;
+        float tempPoint;
+        if (Math.abs(maxPoint) > Math.abs(minPoint)) {
+            tempPoint = maxPoint;
+        } else {
+            tempPoint = minPoint;
+        }
+
         //Y轴最大值为 加上20、防止显示不全
-        v.top = maxPoint + Math.abs(maxPoint * 20);
+        v.top = midPoint + Math.abs(tempPoint) * 20;
         //最小值 Y轴最低点就为0
-        v.bottom = minPoint - Math.abs(minPoint * 20);//最小值
+        v.bottom = midPoint - Math.abs(tempPoint) * 20;//最小值
         //设置最大化的viewport （chartdata）后再调用
         //这2个属性的设置一定要在lineChart.setMaximumViewport(v);这个方法之后,
         // 不然显示的坐标数据是不能左右滑动查看更多数据的
