@@ -37,6 +37,7 @@ import com.barisetech.www.workmanage.utils.DisplayUtil;
 import com.barisetech.www.workmanage.utils.LogUtil;
 import com.barisetech.www.workmanage.utils.OsUtil;
 import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
+import com.barisetech.www.workmanage.utils.SystemUtil;
 import com.barisetech.www.workmanage.utils.TimeUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.viewmodel.AuthViewModel;
@@ -110,6 +111,13 @@ public class AuthDetailFragment extends BaseFragment {
     }
 
     private void initView() {
+        //普通管理员不显示登录授权
+        if (!SystemUtil.isSuperAdmin()) {
+            mBinding.radioGroup.setVisibility(View.GONE);
+            mBinding.pipetapList.setVisibility(View.VISIBLE);
+            mBinding.userList.setVisibility(View.GONE);
+        }
+
         builder = new CustomDialog.Builder(getContext());
 
         mBinding.toolbar.tvOne.setOnClickListener(view -> {
@@ -374,8 +382,10 @@ public class AuthDetailFragment extends BaseFragment {
             });
         }
 
-        if (userList == null || userList.size() <= 0) {
-            getUserDatas(0, PAGE_COUNT);
+        if (SystemUtil.isSuperAdmin()) {
+            if (userList == null || userList.size() <= 0) {
+                getUserDatas(0, PAGE_COUNT);
+            }
         }
 
         if (pipeTapList == null || pipeTapList.size() <= 0) {

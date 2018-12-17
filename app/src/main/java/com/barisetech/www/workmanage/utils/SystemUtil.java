@@ -47,6 +47,20 @@ public class SystemUtil {
         }
     }
 
+    /**
+     * 判断是否为超级管理员用户
+     *
+     * @return true 是， false 不是
+     */
+    public static boolean isSuperAdmin() {
+        String role = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_ROLE, "");
+        if (role.equals(BaseConstant.ROLE_SUPER_ADMINS)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public static String getBearer() {
         return "Bearer " + SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_ACCESS_TOKEN, "");
     }
