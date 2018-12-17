@@ -15,6 +15,7 @@ import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.bean.pipecollections.PipeCollections;
 import com.barisetech.www.workmanage.bean.site.SiteBean;
 import com.barisetech.www.workmanage.databinding.FragmentPipeCollectionDetailBinding;
+import com.barisetech.www.workmanage.utils.SystemUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -58,6 +59,10 @@ public class PipeCollectionDetailFragment extends BaseFragment {
     }
 
     private void initView() {
+        if (!SystemUtil.isAdmin()) {
+            mBinding.modifyPipe.setVisibility(View.GONE);
+        }
+
         mBinding.setPc(curPipeCollection);
 
         mBinding.modifyPipe.setOnClickListener(view -> {

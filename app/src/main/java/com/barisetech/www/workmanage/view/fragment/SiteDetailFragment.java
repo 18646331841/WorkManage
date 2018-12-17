@@ -19,6 +19,7 @@ import com.barisetech.www.workmanage.bean.site.ReqSiteBean;
 import com.barisetech.www.workmanage.bean.site.ReqSiteInfos;
 import com.barisetech.www.workmanage.bean.site.SiteBean;
 import com.barisetech.www.workmanage.databinding.FragmentSiteDetailBinding;
+import com.barisetech.www.workmanage.utils.SystemUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.viewmodel.SiteViewModel;
 
@@ -58,7 +59,11 @@ public class SiteDetailFragment extends BaseFragment {
         mBinding.setFragment(this);
         ToolbarInfo toolbarInfo = new ToolbarInfo();
         toolbarInfo.setTitle(getString(R.string.site_detail));
-        toolbarInfo.setOneText(getString(R.string.modify_site));
+        if (SystemUtil.isAdmin()) {
+            toolbarInfo.setOneText(getString(R.string.modify_site));
+        } else {
+            mBinding.addPipe.setVisibility(View.GONE);
+        }
 
         observableToolbar.set(toolbarInfo);
         initView();
@@ -75,7 +80,7 @@ public class SiteDetailFragment extends BaseFragment {
             EventBus.getDefault().post(eventBusMessage);
         });
 
-        mBinding.addSite.setOnClickListener(view -> {
+        mBinding.addPipe.setOnClickListener(view -> {
             EventBusMessage eventBusMessage = new EventBusMessage(PipeAddFragment.TAG);
             EventBus.getDefault().post(eventBusMessage);
         });

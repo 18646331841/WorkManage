@@ -26,6 +26,7 @@ import com.barisetech.www.workmanage.bean.pipelindarea.ReqAllPipelindArea;
 import com.barisetech.www.workmanage.bean.pipelindarea.ReqDeletePipeLindArea;
 import com.barisetech.www.workmanage.databinding.FragmentPipeLindAreaBinding;
 import com.barisetech.www.workmanage.utils.DisplayUtil;
+import com.barisetech.www.workmanage.utils.SystemUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.viewmodel.PipeblindAreaViewModel;
 import com.barisetech.www.workmanage.widget.QPopuWindow;
@@ -76,7 +77,9 @@ public class PipeLindAreaFragment extends BaseFragment {
         mBinding.setFragment(this);
         ToolbarInfo toolbarInfo = new ToolbarInfo();
         toolbarInfo.setTitle(getString(R.string.tv_pipeline_blind_area));
-        toolbarInfo.setTwoText("新增");
+        if (SystemUtil.isAdmin()) {
+            toolbarInfo.setTwoText("新增");
+        }
         observableToolbar.set(toolbarInfo);
 
         if (!EventBus.getDefault().isRegistered(this)){
@@ -130,32 +133,35 @@ public class PipeLindAreaFragment extends BaseFragment {
             }
         });
 
-        pipeLindAreaAdapter.setOnItemLongClickListener((view, position) -> {
-            PipeLindAreaInfo pipeLindAreaInfo = pipeLindAreaInfoList.get(position);
-            QPopuWindow.getInstance(getActivity()).builder
-                    .bindView(view,0)
-                    .setPopupItemList(new String[]{"编辑管线盲区", "删除管线盲区"})
-                    .setPointers(mPoint.x,mPoint.y)
-                    .setOnPopuListItemClickListener(new QPopuWindow.OnPopuListItemClickListener() {
-                        @Override
-                        public void onPopuListItemClick(View anchorView, int anchorViewPosition, int p) {
-                            switch (p){
-                                case 0:
-                                    EventBusMessage eventBusMessage = new EventBusMessage(PipeLindAreaModifyFragment.TAG);
-                                    eventBusMessage.setArg1(pipeLindAreaInfo);
-                                    EventBus.getDefault().post(eventBusMessage);
-                                    break;
-                                case 1:
-                                    ReqDeletePipeLindArea info = new ReqDeletePipeLindArea();
-                                    info.setPipeBlindAreaId(String.valueOf(pipeLindAreaInfo.getId()));
+        if (SystemUtil.isAdmin()) {
 
-                                    EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_SHOW));
-                                    pipeblindAreaViewModel.reqDeletePipeLindArea(info);
-                                    break;
+            pipeLindAreaAdapter.setOnItemLongClickListener((view, position) -> {
+                PipeLindAreaInfo pipeLindAreaInfo = pipeLindAreaInfoList.get(position);
+                QPopuWindow.getInstance(getActivity()).builder
+                        .bindView(view,0)
+                        .setPopupItemList(new String[]{"编辑管线盲区", "删除管线盲区"})
+                        .setPointers(mPoint.x,mPoint.y)
+                        .setOnPopuListItemClickListener(new QPopuWindow.OnPopuListItemClickListener() {
+                            @Override
+                            public void onPopuListItemClick(View anchorView, int anchorViewPosition, int p) {
+                                switch (p){
+                                    case 0:
+                                        EventBusMessage eventBusMessage = new EventBusMessage(PipeLindAreaModifyFragment.TAG);
+                                        eventBusMessage.setArg1(pipeLindAreaInfo);
+                                        EventBus.getDefault().post(eventBusMessage);
+                                        break;
+                                    case 1:
+                                        ReqDeletePipeLindArea info = new ReqDeletePipeLindArea();
+                                        info.setPipeBlindAreaId(String.valueOf(pipeLindAreaInfo.getId()));
+
+                                        EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_SHOW));
+                                        pipeblindAreaViewModel.reqDeletePipeLindArea(info);
+                                        break;
+                                }
                             }
-                        }
-                    }).show();
-        });
+                        }).show();
+            });
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

@@ -33,6 +33,7 @@ import com.barisetech.www.workmanage.bean.news.ReqNewsInfos;
 import com.barisetech.www.workmanage.databinding.FragmentNewsListBinding;
 import com.barisetech.www.workmanage.utils.DisplayUtil;
 import com.barisetech.www.workmanage.utils.LogUtil;
+import com.barisetech.www.workmanage.utils.SystemUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.viewmodel.NewsViewModel;
 
@@ -86,7 +87,9 @@ public class NewsListFragment extends BaseFragment {
         mBinding.setFragment(this);
         ToolbarInfo toolbarInfo = new ToolbarInfo();
         toolbarInfo.setTitle(getString(R.string.title_news));
-        toolbarInfo.setTwoText(getString(R.string.news_release));
+        if (SystemUtil.isAdmin()) {
+            toolbarInfo.setTwoText(getString(R.string.news_release));
+        }
         observableToolbar.set(toolbarInfo);
 
         initView();

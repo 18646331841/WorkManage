@@ -22,6 +22,7 @@ import com.barisetech.www.workmanage.bean.alarm.AlarmInfo;
 import com.barisetech.www.workmanage.bean.pipe.PipeInfo;
 import com.barisetech.www.workmanage.databinding.FragmentAlarmDetailsBinding;
 import com.barisetech.www.workmanage.utils.LogUtil;
+import com.barisetech.www.workmanage.utils.SystemUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.viewmodel.AlarmViewModel;
 
@@ -78,6 +79,10 @@ public class AlarmDetailsFragment extends BaseFragment implements View.OnClickLi
     }
 
     private void initView() {
+        if (!SystemUtil.isAdmin()) {
+            mBinding.buildAlarmAnalysisBt.setVisibility(View.GONE);
+        }
+
         alarmInfo = new ObservableField<>();
         alarmInfo.set(curAlarmInfo);
         mBinding.setMyFragment(this);

@@ -18,6 +18,7 @@ import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.databinding.FragmentMyBinding;
 import com.barisetech.www.workmanage.utils.DataCleanManagerUtil;
 import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
+import com.barisetech.www.workmanage.utils.SystemUtil;
 import com.barisetech.www.workmanage.view.LoginActivity;
 import com.barisetech.www.workmanage.widget.CustomDialog;
 
@@ -128,8 +129,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
                 EventBus.getDefault().post(new EventBusMessage(EventTypeFragment.TAG));
                 break;
             case R.id.item_authorization_manage:
-                String role = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_ROLE, "");
-                if (role.equals(BaseConstant.ROLE_ADMINS) || role.equals(BaseConstant.ROLE_SUPER_ADMINS)) {
+                if (SystemUtil.isAdmin()) {
                     EventBusMessage authList = new EventBusMessage(AuthListFragment.TAG);
                     authList.setArg1(user);
                     EventBus.getDefault().post(authList);

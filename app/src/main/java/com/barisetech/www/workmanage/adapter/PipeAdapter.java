@@ -49,7 +49,10 @@ public class PipeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         });
 
         viewHolder.l_item.setOnLongClickListener(view -> {
-            mOnItemClickListener.onItemClick(view,position);
+            if (null != mOnItemClickListener) {
+
+                mOnItemClickListener.onItemClick(view,position);
+            }
             return true;
         });
     }

@@ -57,7 +57,10 @@ public class PipeLindAreaAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         });
 
         viewHolder.l_item.setOnLongClickListener(view -> {
-            mOnItemClickListener.onItemClick(view, position);
+            if (null != mOnItemClickListener) {
+
+                mOnItemClickListener.onItemClick(view, position);
+            }
             return true;
         });
     }

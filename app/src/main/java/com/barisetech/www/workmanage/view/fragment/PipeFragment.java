@@ -27,6 +27,7 @@ import com.barisetech.www.workmanage.bean.pipe.ReqDeletePipe;
 import com.barisetech.www.workmanage.databinding.FragmentPipeBinding;
 import com.barisetech.www.workmanage.utils.DisplayUtil;
 import com.barisetech.www.workmanage.utils.LogUtil;
+import com.barisetech.www.workmanage.utils.SystemUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.viewmodel.PipeViewModel;
 import com.barisetech.www.workmanage.widget.QPopuWindow;
@@ -79,7 +80,9 @@ public class PipeFragment extends BaseFragment {
         mBinding.setFragment(this);
         ToolbarInfo toolbarInfo = new ToolbarInfo();
         toolbarInfo.setTitle(getString(R.string.title_pipe));
-        toolbarInfo.setTwoText("新增");
+        if (SystemUtil.isAdmin()) {
+            toolbarInfo.setTwoText("新增");
+        }
         observableToolbar.set(toolbarInfo);
 
         if (!EventBus.getDefault().isRegistered(this)){
@@ -135,40 +138,43 @@ public class PipeFragment extends BaseFragment {
             }
         });
 
-        pipeAdapter.setOnItemLongClickListener((view, position) -> {
-            PipeInfo pipeInfo = pipeInfoList.get(position);
-            QPopuWindow.getInstance(getActivity()).builder
-                    .bindView(view,0)
-                    .setPopupItemList(new String[]{"编辑管线", "删除管线", "创建管线工况", "创建管线盲区"})
-                    .setPointers(mPoint.x,mPoint.y)
-                    .setOnPopuListItemClickListener(new QPopuWindow.OnPopuListItemClickListener() {
-                        @Override
-                        public void onPopuListItemClick(View anchorView, int anchorViewPosition, int p) {
-                            switch (p){
-                                case 0:
-                                    EventBusMessage eventBusMessage = new EventBusMessage(PipeModifyFragment.TAG);
-                                    eventBusMessage.setArg1(pipeInfo);
-                                    EventBus.getDefault().post(eventBusMessage);
-                                    break;
-                                case 1:
-                                    ReqDeletePipe reqDeletePipe = new ReqDeletePipe();
-                                    reqDeletePipe.setPipeId(String.valueOf(pipeInfo.PipeId));
-                                    pipeViewModel.reqDeletePipe(reqDeletePipe);
-                                    break;
-                                case 2:
-                                    EventBusMessage pw = new EventBusMessage(PipeWorkAddFragment.TAG);
-                                    pw.setArg1(pipeInfo.PipeId);
-                                    EventBus.getDefault().post(pw);
-                                    break;
-                                case 3:
-                                    EventBusMessage pb = new EventBusMessage(PipeLindAreaAddFragment.TAG);
-                                    pb.setArg1(pipeInfo.PipeId);
-                                    EventBus.getDefault().post(pb);
-                                    break;
+        if (SystemUtil.isAdmin()) {
+
+            pipeAdapter.setOnItemLongClickListener((view, position) -> {
+                PipeInfo pipeInfo = pipeInfoList.get(position);
+                QPopuWindow.getInstance(getActivity()).builder
+                        .bindView(view,0)
+                        .setPopupItemList(new String[]{"编辑管线", "删除管线", "创建管线工况", "创建管线盲区"})
+                        .setPointers(mPoint.x,mPoint.y)
+                        .setOnPopuListItemClickListener(new QPopuWindow.OnPopuListItemClickListener() {
+                            @Override
+                            public void onPopuListItemClick(View anchorView, int anchorViewPosition, int p) {
+                                switch (p){
+                                    case 0:
+                                        EventBusMessage eventBusMessage = new EventBusMessage(PipeModifyFragment.TAG);
+                                        eventBusMessage.setArg1(pipeInfo);
+                                        EventBus.getDefault().post(eventBusMessage);
+                                        break;
+                                    case 1:
+                                        ReqDeletePipe reqDeletePipe = new ReqDeletePipe();
+                                        reqDeletePipe.setPipeId(String.valueOf(pipeInfo.PipeId));
+                                        pipeViewModel.reqDeletePipe(reqDeletePipe);
+                                        break;
+                                    case 2:
+                                        EventBusMessage pw = new EventBusMessage(PipeWorkAddFragment.TAG);
+                                        pw.setArg1(pipeInfo.PipeId);
+                                        EventBus.getDefault().post(pw);
+                                        break;
+                                    case 3:
+                                        EventBusMessage pb = new EventBusMessage(PipeLindAreaAddFragment.TAG);
+                                        pb.setArg1(pipeInfo.PipeId);
+                                        EventBus.getDefault().post(pb);
+                                        break;
+                                }
                             }
-                        }
-                    }).show();
-        });
+                        }).show();
+            });
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

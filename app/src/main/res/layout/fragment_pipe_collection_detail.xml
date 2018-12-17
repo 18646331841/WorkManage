@@ -17,6 +17,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingBottom="@dimen/dp_45"
         android:orientation="vertical">
 
         <include
@@ -134,7 +135,6 @@
             android:layout_height="@dimen/dp_50"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/dp_30"
-            android:layout_marginBottom="@dimen/dp_45"
             android:background="@drawable/shane_button_corners"
             android:text="@string/pc_detail_modify_pc"
             android:textColor="@color/white"

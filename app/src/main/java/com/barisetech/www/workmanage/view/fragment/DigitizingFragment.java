@@ -32,6 +32,7 @@ import com.barisetech.www.workmanage.databinding.FragmentDigitizingBinding;
 import com.barisetech.www.workmanage.utils.DisplayUtil;
 import com.barisetech.www.workmanage.utils.LogUtil;
 import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
+import com.barisetech.www.workmanage.utils.SystemUtil;
 import com.barisetech.www.workmanage.utils.TimeUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.view.dialog.CommonDialogFragment;
@@ -171,7 +172,9 @@ public class DigitizingFragment extends BaseFragment {
         digitalizerViewModel.reqNum();
     }
 
-    private DigitizingAdapter.OnItemLongClickListener onItemLongClickListener = (view, position) ->
+    private DigitizingAdapter.OnItemLongClickListener onItemLongClickListener = (view, position) -> {
+        if (SystemUtil.isAdmin()) {
+
             QPopuWindow.getInstance(getActivity()).builder
                     .bindView(view, 0)
                     .setPopupItemList(new String[]{"新增站点", "申请阀门"})
@@ -179,7 +182,8 @@ public class DigitizingFragment extends BaseFragment {
                     .setOnPopuListItemClickListener((anchorView, anchorViewPosition, position1) -> {
                         switch (position1) {
                             case 0:
-                                EventBus.getDefault().post(new EventBusMessage(AddSiteFragment.TAG));
+                                EventBus.getDefault().post(new EventBusMessage(AddSiteFragment
+                                        .TAG));
                                 break;
                             case 1:
                                 DigitalizerBean digitalizerBean = digitalizerBeanList.get(position);
@@ -197,6 +201,31 @@ public class DigitizingFragment extends BaseFragment {
                                 break;
                         }
                     }).show();
+        } else {
+            QPopuWindow.getInstance(getActivity()).builder
+                    .bindView(view, 0)
+                    .setPopupItemList(new String[]{"申请阀门"})
+                    .setPointers(mPoint.x, mPoint.y)
+                    .setOnPopuListItemClickListener((anchorView, anchorViewPosition, position1) -> {
+                        switch (position1) {
+                            case 0:
+                                DigitalizerBean digitalizerBean = digitalizerBeanList.get(position);
+                                showDialog("申请阀门", ((radioGroup, i) -> {
+                                    closeDialog();
+                                    switch (i) {
+                                        case R.id.dialog_open_rb:
+                                            requestPipeTap(true, digitalizerBean);
+                                            break;
+                                        case R.id.dialog_close_rb:
+                                            requestPipeTap(false, digitalizerBean);
+                                            break;
+                                    }
+                                }));
+                                break;
+                        }
+                    }).show();
+        }
+    };
 
     private ItemCallBack itemCallBack = item -> {
         if (item instanceof DigitalizerBean) {

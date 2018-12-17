@@ -18,6 +18,7 @@ import com.barisetech.www.workmanage.bean.ToolbarInfo;
 import com.barisetech.www.workmanage.bean.pipelindarea.PipeLindAreaInfo;
 import com.barisetech.www.workmanage.bean.pipelindarea.ReqAllPipelindArea;
 import com.barisetech.www.workmanage.databinding.FragmentPipeLindAreaDetailBinding;
+import com.barisetech.www.workmanage.utils.SystemUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.viewmodel.PipeblindAreaViewModel;
 
@@ -38,8 +39,6 @@ public class PipeLindAreaDetailFragment extends BaseFragment{
         fragment.setArguments(bundle);
         return fragment;
     }
-
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,6 +63,10 @@ public class PipeLindAreaDetailFragment extends BaseFragment{
     }
 
     private void initView() {
+        if (!SystemUtil.isAdmin()) {
+            mBinding.toLindModify.setVisibility(View.GONE);
+        }
+
         mBinding.setPb(pipeLindAreaInfo);
 
         mBinding.toLindModify.setOnClickListener(new View.OnClickListener() {

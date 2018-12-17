@@ -7,7 +7,7 @@
 
         <variable
             name="pb"
-            type="com.barisetech.www.workmanage.bean.pipelindarea.PipeLindAreaInfo"/>
+            type="com.barisetech.www.workmanage.bean.pipelindarea.PipeLindAreaInfo" />
 
         <variable
             name="fragment"
@@ -24,124 +24,124 @@
             layout="@layout/layout_toolbar"
             app:toolbar="@{fragment.observableToolbar}" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <android.support.v7.widget.CardView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_15"
-            android:layout_marginRight="@dimen/dp_15"
-            android:layout_marginTop="@dimen/dp_30"
-            app:cardCornerRadius="6dp"
-            app:cardElevation="@dimen/dp_10">
+            android:paddingBottom="@dimen/dp_45"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/normal_setting"
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingBottom="@dimen/dp_9">
+                android:layout_marginLeft="@dimen/dp_15"
+                android:layout_marginTop="@dimen/dp_30"
+                android:layout_marginRight="@dimen/dp_15"
+                android:layout_marginBottom="@dimen/dp_20"
+                app:cardCornerRadius="6dp"
+                app:cardElevation="@dimen/dp_10">
 
-                <TextView
-                    android:id="@+id/pc_title"
+                <LinearLayout
+                    android:id="@+id/normal_setting"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/shape_title_top"
-                    android:paddingBottom="@dimen/dp_8"
-                    android:paddingLeft="@dimen/dp_15"
-                    android:paddingTop="@dimen/dp_9"
-                    android:text="@string/normal_setting"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/sp_14"/>
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/dp_9">
 
-                <com.barisetech.www.workmanage.widget.LineView
-                    android:id="@+id/lind_area_id"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:showText="@{String.valueOf(pb.getId())}"
-                    order:ddd_content_enable="false"
-                    order:ddd_is_bottom_line="false"
-                    order:ddd_is_indicate="false"
-                    order:ddd_label="@string/lind_area_id"/>
+                    <TextView
+                        android:id="@+id/pc_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/shape_title_top"
+                        android:paddingLeft="@dimen/dp_15"
+                        android:paddingTop="@dimen/dp_9"
+                        android:paddingBottom="@dimen/dp_8"
+                        android:text="@string/normal_setting"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/sp_14" />
 
-                <com.barisetech.www.workmanage.widget.LineView
-                    android:id="@+id/pipe_lind_area_id"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:showText="@{String.valueOf(pb.getPipeId())}"
-                    order:ddd_content_enable="false"
-                    order:ddd_is_bottom_line="false"
-                    order:ddd_is_indicate="false"
-                    order:ddd_label="@string/lind_pipe_id"/>
+                    <com.barisetech.www.workmanage.widget.LineView
+                        android:id="@+id/lind_area_id"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:showText="@{String.valueOf(pb.getId())}"
+                        order:ddd_content_enable="false"
+                        order:ddd_is_bottom_line="false"
+                        order:ddd_is_indicate="false"
+                        order:ddd_label="@string/lind_area_id" />
 
-                <com.barisetech.www.workmanage.widget.LineView
-                    android:id="@+id/is_enable"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:showBool="@{pb.isIsEnabled()}"
-                    order:ddd_content_enable="false"
-                    order:ddd_is_bottom_line="false"
-                    order:ddd_is_indicate="false"
-                    order:ddd_label="@string/is_enable"/>
+                    <com.barisetech.www.workmanage.widget.LineView
+                        android:id="@+id/pipe_lind_area_id"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:showText="@{String.valueOf(pb.getPipeId())}"
+                        order:ddd_content_enable="false"
+                        order:ddd_is_bottom_line="false"
+                        order:ddd_is_indicate="false"
+                        order:ddd_label="@string/lind_pipe_id" />
 
-                <com.barisetech.www.workmanage.widget.LineView
-                    android:id="@+id/lind_area_type"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:showText="@{String.valueOf(pb.getType())}"
-                    order:ddd_content_enable="false"
-                    order:ddd_is_bottom_line="false"
-                    order:ddd_is_indicate="false"
-                    order:ddd_label="@string/type"/>
+                    <com.barisetech.www.workmanage.widget.LineView
+                        android:id="@+id/is_enable"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:showBool="@{pb.isIsEnabled()}"
+                        order:ddd_content_enable="false"
+                        order:ddd_is_bottom_line="false"
+                        order:ddd_is_indicate="false"
+                        order:ddd_label="@string/is_enable" />
 
-                <com.barisetech.www.workmanage.widget.LineView
-                    android:id="@+id/lind_area_start"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:showText="@{String.valueOf(pb.getStartDistance())}"
-                    order:ddd_content_enable="false"
-                    order:ddd_is_bottom_line="false"
-                    order:ddd_is_indicate="false"
-                    order:ddd_label="@string/start_dic"/>
+                    <com.barisetech.www.workmanage.widget.LineView
+                        android:id="@+id/lind_area_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:showText="@{String.valueOf(pb.getType())}"
+                        order:ddd_content_enable="false"
+                        order:ddd_is_bottom_line="false"
+                        order:ddd_is_indicate="false"
+                        order:ddd_label="@string/type" />
 
-                <com.barisetech.www.workmanage.widget.LineView
-                    android:id="@+id/lind_area_end"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:showText="@{String.valueOf(pb.getEndDistance())}"
-                    order:ddd_content_enable="false"
-                    order:ddd_is_bottom_line="false"
-                    order:ddd_is_indicate="false"
-                    order:ddd_label="@string/end_dic"/>
+                    <com.barisetech.www.workmanage.widget.LineView
+                        android:id="@+id/lind_area_start"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:showText="@{String.valueOf(pb.getStartDistance())}"
+                        order:ddd_content_enable="false"
+                        order:ddd_is_bottom_line="false"
+                        order:ddd_is_indicate="false"
+                        order:ddd_label="@string/start_dic" />
 
-                <com.barisetech.www.workmanage.widget.LineView
-                    android:id="@+id/lind_area_remark"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:showText="@{pb.getRemark()}"
-                    order:ddd_content_enable="false"
-                    order:ddd_is_bottom_line="false"
-                    order:ddd_is_indicate="false"
-                    order:ddd_label="@string/pc_detail_remark"/>
-            </LinearLayout>
+                    <com.barisetech.www.workmanage.widget.LineView
+                        android:id="@+id/lind_area_end"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:showText="@{String.valueOf(pb.getEndDistance())}"
+                        order:ddd_content_enable="false"
+                        order:ddd_is_bottom_line="false"
+                        order:ddd_is_indicate="false"
+                        order:ddd_label="@string/end_dic" />
 
-        </android.support.v7.widget.CardView>
+                    <com.barisetech.www.workmanage.widget.LineView
+                        android:id="@+id/lind_area_remark"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:showText="@{pb.getRemark()}"
+                        order:ddd_content_enable="false"
+                        order:ddd_is_bottom_line="false"
+                        order:ddd_is_indicate="false"
+                        order:ddd_label="@string/pc_detail_remark" />
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
 
 
-        <Button
-            android:id="@+id/to_lind_modify"
-            android:layout_width="@dimen/dp_315"
-            android:layout_height="@dimen/dp_50"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/dp_30"
-            android:background="@drawable/shane_button_corners"
-            android:text="@string/modify_pipe_lind_area"
-            android:textColor="@color/white"
-            android:layout_marginBottom="@dimen/dp_45"
-            android:textSize="@dimen/sp_18"/>
-    </LinearLayout>
+            <Button
+                android:id="@+id/to_lind_modify"
+                android:layout_width="@dimen/dp_315"
+                android:layout_height="@dimen/dp_50"
+                android:layout_gravity="center"
+                android:background="@drawable/shane_button_corners"
+                android:text="@string/modify_pipe_lind_area"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_18" />
+        </LinearLayout>
     </LinearLayout>
 </layout>

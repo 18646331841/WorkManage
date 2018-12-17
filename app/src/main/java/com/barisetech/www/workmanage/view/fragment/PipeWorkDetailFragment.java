@@ -19,6 +19,7 @@ import com.barisetech.www.workmanage.bean.pipework.PipeWork;
 import com.barisetech.www.workmanage.bean.pipework.ReqAllPW;
 import com.barisetech.www.workmanage.databinding.FragmentPipeWorkDetailBinding;
 import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
+import com.barisetech.www.workmanage.utils.SystemUtil;
 import com.barisetech.www.workmanage.utils.TimeUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.viewmodel.PipeWorkViewModel;
@@ -59,7 +60,9 @@ public class PipeWorkDetailFragment extends BaseFragment {
         mBinding.setFragment(this);
         ToolbarInfo toolbarInfo = new ToolbarInfo();
         toolbarInfo.setTitle(getString(R.string.title_pipe_work_detail));
-        toolbarInfo.setOneText("修改");
+        if (SystemUtil.isAdmin()) {
+            toolbarInfo.setOneText("修改");
+        }
         observableToolbar.set(toolbarInfo);
         initView();
 

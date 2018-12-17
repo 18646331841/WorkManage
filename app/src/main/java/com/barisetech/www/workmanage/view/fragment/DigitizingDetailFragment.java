@@ -21,6 +21,7 @@ import com.barisetech.www.workmanage.bean.digitalizer.DigitalizerBean;
 import com.barisetech.www.workmanage.bean.pipetap.ReqModifyPipeTap;
 import com.barisetech.www.workmanage.databinding.FragmentDigitizingDetailBinding;
 import com.barisetech.www.workmanage.utils.SharedPreferencesUtil;
+import com.barisetech.www.workmanage.utils.SystemUtil;
 import com.barisetech.www.workmanage.utils.TimeUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.view.dialog.CommonDialogFragment;
@@ -66,10 +67,12 @@ public class DigitizingDetailFragment extends BaseFragment {
         mBinding.setFragment(this);
         ToolbarInfo toolbarInfo = new ToolbarInfo();
         toolbarInfo.setTitle(getString(R.string.digitizing_detail));
-        String role = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_ROLE, "");
-        if (role.equals(BaseConstant.ROLE_SUPER_ADMINS) || role.equals(BaseConstant.ROLE_ADMINS)) {
+        if (SystemUtil.isAdmin()) {
             toolbarInfo.setOneText("修改");
+        } else {
+            mBinding.addSite.setVisibility(View.GONE);
         }
+
         observableToolbar.set(toolbarInfo);
         initView();
 

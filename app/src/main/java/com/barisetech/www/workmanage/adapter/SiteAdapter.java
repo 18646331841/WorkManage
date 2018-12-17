@@ -121,12 +121,11 @@ public class SiteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
             }
         });
 
-        viewHolder.l_item.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
+        viewHolder.l_item.setOnLongClickListener(view -> {
+            if (null != mOnItemClickListener) {
                 mOnItemClickListener.onItemClick(view,position);
-                return true;
             }
+            return true;
         });
     }
 

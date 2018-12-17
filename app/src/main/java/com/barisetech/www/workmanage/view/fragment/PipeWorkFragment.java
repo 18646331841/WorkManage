@@ -30,6 +30,7 @@ import com.barisetech.www.workmanage.bean.pipework.ReqDeletePW;
 import com.barisetech.www.workmanage.databinding.FragmentPipeWorkBinding;
 import com.barisetech.www.workmanage.utils.DisplayUtil;
 import com.barisetech.www.workmanage.utils.LogUtil;
+import com.barisetech.www.workmanage.utils.SystemUtil;
 import com.barisetech.www.workmanage.utils.TimeUtil;
 import com.barisetech.www.workmanage.utils.ToastUtil;
 import com.barisetech.www.workmanage.viewmodel.PipeWorkViewModel;
@@ -93,7 +94,9 @@ public class PipeWorkFragment extends BaseFragment {
         mBinding.setFragment(this);
         ToolbarInfo toolbarInfo = new ToolbarInfo();
         toolbarInfo.setTitle(getString(R.string.title_pipe_work));
-        toolbarInfo.setOneText("新增");
+        if (SystemUtil.isAdmin()) {
+            toolbarInfo.setOneText("新增");
+        }
         observableToolbar.set(toolbarInfo);
 
         if (!EventBus.getDefault().isRegistered(this)){
@@ -143,32 +146,35 @@ public class PipeWorkFragment extends BaseFragment {
             }
         });
 
-        pipeWorkAdapter.setOnItemLongClickListener((view, position) -> {
-            PipeWork pipeWork = pipeWorkList.get(position);
-            QPopuWindow.getInstance(getActivity()).builder
-                    .bindView(view,0)
-                    .setPopupItemList(new String[]{"编辑管线工况", "删除管线工况"})
-                    .setPointers(mPoint.x,mPoint.y)
-                    .setOnPopuListItemClickListener(new QPopuWindow.OnPopuListItemClickListener() {
-                        @Override
-                        public void onPopuListItemClick(View anchorView, int anchorViewPosition, int p) {
-                            switch (p){
-                                case 0:
-                                    EventBusMessage eventBusMessage = new EventBusMessage(PipeWorkModifyFragment.TAG);
-                                    eventBusMessage.setArg1(pipeWork);
-                                    EventBus.getDefault().post(eventBusMessage);
-                                    break;
-                                case 1:
-                                    ReqDeletePW reqDeletePW = new ReqDeletePW();
-                                    reqDeletePW.setPipeWorkId(String.valueOf(pipeWork.Id));
+        if (SystemUtil.isAdmin()) {
 
-                                    EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_SHOW));
-                                    pipeWorkViewModel.reqDeletePw(reqDeletePW);
-                                    break;
+            pipeWorkAdapter.setOnItemLongClickListener((view, position) -> {
+                PipeWork pipeWork = pipeWorkList.get(position);
+                QPopuWindow.getInstance(getActivity()).builder
+                        .bindView(view,0)
+                        .setPopupItemList(new String[]{"编辑管线工况", "删除管线工况"})
+                        .setPointers(mPoint.x,mPoint.y)
+                        .setOnPopuListItemClickListener(new QPopuWindow.OnPopuListItemClickListener() {
+                            @Override
+                            public void onPopuListItemClick(View anchorView, int anchorViewPosition, int p) {
+                                switch (p){
+                                    case 0:
+                                        EventBusMessage eventBusMessage = new EventBusMessage(PipeWorkModifyFragment.TAG);
+                                        eventBusMessage.setArg1(pipeWork);
+                                        EventBus.getDefault().post(eventBusMessage);
+                                        break;
+                                    case 1:
+                                        ReqDeletePW reqDeletePW = new ReqDeletePW();
+                                        reqDeletePW.setPipeWorkId(String.valueOf(pipeWork.Id));
+
+                                        EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_SHOW));
+                                        pipeWorkViewModel.reqDeletePw(reqDeletePW);
+                                        break;
+                                }
                             }
-                        }
-                    }).show();
-        });
+                        }).show();
+            });
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
