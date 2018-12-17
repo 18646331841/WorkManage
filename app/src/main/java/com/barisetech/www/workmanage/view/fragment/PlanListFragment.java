@@ -99,9 +99,9 @@ public class PlanListFragment extends BaseFragment {
         mBinding.setFragment(this);
         ToolbarInfo toolbarInfo = new ToolbarInfo();
         toolbarInfo.setTitle(getString(R.string.title_plan_list));
-        if (SystemUtil.isAdmin()) {
-            toolbarInfo.setOneText(getString(R.string.plan_list_publish));
-        }
+//        if (SystemUtil.isAdmin()) {
+//            toolbarInfo.setOneText(getString(R.string.plan_list_publish));
+//        }
         observableToolbar.set(toolbarInfo);
 
         initView();
@@ -109,11 +109,11 @@ public class PlanListFragment extends BaseFragment {
     }
 
     private void initView() {
-        if (role.equals(BaseConstant.ROLE_ADMINS) || role.equals(BaseConstant.ROLE_SUPER_ADMINS)) {
-            mBinding.toolbar.tvOne.setOnClickListener(view -> {
-                EventBus.getDefault().post(new EventBusMessage(FirstPublishFragment.TAG));
-            });
-        }
+//        if (role.equals(BaseConstant.ROLE_ADMINS) || role.equals(BaseConstant.ROLE_SUPER_ADMINS)) {
+//            mBinding.toolbar.tvOne.setOnClickListener(view -> {
+//                EventBus.getDefault().post(new EventBusMessage(FirstPublishFragment.TAG));
+//            });
+//        }
 
         mBinding.tvFilter.setOnClickListener(view -> {
             transFilterLayout();

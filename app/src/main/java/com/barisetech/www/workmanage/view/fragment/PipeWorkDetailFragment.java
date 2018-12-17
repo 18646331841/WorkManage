@@ -60,9 +60,9 @@ public class PipeWorkDetailFragment extends BaseFragment {
         mBinding.setFragment(this);
         ToolbarInfo toolbarInfo = new ToolbarInfo();
         toolbarInfo.setTitle(getString(R.string.title_pipe_work_detail));
-        if (SystemUtil.isAdmin()) {
-            toolbarInfo.setOneText("修改");
-        }
+//        if (SystemUtil.isAdmin()) {
+//            toolbarInfo.setOneText("修改");
+//        }
         observableToolbar.set(toolbarInfo);
         initView();
 
@@ -80,11 +80,11 @@ public class PipeWorkDetailFragment extends BaseFragment {
             mBinding.originCard.setVisibility(View.GONE);
             mBinding.slaveCard.setVisibility(View.GONE);
         }
-        mBinding.toolbar.tvOne.setOnClickListener(view -> {
-            EventBusMessage eventBusMessage = new EventBusMessage(PipeWorkModifyFragment.TAG);
-            eventBusMessage.setArg1(curPipeWork);
-            EventBus.getDefault().post(eventBusMessage);
-        });
+//        mBinding.toolbar.tvOne.setOnClickListener(view -> {
+//            EventBusMessage eventBusMessage = new EventBusMessage(PipeWorkModifyFragment.TAG);
+//            eventBusMessage.setArg1(curPipeWork);
+//            EventBus.getDefault().post(eventBusMessage);
+//        });
     }
 
     @Override

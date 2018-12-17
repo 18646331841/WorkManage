@@ -89,9 +89,9 @@ public class SiteFragment extends BaseFragment implements View.OnClickListener{
         mBinding.setFragment(this);
         ToolbarInfo toolbarInfo = new ToolbarInfo();
         toolbarInfo.setTitle(getString(R.string.tv_site));
-        if (SystemUtil.isAdmin()) {
-            toolbarInfo.setOneText(getString(R.string.add_site));
-        }
+//        if (SystemUtil.isAdmin()) {
+//            toolbarInfo.setOneText(getString(R.string.add_site));
+//        }
         observableToolbar.set(toolbarInfo);
         if (!EventBus.getDefault().isRegistered(this)){
             EventBus.getDefault().register(this);
@@ -147,42 +147,42 @@ public class SiteFragment extends BaseFragment implements View.OnClickListener{
 
         });
 
-        if (SystemUtil.isAdmin()) {
-
-            siteAdapter.setOnItemLongClickListener((view, position) -> {
-                QPopuWindow.getInstance(getActivity()).builder
-                        .bindView(view,0)
-                        .setPopupItemList(new String[]{"添加管线", "编辑站点", "删除站点"})
-                        .setPointers(mPoint.x,mPoint.y)
-                        .setOnPopuListItemClickListener(new QPopuWindow.OnPopuListItemClickListener() {
-                            @Override
-                            public void onPopuListItemClick(View anchorView, int anchorViewPosition, int p) {
-                                switch (p){
-                                    case 0:
-//                                    mBinding.longMenu.setVisibility(View.VISIBLE);
-//                                    mBinding.selectAll.setText("全选");
-//                                    flag = false;
-//                                    siteAdapter.setFlag(siteAdapter.SHOW_ALL);
-//                                    loadMoreWrapper.notifyDataSetChanged();
-                                        EventBusMessage addPipe = new EventBusMessage(PipeAddFragment.TAG);
-                                        EventBus.getDefault().post(addPipe);
-                                        break;
-                                    case 1:
-                                        EventBusMessage modify = new EventBusMessage(ModifySiteFragment.TAG);
-                                        modify.setArg1(siteList.get(position));
-                                        EventBus.getDefault().post(modify);
-                                        break;
-                                    case 2:
-                                        ReqDelSiteInfo reqDelSiteInfo = new ReqDelSiteInfo();
-                                        SiteBean siteBean = siteList.get(position);
-                                        reqDelSiteInfo.setSiteId(String.valueOf(siteBean.SiteId));
-                                        siteViewModel.reqDelSite(reqDelSiteInfo);
-                                        break;
-                                }
-                            }
-                        }).show();
-            });
-        }
+//        if (SystemUtil.isAdmin()) {
+//
+//            siteAdapter.setOnItemLongClickListener((view, position) -> {
+//                QPopuWindow.getInstance(getActivity()).builder
+//                        .bindView(view,0)
+//                        .setPopupItemList(new String[]{"添加管线", "编辑站点", "删除站点"})
+//                        .setPointers(mPoint.x,mPoint.y)
+//                        .setOnPopuListItemClickListener(new QPopuWindow.OnPopuListItemClickListener() {
+//                            @Override
+//                            public void onPopuListItemClick(View anchorView, int anchorViewPosition, int p) {
+//                                switch (p){
+//                                    case 0:
+////                                    mBinding.longMenu.setVisibility(View.VISIBLE);
+////                                    mBinding.selectAll.setText("全选");
+////                                    flag = false;
+////                                    siteAdapter.setFlag(siteAdapter.SHOW_ALL);
+////                                    loadMoreWrapper.notifyDataSetChanged();
+//                                        EventBusMessage addPipe = new EventBusMessage(PipeAddFragment.TAG);
+//                                        EventBus.getDefault().post(addPipe);
+//                                        break;
+//                                    case 1:
+//                                        EventBusMessage modify = new EventBusMessage(ModifySiteFragment.TAG);
+//                                        modify.setArg1(siteList.get(position));
+//                                        EventBus.getDefault().post(modify);
+//                                        break;
+//                                    case 2:
+//                                        ReqDelSiteInfo reqDelSiteInfo = new ReqDelSiteInfo();
+//                                        SiteBean siteBean = siteList.get(position);
+//                                        reqDelSiteInfo.setSiteId(String.valueOf(siteBean.SiteId));
+//                                        siteViewModel.reqDelSite(reqDelSiteInfo);
+//                                        break;
+//                                }
+//                            }
+//                        }).show();
+//            });
+//        }
     }
 
     @Override

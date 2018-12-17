@@ -83,9 +83,9 @@ public class PipeCollectionFragment extends BaseFragment {
         mBinding.setFragment(this);
         ToolbarInfo toolbarInfo = new ToolbarInfo();
         toolbarInfo.setTitle(getString(R.string.title_pipe_collection));
-        if (SystemUtil.isAdmin()) {
-            toolbarInfo.setTwoText("新增");
-        }
+//        if (SystemUtil.isAdmin()) {
+//            toolbarInfo.setTwoText("新增");
+//        }
         observableToolbar.set(toolbarInfo);
 
         if (!EventBus.getDefault().isRegistered(this)){
@@ -100,10 +100,10 @@ public class PipeCollectionFragment extends BaseFragment {
     private void initView() {
         initRecyclerView();
 
-        mBinding.toolbar.tvTwo.setOnClickListener(view -> {
-            EventBusMessage eventBusMessage = new EventBusMessage(PipeCollectionAddFragment.TAG);
-            EventBus.getDefault().post(eventBusMessage);
-        });
+//        mBinding.toolbar.tvTwo.setOnClickListener(view -> {
+//            EventBusMessage eventBusMessage = new EventBusMessage(PipeCollectionAddFragment.TAG);
+//            EventBus.getDefault().post(eventBusMessage);
+//        });
     }
 
     private void initRecyclerView() {
@@ -135,33 +135,33 @@ public class PipeCollectionFragment extends BaseFragment {
             }
         });
 
-        if (SystemUtil.isAdmin()) {
-
-            pipeCollectionAdapter.setOnItemLongClickListener((view, position) -> {
-                PipeCollections pipeCollection = pipeCollectionsList.get(position);
-                QPopuWindow.getInstance(getActivity()).builder
-                        .bindView(view,0)
-                        .setPopupItemList(new String[]{"编辑管线集合", "删除管线集合"})
-                        .setPointers(mPoint.x,mPoint.y)
-                        .setOnPopuListItemClickListener(new QPopuWindow.OnPopuListItemClickListener() {
-                            @Override
-                            public void onPopuListItemClick(View anchorView, int anchorViewPosition, int p) {
-                                switch (p){
-                                    case 0:
-                                        EventBusMessage eventBusMessage = new EventBusMessage(PipeCollectionModifyFragment.TAG);
-                                        eventBusMessage.setArg1(pipeCollection);
-                                        EventBus.getDefault().post(eventBusMessage);
-                                        break;
-                                    case 1:
-                                        ReqDeletePc reqDeletePc = new ReqDeletePc();
-                                        reqDeletePc.setPipeCollectId(pipeCollection.getId());
-                                        pipeCollectionsViewModel.reqDeletePc(reqDeletePc);
-                                        break;
-                                }
-                            }
-                        }).show();
-            });
-        }
+//        if (SystemUtil.isAdmin()) {
+//
+//            pipeCollectionAdapter.setOnItemLongClickListener((view, position) -> {
+//                PipeCollections pipeCollection = pipeCollectionsList.get(position);
+//                QPopuWindow.getInstance(getActivity()).builder
+//                        .bindView(view,0)
+//                        .setPopupItemList(new String[]{"编辑管线集合", "删除管线集合"})
+//                        .setPointers(mPoint.x,mPoint.y)
+//                        .setOnPopuListItemClickListener(new QPopuWindow.OnPopuListItemClickListener() {
+//                            @Override
+//                            public void onPopuListItemClick(View anchorView, int anchorViewPosition, int p) {
+//                                switch (p){
+//                                    case 0:
+//                                        EventBusMessage eventBusMessage = new EventBusMessage(PipeCollectionModifyFragment.TAG);
+//                                        eventBusMessage.setArg1(pipeCollection);
+//                                        EventBus.getDefault().post(eventBusMessage);
+//                                        break;
+//                                    case 1:
+//                                        ReqDeletePc reqDeletePc = new ReqDeletePc();
+//                                        reqDeletePc.setPipeCollectId(pipeCollection.getId());
+//                                        pipeCollectionsViewModel.reqDeletePc(reqDeletePc);
+//                                        break;
+//                                }
+//                            }
+//                        }).show();
+//            });
+//        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

@@ -121,58 +121,58 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
             MessageInfo messageInfo = curMessageList.get(position);
             if (messageInfo instanceof AlarmInfo) {
                 AlarmInfo alarmInfo = (AlarmInfo) messageInfo;
-                if (SystemUtil.isAdmin()) {
-                    //管理员用户界面
-                    floatMenu.inflate(R.layout.layout_menu_warn);
-                    floatMenu.show(mpoint);
-                    floatMenu.setOnItemClickListener((v, position1) -> {
-                        switch (position1) {
-                            case 0:
-                                curAlarmInfo = alarmInfo;
-                                EventBusMessage mapMessage = new EventBusMessage(MapFragment.TAG);
-                                mapMessage.setArg1(String.valueOf(curAlarmInfo.getPipeId()));
-                                EventBus.getDefault().post(mapMessage);
-                                break;
-                            case 1:
-                                curAlarmInfo = alarmInfo;
-                                EventBus.getDefault().post(new EventBusMessage(BaseConstant
-                                        .PROGRESS_SHOW));
-                                alarmViewModel.reqLiftAlarm(curAlarmInfo.getKey());
-                                break;
-                            case 2:
-                                curAlarmInfo = alarmInfo;
-                                EventBusMessage pipeMessage = new EventBusMessage
-                                        (PipeDetailFragment.TAG);
-                                PipeInfo pipeInfo = new PipeInfo();
-                                pipeInfo.PipeId = curAlarmInfo.getPipeId();
-                                pipeInfo.Name = BaseConstant.DATA_REQUEST_NAME;
-                                pipeMessage.setArg1(pipeInfo);
-                                EventBus.getDefault().post(pipeMessage);
-                                break;
-                            case 3:
-                                curAlarmInfo = alarmInfo;
-                                EventBusMessage waveFormMessage = new EventBusMessage
-                                        (WaveFormFragment.TAG);
-                                waveFormMessage.setArg1(curAlarmInfo.getPipeId());
-                                EventBus.getDefault().post(waveFormMessage);
-                                break;
-                            case 4:
-                                EventBusMessage eventBusMessage = new EventBusMessage
-                                        (AlarmAnalysisFragment.TAG);
-                                eventBusMessage.setArg1(alarmInfo);
-                                EventBus.getDefault().post(eventBusMessage);
-                                break;
-                            case 5:
-                                mBinding.mulitpleMenu.setVisibility(View.VISIBLE);
-                                mBinding.tvNewMsg.setVisibility(View.GONE);
-                                messageAdapter.setFlag(MessageAdapter.SHOW_ALL);
-                                mBinding.allSelectTv.setText("全选");
-                                flag = false;
-                                messageAdapter.notifyDataSetChanged();
-                                break;
-                        }
-                    });
-                } else {
+//                if (SystemUtil.isAdmin()) {
+//                    //管理员用户界面
+//                    floatMenu.inflate(R.layout.layout_menu_warn);
+//                    floatMenu.show(mpoint);
+//                    floatMenu.setOnItemClickListener((v, position1) -> {
+//                        switch (position1) {
+//                            case 0:
+//                                curAlarmInfo = alarmInfo;
+//                                EventBusMessage mapMessage = new EventBusMessage(MapFragment.TAG);
+//                                mapMessage.setArg1(String.valueOf(curAlarmInfo.getPipeId()));
+//                                EventBus.getDefault().post(mapMessage);
+//                                break;
+//                            case 1:
+//                                curAlarmInfo = alarmInfo;
+//                                EventBus.getDefault().post(new EventBusMessage(BaseConstant
+//                                        .PROGRESS_SHOW));
+//                                alarmViewModel.reqLiftAlarm(curAlarmInfo.getKey());
+//                                break;
+//                            case 2:
+//                                curAlarmInfo = alarmInfo;
+//                                EventBusMessage pipeMessage = new EventBusMessage
+//                                        (PipeDetailFragment.TAG);
+//                                PipeInfo pipeInfo = new PipeInfo();
+//                                pipeInfo.PipeId = curAlarmInfo.getPipeId();
+//                                pipeInfo.Name = BaseConstant.DATA_REQUEST_NAME;
+//                                pipeMessage.setArg1(pipeInfo);
+//                                EventBus.getDefault().post(pipeMessage);
+//                                break;
+//                            case 3:
+//                                curAlarmInfo = alarmInfo;
+//                                EventBusMessage waveFormMessage = new EventBusMessage
+//                                        (WaveFormFragment.TAG);
+//                                waveFormMessage.setArg1(curAlarmInfo.getPipeId());
+//                                EventBus.getDefault().post(waveFormMessage);
+//                                break;
+//                            case 4:
+//                                EventBusMessage eventBusMessage = new EventBusMessage
+//                                        (AlarmAnalysisFragment.TAG);
+//                                eventBusMessage.setArg1(alarmInfo);
+//                                EventBus.getDefault().post(eventBusMessage);
+//                                break;
+//                            case 5:
+//                                mBinding.mulitpleMenu.setVisibility(View.VISIBLE);
+//                                mBinding.tvNewMsg.setVisibility(View.GONE);
+//                                messageAdapter.setFlag(MessageAdapter.SHOW_ALL);
+//                                mBinding.allSelectTv.setText("全选");
+//                                flag = false;
+//                                messageAdapter.notifyDataSetChanged();
+//                                break;
+//                        }
+//                    });
+//                } else {
                     //普通用户界面
                     floatMenu.inflate(R.layout.layout_menu_warn_user);
                     floatMenu.show(mpoint);
@@ -217,7 +217,7 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
                                 break;
                         }
                     });
-                }
+//                }
             } else if (messageInfo instanceof IncidentInfo) {
                 IncidentInfo incidentInfo = (IncidentInfo) messageInfo;
                 floatMenu.inflate(R.layout.layout_menu_incident);

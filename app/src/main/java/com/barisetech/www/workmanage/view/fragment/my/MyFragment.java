@@ -129,12 +129,12 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
                 EventBus.getDefault().post(new EventBusMessage(EventTypeFragment.TAG));
                 break;
             case R.id.item_authorization_manage:
-                if (SystemUtil.isAdmin()) {
-                    EventBusMessage authList = new EventBusMessage(AuthListFragment.TAG);
-                    authList.setArg1(user);
-                    EventBus.getDefault().post(authList);
-                    clearCount();
-                }
+//                if (SystemUtil.isAdmin()) {
+//                    EventBusMessage authList = new EventBusMessage(AuthListFragment.TAG);
+//                    authList.setArg1(user);
+//                    EventBus.getDefault().post(authList);
+//                    clearCount();
+//                }
                 break;
             case R.id.item_not_disturb:
                 EventBus.getDefault().post(new EventBusMessage(NotDisturbFragment.TAG));

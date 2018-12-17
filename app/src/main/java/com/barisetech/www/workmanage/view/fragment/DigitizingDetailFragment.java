@@ -67,11 +67,11 @@ public class DigitizingDetailFragment extends BaseFragment {
         mBinding.setFragment(this);
         ToolbarInfo toolbarInfo = new ToolbarInfo();
         toolbarInfo.setTitle(getString(R.string.digitizing_detail));
-        if (SystemUtil.isAdmin()) {
-            toolbarInfo.setOneText("修改");
-        } else {
+//        if (SystemUtil.isAdmin()) {
+//            toolbarInfo.setOneText("修改");
+//        } else {
             mBinding.addSite.setVisibility(View.GONE);
-        }
+//        }
 
         observableToolbar.set(toolbarInfo);
         initView();
@@ -88,17 +88,17 @@ public class DigitizingDetailFragment extends BaseFragment {
         } else {
             mBinding.seniorCard.setVisibility(View.GONE);
         }
-        mBinding.toolbar.tvOne.setOnClickListener(view -> {
-            EventBusMessage eventBusMessage = new EventBusMessage(DigitizingModifyFragment.TAG);
-            eventBusMessage.setArg1(digitalizerBean);
-            EventBus.getDefault().post(eventBusMessage);
-        });
+//        mBinding.toolbar.tvOne.setOnClickListener(view -> {
+//            EventBusMessage eventBusMessage = new EventBusMessage(DigitizingModifyFragment.TAG);
+//            eventBusMessage.setArg1(digitalizerBean);
+//            EventBus.getDefault().post(eventBusMessage);
+//        });
 
-        mBinding.addSite.setOnClickListener(view -> {
-            EventBusMessage eventBusMessage = new EventBusMessage(AddSiteFragment.TAG);
-            eventBusMessage.setArg1(String.valueOf(digitalizerBean.ID));
-            EventBus.getDefault().post(eventBusMessage);
-        });
+//        mBinding.addSite.setOnClickListener(view -> {
+//            EventBusMessage eventBusMessage = new EventBusMessage(AddSiteFragment.TAG);
+//            eventBusMessage.setArg1(String.valueOf(digitalizerBean.ID));
+//            EventBus.getDefault().post(eventBusMessage);
+//        });
 
         mBinding.openPipeTab.setOnClickListener(view -> {
             showDialog("申请阀门", ((radioGroup, i) -> {

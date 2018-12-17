@@ -59,9 +59,9 @@ public class PipeCollectionDetailFragment extends BaseFragment {
     }
 
     private void initView() {
-        if (!SystemUtil.isAdmin()) {
+//        if (!SystemUtil.isAdmin()) {
             mBinding.modifyPipe.setVisibility(View.GONE);
-        }
+//        }
 
         mBinding.setPc(curPipeCollection);
 

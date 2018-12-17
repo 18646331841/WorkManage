@@ -63,20 +63,20 @@ public class PipeLindAreaDetailFragment extends BaseFragment{
     }
 
     private void initView() {
-        if (!SystemUtil.isAdmin()) {
+//        if (!SystemUtil.isAdmin()) {
             mBinding.toLindModify.setVisibility(View.GONE);
-        }
+//        }
 
         mBinding.setPb(pipeLindAreaInfo);
 
-        mBinding.toLindModify.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EventBusMessage eventBusMessage = new EventBusMessage(PipeLindAreaModifyFragment.TAG);
-                eventBusMessage.setArg1(pipeLindAreaInfo);
-                EventBus.getDefault().post(eventBusMessage);
-            }
-        });
+//        mBinding.toLindModify.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                EventBusMessage eventBusMessage = new EventBusMessage(PipeLindAreaModifyFragment.TAG);
+//                eventBusMessage.setArg1(pipeLindAreaInfo);
+//                EventBus.getDefault().post(eventBusMessage);
+//            }
+//        });
     }
 
     @Override

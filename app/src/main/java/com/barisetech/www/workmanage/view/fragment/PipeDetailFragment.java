@@ -60,14 +60,14 @@ public class PipeDetailFragment extends BaseFragment {
         mBinding.setFragment(this);
         ToolbarInfo toolbarInfo = new ToolbarInfo();
         toolbarInfo.setTitle(getString(R.string.title_pipe_detail));
-        if (SystemUtil.isAdmin()) {
-            toolbarInfo.setTwoText(getString(R.string.pipe_detail_wave));
-            toolbarInfo.setOneText(getString(R.string.pipe_detail_modify));
-        } else {
+//        if (SystemUtil.isAdmin()) {
+//            toolbarInfo.setTwoText(getString(R.string.pipe_detail_wave));
+//            toolbarInfo.setOneText(getString(R.string.pipe_detail_modify));
+//        } else {
             toolbarInfo.setOneText(getString(R.string.pipe_detail_wave));
             mBinding.buildPb.setVisibility(View.GONE);
             mBinding.buildPw.setVisibility(View.GONE);
-        }
+//        }
         observableToolbar.set(toolbarInfo);
         initView();
 
@@ -77,26 +77,26 @@ public class PipeDetailFragment extends BaseFragment {
     private void initView() {
         mBinding.setPipe(pipeInfo);
 
-        if (SystemUtil.isAdmin()) {
-
+//        if (SystemUtil.isAdmin()) {
+//
+//            mBinding.toolbar.tvOne.setOnClickListener(view -> {
+//                EventBusMessage eventBusMessage = new EventBusMessage(PipeModifyFragment.TAG);
+//                eventBusMessage.setArg1(pipeInfo);
+//                EventBus.getDefault().post(eventBusMessage);
+//            });
+//
+//            mBinding.toolbar.tvTwo.setOnClickListener(view -> {
+//                EventBusMessage waveFormMessage = new EventBusMessage(WaveFormFragment.TAG);
+//                waveFormMessage.setArg1(pipeInfo.PipeId);
+//                EventBus.getDefault().post(waveFormMessage);
+//            });
+//        } else {
             mBinding.toolbar.tvOne.setOnClickListener(view -> {
-                EventBusMessage eventBusMessage = new EventBusMessage(PipeModifyFragment.TAG);
-                eventBusMessage.setArg1(pipeInfo);
-                EventBus.getDefault().post(eventBusMessage);
-            });
-
-            mBinding.toolbar.tvTwo.setOnClickListener(view -> {
                 EventBusMessage waveFormMessage = new EventBusMessage(WaveFormFragment.TAG);
                 waveFormMessage.setArg1(pipeInfo.PipeId);
                 EventBus.getDefault().post(waveFormMessage);
             });
-        } else {
-            mBinding.toolbar.tvOne.setOnClickListener(view -> {
-                EventBusMessage waveFormMessage = new EventBusMessage(WaveFormFragment.TAG);
-                waveFormMessage.setArg1(pipeInfo.PipeId);
-                EventBus.getDefault().post(waveFormMessage);
-            });
-        }
+//        }
 
         mBinding.toPw.setOnClickListener(view -> {
             EventBusMessage pipeMessage = new EventBusMessage(PipeWorkDetailFragment.TAG);
@@ -114,16 +114,16 @@ public class PipeDetailFragment extends BaseFragment {
             pipeMessage.setArg1(pipeLindAreaInfo);
             EventBus.getDefault().post(pipeMessage);
         });
-        mBinding.buildPw.setOnClickListener(view -> {
-            EventBusMessage pipeMessage = new EventBusMessage(PipeWorkAddFragment.TAG);
-            pipeMessage.setArg1(pipeInfo.PipeId);
-            EventBus.getDefault().post(pipeMessage);
-        });
-        mBinding.buildPb.setOnClickListener(view -> {
-            EventBusMessage pipeMessage = new EventBusMessage(PipeLindAreaAddFragment.TAG);
-            pipeMessage.setArg1(pipeInfo.PipeId);
-            EventBus.getDefault().post(pipeMessage);
-        });
+//        mBinding.buildPw.setOnClickListener(view -> {
+//            EventBusMessage pipeMessage = new EventBusMessage(PipeWorkAddFragment.TAG);
+//            pipeMessage.setArg1(pipeInfo.PipeId);
+//            EventBus.getDefault().post(pipeMessage);
+//        });
+//        mBinding.buildPb.setOnClickListener(view -> {
+//            EventBusMessage pipeMessage = new EventBusMessage(PipeLindAreaAddFragment.TAG);
+//            pipeMessage.setArg1(pipeInfo.PipeId);
+//            EventBus.getDefault().post(pipeMessage);
+//        });
     }
 
     @Override

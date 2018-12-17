@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">管线助手标准版</string>
+    <string name="app_name">管线助手用户版</string>
     <string name="title_message">消息</string>
     <string name="message_mission">巡线计划</string>
     <string name="title_manage">管理</string>

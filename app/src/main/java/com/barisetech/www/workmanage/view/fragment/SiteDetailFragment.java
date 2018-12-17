@@ -59,11 +59,11 @@ public class SiteDetailFragment extends BaseFragment {
         mBinding.setFragment(this);
         ToolbarInfo toolbarInfo = new ToolbarInfo();
         toolbarInfo.setTitle(getString(R.string.site_detail));
-        if (SystemUtil.isAdmin()) {
-            toolbarInfo.setOneText(getString(R.string.modify_site));
-        } else {
+//        if (SystemUtil.isAdmin()) {
+//            toolbarInfo.setOneText(getString(R.string.modify_site));
+//        } else {
             mBinding.addPipe.setVisibility(View.GONE);
-        }
+//        }
 
         observableToolbar.set(toolbarInfo);
         initView();
@@ -74,16 +74,16 @@ public class SiteDetailFragment extends BaseFragment {
     private void initView() {
         mBinding.setSiteBean(siteBean);
 
-        mBinding.toolbar.tvOne.setOnClickListener(view -> {
-            EventBusMessage eventBusMessage = new EventBusMessage(ModifySiteFragment.TAG);
-            eventBusMessage.setArg1(siteBean);
-            EventBus.getDefault().post(eventBusMessage);
-        });
+//        mBinding.toolbar.tvOne.setOnClickListener(view -> {
+//            EventBusMessage eventBusMessage = new EventBusMessage(ModifySiteFragment.TAG);
+//            eventBusMessage.setArg1(siteBean);
+//            EventBus.getDefault().post(eventBusMessage);
+//        });
 
-        mBinding.addPipe.setOnClickListener(view -> {
-            EventBusMessage eventBusMessage = new EventBusMessage(PipeAddFragment.TAG);
-            EventBus.getDefault().post(eventBusMessage);
-        });
+//        mBinding.addPipe.setOnClickListener(view -> {
+//            EventBusMessage eventBusMessage = new EventBusMessage(PipeAddFragment.TAG);
+//            EventBus.getDefault().post(eventBusMessage);
+//        });
     }
 
     @Override

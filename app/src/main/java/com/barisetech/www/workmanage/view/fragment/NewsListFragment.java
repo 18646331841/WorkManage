@@ -87,9 +87,9 @@ public class NewsListFragment extends BaseFragment {
         mBinding.setFragment(this);
         ToolbarInfo toolbarInfo = new ToolbarInfo();
         toolbarInfo.setTitle(getString(R.string.title_news));
-        if (SystemUtil.isAdmin()) {
-            toolbarInfo.setTwoText(getString(R.string.news_release));
-        }
+//        if (SystemUtil.isAdmin()) {
+//            toolbarInfo.setTwoText(getString(R.string.news_release));
+//        }
         observableToolbar.set(toolbarInfo);
 
         initView();
@@ -107,9 +107,9 @@ public class NewsListFragment extends BaseFragment {
     }
 
     private void initView() {
-        mBinding.toolbar.tvTwo.setOnClickListener(view -> {
-            EventBus.getDefault().post(new EventBusMessage(NewsAddFragment.TAG));
-        });
+//        mBinding.toolbar.tvTwo.setOnClickListener(view -> {
+//            EventBus.getDefault().post(new EventBusMessage(NewsAddFragment.TAG));
+//        });
 
         mBinding.newsListAll.setOnClickListener(view -> {
             RadioButton radioButton = (RadioButton) view;

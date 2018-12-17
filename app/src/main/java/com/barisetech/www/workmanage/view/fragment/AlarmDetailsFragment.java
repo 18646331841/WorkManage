@@ -79,9 +79,9 @@ public class AlarmDetailsFragment extends BaseFragment implements View.OnClickLi
     }
 
     private void initView() {
-        if (!SystemUtil.isAdmin()) {
+//        if (!SystemUtil.isAdmin()) {
             mBinding.buildAlarmAnalysisBt.setVisibility(View.GONE);
-        }
+//        }
 
         alarmInfo = new ObservableField<>();
         alarmInfo.set(curAlarmInfo);
