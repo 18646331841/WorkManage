@@ -219,7 +219,7 @@ public class PipeModifyFragment extends BaseFragment {
 //                curPipeInfo.PipeCollectID = null;
 //            }
 
-            curPipeInfo.Length = Integer.valueOf(length);
+            curPipeInfo.Length = Double.valueOf(length);
             curPipeInfo.PipeMaterial = materail;
 //            curPipeInfo.Company = company;
             curPipeInfo.Speed = Integer.valueOf(speed);
@@ -420,7 +420,7 @@ public class PipeModifyFragment extends BaseFragment {
                                 PipeCollections pipeCollection = pipeCollections.get(i);
                                 pcName.add(pipeCollection.getName());
                                 if (curPipeInfo != null && curPipeInfo.PipeCollectID != null) {
-                                    if (pipeCollection.getId().equals(curPipeInfo.PipeCollectID.getId())) {
+                                    if (pipeCollection.getId() == curPipeInfo.PipeCollectID.getId()) {
                                         selectIndex = i;
                                     }
                                 }

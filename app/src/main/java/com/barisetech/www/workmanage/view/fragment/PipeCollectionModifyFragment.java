@@ -74,9 +74,9 @@ public class PipeCollectionModifyFragment extends BaseFragment{
     }
 
     private void initView() {
-        mBinding.pcId.setText(pipeCollections.getId());
+        mBinding.pcId.setText(String.valueOf(pipeCollections.getId()));
         mBinding.pcName.setText(pipeCollections.getName());
-        mBinding.pcSortId.setText(pipeCollections.getSortID());
+        mBinding.pcSortId.setText(String.valueOf(pipeCollections.getSortID()));
         mBinding.pcManager.setText(pipeCollections.getManager());
         mBinding.pcPhone.setText(pipeCollections.getTelephone());
         mBinding.pcEmail.setText(pipeCollections.getEmail());
@@ -102,7 +102,7 @@ public class PipeCollectionModifyFragment extends BaseFragment{
             reqAddPC.setOperation("0");
 //            pipeCollections.setId(id);
             pipeCollections.setName(name);
-            pipeCollections.setSortID(sortId);
+            pipeCollections.setSortID(Integer.valueOf(sortId));
             pipeCollections.setManager(manager);
             pipeCollections.setTelephone(phone);
             pipeCollections.setEmail(email);
@@ -121,7 +121,7 @@ public class PipeCollectionModifyFragment extends BaseFragment{
             closeDisposable();
 
             ReqDeletePc reqDeletePc = new ReqDeletePc();
-            reqDeletePc.setPipeCollectId(pipeCollections.getId());
+            reqDeletePc.setPipeCollectId(String.valueOf(pipeCollections.getId()));
 
             EventBus.getDefault().post(new EventBusMessage(BaseConstant.PROGRESS_SHOW));
             curDisposable = pipeCollectionsViewModel.reqDeletePc(reqDeletePc);

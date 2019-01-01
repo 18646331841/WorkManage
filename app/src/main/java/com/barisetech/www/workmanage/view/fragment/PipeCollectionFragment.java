@@ -154,7 +154,7 @@ public class PipeCollectionFragment extends BaseFragment {
                                         break;
                                     case 1:
                                         ReqDeletePc reqDeletePc = new ReqDeletePc();
-                                        reqDeletePc.setPipeCollectId(pipeCollection.getId());
+                                        reqDeletePc.setPipeCollectId(String.valueOf(pipeCollection.getId()));
                                         pipeCollectionsViewModel.reqDeletePc(reqDeletePc);
                                         break;
                                 }

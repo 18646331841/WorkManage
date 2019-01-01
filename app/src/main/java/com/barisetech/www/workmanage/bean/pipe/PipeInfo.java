@@ -63,7 +63,7 @@ public class PipeInfo implements Serializable {
 
     public int PipeId;
     public String Name;
-    public int Length;
+    public double Length;
     public String Company;
     public String PipeMaterial;
     public int Speed;

@@ -23,9 +23,9 @@ public class PipeCollections implements Serializable{
      * PipeCollects : []
      */
 
-    private String Id;
+    private int Id;
     private String Name;
-    private String SortID;
+    private int SortID;
     private String Manager;
     private String Telephone;
     private String Email;
@@ -37,28 +37,12 @@ public class PipeCollections implements Serializable{
         view.setText(s);
     }
 
-    public String getId() {
-        return Id;
-    }
-
-    public void setId(String Id) {
-        this.Id = Id;
-    }
-
     public String getName() {
         return Name;
     }
 
     public void setName(String Name) {
         this.Name = Name;
-    }
-
-    public String getSortID() {
-        return SortID;
-    }
-
-    public void setSortID(String SortID) {
-        this.SortID = SortID;
     }
 
     public String getManager() {
@@ -99,5 +83,21 @@ public class PipeCollections implements Serializable{
 
     public void setPipeCollects(List<PipeInfo> PipeCollects) {
         this.PipeCollects = PipeCollects;
+    }
+
+    public int getId() {
+        return Id;
+    }
+
+    public void setId(int id) {
+        Id = id;
+    }
+
+    public int getSortID() {
+        return SortID;
+    }
+
+    public void setSortID(int sortID) {
+        SortID = sortID;
     }
 }
