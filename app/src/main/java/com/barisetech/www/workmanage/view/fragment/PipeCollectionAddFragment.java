@@ -69,9 +69,9 @@ public class PipeCollectionAddFragment extends BaseFragment{
             ReqAddPC reqAddPC = new ReqAddPC();
             reqAddPC.setOperation("1");
             PipeCollections pipeCollections = new PipeCollections();
-            pipeCollections.setId(id);
+            pipeCollections.setId(Integer.valueOf(id));
             pipeCollections.setName(name);
-            pipeCollections.setSortID(sortId);
+            pipeCollections.setSortID(Integer.valueOf(sortId));
             pipeCollections.setManager(manager);
             pipeCollections.setTelephone(phone);
             pipeCollections.setEmail(email);
