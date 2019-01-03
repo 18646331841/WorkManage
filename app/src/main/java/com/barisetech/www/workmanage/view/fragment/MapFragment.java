@@ -419,9 +419,11 @@ public class MapFragment extends BaseFragment {
 
     private void getPipeInfo(int fromIndex, int toIndex) {
         ReqAllPipe reqAllPipe = new ReqAllPipe();
-        reqAllPipe.setPipeId("0");
-        reqAllPipe.setStartIndex(String.valueOf(fromIndex));
-        reqAllPipe.setNumberOfRecords(String.valueOf(toIndex));
+        reqAllPipe.setPipeId("");
+        reqAllPipe.setStartIndex("0");
+        reqAllPipe.setNumberOfRecords("0");
+//        reqAllPipe.setStartIndex(String.valueOf(fromIndex));
+//        reqAllPipe.setNumberOfRecords(String.valueOf(toIndex));
         pipeViewModel.reqAllPipe(reqAllPipe);
     }
 
@@ -649,9 +651,11 @@ public class MapFragment extends BaseFragment {
                 if (this.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
                     if (null != integer && integer > 0) {
                         ReqAllPc reqAllPc = new ReqAllPc();
-                        reqAllPc.setStartIndex(String.valueOf(0));
-                        reqAllPc.setNumberOfRecords(String.valueOf(integer));
-                        reqAllPc.setPipeCollectionId("0");
+                        reqAllPc.setStartIndex("0");
+                        reqAllPc.setNumberOfRecords("0");
+//                        reqAllPc.setStartIndex(String.valueOf(0));
+//                        reqAllPc.setNumberOfRecords(String.valueOf(integer - 1));
+                        reqAllPc.setPipeCollectionId("");
 
                         pipeCollectionsViewModel.reqAllPc(reqAllPc);
                     } else {
