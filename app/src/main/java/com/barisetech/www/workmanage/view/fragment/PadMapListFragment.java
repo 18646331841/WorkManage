@@ -173,9 +173,11 @@ public class PadMapListFragment extends BaseFragment {
                 if (this.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
                     if (null != integer && integer > 0) {
                         ReqAllPc reqAllPc = new ReqAllPc();
-                        reqAllPc.setStartIndex(String.valueOf(0));
-                        reqAllPc.setNumberOfRecords(String.valueOf(integer));
-                        reqAllPc.setPipeCollectionId("0");
+                        reqAllPc.setStartIndex("0");
+                        reqAllPc.setNumberOfRecords("0");
+//                        reqAllPc.setStartIndex(String.valueOf(0));
+//                        reqAllPc.setNumberOfRecords(String.valueOf(integer));
+                        reqAllPc.setPipeCollectionId("");
 
                         pipeCollectionsViewModel.reqAllPc(reqAllPc);
                     } else {

@@ -375,9 +375,11 @@ public class PadMapFragment extends BaseFragment {
 
     private void getPipeInfo(int fromIndex, int toIndex) {
         ReqAllPipe reqAllPipe = new ReqAllPipe();
-        reqAllPipe.setPipeId("0");
-        reqAllPipe.setStartIndex(String.valueOf(fromIndex));
-        reqAllPipe.setNumberOfRecords(String.valueOf(toIndex));
+        reqAllPipe.setPipeId("");
+        reqAllPipe.setStartIndex("0");
+        reqAllPipe.setNumberOfRecords("0");
+//        reqAllPipe.setStartIndex(String.valueOf(fromIndex));
+//        reqAllPipe.setNumberOfRecords(String.valueOf(toIndex));
         pipeViewModel.reqAllPipe(reqAllPipe);
     }
 
