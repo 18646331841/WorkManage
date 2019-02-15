@@ -44,6 +44,8 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -376,6 +378,19 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
                 if (null != alarmInfos && alarmInfos.size() != 0) {
                     LogUtil.d(TAG, "observe alarmInfos = " + alarmInfos.size());
 
+                    Collections.sort(alarmInfos, new Comparator<AlarmInfo>() {
+                        @Override
+                        public int compare(AlarmInfo a1, AlarmInfo a2) {
+                            long t1 = TimeUtil.Date2ms(a1.getTimeStamp());
+                            long t2 = TimeUtil.Date2ms(a2.getTimeStamp());
+                            if (t2 > t1) {
+                                return 1;
+                            } else if (t2 == t1) {
+                                return 0;
+                            }
+                            return -1;
+                        }
+                    });
 
                     curAlarmList = alarmInfos;
                     curMessageList.clear();
@@ -403,6 +418,20 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
             incidentViewModel.getmObservableAllIncidentByRead().observe(this, incidentInfos -> {
                 if (null != incidentInfos && incidentInfos.size() != 0) {
                     LogUtil.d(TAG, "observe incidentInfos = " + incidentInfos.size());
+                    Collections.sort(incidentInfos, new Comparator<IncidentInfo>() {
+                        @Override
+                        public int compare(IncidentInfo i1, IncidentInfo i2) {
+                            long t1 = TimeUtil.Date2ms(i1.getTimeStamp());
+                            long t2 = TimeUtil.Date2ms(i2.getTimeStamp());
+                            if (t2 > t1) {
+                                return 1;
+                            } else if (t2 == t1) {
+                                return 0;
+                            }
+                            return -1;
+                        }
+                    });
+
                     curIncidentList = incidentInfos;
 
                     curMessageList.clear();
@@ -484,6 +513,7 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
         reqAllAlarm.setIsAllAlarm("true");
         reqAllAlarm.setGetByTimeDiff("true");
         reqAllAlarm.setStartTime(startTimeAlarm);
+//        reqAllAlarm.setStartTime("1970-01-01 00:00:00");
         reqAllAlarm.setEndTime(TimeUtil.ms2Date(System.currentTimeMillis()));
         alarmViewModel.getAllAlarmByConditionToDB(reqAllAlarm);
 
