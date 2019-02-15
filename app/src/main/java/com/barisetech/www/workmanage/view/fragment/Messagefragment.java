@@ -460,13 +460,22 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
         super.onResume();
 
         //先获取上次请求的时间，没有就去取登录时间
-        String startTime;
-        String lastTime = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_LAST_TIME_NEWINFO, "");
-        if (TextUtils.isEmpty(lastTime)) {
+        String startTimeAlarm;
+        String lastTimeAlarm = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_LAST_TIME_NEWINFO_ALARM, "");
+        if (TextUtils.isEmpty(lastTimeAlarm)) {
             String loginTime = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_FIRST_LOGIN_TIME, "");
-            startTime = loginTime;
+            startTimeAlarm = loginTime;
         } else {
-            startTime = lastTime;
+            startTimeAlarm = lastTimeAlarm;
+        }
+
+        String startTimeIncident;
+        String lastTimeIncident = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_LAST_TIME_NEWINFO_INCIDENT, "");
+        if (TextUtils.isEmpty(lastTimeIncident)) {
+            String loginTime = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_FIRST_LOGIN_TIME, "");
+            startTimeIncident = loginTime;
+        } else {
+            startTimeIncident = lastTimeIncident;
         }
 
         ReqAllAlarm reqAllAlarm = new ReqAllAlarm();
@@ -474,14 +483,14 @@ public class Messagefragment extends BaseFragment implements View.OnClickListene
         reqAllAlarm.setNumberOfRecords("0");
         reqAllAlarm.setIsAllAlarm("true");
         reqAllAlarm.setGetByTimeDiff("true");
-        reqAllAlarm.setStartTime(startTime);
+        reqAllAlarm.setStartTime(startTimeAlarm);
         reqAllAlarm.setEndTime(TimeUtil.ms2Date(System.currentTimeMillis()));
         alarmViewModel.getAllAlarmByConditionToDB(reqAllAlarm);
 
         alarmViewModel.getAllUnliftAlarm();
 
         ReqIncidentSelectItem reqIncidentSelectItem = new ReqIncidentSelectItem();
-        reqIncidentSelectItem.setMStartTime(startTime);
+        reqIncidentSelectItem.setMStartTime(startTimeIncident);
         reqIncidentSelectItem.setMEndTime(TimeUtil.ms2Date(System.currentTimeMillis()));
         reqIncidentSelectItem.setTimeQueryChecked("true");
         reqIncidentSelectItem.setSiteIdQueryChecked("false");

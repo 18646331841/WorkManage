@@ -85,7 +85,7 @@ public class IncidentModel extends BaseModel {
                     @Override
                     protected void onSuccess(List<IncidentInfo> response) {
 //                        modelCallBack.netResult(response);
-                        SharedPreferencesUtil.getInstance().setString(BaseConstant.SP_LAST_TIME_NEWINFO, TimeUtil
+                        SharedPreferencesUtil.getInstance().setString(BaseConstant.SP_LAST_TIME_NEWINFO_INCIDENT, TimeUtil
                                 .ms2Date(System.currentTimeMillis()));
                         for (int i = 0; i < response.size(); i++) {
                             IncidentInfo incidentInfoSync = appDatabase.incidentDao().getIncidentInfoSync(response

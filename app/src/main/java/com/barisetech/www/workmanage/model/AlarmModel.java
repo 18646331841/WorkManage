@@ -209,7 +209,7 @@ public class AlarmModel extends BaseModel {
 
                     @Override
                     protected void onSuccess(List<AlarmInfo> response) {
-                        SharedPreferencesUtil.getInstance().setString(BaseConstant.SP_LAST_TIME_NEWINFO, TimeUtil
+                        SharedPreferencesUtil.getInstance().setString(BaseConstant.SP_LAST_TIME_NEWINFO_ALARM, TimeUtil
                                 .ms2Date(System.currentTimeMillis()));
                         for (int i = 0; i < response.size(); i++) {
                             AlarmInfo alarmInfo = appDatabase.alarmInfoDao().getAlarmInfoSync(response.get(i).getKey());
