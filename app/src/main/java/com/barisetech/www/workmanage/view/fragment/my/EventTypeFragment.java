@@ -48,9 +48,35 @@ public class EventTypeFragment extends BaseFragment {
     private void initView() {
         String typeSP = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_INCIDENT_TYPES, BaseConstant
                 .TYPES_INCIDENT);
-        String[] types = typeSP.split(",");
-        for (String type : types) {
-            int t = Integer.valueOf(type);
+        if (typeSP.contains(",")) {
+            String[] types = typeSP.split(",");
+            if (types.length > 0) {
+                for (String type : types) {
+                    int t = Integer.valueOf(type);
+                    switch (t) {
+                        case BaseConstant.TYPE_INCIDENT_DIGI_OFFLINE:
+                            mBinding.offlineSwitch.setOpened(true);
+                            break;
+                        case BaseConstant.TYPE_INCIDENT_DIGI_ONLINE:
+                            mBinding.onlineSwitch.setOpened(true);
+                            break;
+                        case BaseConstant.TYPE_INCIDENT_DIGI_TIME:
+                            mBinding.timeOffSwitch.setOpened(true);
+                            break;
+                        case BaseConstant.TYPE_INCIDENT_ISOLATOR_OFFLINE:
+                            mBinding.isolatorOfflineSwitch.setOpened(true);
+                            break;
+                        case BaseConstant.TYPE_INCIDENT_SENSOR_OFFLINE:
+                            mBinding.sensorOfflineSwitch.setOpened(true);
+                            break;
+                        case BaseConstant.TYPE_INCIDENT_UNKNOWN:
+                            mBinding.unknownSwitch.setOpened(true);
+                            break;
+                    }
+                }
+            }
+        } else if(!TextUtils.isEmpty(typeSP)){
+            int t = Integer.valueOf(typeSP);
             switch (t) {
                 case BaseConstant.TYPE_INCIDENT_DIGI_OFFLINE:
                     mBinding.offlineSwitch.setOpened(true);

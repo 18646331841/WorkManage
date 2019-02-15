@@ -89,8 +89,12 @@ public class BaseConstant {
     public static final String SP_REFRESH_TOKEN = "refresh_token";
     //Ip port, value = ip_port
     public static final String SP_IP_PORT = "ip_port";
-    //上次请求新消息的时间
-    public static final String SP_LAST_TIME_NEWINFO = "last_time";
+    //上次请求新消息的时间  不再使用
+//    public static final String SP_LAST_TIME_NEWINFO = "last_time";
+    //上次请求警报新消息的时间
+    public static final String SP_LAST_TIME_NEWINFO_ALARM = "last_time_alarm";
+    //上次请求事件新消息的时间
+    public static final String SP_LAST_TIME_NEWINFO_INCIDENT = "last_time_incident";
     //免打扰开始时间
     public static final String NOT_DISTURB_START = "not_disturb_start";
     //免打扰结束时间

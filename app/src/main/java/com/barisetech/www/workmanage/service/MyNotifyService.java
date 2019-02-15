@@ -342,7 +342,7 @@ public class MyNotifyService extends Service {
                     reqAllAlarm.setMachineCode(token);
                     reqAllAlarm.setIsAllAlarm("true");
                     reqAllAlarm.setStartIndex("0");
-                    reqAllAlarm.setNumberOfRecords("1");
+                    reqAllAlarm.setNumberOfRecords("20");
                     reqAllAlarm.setGetByTimeDiff("true");
                     long endTime = System.currentTimeMillis();
                     long startTime = endTime - BaseConstant.ALARM_TIME;
