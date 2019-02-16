@@ -74,9 +74,9 @@ public class PipeCollectionModifyFragment extends BaseFragment{
     }
 
     private void initView() {
-        mBinding.pcId.setText(pipeCollections.getId());
+        mBinding.pcId.setText(String.valueOf(pipeCollections.getId()));
         mBinding.pcName.setText(pipeCollections.getName());
-        mBinding.pcSortId.setText(pipeCollections.getSortID());
+        mBinding.pcSortId.setText(String.valueOf(pipeCollections.getSortID()));
         mBinding.pcManager.setText(pipeCollections.getManager());
         mBinding.pcPhone.setText(pipeCollections.getTelephone());
         mBinding.pcEmail.setText(pipeCollections.getEmail());

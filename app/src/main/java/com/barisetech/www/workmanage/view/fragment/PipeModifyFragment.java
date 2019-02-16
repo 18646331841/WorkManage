@@ -219,7 +219,7 @@ public class PipeModifyFragment extends BaseFragment {
 //                curPipeInfo.PipeCollectID = null;
 //            }
 
-            curPipeInfo.Length = Integer.valueOf(length);
+            curPipeInfo.Length = Double.valueOf(length);
             curPipeInfo.PipeMaterial = materail;
 //            curPipeInfo.Company = company;
             curPipeInfo.Speed = Integer.valueOf(speed);

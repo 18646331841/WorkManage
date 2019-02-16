@@ -95,6 +95,16 @@ public class BaseConstant {
     public static final String SP_LAST_TIME_NEWINFO_ALARM = "last_time_alarm";
     //上次请求事件新消息的时间
     public static final String SP_LAST_TIME_NEWINFO_INCIDENT = "last_time_incident";
+    //上次请求警报通知的时间
+    public static final String SP_LAST_TIME_NOTIFY_ALARM = "last_time_notify_alarm";
+    //上次请求事件通知的时间
+    public static final String SP_LAST_TIME_NOTIFY_INCIDENT = "last_time_notify_incident";
+    //上次请求警报分析通知的时间
+    public static final String SP_LAST_TIME_NOTIFY_ANALYSIS = "last_time_notify_analysis";
+    //上次请求计划通知的时间
+    public static final String SP_LAST_TIME_NOTIFY_PLAN = "last_time_notify_plan";
+    //上次请求授权通知的时间
+    public static final String SP_LAST_TIME_NOTIFY_AUTH = "last_time_notify_auth";
     //免打扰开始时间
     public static final String NOT_DISTURB_START = "not_disturb_start";
     //免打扰结束时间

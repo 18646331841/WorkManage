@@ -338,15 +338,26 @@ public class MyNotifyService extends Service {
                     if (TextUtils.isEmpty(token)) {
                         return;
                     }
+
+                    String startTime;
+                    String lastTimeIncident = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_LAST_TIME_NOTIFY_ALARM, "");
+                    if (TextUtils.isEmpty(lastTimeIncident)) {
+                        String loginTime = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_FIRST_LOGIN_TIME, "");
+                        startTime = loginTime;
+                    } else {
+                        startTime = lastTimeIncident;
+                    }
+
                     ReqAllAlarm reqAllAlarm = new ReqAllAlarm();
                     reqAllAlarm.setMachineCode(token);
                     reqAllAlarm.setIsAllAlarm("true");
                     reqAllAlarm.setStartIndex("0");
-                    reqAllAlarm.setNumberOfRecords("1");
+                    reqAllAlarm.setNumberOfRecords("20");
                     reqAllAlarm.setGetByTimeDiff("true");
                     long endTime = System.currentTimeMillis();
-                    long startTime = endTime - BaseConstant.ALARM_TIME;
-                    reqAllAlarm.setStartTime(TimeUtil.ms2Date(startTime));
+//                    long startTime = endTime - BaseConstant.ALARM_TIME;
+//                    reqAllAlarm.setStartTime(TimeUtil.ms2Date(startTime));
+                    reqAllAlarm.setStartTime(startTime);
                     reqAllAlarm.setEndTime(TimeUtil.ms2Date(endTime));
 
                     AlarmService alarmService = HttpService.getInstance().buildJsonRetrofit().create(AlarmService.class);
@@ -367,6 +378,8 @@ public class MyNotifyService extends Service {
                                 @Override
                                 protected void onSuccess(List<AlarmInfo> response) {
                                     if (response != null && response.size() > 0) {
+                                        SharedPreferencesUtil.getInstance().setString(BaseConstant.SP_LAST_TIME_NOTIFY_ALARM, TimeUtil
+                                                .ms2Date(System.currentTimeMillis()));
                                         buildNotify(alarmId, BaseConstant.ALARM_CHANNEL, "有新警报信息", String.valueOf
                                                 (response.size() + "个"));
                                     }
@@ -393,10 +406,20 @@ public class MyNotifyService extends Service {
                         return;
                     }
 
+                    String startTime;
+                    String lastTimeIncident = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_LAST_TIME_NOTIFY_INCIDENT, "");
+                    if (TextUtils.isEmpty(lastTimeIncident)) {
+                        String loginTime = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_FIRST_LOGIN_TIME, "");
+                        startTime = loginTime;
+                    } else {
+                        startTime = lastTimeIncident;
+                    }
+
                     ReqIncidentSelectItem reqIncidentSelectItem = new ReqIncidentSelectItem();
                     long endTime = System.currentTimeMillis();
-                    long startTime = endTime - BaseConstant.INCIDENT_TIME;
-                    reqIncidentSelectItem.setMStartTime(TimeUtil.ms2Date(startTime));
+//                    long startTime = endTime - BaseConstant.INCIDENT_TIME;
+//                    reqIncidentSelectItem.setMStartTime(TimeUtil.ms2Date(startTime));
+                    reqIncidentSelectItem.setMStartTime(startTime);
 //                    reqIncidentSelectItem.setMStartTime("1970-01-01 00:00:00"); 测试使用
                     reqIncidentSelectItem.setMEndTime(TimeUtil.ms2Date(endTime));
                     reqIncidentSelectItem.setTimeQueryChecked("true");
@@ -428,6 +451,8 @@ public class MyNotifyService extends Service {
                                 @Override
                                 protected void onSuccess(List<IncidentInfo> response) {
                                     if (response != null && response.size() > 0) {
+                                        SharedPreferencesUtil.getInstance().setString(BaseConstant.SP_LAST_TIME_NOTIFY_INCIDENT, TimeUtil
+                                                .ms2Date(System.currentTimeMillis()));
                                         //判断通知哪种类型的事件
                                         String typeSP = SharedPreferencesUtil.getInstance().getString(BaseConstant
                                                 .SP_INCIDENT_TYPES, BaseConstant.TYPES_INCIDENT);
@@ -466,8 +491,17 @@ public class MyNotifyService extends Service {
                         return;
                     }
 
+                    String startTime;
+                    String lastTimeIncident = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_LAST_TIME_NOTIFY_ANALYSIS, "");
+                    if (TextUtils.isEmpty(lastTimeIncident)) {
+                        String loginTime = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_FIRST_LOGIN_TIME, "");
+                        startTime = loginTime;
+                    } else {
+                        startTime = lastTimeIncident;
+                    }
+
                     long endTime = System.currentTimeMillis();
-                    long startTime = endTime - BaseConstant.ALARM_ANALYSIS_TIME;
+//                    long startTime = endTime - BaseConstant.ALARM_ANALYSIS_TIME;
 
                     ReqAllAlarmAnalysis reqAllAlarmAnalysis = new ReqAllAlarmAnalysis();
                     reqAllAlarmAnalysis.setMachineCode(token);
@@ -476,7 +510,8 @@ public class MyNotifyService extends Service {
                     reqAllAlarmAnalysis.setAlarmId("-1");
                     reqAllAlarmAnalysis.setAlarmAnalysisId("-1");
                     reqAllAlarmAnalysis.setGetByMy("false");
-                    reqAllAlarmAnalysis.setStartTime(TimeUtil.ms2Date(startTime));
+//                    reqAllAlarmAnalysis.setStartTime(TimeUtil.ms2Date(startTime));
+                    reqAllAlarmAnalysis.setStartTime(startTime);
                     reqAllAlarmAnalysis.setEndTime(TimeUtil.ms2Date(endTime));
                     reqAllAlarmAnalysis.setStartIndex("0");
                     reqAllAlarmAnalysis.setNumberOfRecords("1");
@@ -500,6 +535,8 @@ public class MyNotifyService extends Service {
                                 @Override
                                 protected void onSuccess(List<AlarmAnalysis> response) {
                                     if (response != null && response.size() > 0) {
+                                        SharedPreferencesUtil.getInstance().setString(BaseConstant.SP_LAST_TIME_NOTIFY_ANALYSIS, TimeUtil
+                                                .ms2Date(System.currentTimeMillis()));
                                         buildNotify(alarmAnalysisId, BaseConstant.ALARM_ANALYSIS_CHANNEL, "有新警报分析信息",
                                                 String.valueOf(response.size() + "个"));
                                     }
@@ -521,8 +558,17 @@ public class MyNotifyService extends Service {
                         return;
                     }
 
+                    String startTime;
+                    String lastTimeIncident = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_LAST_TIME_NOTIFY_PLAN, "");
+                    if (TextUtils.isEmpty(lastTimeIncident)) {
+                        String loginTime = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_FIRST_LOGIN_TIME, "");
+                        startTime = loginTime;
+                    } else {
+                        startTime = lastTimeIncident;
+                    }
+
                     long endTime = System.currentTimeMillis();
-                    long startTime = endTime - BaseConstant.PLAN_TIME;
+//                    long startTime = endTime - BaseConstant.PLAN_TIME;
 
                     ReqAllPlan reqAllPlan = new ReqAllPlan();
                     reqAllPlan.MachineCode = token;
@@ -531,7 +577,8 @@ public class MyNotifyService extends Service {
                     reqAllPlan.startIndex = "0";
                     reqAllPlan.numberOfRecords = "1";
                     reqAllPlan.TimeQueryChecked = "true";
-                    reqAllPlan.mStartTime = TimeUtil.ms2Date(startTime);
+//                    reqAllPlan.mStartTime = TimeUtil.ms2Date(startTime);
+                    reqAllPlan.mStartTime = startTime;
                     reqAllPlan.mEndTime = TimeUtil.ms2Date(endTime);
                     reqAllPlan.PesonChecked = "true";
                     reqAllPlan.Publisher = "";
@@ -561,6 +608,8 @@ public class MyNotifyService extends Service {
                                 @Override
                                 protected void onSuccess(List<PlanBean> response) {
                                     if (response != null && response.size() > 0) {
+                                        SharedPreferencesUtil.getInstance().setString(BaseConstant.SP_LAST_TIME_NOTIFY_PLAN, TimeUtil
+                                                .ms2Date(System.currentTimeMillis()));
                                         buildNotify(planId, BaseConstant.PLAN_CHANNEL, "有新计划信息", String.valueOf
                                                 (response.size() + "个"));
                                     }
@@ -586,13 +635,23 @@ public class MyNotifyService extends Service {
                         return;
                     }
 
+                    String startTime;
+                    String lastTimeIncident = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_LAST_TIME_NOTIFY_AUTH, "");
+                    if (TextUtils.isEmpty(lastTimeIncident)) {
+                        String loginTime = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_FIRST_LOGIN_TIME, "");
+                        startTime = loginTime;
+                    } else {
+                        startTime = lastTimeIncident;
+                    }
+
                     long endTime = System.currentTimeMillis();
-                    long startTime = endTime - BaseConstant.PLAN_TIME;
+//                    long startTime = endTime - BaseConstant.PLAN_TIME;
 
                     ReqAllPipeTap reqAllPipeTap = new ReqAllPipeTap();
                     reqAllPipeTap.MachineCode = token;
                     reqAllPipeTap.isGetAll = "false";
-                    reqAllPipeTap.mStartTime = TimeUtil.ms2Date(startTime);
+//                    reqAllPipeTap.mStartTime = TimeUtil.ms2Date(startTime);
+                    reqAllPipeTap.mStartTime = startTime;
                     reqAllPipeTap.mEndTime = TimeUtil.ms2Date(endTime);
                     reqAllPipeTap.startIndex = String.valueOf("0");
                     reqAllPipeTap.numberOfRecords = String.valueOf("50");
@@ -629,7 +688,8 @@ public class MyNotifyService extends Service {
                     reqAllAuth.MachineCode = token;
                     reqAllAuth.Id = "-1";
                     reqAllAuth.isGetAll = "false";
-                    reqAllAuth.mStartTime = TimeUtil.ms2Date(startTime);
+//                    reqAllAuth.mStartTime = TimeUtil.ms2Date(startTime);
+                    reqAllAuth.mStartTime = startTime;
                     reqAllAuth.mEndTime = TimeUtil.ms2Date(endTime);
                     String ipPort = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_IP_PORT, "");
                     if (!TextUtils.isEmpty(ipPort)) {
@@ -706,6 +766,8 @@ public class MyNotifyService extends Service {
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(s -> {
                                 if (!TextUtils.isEmpty(s)) {
+                                    SharedPreferencesUtil.getInstance().setString(BaseConstant.SP_LAST_TIME_NOTIFY_AUTH, TimeUtil
+                                            .ms2Date(System.currentTimeMillis()));
                                     LogUtil.d(TAG, "授权通知结果---" + s);
                                     String[] count = s.split(",");
                                     buildNotify(authId, BaseConstant.AUTH_CHANNEL, "有新授权信息", count.length + "个", s);
