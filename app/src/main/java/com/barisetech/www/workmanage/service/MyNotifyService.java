@@ -287,7 +287,7 @@ public class MyNotifyService extends Service {
         newsInterval();
         alarmAnalysisInterval();
         planInterval();
-        authInterval();
+//        authInterval();
     }
 
     private void stopInterval() {
