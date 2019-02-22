@@ -383,7 +383,8 @@ public class WaveFormFragment extends BaseFragment {
                     WaveBean.PointsBean pointsBean = waveBean.Points.get(i);
                     float data = (float) pointsBean.Data;
 //                    String time = String.valueOf(i);
-                    String time = TimeUtil.ms2Hms(pointsBean.TimeStamp);
+                    //需求那边要求这里的时间戳需要做-8小时操作
+                    String time = TimeUtil.ms2Hms(pointsBean.TimeStamp - 28800000);
                     DataRateBean dataRateBean = new DataRateBean(data, time);
                     dataRateBeans.add(dataRateBean);
                 }
