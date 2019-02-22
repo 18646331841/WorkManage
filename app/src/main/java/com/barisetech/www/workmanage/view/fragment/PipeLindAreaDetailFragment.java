@@ -6,6 +6,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -99,7 +100,9 @@ public class PipeLindAreaDetailFragment extends BaseFragment{
             });
         }
 
-        if (pipeLindAreaInfo.getRemark().equals(BaseConstant.DATA_REQUEST_NAME)) {
+        if (!TextUtils.isEmpty(pipeLindAreaInfo.getRemark()) && pipeLindAreaInfo.getRemark()
+                .equals(BaseConstant.DATA_REQUEST_NAME)) {
+
             getData();
         }
     }

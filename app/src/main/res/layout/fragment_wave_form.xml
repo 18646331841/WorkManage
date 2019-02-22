@@ -196,7 +196,9 @@
                     android:layout_height="@dimen/dp_300"
                     android:visibility="gone"
                     android:layout_marginTop="@dimen/dp_10"
-                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_marginLeft="@dimen/dp_5"
+                    android:paddingLeft="@dimen/dp_25"
+                    android:paddingTop="@dimen/dp_5"
                     android:layout_marginRight="@dimen/dp_20"/>
 
                 <LinearLayout
@@ -226,8 +228,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_300"
                     android:visibility="gone"
+                    android:paddingLeft="@dimen/dp_25"
+                    android:paddingTop="@dimen/dp_5"
                     android:layout_marginTop="@dimen/dp_10"
-                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_marginLeft="@dimen/dp_5"
                     android:layout_marginRight="@dimen/dp_20"
                     android:layout_marginBottom="@dimen/dp_20"/>
             </LinearLayout>
