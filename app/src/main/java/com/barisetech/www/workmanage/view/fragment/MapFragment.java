@@ -997,7 +997,7 @@ public class MapFragment extends BaseFragment {
         @Override
         public void onNaviInfoUpdate(NaviInfo naviInfo) {
             LogUtil.d(TAG, "Navi latitude = " + naviInfo.m_Latitude + " longitude = " + naviInfo.m_Longitude);
-            ToastUtil.showToast("latitude = " + naviInfo.m_Latitude + " longitude = " + naviInfo.m_Longitude);
+//            ToastUtil.showToast(;"latitude = " + naviInfo.m_Latitude + " longitude = " + naviInfo.m_Longitude);
         }
 
         @Override

@@ -19,9 +19,15 @@
             layout="@layout/layout_toolbar"
             app:toolbar="@{fragment.observableToolbar}" />
 
+        <include
+            android:id="@+id/search_layout"
+            layout="@layout/layout_search_view"/>
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/pipelindarea_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+            android:layout_height="wrap_content">
+
+        </android.support.v7.widget.RecyclerView>
     </LinearLayout>
 </layout>
