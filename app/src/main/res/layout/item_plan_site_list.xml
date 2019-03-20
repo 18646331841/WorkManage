@@ -10,12 +10,12 @@
         <CheckBox
             android:id="@+id/plan_publish_third_site"
             android:layout_width="@dimen/dp_167"
-            android:layout_height="@dimen/dp_30"
+            android:layout_height="@dimen/dp_45"
             android:background="@drawable/plan_third_site_button_style"
             android:button="@null"
             android:gravity="center"
             android:textColor="@drawable/font_white_black_selector"
-            android:textSize="@dimen/sp_16"
+            android:textSize="@dimen/sp_14"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"/>

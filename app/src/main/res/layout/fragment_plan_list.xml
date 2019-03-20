@@ -151,7 +151,7 @@
 
                     <RadioButton
                         android:id="@+id/plan_list_start_time"
-                        android:layout_width="@dimen/dp_125"
+                        android:layout_width="@dimen/dp_127"
                         android:layout_height="@dimen/dp_30"
                         android:layout_marginLeft="@dimen/dp_11"
                         android:background="@drawable/shape_button_corners_line_blue"
@@ -159,11 +159,11 @@
                         android:gravity="center"
                         android:text="@string/alarm_analysis_start_time"
                         android:textColor="@color/filter_blue"
-                        android:textSize="14sp"/>
+                        android:textSize="12sp"/>
 
                     <RadioButton
                         android:id="@+id/plan_list_end_time"
-                        android:layout_width="@dimen/dp_125"
+                        android:layout_width="@dimen/dp_127"
                         android:layout_height="@dimen/dp_30"
                         android:layout_marginLeft="@dimen/dp_11"
                         android:background="@drawable/shape_button_corners_line_blue"
@@ -171,7 +171,7 @@
                         android:gravity="center"
                         android:text="@string/alarm_analysis_end_time"
                         android:textColor="@color/filter_blue"
-                        android:textSize="14sp"/>
+                        android:textSize="12sp"/>
 
                 </LinearLayout>
 
