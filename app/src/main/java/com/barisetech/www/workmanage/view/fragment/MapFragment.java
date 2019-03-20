@@ -654,7 +654,7 @@ public class MapFragment extends BaseFragment {
                         reqAllPc.setStartIndex("0");
                         reqAllPc.setNumberOfRecords("0");
 //                        reqAllPc.setStartIndex(String.valueOf(0));
-//                        reqAllPc.setNumberOfRecords(String.valueOf(integer));
+//                        reqAllPc.setNumberOfRecords(String.valueOf(integer - 1));
                         reqAllPc.setPipeCollectionId("");
 
                         pipeCollectionsViewModel.reqAllPc(reqAllPc);
@@ -997,7 +997,7 @@ public class MapFragment extends BaseFragment {
         @Override
         public void onNaviInfoUpdate(NaviInfo naviInfo) {
             LogUtil.d(TAG, "Navi latitude = " + naviInfo.m_Latitude + " longitude = " + naviInfo.m_Longitude);
-            ToastUtil.showToast("latitude = " + naviInfo.m_Latitude + " longitude = " + naviInfo.m_Longitude);
+//            ToastUtil.showToast(;"latitude = " + naviInfo.m_Latitude + " longitude = " + naviInfo.m_Longitude);
         }
 
         @Override
