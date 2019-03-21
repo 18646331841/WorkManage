@@ -234,6 +234,13 @@ public class PipeWorkFragment extends BaseFragment {
 
                     if (null != pipeWorks) {
                         if (pipeWorks.size() > 0) {
+                            for (PipeWork pipe : pipeWorks) {
+                                String time = pipe.RecordDate;
+                                if (time.contains("T")) {
+                                    time = time.replace("T", " ");
+                                    pipe.RecordDate = time;
+                                }
+                            }
                             pipeWorkList.addAll(pipeWorks);
                             LogUtil.d(TAG, "load complete = " + pipeWorks);
                             loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_COMPLETE);
