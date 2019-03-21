@@ -90,7 +90,11 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         NewsInfo newsInfo = datas.get(position);
         normalHolder.title.setText(newsInfo.getTittle());
         normalHolder.describe.setText(newsInfo.getDescription());
-        normalHolder.time.setText(newsInfo.getReleaseTime());
+        String time = newsInfo.getReleaseTime();
+        if (newsInfo.getReleaseTime().contains("T")) {
+            time = newsInfo.getReleaseTime().replace("T", " ");
+        }
+        normalHolder.time.setText(time);
         List<NewsImageInfo> images = newsInfo.getImage();
         if (null != images && images.size() > 0) {
             if (imgWidth <= 0) {

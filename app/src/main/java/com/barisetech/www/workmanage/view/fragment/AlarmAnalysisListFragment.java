@@ -416,6 +416,13 @@ public class AlarmAnalysisListFragment extends BaseFragment {
                 if (this.getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
                     if (null != alarmAnalyses) {
                         if (alarmAnalyses.size() > 0) {
+                            for (AlarmAnalysis alarm : alarmAnalyses) {
+                                String time = alarm.getReleaseTime();
+                                if (time.contains("T")) {
+                                    time = time.replace("T", " ");
+                                    alarm.setReleaseTime(time);
+                                }
+                            }
                             alarmAnalysisList.addAll(alarmAnalyses);
                             LogUtil.d(TAG, "load complete = " + alarmAnalyses);
                             loadMoreWrapper.setLoadState(loadMoreWrapper.LOADING_COMPLETE);

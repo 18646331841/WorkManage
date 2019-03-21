@@ -62,8 +62,8 @@ public class IpFragment extends BaseFragment {
 
     private void initView() {
         //TODO 后期去掉
-        mBinding.etIp.setText("222.34.135.77");
-        mBinding.etPort.setText("8081");
+//        mBinding.etIp.setText("222.34.135.77");
+//        mBinding.etPort.setText("8081");
 
         String ipAndPort = SharedPreferencesUtil.getInstance().getString(BaseConstant.SP_IP_PORT, "");
         if (!TextUtils.isEmpty(ipAndPort)) {
@@ -78,6 +78,10 @@ public class IpFragment extends BaseFragment {
             if (TextUtils.isEmpty(account) || TextUtils.isEmpty(password)) {
                 ToastUtil.showToast(getString(R.string.ip_null));
             } else {
+                if (!account.contains(".")) {
+                    ToastUtil.showToast("Ip格式错误");
+                    return;
+                }
                 String spValue = account + "_" + password;
                 SharedPreferencesUtil.getInstance().setString(BaseConstant.SP_IP_PORT, spValue);
                 Object arg1 = curMessage.getArg1();
